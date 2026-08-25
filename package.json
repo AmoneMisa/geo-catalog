@@ -1,0 +1,24 @@
+{
+  "name": "@whiteslove/geo-catalog",
+  "version": "0.1.0",
+  "description": "Structured geographic catalog for cities, districts, neighborhoods, residential complexes, transit and POIs with coordinates, bounds and OSM metadata.",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": { "types": "./index.d.ts", "import": "./src/index.js" },
+    "./catalog": { "types": "./index.d.ts", "import": "./src/catalog.js" },
+    "./spatial": { "types": "./index.d.ts", "import": "./src/spatial.js" },
+    "./validate": { "types": "./index.d.ts", "import": "./src/validate.js" }
+  },
+  "files": ["src", "index.d.ts", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test",
+    "validate": "node ./scripts/validate-catalog.js",
+    "prepack": "npm test && npm run validate"
+  },
+  "keywords": ["geography", "geospatial", "coordinates", "openstreetmap", "osm", "cities", "districts", "transit", "poi"],
+  "license": "MIT"
+}
