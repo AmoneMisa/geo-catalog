@@ -1,5 +1,5 @@
 export type GeoEntityType = 'country' | 'region' | 'city' | 'district' | 'microdistrict' | 'mahalla' | 'local_area' | 'suburb' | 'settlement' | 'street' | 'residential_complex' | 'metro' | 'poi';
-export type GeoSource = 'osm' | 'official' | 'manual';
+export type GeoSource = 'osm' | 'wikidata' | 'official' | 'manual';
 export type GeoAccuracy = 'country' | 'region' | 'city' | 'district' | 'neighborhood' | 'street' | 'building' | 'poi' | 'entrance' | 'approximate';
 
 export interface GeoPoint { lat: number; lng: number }
@@ -15,6 +15,7 @@ export interface GeoEntity {
   center: GeoPoint;
   bbox?: GeoBBox;
   osm?: OsmRef;
+  wikidataId?: string;
   accuracyM?: number;
   accuracy?: GeoAccuracy;
   source?: GeoSource;
