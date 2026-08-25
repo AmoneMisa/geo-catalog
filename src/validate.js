@@ -5,7 +5,7 @@ const ENTITY_TYPES = new Set([
   'settlement', 'street', 'residential_complex', 'metro', 'poi'
 ]);
 
-const SOURCES = new Set(['osm', 'official', 'manual']);
+const SOURCES = new Set(['osm', 'wikidata', 'official', 'manual']);
 const ACCURACY = new Set(['country', 'region', 'city', 'district', 'neighborhood', 'street', 'building', 'poi', 'entrance', 'approximate']);
 
 export function validateGeoCatalog(entities) {
@@ -23,6 +23,7 @@ export function validateGeoCatalog(entities) {
     if (!isValidCoordinate(entity.center)) errors.push(`${entity.id}: invalid center`);
     if (entity.source && !SOURCES.has(entity.source)) errors.push(`${entity.id}: unsupported source ${entity.source}`);
     if (entity.accuracy && !ACCURACY.has(entity.accuracy)) errors.push(`${entity.id}: unsupported accuracy ${entity.accuracy}`);
+    if (entity.wikidataId && !/^Q\d+$/.test(entity.wikidataId)) errors.push(`${entity.id}: invalid Wikidata id`);
 
     if (entity.bbox) {
       const { south, west, north, east } = entity.bbox;
