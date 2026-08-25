@@ -2,9 +2,9 @@
 
 Structured geographic data for location-aware Whiteslove services.
 
-`@whiteslove/geo-catalog` is the spatial companion to `@whiteslove/parsing-lexicon`. The lexicon recognizes multilingual location text and resolves it to a stable canonical entity ID; this package resolves that ID to geographic metadata such as coordinates, bounds, hierarchy and optional OpenStreetMap references.
+`@whiteslove/geo-catalog` is the spatial companion to `@whiteslove/parsing-lexicon`. The lexicon recognizes multilingual location text and resolves it to canonical geography; this package attaches deterministic spatial metadata such as coordinates, bounds, hierarchy and optional OpenStreetMap references.
 
-The package is deterministic, dependency-free and network-free at runtime. Nominatim, Overpass and other geocoders should remain consumer-side fallbacks for unknown or address-level entities.
+The package is dependency-free and network-free at runtime. Nominatim, Overpass and other geocoders remain ingestion/maintenance tools or consumer fallbacks for unknown exact addresses.
 
 ## Responsibilities
 
@@ -14,7 +14,7 @@ This package owns:
 - center coordinates;
 - bounding boxes and, later, polygons;
 - administrative and locality hierarchy via `parentId`;
-- cities, districts, microdistricts, mahallas, suburbs and settlements;
+- cities, districts, microdistricts, mahallas, local areas, suburbs and settlements;
 - residential complexes, metro stations and POIs;
 - optional OSM node/way/relation metadata;
 - spatial helpers such as distance, containment and nearest-entity lookup;
@@ -27,10 +27,25 @@ This package intentionally does **not** own multilingual aliases, regexes, parsi
 ```text
 raw listing text
   -> @whiteslove/parsing-lexicon
-  -> stable entity id (for example: uz:tashkent)
-  -> @whiteslove/geo-catalog
+  -> canonical entity tuple
+  -> @whiteslove/geo-catalog lexicon bridge
+  -> stable geo id
   -> center / bbox / hierarchy / OSM metadata
-  -> consumer geocoder fallback for unknown exact addresses
+  -> geocoder fallback only for unresolved exact addresses
+```
+
+The bridge uses canonical parser fields rather than copying aliases into this package:
+
+```js
+import { resolveLexiconGeoEntity } from '@whiteslove/geo-catalog';
+
+resolveLexiconGeoEntity({
+  country: 'UZ',
+  city: 'Tashkent',
+  type: 'district',
+  canonical: 'Chilanzar',
+});
+// -> { id: 'uz:tashkent:chilanzar', ... }
 ```
 
 ## Usage
@@ -41,6 +56,7 @@ import {
   findGeoEntities,
   nearestGeoEntity,
   containsPoint,
+  geoIdForLexiconEntity,
 } from '@whiteslove/geo-catalog';
 
 const tashkent = getGeoEntity('uz:tashkent');
@@ -48,14 +64,16 @@ console.log(tashkent.center);
 
 const ukrainianCities = findGeoEntities({ country: 'UA', type: 'city' });
 
+const districtId = geoIdForLexiconEntity({
+  country: 'UZ', city: 'Tashkent', type: 'district', canonical: 'Chilanzar',
+});
+
 const nearest = nearestGeoEntity(
   { lat: 43.24, lng: 76.89 },
   findGeoEntities({ country: 'KZ', type: 'city' }),
 );
 
-if (tashkent.bbox) {
-  containsPoint(tashkent.center, tashkent.bbox);
-}
+if (tashkent.bbox) containsPoint(tashkent.center, tashkent.bbox);
 ```
 
 ## Entity model
@@ -76,7 +94,38 @@ interface GeoEntity {
 }
 ```
 
-IDs are deliberately language-independent. Consumers should join parsed lexical entities to spatial entities by stable ID rather than by display name.
+IDs are deliberately language-independent. Aliases such as `Чиланзар`, `Chilonzor` and `Чилонзор` belong to the lexicon; they all resolve to the same geo entity.
+
+## Current coverage
+
+`0.2.x` synchronizes the canonical city layer used by the parser and establishes the first administrative layer:
+
+- Uzbekistan: all 15 canonical `UZ_CITIES`;
+- Kazakhstan: all 18 canonical `KZ_CITIES`;
+- Ukraine: all 30 canonical `UA_CITIES`;
+- Tashkent: all 12 canonical administrative districts;
+- total current catalog: 75 spatial entities.
+
+Tashkent district centers are explicitly marked `approximate` until exact verified boundaries/centroids are imported. This is intentional: approximate coordinates are preferable to falsely claiming building-level or OSM-verified precision.
+
+The next spatial layers are Tashkent metro, microdistricts, mahallas, residential complexes and POIs, followed by detailed Uzbekistan, Ukraine and Kazakhstan city datasets. Those layers can be added without changing the public bridge/API.
+
+## Lexicon coverage gate
+
+Development CI installs the current `AmoneMisa/parsing-lexicon` and runs:
+
+```bash
+npm run audit:lexicon
+```
+
+The audit currently enforces complete coverage for:
+
+- `UZ_CITIES`;
+- `KZ_CITIES`;
+- `UA_CITIES`;
+- `TASHKENT_DISTRICTS`.
+
+If a new canonical parser city/district is added without a matching geo entity, CI fails and prints the missing canonical names. The parser package is a development-only audit dependency; `@whiteslove/geo-catalog` remains dependency-free for consumers.
 
 ## Data-quality rules
 
@@ -87,12 +136,8 @@ IDs are deliberately language-independent. Consumers should join parsed lexical 
 - `parentId` must resolve to another catalog entity.
 - OSM references must identify a valid node, way or relation ID.
 - Text aliases and transliterations must not be duplicated here.
-- Approximate data must be marked as such instead of pretending to be building-level precision.
+- Approximate data must be marked as such instead of pretending to be precise.
 - Network geocoding is never performed during package import or lookup.
-
-## Current scope
-
-Version `0.1.x` establishes the schema, API and validation layer and includes an initial city-level seed for Uzbekistan, Kazakhstan and Ukraine. The next data phase is to migrate canonical spatial entities corresponding to the location IDs already maintained by `@whiteslove/parsing-lexicon`, starting with Tashkent housing geography and then the broader UA/UZ/KZ catalogs.
 
 ## License
 
