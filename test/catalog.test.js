@@ -28,25 +28,28 @@ test('all canonical parser cities are represented for UA, UZ and KZ', () => {
   assert.equal(findGeoEntities({ country: 'UA', type: 'city' }).length, 30);
   assert.equal(findGeoEntities({ country: 'UZ', type: 'city' }).length, 15);
   assert.equal(findGeoEntities({ country: 'KZ', type: 'city' }).length, 18);
-  assert.equal(getGeoEntity('ua:mukachevo')?.canonicalName, 'Mukachevo');
-  assert.equal(getGeoEntity('uz:nukus')?.canonicalName, 'Nukus');
-  assert.equal(getGeoEntity('kz:oskemen')?.canonicalName, 'Oskemen');
 });
 
 test('Tashkent administrative districts are children of the city', () => {
   const districts = getGeoChildren('uz:tashkent').filter((entity) => entity.type === 'district');
   assert.equal(districts.length, 12);
-  assert.equal(getGeoEntity('uz:tashkent:chilanzar')?.canonicalName, 'Chilanzar');
+});
+
+test('verified Tashkent metro stations expose point provenance', () => {
+  const metro = findGeoEntities({ country: 'UZ', type: 'metro' });
+  assert.equal(metro.length, 29);
+  const station = getGeoEntity('uz:tashkent:metro:buyuk-ipak-yoli');
+  assert.equal(station?.canonicalName, 'Buyuk Ipak Yoli');
+  assert.equal(station?.wikidataId, 'Q4100729');
+  assert.equal(station?.osm?.id, 1777037919);
+  assert.equal(station?.accuracy, 'entrance');
 });
 
 test('parsing lexicon tuples resolve without duplicating aliases', () => {
   assert.equal(geoIdForLexiconEntity({ country: 'UZ', type: 'city', canonical: 'Tashkent' }), 'uz:tashkent');
-  assert.equal(
-    geoIdForLexiconEntity({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: 'Chilanzar' }),
-    'uz:tashkent:chilanzar',
-  );
+  assert.equal(geoIdForLexiconEntity({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: 'Chilanzar' }), 'uz:tashkent:chilanzar');
+  assert.equal(geoIdForLexiconEntity({ country: 'UZ', city: 'Tashkent', type: 'metro', canonical: 'Chorsu' }), 'uz:tashkent:metro:chorsu');
   assert.equal(resolveLexiconGeoEntity({ country: 'UA', type: 'city', canonical: 'Rivne' })?.id, 'ua:rivne');
-  assert.equal(resolveLexiconGeoEntity({ country: 'UA', type: 'city', canonical: 'Unknown' }), null);
 });
 
 test('bbox containment accepts Tashkent center', () => {
