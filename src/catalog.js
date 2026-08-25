@@ -1,9 +1,11 @@
 import { CITY_ENTITIES } from './data/cities.js';
 import { TASHKENT_ENTITIES } from './data/tashkent.js';
+import { TASHKENT_METRO_ENTITIES } from './data/tashkent-metro.js';
 
 const entities = [
   ...CITY_ENTITIES,
   ...TASHKENT_ENTITIES,
+  ...TASHKENT_METRO_ENTITIES,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
