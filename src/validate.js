@@ -1,7 +1,7 @@
 import { isValidCoordinate } from './spatial.js';
 
 const ENTITY_TYPES = new Set([
-  'country', 'region', 'city', 'district', 'microdistrict', 'mahalla', 'suburb',
+  'country', 'region', 'city', 'district', 'microdistrict', 'mahalla', 'local_area', 'suburb',
   'settlement', 'street', 'residential_complex', 'metro', 'poi'
 ]);
 

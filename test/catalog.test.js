@@ -5,9 +5,12 @@ import {
   containsPoint,
   distanceKm,
   findGeoEntities,
+  getGeoChildren,
   getGeoEntity,
+  geoIdForLexiconEntity,
   hasGeoEntity,
   nearestGeoEntity,
+  resolveLexiconGeoEntity,
   validateGeoCatalog,
 } from '../src/index.js';
 
@@ -21,9 +24,29 @@ test('stable IDs resolve deterministic entities', () => {
   assert.equal(getGeoEntity('missing'), null);
 });
 
-test('catalog can be filtered without text matching', () => {
-  const cities = findGeoEntities({ country: 'UA', type: 'city' });
-  assert.deepEqual(cities.map((entity) => entity.id), ['ua:kyiv', 'ua:odesa', 'ua:kharkiv']);
+test('all canonical parser cities are represented for UA, UZ and KZ', () => {
+  assert.equal(findGeoEntities({ country: 'UA', type: 'city' }).length, 30);
+  assert.equal(findGeoEntities({ country: 'UZ', type: 'city' }).length, 15);
+  assert.equal(findGeoEntities({ country: 'KZ', type: 'city' }).length, 18);
+  assert.equal(getGeoEntity('ua:mukachevo')?.canonicalName, 'Mukachevo');
+  assert.equal(getGeoEntity('uz:nukus')?.canonicalName, 'Nukus');
+  assert.equal(getGeoEntity('kz:oskemen')?.canonicalName, 'Oskemen');
+});
+
+test('Tashkent administrative districts are children of the city', () => {
+  const districts = getGeoChildren('uz:tashkent').filter((entity) => entity.type === 'district');
+  assert.equal(districts.length, 12);
+  assert.equal(getGeoEntity('uz:tashkent:chilanzar')?.canonicalName, 'Chilanzar');
+});
+
+test('parsing lexicon tuples resolve without duplicating aliases', () => {
+  assert.equal(geoIdForLexiconEntity({ country: 'UZ', type: 'city', canonical: 'Tashkent' }), 'uz:tashkent');
+  assert.equal(
+    geoIdForLexiconEntity({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: 'Chilanzar' }),
+    'uz:tashkent:chilanzar',
+  );
+  assert.equal(resolveLexiconGeoEntity({ country: 'UA', type: 'city', canonical: 'Rivne' })?.id, 'ua:rivne');
+  assert.equal(resolveLexiconGeoEntity({ country: 'UA', type: 'city', canonical: 'Unknown' }), null);
 });
 
 test('bbox containment accepts Tashkent center', () => {
