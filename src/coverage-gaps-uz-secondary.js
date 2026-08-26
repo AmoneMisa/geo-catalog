@@ -18,10 +18,8 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Navoiy', 'poi', ['Alisher Navoiy Park'], 'Navoiy landmark still needs a verified spatial match.'),
 
   ...gaps('Termez', 'mahalla', ['Farxod'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('Termez', 'local_area', ['Old Termez','Northern Gate','University area','Alpomish',"Navro'z",'Qiziljar'], 'Termez local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Termez', 'local_area', ['Northern Gate','University area','Alpomish',"Navro'z",'Qiziljar'], 'Termez local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Termez', 'poi', ['Old Termez','Amu Darya'], 'Termez landmark still needs a verified spatial match or natural-feature hierarchy.'),
-
-  ...gaps('Gulistan', 'local_area', ['University area'], 'Gulistan local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Chirchiq', 'microdistrict', ['5 microdistrict','6 microdistrict','7 microdistrict','8 microdistrict','9 microdistrict'], 'Chirchiq numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Chirchiq', 'local_area', ['Yubileiny','Khimik','KhimGorodok','Mashinostroitel','Troitsky','Bochka','Olympic area'], 'Chirchiq local-area alias still needs a verified standalone spatial match.'),
@@ -29,7 +27,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
 
   ...gaps('Kokand', 'local_area', ['Old City','Orda','Chorsu','Dangara Road'], 'Kokand local-area alias still needs a verified standalone spatial match.'),
 
-  ...gaps('Margilan', 'local_area', ['Old City','Kumtepa','Atlas'], 'Margilan local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Margilan', 'local_area', ['Old City','Atlas'], 'Margilan local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Almalyk', 'mahalla', ['Kamalak'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Almalyk', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict'], 'Almalyk numbered microdistrict still needs a verified neighbourhood/residential object.'),
@@ -41,7 +39,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Bekabad', 'local_area', ['Metallurg','Tsementnik','Vodnik','Syrdarya','Farhod','Railway Station area'], 'Bekabad local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Bekabad', 'poi', ['Farhod HPP'], 'Cross-border power infrastructure is intentionally not parented to Bekabad until infrastructure/region hierarchy is modeled.'),
 
-  ...gaps('Shakhrisabz', 'local_area', ['Old City','Amir Temur','Kitob direction','Railway Station area'], 'Shakhrisabz local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Shakhrisabz', 'local_area', ['Amir Temur','Kitob direction','Railway Station area'], 'Shakhrisabz local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Khiva', 'local_area', ['New City'], 'Khiva local-area alias still needs a verified standalone spatial match.'),
 ].map(Object.freeze));
