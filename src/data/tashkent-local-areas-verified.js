@@ -73,4 +73,16 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
     accuracy: 'approximate',
     accuracyM: 900,
   },
+  {
+    id: 'uz:tashkent:local-area:ttz-3',
+    type: 'local_area',
+    country: 'UZ',
+    canonicalName: 'TTZ-3',
+    parentId: 'uz:tashkent:mirzo-ulugbek',
+    center: { lat: 41.3565, lng: 69.3865 },
+    source: 'manual',
+    sourceUrl: 'https://www.goldenpages.uz/uz/street/?Id=36103',
+    accuracy: 'approximate',
+    accuracyM: 1500,
+  },
 ]);
