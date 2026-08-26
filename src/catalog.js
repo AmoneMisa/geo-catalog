@@ -40,6 +40,7 @@ import { FERGANA_ENTITIES } from './data/fergana.js';
 import { BUKHARA_ENTITIES } from './data/bukhara.js';
 import { QARSHI_ENTITIES } from './data/qarshi.js';
 import { NUKUS_ENTITIES } from './data/nukus.js';
+import { URGENCH_ENTITIES } from './data/urgench.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -84,6 +85,7 @@ const entities = [
   ...BUKHARA_ENTITIES,
   ...QARSHI_ENTITIES,
   ...NUKUS_ENTITIES,
+  ...URGENCH_ENTITIES,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({

@@ -46,6 +46,9 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ], 'Official Nukus MFY from parsing-lexicon; verified standalone OSM neighbourhood/residential geometry still pending.'),
   ...gaps('UZ', 'Nukus', 'local_area', ['Center','Dosliq','Beruniy area','Qizketken','Nayman','Turtkul Road','Khojeyli Road','Airport area','Railway Station area'], 'Nukus local-area alias still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Nukus', 'poi', ['Berdakh Square'], 'Lexicon landmark still needs a verified spatial match.'),
+
+  ...gaps('UZ', 'Urgench', 'mahalla', ['Ashxobod'], 'Official Urgench mahalla; verified standalone OSM neighbourhood/residential geometry still pending.'),
+  ...gaps('UZ', 'Urgench', 'local_area', ['Center','Olimpiya','Railway Station area','Airport area','University area','Al-Xorazmiy area','Navoiy','Gurlan Road','Khiva Road'], 'Urgench local-area alias still needs a verified standalone spatial match.'),
 ].map(Object.freeze));
 
 const gapKeys = new Set(GEO_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));
