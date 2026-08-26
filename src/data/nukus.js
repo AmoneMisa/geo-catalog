@@ -40,4 +40,8 @@ export const NUKUS_ENTITIES = Object.freeze([
   osmMahalla('nawriz', 'Nawriz', 42.37986, 59.64283, 'way', 1009066233, 820),
   osmMahalla('jipek-joli', 'Jipek jolı', 42.38295, 59.62425, 'way', 1009066190, 760),
   osmMahalla('jayxun', 'Jayxun', 42.36920, 59.63526, 'way', 1009066248, 900),
+  osmMahalla('gulzar', 'Gulzar', 42.44628, 59.61438, 'way', 1009066218, 700),
+  osmMahalla('garezsizlik', 'Garezsizlik', 42.45888, 59.61367, 'way', 1009066221, 700),
+  osmMahalla('kattagar', 'Kattagar', 42.45975, 59.57662, 'way', 1009066235, 820),
+  osmMahalla('vatanparvar', 'Vatanparvar', 42.47505, 59.65597, 'way', 1009066245, 800),
 ]);
