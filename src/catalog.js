@@ -2,6 +2,7 @@ import { CITY_ENTITIES } from './data/cities.js';
 import { TASHKENT_ENTITIES } from './data/tashkent.js';
 import { TASHKENT_METRO_ENTITIES } from './data/tashkent-metro.js';
 import { TASHKENT_METRO_EXTRA_ENTITIES } from './data/tashkent-metro-extra.js';
+import { TASHKENT_METRO_CIRCLE_EXTRA_ENTITIES } from './data/tashkent-metro-circle-extra.js';
 import { TASHKENT_MICRODISTRICT_ENTITIES } from './data/tashkent-microdistricts.js';
 import { TASHKENT_MICRODISTRICT_EXTRA_ENTITIES } from './data/tashkent-microdistricts-extra.js';
 import { TASHKENT_CHILANZAR_11_14_ENTITIES } from './data/tashkent-microdistricts-chilanzar-11-14.js';
@@ -23,6 +24,7 @@ const entities = [
   ...TASHKENT_ENTITIES,
   ...TASHKENT_METRO_ENTITIES,
   ...TASHKENT_METRO_EXTRA_ENTITIES,
+  ...TASHKENT_METRO_CIRCLE_EXTRA_ENTITIES,
   ...TASHKENT_MICRODISTRICT_ENTITIES,
   ...TASHKENT_MICRODISTRICT_EXTRA_ENTITIES,
   ...TASHKENT_CHILANZAR_11_14_ENTITIES,
