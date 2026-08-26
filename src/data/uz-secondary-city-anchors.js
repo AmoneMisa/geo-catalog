@@ -31,6 +31,6 @@ export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
   osmPoi('termez', 'termez-railway-station', 'Termez Railway Station', 37.25114, 67.28607, 'node', 1584479577, 120),
   osmPoi('gulistan', 'gulistan-railway-station', 'Gulistan Railway Station', 40.49617, 68.76487, 'node', 8343551120, 120),
   osmPoi('chirchiq', 'chirchiq-railway-station', 'Chirchiq Railway Station', 41.47914, 69.59745, 'way', 147143855, 120),
-  wikidataPoi('navoiy', 'navoiy-international-airport', 'Navoiy International Airport', 40.11720, 65.17080, 'Q1229483', 300),
-  wikidataPoi('termez', 'termez-airport', 'Termez Airport', 37.28670, 67.30990, 'Q658171', 300),
+  wikidataPoi('navoiy', 'navoiy-international-airport', 'Navoi International Airport', 40.11720, 65.17080, 'Q1229483', 300),
+  wikidataPoi('termez', 'termez-airport', 'Termez International Airport', 37.28670, 67.30990, 'Q658171', 300),
 ]);
