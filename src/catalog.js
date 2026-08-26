@@ -3,6 +3,7 @@ import { TASHKENT_ENTITIES } from './data/tashkent.js';
 import { TASHKENT_METRO_ENTITIES } from './data/tashkent-metro.js';
 import { TASHKENT_METRO_EXTRA_ENTITIES } from './data/tashkent-metro-extra.js';
 import { TASHKENT_MICRODISTRICT_ENTITIES } from './data/tashkent-microdistricts.js';
+import { TASHKENT_MICRODISTRICT_EXTRA_ENTITIES } from './data/tashkent-microdistricts-extra.js';
 import { TASHKENT_POI_ENTITIES } from './data/tashkent-poi.js';
 import { TASHKENT_POI_EXTRA_ENTITIES } from './data/tashkent-poi-extra.js';
 import { TASHKENT_RESIDENTIAL_ENTITIES } from './data/tashkent-residential.js';
@@ -14,6 +15,7 @@ const entities = [
   ...TASHKENT_METRO_ENTITIES,
   ...TASHKENT_METRO_EXTRA_ENTITIES,
   ...TASHKENT_MICRODISTRICT_ENTITIES,
+  ...TASHKENT_MICRODISTRICT_EXTRA_ENTITIES,
   ...TASHKENT_POI_ENTITIES,
   ...TASHKENT_POI_EXTRA_ENTITIES,
   ...TASHKENT_RESIDENTIAL_ENTITIES,
