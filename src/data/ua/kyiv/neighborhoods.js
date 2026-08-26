@@ -65,4 +65,39 @@ export const UA_KYIV_NEIGHBORHOODS = Object.freeze([
     center: Object.freeze({ lat: 50.40908, lng: 30.67639 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1300,
     osm: Object.freeze({ type: 'node', id: 1308284037 }), wikidataId: 'Q4239644',
   }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:raiduzhnyi',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Райдужний масив', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.49246, lng: 30.59255 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1200,
+    osm: Object.freeze({ type: 'node', id: 1662724357 }), wikidataId: 'Q4387958',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:sotsmisto',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Соцмісто', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.44355, lng: 30.62878 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1500,
+    osm: Object.freeze({ type: 'node', id: 1308284015 }),
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:mykilska-borshchahivka',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Микільська Борщагівка', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.43067, lng: 30.38303 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1400,
+    osm: Object.freeze({ type: 'node', id: 2962023002 }),
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:staryi-kyiv',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Старий Київ', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.45216, lng: 30.51432 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1100,
+    osm: Object.freeze({ type: 'node', id: 2962022987 }), wikidataId: 'Q1279216',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:nyvky',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Нивки', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.46461, lng: 30.40593 }), source: 'geonames', accuracy: 'neighborhood', accuracyM: 1500,
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:teremky',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Теремки', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.3722, lng: 30.4525 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1800,
+    osm: Object.freeze({ type: 'node', id: 2962022989 }), wikidataId: 'Q4455577',
+  }),
 ]);
