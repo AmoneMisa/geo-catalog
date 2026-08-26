@@ -1,6 +1,7 @@
 import { UZ_REGIONAL_ANCHORS } from './uz-regional-anchors.js';
 import { UZ_P3_TRANSPORT_ENTITIES } from './uz-p3-transport.js';
 import { UZ_KARAKALPAKSTAN_ANCHORS } from './uz-karakalpakstan-anchors.js';
+import { CHIRCHIQ_MICRODISTRICT_ENTITIES } from './uz-chirchiq-microdistricts.js';
 
 const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 130) => ({
   id: `uz:${citySlug}:poi:${slug}`,
@@ -21,4 +22,5 @@ export const UZ_TASHKENT_REGION_CITY_ANCHORS = Object.freeze([
   ...UZ_REGIONAL_ANCHORS,
   ...UZ_P3_TRANSPORT_ENTITIES,
   ...UZ_KARAKALPAKSTAN_ANCHORS,
+  ...CHIRCHIQ_MICRODISTRICT_ENTITIES,
 ]);
