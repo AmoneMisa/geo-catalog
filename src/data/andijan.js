@@ -1,0 +1,32 @@
+const osmPoi = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 140, wikidataId = null) => ({
+  id: `uz:andijan:poi:${slug}`,
+  type: 'poi',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:andijan',
+  center: { lat, lng },
+  source: 'osm',
+  accuracy: 'poi',
+  accuracyM,
+  osm: { type: osmType, id: osmId },
+  ...(wikidataId ? { wikidataId } : {}),
+});
+
+const officialPoi = (slug, canonicalName, lat, lng, accuracyM = 220) => ({
+  id: `uz:andijan:poi:${slug}`,
+  type: 'poi',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:andijan',
+  center: { lat, lng },
+  source: 'official',
+  accuracy: 'poi',
+  accuracyM,
+});
+
+export const ANDIJAN_ENTITIES = Object.freeze([
+  osmPoi('andijan-airport', 'Andijan Airport', 40.72710, 72.29600, 'way', 965652300, 220, 'Q978217'),
+  osmPoi('andijan-railway-station', 'Andijan Railway Station', 40.76296, 72.35057, 'node', 296078271, 100),
+  osmPoi('andijan-state-university', 'Andijan State University', 40.78948, 72.37338, 'way', 224649709, 140),
+  officialPoi('bobur-park', 'Bobur Park', 40.722000, 72.439111, 280),
+]);

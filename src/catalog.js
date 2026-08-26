@@ -35,6 +35,7 @@ import { SAMARKAND_POI_ENTITIES } from './data/samarkand-poi.js';
 import { SAMARKAND_AREA_ENTITIES } from './data/samarkand-areas.js';
 import { SAMARKAND_STREET_ENTITIES } from './data/samarkand-streets.js';
 import { NAMANGAN_ENTITIES } from './data/namangan.js';
+import { ANDIJAN_ENTITIES } from './data/andijan.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -74,6 +75,7 @@ const entities = [
   ...SAMARKAND_AREA_ENTITIES,
   ...SAMARKAND_STREET_ENTITIES,
   ...NAMANGAN_ENTITIES,
+  ...ANDIJAN_ENTITIES,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
