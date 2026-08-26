@@ -22,4 +22,8 @@ export const UZ_HERITAGE_ANCHORS = Object.freeze([
   wikidataPoi('khiva', 'olloqulixon', 'Olloqulixon', 41.377502, 60.361951, 'Q4287928', { accuracyM: 140 }),
   wikidataPoi('shakhrisabz', 'ak-saray-palace', 'Ak-Saray Palace', 39.060776, 66.829475, 'Q2828887', { accuracyM: 140 }),
   wikidataPoi('kokand', 'khudayar-khan-palace', 'Khudoyar Khan Palace', 40.538333, 70.937500, 'Q7126242', { osm: { type: 'way', id: 174718684 }, accuracyM: 100 }),
+  wikidataPoi('kokand', 'jami-mosque', 'Jami Mosque', 40.532642, 70.949230, 'Q20536410', { accuracyM: 120 }),
+  wikidataPoi('termez', 'fayoztepa', 'Fayoztepa', 37.28622, 67.18796, 'Q25523471', { osm: { type: 'way', id: 244130562 }, accuracyM: 180 }),
+  wikidataPoi('termez', 'karatepa', 'Karatepa', 37.27884, 67.18315, 'Q4213429', { osm: { type: 'way', id: 493758365 }, accuracyM: 180 }),
+  wikidataPoi('termez', 'sultan-saodat', 'Sultan Saodat', 37.26311, 67.30940, 'Q7636738', { osm: { type: 'way', id: 448234922 }, accuracyM: 180 }),
 ]);
