@@ -61,4 +61,16 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
     accuracy: 'approximate',
     accuracyM: 1800,
   },
+  {
+    id: 'uz:tashkent:local-area:stroygorod',
+    type: 'local_area',
+    country: 'UZ',
+    canonicalName: 'Stroygorod',
+    parentId: 'uz:tashkent:uchtepa',
+    center: { lat: 41.28792, lng: 69.15118 },
+    source: 'manual',
+    sourceUrl: 'https://www.goldenpages.uz/uz/street/?Id=35681',
+    accuracy: 'approximate',
+    accuracyM: 900,
+  },
 ]);
