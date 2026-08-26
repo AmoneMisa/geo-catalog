@@ -1,0 +1,31 @@
+const city = (id, canonicalName, lat, lng, extra = {}) => ({
+  id,
+  type: 'city',
+  country: 'KZ',
+  canonicalName,
+  center: { lat, lng },
+  source: 'manual',
+  accuracy: 'city',
+  ...extra,
+});
+
+export const KZ_CITY_ENTITIES = Object.freeze([
+  city('kz:almaty','Almaty',43.2389,76.8897),
+  city('kz:astana','Astana',51.1694,71.4491),
+  city('kz:shymkent','Shymkent',42.3417,69.5901),
+  city('kz:karaganda','Karaganda',49.8064,73.0855),
+  city('kz:aktobe','Aktobe',50.2839,57.1670),
+  city('kz:atyrau','Atyrau',47.0945,51.9238),
+  city('kz:oral','Oral',51.2278,51.3865),
+  city('kz:taraz','Taraz',42.9000,71.3667),
+  city('kz:pavlodar','Pavlodar',52.2873,76.9674),
+  city('kz:semey','Semey',50.4111,80.2275),
+  city('kz:kostanay','Kostanay',53.2144,63.6246),
+  city('kz:kyzylorda','Kyzylorda',44.8488,65.4823),
+  city('kz:aktau','Aktau',43.6532,51.1975),
+  city('kz:oskemen','Oskemen',49.9483,82.6275),
+  city('kz:petropavl','Petropavl',54.8650,69.1328),
+  city('kz:turkistan','Turkistan',43.2973,68.2518),
+  city('kz:taldykorgan','Taldykorgan',45.0156,78.3739),
+  city('kz:kokshetau','Kokshetau',53.2833,69.3833),
+]);

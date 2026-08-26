@@ -1,0 +1,75 @@
+# Geo data module conventions
+
+## Directory layout
+
+Country-specific data lives under `src/data/<country>/` using lowercase ISO alpha-2 codes:
+
+```text
+src/data/
+  ua/
+    index.js
+    cities.js
+    kyiv/
+      index.js
+      districts.js
+      neighborhoods.js
+      poi.js
+      residential-complexes.js
+  uz/
+    index.js
+    cities.js
+    tashkent/
+      index.js
+      districts.js
+      metro.js
+      microdistricts.js
+      local-areas.js
+      mahallas.js
+      poi.js
+      residential-complexes.js
+  kz/
+    index.js
+    cities.js
+```
+
+Use a city directory when that city has multiple subject modules. Country-wide datasets stay directly under the country directory.
+
+## File names
+
+- Use lowercase kebab-case.
+- Name files by semantic category, not by batch or chronology.
+- Preferred names: `cities.js`, `districts.js`, `neighborhoods.js`, `microdistricts.js`, `local-areas.js`, `mahallas.js`, `metro.js`, `poi.js`, `residential-complexes.js`.
+- Do not create new `*-extra.js`, `*-part-2.js`, `*-new.js`, or similarly chronological files.
+- If an existing category becomes large, split it by stable domain/geography, e.g. `microdistricts-chilanzar.js`, not `microdistricts-extra.js`.
+
+Existing legacy `*-extra.js` modules may remain until that city/category is next refactored, but new code must not add to the pattern.
+
+## Exports
+
+New entity collections use `*_ENTITIES` names.
+
+- Country aggregator: `UA_ENTITIES`, `UZ_ENTITIES`, `KZ_ENTITIES`.
+- Country city anchors: `UA_CITY_ENTITIES`, `UZ_CITY_ENTITIES`, `KZ_CITY_ENTITIES`.
+- City aggregator: `UA_KYIV_ENTITIES`, `UZ_TASHKENT_ENTITIES`.
+- Subject collection: `<COUNTRY>_<CITY>_<CATEGORY>_ENTITIES`, for example `UA_KYIV_DISTRICT_ENTITIES` or `UZ_TASHKENT_METRO_ENTITIES`.
+
+Do not introduce new `*_ANCHORS` export names. Existing ones are legacy-compatible and should be migrated when their module is otherwise touched.
+
+## Aggregation rules
+
+- `src/catalog.js` imports country aggregators only, plus truly global datasets.
+- `src/data/<country>/index.js` owns the order of all entities for that country.
+- City `index.js` files own the order of subject modules inside that city.
+- A leaf data module must not import another city's data.
+- Moving or splitting files must preserve entity IDs, coordinates, metadata, and aggregation order unless the change explicitly intends to modify data.
+
+## Entity naming
+
+- IDs use lowercase colon-separated scopes and kebab-case slugs, e.g. `ua:kyiv:microdistrict:podil`.
+- `country` is uppercase ISO alpha-2.
+- `parentId` points to the spatial parent and must not be inferred from filename placement alone.
+- `canonicalName` is the canonical display/search name; aliases belong in the parsing lexicon, not as duplicate geo entities.
+
+## Duplicate safety
+
+Every entity must remain unique by `id`. The catalog also rejects semantic duplicates by normalized `country + parentId + type + canonicalName`. Do not add a second anchor merely to represent an alias or alternate spelling.

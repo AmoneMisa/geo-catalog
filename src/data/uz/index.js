@@ -1,3 +1,4 @@
+import { UZ_CITY_ENTITIES } from './cities.js';
 import { UZ_TASHKENT_ENTITIES } from './tashkent/index.js';
 import { UZ_SAMARKAND_ENTITIES } from './samarkand/index.js';
 import { NAMANGAN_ENTITIES } from './cities/namangan.js';
@@ -13,6 +14,7 @@ import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './heritage-transport.js';
 import { UZ_TASHKENT_REGION_CITY_ANCHORS } from './tashkent-region-city-anchors.js';
 
 export const UZ_ENTITIES = Object.freeze([
+  ...UZ_CITY_ENTITIES,
   ...UZ_TASHKENT_ENTITIES,
   ...UZ_SAMARKAND_ENTITIES,
   ...NAMANGAN_ENTITIES,
