@@ -39,7 +39,7 @@ for (const entity of GEO_ENTITIES) {
 }
 
 const compatibleTypes = Object.freeze({
-  local_area: new Set(['microdistrict', 'mahalla', 'suburb', 'settlement', 'poi']),
+  local_area: new Set(['microdistrict', 'mahalla', 'suburb', 'settlement', 'poi', 'street']),
 });
 
 export function resolveLexiconGeoEntity(input) {
