@@ -48,4 +48,16 @@ export const UZ_GAP_CLOSURE_ANCHORS = Object.freeze([
     accuracyM: 700,
     osm: { type: 'node', id: 2520618202 },
   }),
+  Object.freeze({
+    id: 'uz:bekabad:local-area:tsementnik',
+    type: 'local_area',
+    country: 'UZ',
+    canonicalName: 'Tsementnik',
+    parentId: 'uz:bekabad',
+    center: { lat: 40.21201, lng: 69.22586 },
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 500,
+    osm: { type: 'node', id: 3403170994 },
+  }),
 ]);
