@@ -21,8 +21,6 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Dehqonobod', reason: 'Same-name settlements elsewhere in Uzbekistan require disambiguation.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Rakatboshi', reason: 'Official mahalla is known; spatial OSM object still needs a verified match.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Glinka', reason: 'No verified standalone OSM locality match yet.' },
-  { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Dustlik-1', reason: 'No verified standalone neighbourhood object yet.' },
-  { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Dustlik-2', reason: 'No verified standalone neighbourhood object yet.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Sputnik', reason: 'Available points refer to individual blocks, not the whole massif.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Kuylyuk Center', reason: 'Must not be conflated with the broader Kuylyuk microdistrict.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Alimkent', reason: 'No verified standalone OSM locality match yet.' },
