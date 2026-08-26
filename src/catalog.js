@@ -46,6 +46,7 @@ import { UZ_HERITAGE_ANCHORS } from './data/uz-heritage-anchors.js';
 import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './data/uz-heritage-transport.js';
 import { UZ_TASHKENT_REGION_CITY_ANCHORS } from './data/uz-tashkent-region-city-anchors.js';
 import { ALMATY_DISTRICT_ENTITIES } from './data/almaty-districts.js';
+import { ALMATY_METRO_ENTITIES } from './data/almaty-metro.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -96,6 +97,7 @@ const entities = [
   ...UZ_HERITAGE_TRANSPORT_ENTITIES,
   ...UZ_TASHKENT_REGION_CITY_ANCHORS,
   ...ALMATY_DISTRICT_ENTITIES,
+  ...ALMATY_METRO_ENTITIES,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
