@@ -30,6 +30,12 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
     'Center','North','Chortoq area','Uychi area','Turaqorgon area','Galaba','Bobur','Navoiy','Islom Karimov','Qoqimboyshox','Afrosiyob','Boburshox','Ibrat','Nodira',
   ], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Namangan', 'poi', ['Bobur Park','Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
+
+  ...gaps('UZ', 'Andijan', 'mahalla', ["Bo'ston",'Obod','Temur Malik',"Qoraqo'rg'on",'Mustaqillikning 21 yilligi','Birlashgan',"Taxtako'prik"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
+  ...gaps('UZ', 'Andijan', 'local_area', [
+    'Center','Old City','New City','Bobur','Navoiy','Mashinasozlar','North','South-West','University area','Railway Station area','Airport area',
+  ], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Andijan', 'poi', ['Central Farmers Market','Yangi Bozor','Bobur Square'], 'Lexicon landmark still needs a verified spatial match.'),
 ].map(Object.freeze));
 
 const gapKeys = new Set(GEO_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));
