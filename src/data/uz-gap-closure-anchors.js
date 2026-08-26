@@ -1,0 +1,27 @@
+export const UZ_GAP_CLOSURE_ANCHORS = Object.freeze([
+  Object.freeze({
+    id: 'uz:fergana:settlement:qirguli',
+    type: 'settlement',
+    country: 'UZ',
+    canonicalName: 'Qirguli',
+    parentId: 'uz:fergana',
+    center: { lat: 40.43465, lng: 71.76693 },
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 650,
+    wikidataId: 'Q4221197',
+    osm: { type: 'node', id: 2171217263 },
+  }),
+  Object.freeze({
+    id: 'uz:termez:poi:old-termez',
+    type: 'poi',
+    country: 'UZ',
+    canonicalName: 'Old Termez',
+    parentId: 'uz:termez',
+    center: { lat: 37.263985, lng: 67.19249 },
+    source: 'wikidata',
+    accuracy: 'poi',
+    accuracyM: 700,
+    wikidataId: 'Q69128659',
+  }),
+]);

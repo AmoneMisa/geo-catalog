@@ -31,7 +31,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Andijan', 'poi', ['Bobur Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Fergana', 'mahalla', ["Ma'rifat"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('UZ', 'Fergana', 'local_area', ['Qirguli','Neftchi','Center','Mustaqillik','Al-Fargoniy','Margilon Road','Railway Station area','Airport area','University area','Navoiy'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Fergana', 'local_area', ['Neftchi','Center','Mustaqillik','Al-Fargoniy','Margilon Road','Railway Station area','Airport area','University area','Navoiy'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Fergana', 'poi', ['Independence Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Bukhara', 'mahalla', ['M. Narshaxiy','S. Raximov nomli 17-MFY'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
