@@ -13,6 +13,7 @@ import { NAVOIY_MICRODISTRICT_ENTITIES } from './uz-navoiy-microdistricts.js';
 import { UZ_DERIVED_LOCAL_AREA_ENTITIES } from './uz-derived-local-areas.js';
 import { UZ_TAIL_RAILWAY_ENTITIES } from './uz-tail-railway.js';
 import { UZ_DERIVED_LOCAL_AREA_EXTRA_ENTITIES } from './uz-derived-local-areas-extra.js';
+import { UZ_TERMEZ_UNIVERSITY_AREA_ENTITY } from './uz-termez-university-area.js';
 
 const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 130) => ({
   id: `uz:${citySlug}:poi:${slug}`,
@@ -45,4 +46,5 @@ export const UZ_TASHKENT_REGION_CITY_ANCHORS = Object.freeze([
   ...UZ_DERIVED_LOCAL_AREA_ENTITIES,
   ...UZ_TAIL_RAILWAY_ENTITIES,
   ...UZ_DERIVED_LOCAL_AREA_EXTRA_ENTITIES,
+  UZ_TERMEZ_UNIVERSITY_AREA_ENTITY,
 ]);
