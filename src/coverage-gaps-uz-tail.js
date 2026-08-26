@@ -21,7 +21,7 @@ export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Kattakurgan', 'poi', ['Kattakurgan Reservoir'], 'Kattakurgan landmark still needs a verified spatial match.'),
 
   ...gaps('Urgut', 'local_area', ['Center','Navoiy','Samarkand direction'], 'Urgut local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Urgut', 'poi', ['Urgut Bazaar','Chor Chinor'], 'Urgut landmark still needs a verified spatial match.'),
+  ...gaps('Urgut', 'poi', ['Urgut Bazaar'], 'Urgut landmark still needs a verified spatial match.'),
 
   ...gaps('Yangiyol', 'local_area', ['Center','Railway Station area','Bazaar','Samarkand Highway','Tashkent direction'], 'Yangiyol local-area alias still needs a verified standalone spatial match.'),
 

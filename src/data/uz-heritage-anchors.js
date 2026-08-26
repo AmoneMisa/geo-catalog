@@ -12,7 +12,7 @@ const wikidataPoi = (citySlug, slug, canonicalName, lat, lng, wikidataId, extra 
   ...(extra.osm ? { osm: extra.osm } : {}),
 });
 
-const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 160) => ({
+const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 160, wikidataId = null) => ({
   id: `uz:${citySlug}:poi:${slug}`,
   type: 'poi',
   country: 'UZ',
@@ -23,6 +23,7 @@ const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accurac
   accuracy: 'poi',
   accuracyM,
   osm: { type: osmType, id: osmId },
+  ...(wikidataId ? { wikidataId } : {}),
 });
 
 export const UZ_HERITAGE_ANCHORS = Object.freeze([
@@ -41,4 +42,7 @@ export const UZ_HERITAGE_ANCHORS = Object.freeze([
   wikidataPoi('termez', 'karatepa', 'Karatepa', 37.27884, 67.18315, 'Q4213429', { osm: { type: 'way', id: 493758365 }, accuracyM: 180 }),
   wikidataPoi('termez', 'sultan-saodat', 'Sultan Saodat', 37.26311, 67.30940, 'Q7636738', { osm: { type: 'way', id: 448234922 }, accuracyM: 180 }),
   osmPoi('termez', 'hakim-at-termiziy', 'Hakim at-Termiziy', 37.26587, 67.18920, 'way', 351273147, 160),
+  osmPoi('termez', 'afghanistan-friendship-bridge', 'Afghanistan Friendship Bridge', 37.22896, 67.42764, 'way', 1371795537, 220, 'Q509824'),
+  osmPoi('margilan', 'yodgorlik-silk-factory', 'Yodgorlik Silk Factory', 40.47636, 71.71783, 'node', 1232186498, 120, 'Q63203101'),
+  wikidataPoi('urgut', 'chor-chinor', 'Chor Chinor', 39.386228, 67.240276, 'Q122886576', { accuracyM: 180 }),
 ]);
