@@ -31,12 +31,10 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Kokand', 'poi', ['Kokand Bazaar'], 'Kokand landmark still needs a verified spatial match.'),
 
   ...gaps('Margilan', 'local_area', ['Center','Old City','Kumtepa','Yodgorlik','Atlas','Railway Station area'], 'Margilan local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Margilan', 'poi', ['Kumtepa Bazaar'], 'Margilan landmark still needs a verified spatial match.'),
 
   ...gaps('Almalyk', 'mahalla', ['Kamalak'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Almalyk', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict'], 'Almalyk numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Almalyk', 'local_area', ['Center','Old City','New City','Metallurg','Sports Palace area','Railway Station area'], 'Almalyk local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Almalyk', 'poi', ['Metallurg Stadium'], 'Almalyk landmark still needs a verified spatial match.'),
 
   ...gaps('Angren', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict'], 'Angren numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Angren', 'local_area', ['Center','Old Angren','New Angren','Dukent','Geolog','Railway Station area'], 'Angren local-area alias still needs a verified standalone spatial match.'),

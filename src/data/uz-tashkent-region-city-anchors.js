@@ -6,6 +6,7 @@ import { UZ_SECONDARY_LOCALITY_ENTITIES } from './uz-secondary-localities.js';
 import { UZ_INDUSTRIAL_ANCHORS } from './uz-industrial-anchors.js';
 import { UZ_TAIL_POI_ANCHORS } from './uz-tail-poi-anchors.js';
 import { GULISTAN_SPATIAL_ENTITIES } from './uz-gulistan-anchors.js';
+import { UZ_SECONDARY_POI_ANCHORS } from './uz-secondary-poi-anchors.js';
 
 const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 130) => ({
   id: `uz:${citySlug}:poi:${slug}`,
@@ -31,4 +32,5 @@ export const UZ_TASHKENT_REGION_CITY_ANCHORS = Object.freeze([
   ...UZ_INDUSTRIAL_ANCHORS,
   ...UZ_TAIL_POI_ANCHORS,
   ...GULISTAN_SPATIAL_ENTITIES,
+  ...UZ_SECONDARY_POI_ANCHORS,
 ]);
