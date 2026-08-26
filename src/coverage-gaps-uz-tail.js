@@ -24,7 +24,6 @@ export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Shirin', 'poi', ['HPP'], 'Shirin landmark still needs a verified spatial match.'),
   ...gaps('Gazalkent', 'local_area', ['Center','Charvak direction','Bostanlyk direction'], 'Gazalkent local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Chartak', 'local_area', ['Center','Namangan Road'], 'Chartak local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Chartak', 'poi', ['Chartak Sanatorium','Market'], 'Chartak landmark still needs a verified spatial match.'),
   ...gaps('Chust', 'local_area', ['Center'], 'Chust local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Chust', 'poi', ['Chust Knives','Doppi'], 'Chust landmark still needs a verified spatial match.'),
   ...gaps('Kosonsoy', 'local_area', ['Center','Chust Road'], 'Kosonsoy local-area alias still needs a verified standalone spatial match.'),
