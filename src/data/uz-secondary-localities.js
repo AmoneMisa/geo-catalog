@@ -11,4 +11,17 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     accuracyM: 450,
     osm: { type: 'node', id: 10048580831 },
   },
+  {
+    id: 'uz:khiva:local-area:dishan-kala',
+    type: 'local_area',
+    country: 'UZ',
+    canonicalName: 'Dishan Kala',
+    parentId: 'uz:khiva',
+    center: { lat: 41.38498, lng: 60.35568 },
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 500,
+    osm: { type: 'way', id: 167449168 },
+    wikidataId: 'Q12821481',
+  },
 ]);
