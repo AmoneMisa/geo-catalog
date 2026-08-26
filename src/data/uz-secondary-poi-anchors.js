@@ -12,10 +12,25 @@ const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accurac
   ...(wikidataId ? { wikidataId } : {}),
 });
 
+const wikidataPoi = (citySlug, slug, canonicalName, lat, lng, wikidataId, accuracyM = 180) => ({
+  id: `uz:${citySlug}:poi:${slug}`,
+  type: 'poi',
+  country: 'UZ',
+  canonicalName,
+  parentId: `uz:${citySlug}`,
+  center: { lat, lng },
+  source: 'wikidata',
+  accuracy: 'poi',
+  accuracyM,
+  wikidataId,
+});
+
 export const UZ_SECONDARY_POI_ANCHORS = Object.freeze([
   osmPoi('margilan', 'kumtepa-bazaar', 'Kumtepa Bazaar', 40.45504, 71.66594, 'way', 253749024, 180),
   osmPoi('almalyk', 'metallurg-stadium', 'Metallurg Stadium', 40.84495, 69.60070, 'way', 257413698, 170, 'Q5927465'),
   osmPoi('kokand', 'kokand-bazaar', 'Kokand Bazaar', 40.55218, 70.95907, 'way', 174506939, 190),
+  wikidataPoi('navoiy', 'farhod-palace-of-culture', 'Farhod Palace of Culture', 40.094, 65.38, 'Q100813546', 140),
+  wikidataPoi('kosonsoy', 'mug-qala', 'Mug qala', 41.27608, 71.540155, 'Q122672687', 180),
   {
     id: 'uz:navoiy:poi:nmmc',
     type: 'poi',

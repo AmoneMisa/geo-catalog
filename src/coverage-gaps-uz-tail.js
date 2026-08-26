@@ -25,7 +25,6 @@ export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Chartak', 'local_area', ['Namangan Road'], 'Chartak local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Chust', 'poi', ['Chust Knives','Doppi'], 'Chust landmark still needs a verified spatial match.'),
   ...gaps('Kosonsoy', 'local_area', ['Chust Road'], 'Kosonsoy local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Kosonsoy', 'poi', ['Mug qala'], 'Kosonsoy landmark still needs a verified spatial match.'),
   ...gaps('Khojeyli', 'local_area', ['Nukus direction'], 'Khojeyli local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Takhiatash', 'poi', ['Amu Darya'], 'Regional natural feature is intentionally not parented to Takhiatash city until natural-feature hierarchy is modeled.'),
   ...gaps('Kungrad', 'local_area', ['Ustyurt direction','Muynak direction'], 'Kungrad local-area alias still needs a verified standalone spatial match.'),
