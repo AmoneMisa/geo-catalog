@@ -12,7 +12,7 @@ export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Denov', 'local_area', ['Center','Old Market','New Market','Chaganiyon','Railway Station area'], 'Denov local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Denov', 'poi', ['Denov Bazaar','Denov Arboretum'], 'Denov landmark still needs a verified spatial match.'),
   ...gaps('Asaka', 'local_area', ['Center','Auto Plant area','Old City','Railway Station area'], 'Asaka local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Asaka', 'poi', ['Asaka Bank','Dehqon Bazaar'], 'Asaka landmark still needs a verified spatial match.'),
+  ...gaps('Asaka', 'poi', ['Dehqon Bazaar'], 'Asaka landmark still needs a verified spatial match.'),
   ...gaps('Kogon', 'local_area', ['Center','Railway Station area','Railway Workers','Bukhara direction'], 'Kogon local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Kattakurgan', 'local_area', ['Center','Old City','Railway Station area','Bazaar'], 'Kattakurgan local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Kattakurgan', 'poi', ['Kattakurgan Reservoir'], 'Regional reservoir is intentionally not parented to Kattakurgan city until region/natural-feature hierarchy is modeled.'),

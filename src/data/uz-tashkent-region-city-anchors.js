@@ -8,6 +8,7 @@ import { UZ_TAIL_POI_ANCHORS } from './uz-tail-poi-anchors.js';
 import { GULISTAN_SPATIAL_ENTITIES } from './uz-gulistan-anchors.js';
 import { UZ_SECONDARY_POI_ANCHORS } from './uz-secondary-poi-anchors.js';
 import { CHIRCHIQ_POI_ANCHORS } from './uz-chirchiq-poi-anchors.js';
+import { UZ_OFFICIAL_INSTITUTION_ANCHORS } from './uz-official-institution-anchors.js';
 
 const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 130) => ({
   id: `uz:${citySlug}:poi:${slug}`,
@@ -35,4 +36,5 @@ export const UZ_TASHKENT_REGION_CITY_ANCHORS = Object.freeze([
   ...GULISTAN_SPATIAL_ENTITIES,
   ...UZ_SECONDARY_POI_ANCHORS,
   ...CHIRCHIQ_POI_ANCHORS,
+  ...UZ_OFFICIAL_INSTITUTION_ANCHORS,
 ]);
