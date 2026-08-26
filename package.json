@@ -22,7 +22,7 @@
     "prepack": "npm test && npm run validate"
   },
   "devDependencies": {
-    "@whiteslove/parsing-lexicon": "github:AmoneMisa/parsing-lexicon#main"
+    "@whiteslove/parsing-lexicon": "github:AmoneMisa/parsing-lexicon#master"
   },
   "keywords": ["geography", "geospatial", "coordinates", "openstreetmap", "osm", "cities", "districts", "transit", "poi", "parsing-lexicon"],
   "license": "MIT"
