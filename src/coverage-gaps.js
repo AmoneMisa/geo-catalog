@@ -9,7 +9,7 @@ const normalize = (value) => String(value ?? '')
 const gaps = (country, city, type, canonicals, reason) => canonicals.map((canonical) => ({ country, city, type, canonical, reason }));
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
-  ...gaps('UZ', 'Tashkent', 'local_area', ['TTZ-3','Stroygorod','Glinka'], 'No verified standalone spatial locality match yet.'),
+  ...gaps('UZ', 'Tashkent', 'local_area', ['TTZ-3','Glinka'], 'No verified standalone spatial locality match yet.'),
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Dehqonobod', reason: 'Same-name settlements elsewhere in Uzbekistan require disambiguation.' },
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z",'Shirin','Chilkuduk',"Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
