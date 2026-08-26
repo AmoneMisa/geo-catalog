@@ -58,4 +58,8 @@ export const UA_KYIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   sourcedResidential('poetica', 'Poetica', 50.462381, 30.456391, 'https://novobudovy.com/novobudovy-kyieva/zhk-poetychnyi', 220),
   sourcedResidential('smart-plaza-polytech', 'Smart Plaza Polytech', 50.451596, 30.467569, 'https://novobudovy.com/novobudovy-kyieva/politekh-shuliavska/zhk-m-kiiv', 150),
   sourcedResidential('smart-plaza-obolon', 'Smart Plaza Obolon', 50.513014, 30.49725, 'https://novobudovy.com/novobudovy-kyieva/smart-plaza-obolon', 150),
+  sourcedResidential('skyline', 'Skyline', 50.427278, 30.530333, 'https://apfel-group.com/en/projects/zhilye-kompleksy/skyline-residences.html', 130),
+  sourcedResidential('crystal-park', 'Crystal Park', 50.455971, 30.452176, 'https://www.stsophia.ua/en/crystal-park/', 180),
+  sourcedResidential('crystal-park-tower', 'Crystal Park Tower', 50.453898, 30.451997, 'https://www.stsophia.ua/en/crystal-park-tower/house1/section1/floor5/', 150),
+  sourcedResidential('zarichnyi', 'Zarichnyi', 50.39635, 30.6047, 'https://korter.ua/uk/%D0%B6%D0%BA-%D0%B7%D0%B0%D1%80%D1%96%D1%87%D0%BD%D0%B8%D0%B9-%D0%BA%D0%B8%D1%97%D0%B2', 320),
 ]);
