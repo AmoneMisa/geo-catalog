@@ -42,6 +42,7 @@ import { QARSHI_ENTITIES } from './data/qarshi.js';
 import { NUKUS_ENTITIES } from './data/nukus.js';
 import { URGENCH_ENTITIES } from './data/urgench.js';
 import { UZ_SECONDARY_CITY_ANCHORS } from './data/uz-secondary-city-anchors.js';
+import { UZ_HERITAGE_ANCHORS } from './data/uz-heritage-anchors.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -88,6 +89,7 @@ const entities = [
   ...NUKUS_ENTITIES,
   ...URGENCH_ENTITIES,
   ...UZ_SECONDARY_CITY_ANCHORS,
+  ...UZ_HERITAGE_ANCHORS,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
