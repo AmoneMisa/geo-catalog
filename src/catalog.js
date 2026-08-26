@@ -31,6 +31,7 @@ import { TASHKENT_POI_ENTITIES } from './data/tashkent-poi.js';
 import { TASHKENT_POI_EXTRA_ENTITIES } from './data/tashkent-poi-extra.js';
 import { TASHKENT_RESIDENTIAL_ENTITIES } from './data/tashkent-residential.js';
 import { TASHKENT_RESIDENTIAL_EXTRA_ENTITIES } from './data/tashkent-residential-extra.js';
+import { SAMARKAND_POI_ENTITIES } from './data/samarkand-poi.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -66,6 +67,7 @@ const entities = [
   ...TASHKENT_POI_EXTRA_ENTITIES,
   ...TASHKENT_RESIDENTIAL_ENTITIES,
   ...TASHKENT_RESIDENTIAL_EXTRA_ENTITIES,
+  ...SAMARKAND_POI_ENTITIES,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
