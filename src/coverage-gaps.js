@@ -40,6 +40,12 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Qarshi', 'mahalla', ['Navo','Gungon','Buyuk Turon'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('UZ', 'Qarshi', 'local_area', ['Center','Old City','Geolog','Sharq','Paxtazor','Nasaf','Qat','Railway Station area','Airport area','University area','Xonobod','Jayxun'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Qarshi', 'poi', ['Qarshi Bridge','Nasaf Stadium','Qarshi Railway Station'], 'Lexicon landmark still needs a verified spatial match.'),
+
+  ...gaps('UZ', 'Nukus', 'mahalla', [
+    'Bes tobe','Juwazshı','Nurli bostan','Qarataw','Janabazar','Bereket','Qizil qum','Gúzar','Jeke terek','Isbilermenler aymagi','Darbent','Nawkan baǵ','Abat makan',"Jasil bag'","Shig'is",'Uzin kol','Amanliq guzari','Allaniyaz Qaxraman','Shimbay guzari','Ata makan','Jolshilar','Qutli qonis','Dosliq guzari','Hawa joli',"Botanika bag'i",'Taslaq','Qum awil','Qutli makan','Aydin jol','Shimbay shayxana','Sarbinaz','Eliabat','Shayirlar awili','Tungish qonis','Qurilisshi','Almazar','Ornek','Jana zaman','Qos kol','Aq otaw','Baqshiliq','Dosliq','Tinishliq','Xaliqlar dosligi','Boz awil','Jas awlad','Qos bulaq','Jiydeli baysin','Aq jagis','Kok ozek','Amudarya','Tele oray','Shadli awil','Altin jagis','Qumbiz awil','Nawpir','Bayterek'
+  ], 'Official Nukus MFY from parsing-lexicon; verified standalone OSM neighbourhood/residential geometry still pending.'),
+  ...gaps('UZ', 'Nukus', 'local_area', ['Center','Dosliq','Beruniy area','Qizketken','Nayman','Turtkul Road','Khojeyli Road','Airport area','Railway Station area'], 'Nukus local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Nukus', 'poi', ['Berdakh Square'], 'Lexicon landmark still needs a verified spatial match.'),
 ].map(Object.freeze));
 
 const gapKeys = new Set(GEO_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));

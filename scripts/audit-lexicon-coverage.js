@@ -31,7 +31,7 @@ const groups = [
   ['UA cities', UA_CITIES, (item) => ({ country: 'UA', type: 'city', canonical: item.canonical })],
   ['Tashkent districts', TASHKENT_DISTRICTS, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: item.canonical })],
   ['Tashkent areas', tashkentAreas, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: item.canonical })],
-  expandedGroup('Samarkand'), expandedGroup('Namangan'), expandedGroup('Andijan'), expandedGroup('Fergana'), expandedGroup('Bukhara'), expandedGroup('Qarshi'),
+  expandedGroup('Samarkand'), expandedGroup('Namangan'), expandedGroup('Andijan'), expandedGroup('Fergana'), expandedGroup('Bukhara'), expandedGroup('Qarshi'), expandedGroup('Nukus'),
 ];
 
 let unaccounted = 0;
