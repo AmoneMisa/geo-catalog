@@ -48,6 +48,7 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   manualArea('al-khorezmi-1', 'Al-Khorezmi-1', 'uz:tashkent:chilanzar', 41.259301, 69.154431, 'https://yandex.uz/maps/10335/tashkent/geo/1508575562/', 450),
   manualArea('shohimardon', 'Shohimardon', 'uz:tashkent:yashnobod', 41.273826, 69.352743, 'https://olddata.gov.uz/ru/datasets/1559?dp-1-page=2&dp-1-sort=G2', 750),
   manualArea('kuylyuk-center', 'Kuylyuk Center', 'uz:tashkent:yashnobod', 41.240623, 69.332279, 'https://yandex.com/maps/10335/tashkent/geo/1508577425/', 450),
+  manualArea('geofizika', 'Geofizika', 'uz:tashkent:mirzo-ulugbek', 41.339856, 69.389340, 'https://yandex.com/maps/10335/tashkent/geo/1686945017/', 500),
   {
     id: 'uz:tashkent:local-area:sputnik',
     type: 'local_area',
