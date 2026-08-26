@@ -12,7 +12,6 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Jizzakh', 'local_area', ['Sangzor','Zilol','Hamid Olimjon','Navoiy','Airport area'], 'Jizzakh local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Jizzakh', 'poi', ['Sangzor River'], 'Regional natural feature is intentionally not parented to Jizzakh city until natural-feature hierarchy is modeled.'),
 
-  ...gaps('Navoiy', 'mahalla', ['Guliston'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Navoiy', 'microdistrict', ['8 microdistrict','11 microdistrict','12 microdistrict'], 'Navoiy numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Navoiy', 'local_area', ['Uzbekiston Massiv','Yangi Navoiy','Sputnik'], 'Navoiy local-area alias still needs a verified standalone spatial match.'),
 
@@ -33,7 +32,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Almalyk', 'local_area', ['Old City','New City','Metallurg','Sports Palace area','Railway Station area'], 'Almalyk local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Angren', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict'], 'Angren numbered microdistrict still needs a verified neighbourhood/residential object.'),
-  ...gaps('Angren', 'local_area', ['Old Angren','New Angren','Dukent','Geolog'], 'Angren local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Angren', 'local_area', ['Old Angren','New Angren','Geolog'], 'Angren local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Bekabad', 'local_area', ['Metallurg','Tsementnik','Vodnik','Syrdarya','Farhod','Railway Station area'], 'Bekabad local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Bekabad', 'poi', ['Farhod HPP'], 'Cross-border power infrastructure is intentionally not parented to Bekabad until infrastructure/region hierarchy is modeled.'),
