@@ -15,25 +15,27 @@ function compactNumber(value) {
 
 /**
  * Stable key shared by runtime learned_geo rows and package entities.
- * Callers should pass canonical city/street/entity names whenever the parser
- * knows them. The function deliberately contains no aliases or coordinates.
+ *
+ * Inferred districts are deliberately excluded. A district may be absent,
+ * corrected later or crossed by the same street; none of those cases should
+ * create a second immutable coordinate for the same canonical object.
+ * Callers should pass canonical city/street/entity names whenever available.
  */
 export function buildGeoLookupKey(parts = {}) {
   const country = String(parts.country ?? '').trim().toUpperCase();
   const type = normalizePart(parts.type || 'address');
   if (!country || !type) return null;
 
+  const city = normalizePart(parts.city);
   const values = type === 'address'
     ? [
-        normalizePart(parts.city),
-        normalizePart(parts.district),
+        city,
         normalizePart(parts.street),
         compactNumber(parts.houseNumber),
         compactNumber(parts.building),
       ]
     : [
-        normalizePart(parts.city),
-        normalizePart(parts.district),
+        city,
         normalizePart(parts.canonical || parts.name || parts.street),
       ];
 
