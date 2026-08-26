@@ -30,4 +30,5 @@ export const QARSHI_ENTITIES = Object.freeze([
   wikidataPoi('karshi-airport', 'Karshi Airport', 38.802311, 65.773161, 'Q14878327', 260),
   osmPoi('qarshi-railway-station', 'Qarshi Railway Station', 38.82158, 65.77723, 'way', 367775504, 120),
   osmPoi('nasaf-stadium', 'Nasaf Stadium', 38.83880, 65.81366, 'way', 335384821, 160),
+  wikidataPoi('qarshi-bridge', 'Qarshi Bridge', 38.886694, 65.809611, 'Q86663919', 120),
 ]);
