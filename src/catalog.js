@@ -43,6 +43,7 @@ import { NUKUS_ENTITIES } from './data/nukus.js';
 import { URGENCH_ENTITIES } from './data/urgench.js';
 import { UZ_SECONDARY_CITY_ANCHORS } from './data/uz-secondary-city-anchors.js';
 import { UZ_HERITAGE_ANCHORS } from './data/uz-heritage-anchors.js';
+import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './data/uz-heritage-transport.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -90,6 +91,7 @@ const entities = [
   ...URGENCH_ENTITIES,
   ...UZ_SECONDARY_CITY_ANCHORS,
   ...UZ_HERITAGE_ANCHORS,
+  ...UZ_HERITAGE_TRANSPORT_ENTITIES,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
