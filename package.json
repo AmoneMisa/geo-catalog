@@ -10,7 +10,8 @@
     "./catalog": { "types": "./index.d.ts", "import": "./src/catalog.js" },
     "./spatial": { "types": "./index.d.ts", "import": "./src/spatial.js" },
     "./validate": { "types": "./index.d.ts", "import": "./src/validate.js" },
-    "./lexicon-bridge": { "types": "./index.d.ts", "import": "./src/lexicon-bridge.js" }
+    "./lexicon-bridge": { "types": "./index.d.ts", "import": "./src/lexicon-bridge.js" },
+    "./lookup-key": { "types": "./index.d.ts", "import": "./src/lookup-key.js" }
   },
   "files": ["src", "index.d.ts", "README.md", "LICENSE"],
   "sideEffects": false,
