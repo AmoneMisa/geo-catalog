@@ -14,6 +14,7 @@ import { TASHKENT_NAMED_MICRODISTRICT_ENTITIES } from './data/tashkent-microdist
 import { TASHKENT_LOCAL_AREA_ENTITIES } from './data/tashkent-local-areas.js';
 import { TASHKENT_ALMAZAR_LOCAL_AREA_ENTITIES } from './data/tashkent-local-areas-almazar.js';
 import { TASHKENT_SHAYKHANTAHUR_LOCAL_AREA_ENTITIES } from './data/tashkent-local-areas-shaykhantahur.js';
+import { TASHKENT_CORE_EXTRA_LOCAL_AREA_ENTITIES } from './data/tashkent-local-areas-core-extra.js';
 import { TASHKENT_POI_ENTITIES } from './data/tashkent-poi.js';
 import { TASHKENT_POI_EXTRA_ENTITIES } from './data/tashkent-poi-extra.js';
 import { TASHKENT_RESIDENTIAL_ENTITIES } from './data/tashkent-residential.js';
@@ -36,6 +37,7 @@ const entities = [
   ...TASHKENT_LOCAL_AREA_ENTITIES,
   ...TASHKENT_ALMAZAR_LOCAL_AREA_ENTITIES,
   ...TASHKENT_SHAYKHANTAHUR_LOCAL_AREA_ENTITIES,
+  ...TASHKENT_CORE_EXTRA_LOCAL_AREA_ENTITIES,
   ...TASHKENT_POI_ENTITIES,
   ...TASHKENT_POI_EXTRA_ENTITIES,
   ...TASHKENT_RESIDENTIAL_ENTITIES,
