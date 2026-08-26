@@ -4,7 +4,7 @@ const city = (id, country, canonicalName, lat, lng, extra = {}) => ({
 });
 
 export const CITY_ENTITIES = Object.freeze([
-  // Uzbekistan — mirrors @whiteslove/parsing-lexicon UZ_CITIES.
+  // Uzbekistan — mirrors the parsing-lexicon canonical and expanded city catalogs.
   city('uz:tashkent','UZ','Tashkent',41.2995,69.2401,{bbox:{south:41.1666,west:69.1282,north:41.3988,east:69.4122}}),
   city('uz:samarkand','UZ','Samarkand',39.6542,66.9597),
   city('uz:bukhara','UZ','Bukhara',39.7681,64.4556),
@@ -20,6 +20,13 @@ export const CITY_ENTITIES = Object.freeze([
   city('uz:termez','UZ','Termez',37.2242,67.2783),
   city('uz:gulistan','UZ','Gulistan',40.4897,68.7842),
   city('uz:chirchiq','UZ','Chirchiq',41.4689,69.5822),
+  city('uz:kokand','UZ','Kokand',40.528611,70.9425,{source:'wikidata',wikidataId:'Q489890',accuracyM:1800}),
+  city('uz:margilan','UZ','Margilan',40.4695,71.7195,{source:'osm',osm:{type:'node',id:246212257},wikidataId:'Q261076',accuracyM:1800}),
+  city('uz:almalyk','UZ','Almalyk',40.85,69.6,{source:'wikidata',wikidataId:'Q986429',accuracyM:2000}),
+  city('uz:angren','UZ','Angren',41.011069,70.073481,{source:'wikidata',wikidataId:'Q542966',accuracyM:1800}),
+  city('uz:bekabad','UZ','Bekabad',40.225833,69.229167,{source:'wikidata',wikidataId:'Q815053',accuracyM:1800}),
+  city('uz:denov','UZ','Denov',38.266667,67.883333,{source:'wikidata',wikidataId:'Q1189758',accuracyM:1800}),
+  city('uz:asaka','UZ','Asaka',40.633333,72.233333,{source:'wikidata',wikidataId:'Q378393',accuracyM:1800}),
 
   // Kazakhstan — mirrors @whiteslove/parsing-lexicon KZ_CITIES.
   city('kz:almaty','KZ','Almaty',43.2389,76.8897),
