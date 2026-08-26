@@ -23,7 +23,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
 
   ...gaps('UZ', 'Namangan', 'mahalla', ['Obihayot','Porloq','Mustaqillikning 5 yilligi'], 'Official mahalla is confirmed, but no verified standalone spatial boundary/locality object is available yet.'),
   ...gaps('UZ', 'Namangan', 'local_area', ['Center','North','Chortoq area','Uychi area','Turaqorgon area','Galaba','Bobur','Navoiy','Islom Karimov','Qoqimboyshox','Afrosiyob','Boburshox','Ibrat','Nodira'], 'Lexicon local area still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Namangan', 'poi', ['Bobur Park','Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
+  ...gaps('UZ', 'Namangan', 'poi', ['Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Andijan', 'mahalla', ["Bo'ston",'Obod','Temur Malik',"Qoraqo'rg'on",'Mustaqillikning 21 yilligi','Birlashgan',"Taxtako'prik"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('UZ', 'Andijan', 'local_area', ['Center','Old City','New City','Bobur','Navoiy','Mashinasozlar','North','South-West','University area','Railway Station area','Airport area'], 'Lexicon local area still needs a verified standalone spatial match.'),
@@ -31,7 +31,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
 
   ...gaps('UZ', 'Fergana', 'mahalla', ["Ma'rifat"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('UZ', 'Fergana', 'local_area', ['Qirguli','Neftchi','Center','Mustaqillik','Al-Fargoniy','Margilon Road','Railway Station area','Airport area','University area','Navoiy'], 'Lexicon local area still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Fergana', 'poi', ['Al-Fargoniy Park','Independence Square'], 'Lexicon landmark still needs a verified spatial match.'),
+  ...gaps('UZ', 'Fergana', 'poi', ['Independence Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Bukhara', 'mahalla', ['M. Narshaxiy','S. Raximov nomli 17-MFY'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('UZ', 'Bukhara', 'local_area', ['Old City','Center','Lyabi Hauz','Gijduvon Road','Gazli Road','Railway Station area','Bukhara-1','Bukhara-2','University area','Namozgoh','Sharq','Mohi Xosa'], 'Lexicon local area still needs a verified standalone spatial match.'),
