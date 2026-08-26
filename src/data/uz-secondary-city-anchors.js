@@ -25,6 +25,18 @@ const wikidataPoi = (citySlug, slug, canonicalName, lat, lng, wikidataId, accura
   wikidataId,
 });
 
+const approximateArea = (citySlug, slug, canonicalName, lat, lng, accuracyM = 1200) => ({
+  id: `uz:${citySlug}:local-area:${slug}`,
+  type: 'local_area',
+  country: 'UZ',
+  canonicalName,
+  parentId: `uz:${citySlug}`,
+  center: { lat, lng },
+  source: 'manual',
+  accuracy: 'approximate',
+  accuracyM,
+});
+
 export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
   osmPoi('navoiy', 'navoiy-railway-station', 'Navoiy Railway Station', 40.07297, 65.39630, 'node', 1238436292, 120),
   osmPoi('jizzakh', 'jizzakh-railway-station', 'Jizzakh Railway Station', 40.09821, 67.84245, 'node', 8327788744, 120),
@@ -33,4 +45,11 @@ export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
   osmPoi('chirchiq', 'chirchiq-railway-station', 'Chirchiq Railway Station', 41.47914, 69.59745, 'way', 147143855, 120),
   wikidataPoi('navoiy', 'navoiy-international-airport', 'Navoi International Airport', 40.11720, 65.17080, 'Q1229483', 300),
   wikidataPoi('termez', 'termez-airport', 'Termez International Airport', 37.28670, 67.30990, 'Q658171', 300),
+
+  approximateArea('navoiy', 'railway-station-area', 'Railway Station area', 40.07297, 65.39630, 1100),
+  approximateArea('jizzakh', 'railway-station-area', 'Railway Station area', 40.09821, 67.84245, 1100),
+  approximateArea('termez', 'railway-station-area', 'Railway Station area', 37.25114, 67.28607, 1100),
+  approximateArea('termez', 'airport-area', 'Airport area', 37.28670, 67.30990, 1500),
+  approximateArea('gulistan', 'railway-station-area', 'Railway Station area', 40.49617, 68.76487, 1000),
+  approximateArea('chirchiq', 'railway-station-area', 'Railway Station area', 41.47914, 69.59745, 1100),
 ]);

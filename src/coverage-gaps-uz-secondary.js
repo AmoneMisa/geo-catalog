@@ -9,22 +9,22 @@ const normalize = (value) => String(value ?? '')
 const gaps = (city, type, canonicals, reason) => canonicals.map((canonical) => ({ country: 'UZ', city, type, canonical, reason }));
 
 export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
-  ...gaps('Jizzakh', 'local_area', ['Center','Sangzor','Zilol','Hamid Olimjon','Navoiy','Railway Station area','Airport area'], 'Jizzakh local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Jizzakh', 'local_area', ['Center','Sangzor','Zilol','Hamid Olimjon','Navoiy','Airport area'], 'Jizzakh local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Jizzakh', 'poi', ['Sangzor River'], 'Regional natural feature is intentionally not parented to Jizzakh city until natural-feature hierarchy is modeled.'),
 
   ...gaps('Navoiy', 'mahalla', ['Guliston'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Navoiy', 'microdistrict', ['8 microdistrict','11 microdistrict','12 microdistrict'], 'Navoiy numbered microdistrict still needs a verified neighbourhood/residential object.'),
-  ...gaps('Navoiy', 'local_area', ['Uzbekiston Massiv','Yangi Navoiy','Center','Sputnik','Railway Station area'], 'Navoiy local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Navoiy', 'local_area', ['Uzbekiston Massiv','Yangi Navoiy','Center','Sputnik'], 'Navoiy local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Navoiy', 'poi', ['Alisher Navoiy Park','Farhod Palace of Culture','Navoiy Mining and Metallurgical Company'], 'Navoiy landmark still needs a verified spatial match.'),
 
   ...gaps('Termez', 'mahalla', ['Farxod'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('Termez', 'local_area', ['Center','Old Termez','Northern Gate','Railway Station area','Airport area','University area','Alpomish',"Navro'z",'Qiziljar'], 'Termez local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Termez', 'local_area', ['Center','Old Termez','Northern Gate','University area','Alpomish',"Navro'z",'Qiziljar'], 'Termez local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Termez', 'poi', ['Old Termez','Amu Darya'], 'Termez landmark still needs a verified spatial match or natural-feature hierarchy.'),
 
-  ...gaps('Gulistan', 'local_area', ['Center','University area','Railway Station area'], 'Gulistan local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Gulistan', 'local_area', ['Center','University area'], 'Gulistan local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Chirchiq', 'microdistrict', ['5 microdistrict','6 microdistrict','7 microdistrict','8 microdistrict','9 microdistrict'], 'Chirchiq numbered microdistrict still needs a verified neighbourhood/residential object.'),
-  ...gaps('Chirchiq', 'local_area', ['Center','Yubileiny','Khimik','KhimGorodok','Mashinostroitel','Troitsky','Railway Station area','Bochka','Olympic area'], 'Chirchiq local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Chirchiq', 'local_area', ['Center','Yubileiny','Khimik','KhimGorodok','Mashinostroitel','Troitsky','Bochka','Olympic area'], 'Chirchiq local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Chirchiq', 'poi', ['Chirchiq River'], 'Regional natural feature is intentionally not parented to Chirchiq city until natural-feature hierarchy is modeled.'),
 
   ...gaps('Kokand', 'local_area', ['Center','Old City','Khudoyar Khan area','Orda','Chorsu','Dangara Road','Railway Station area'], 'Kokand local-area alias still needs a verified standalone spatial match.'),
