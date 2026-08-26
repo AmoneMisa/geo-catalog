@@ -16,4 +16,6 @@ export const UZ_INDUSTRIAL_ANCHORS = Object.freeze([
   osmPoi('almalyk', 'almalyk-mmc', 'Almalyk MMC', 40.83796, 69.55633, 'way', 257079907, 220),
   osmPoi('angren', 'angren-tpp', 'Angren TPP', 41.00605, 70.12520, 'way', 229924899, 220, 'Q25532238'),
   osmPoi('angren', 'yangi-angren-tpp', 'Yangi Angren TPP', 40.92244, 69.81373, 'way', 262167659, 260, 'Q25527702'),
+  osmPoi('takhiatash', 'takhiatash-tpp', 'Takhiatash TPP', 42.31638, 59.55496, 'way', 531064358, 260, 'Q25520622'),
+  osmPoi('shirin', 'syrdarya-tpp', 'Syrdarya TPP', 40.22823, 69.10034, 'way', 229824212, 260, 'Q607734'),
 ]);
