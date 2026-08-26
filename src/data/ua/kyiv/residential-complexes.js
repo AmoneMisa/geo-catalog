@@ -43,4 +43,13 @@ export const UA_KYIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   sourcedResidential('slavutych', 'Slavutych', 50.394979, 30.604495, 'https://archi.ru/projects/world/9460/zhiloi-kompleks-slavutich', 200),
   osmResidential('parkland', 'ParkLand', 50.39606, 30.46904, 'way', 464888988, 260),
   sourcedResidential('nova-anhliia', 'Nova Anhliia', 50.394872, 30.474606, 'https://novobudovy.com/novobudovy-kyieva/novaya-angliya-kiev', 220),
+  sourcedResidential('bulvar-fontaniv', 'Bulvar Fontaniv', 50.419194, 30.531345, 'https://skyscraperpage.com/forum/showthread.php?t=247260', 220),
+  sourcedResidential('greenville-park', 'Greenville Park', 50.461866, 30.491322, 'https://novobudovy.com/novobudovy-kyieva/novobudovy-shevchenkivskyi-raion/greenville-park', 180),
+  sourcedResidential('greenville-pechersk', 'Greenville', 50.423089, 30.52926, 'https://novobudovy.com/novobudovy-kyieva/praviy-bereg/greenville-pechersk', 180),
+  sourcedResidential('manhattan-city', 'Manhattan City', 50.44824, 30.479861, 'https://novobudovy.com/novobudovy-kyieva/manhetten-kiev', 220),
+  sourcedResidential('chicago-central-house', 'Chicago Central House', 50.433663, 30.513202, 'https://inside-ua.com/places/zhk-chicago-central-house', 160),
+  sourcedResidential('royal-tower', 'Royal Tower', 50.435084, 30.512168, 'https://archi.ru/projects/world/16403/zhiloi-kompleks-royal-tower', 150),
+  sourcedResidential('signature', 'Signature', 50.438464, 30.535436, 'https://novobudovy.com/novobudovy-kyieva/biznes-centr-m-kiiv-vul-mechnikova', 160),
+  sourcedResidential('rybalsky', 'Rybalsky', 50.480058, 30.533506, 'https://novobudovy.com/all/rybalsky', 240),
+  sourcedResidential('podil-plaza-residence', 'Podil Plaza & Residence', 50.463206, 30.502822, 'https://novobudovy.com/novobudovy-kyieva/novobudovy-shevchenkivskyi-raion/podol-plaza-rezidens', 180),
 ]);
