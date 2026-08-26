@@ -27,7 +27,7 @@ export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Chartak', 'local_area', ['Center','Namangan Road'], 'Chartak local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Chartak', 'poi', ['Chartak Sanatorium','Market'], 'Chartak landmark still needs a verified spatial match.'),
   ...gaps('Chust', 'local_area', ['Center'], 'Chust local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Chust', 'poi', ['Chust Bazaar','Chust Knives','Doppi'], 'Chust landmark still needs a verified spatial match.'),
+  ...gaps('Chust', 'poi', ['Chust Knives','Doppi'], 'Chust landmark still needs a verified spatial match.'),
   ...gaps('Kosonsoy', 'local_area', ['Center','Chust Road'], 'Kosonsoy local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Kosonsoy', 'poi', ['Mug qala'], 'Kosonsoy landmark still needs a verified spatial match.'),
   ...gaps('Khojeyli', 'local_area', ['Center','Bazaar','Nukus direction','Railway Station area'], 'Khojeyli local-area alias still needs a verified standalone spatial match.'),
@@ -36,10 +36,9 @@ export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Kungrad', 'local_area', ['Center','Railway Station area','Ustyurt direction','Muynak direction'], 'Kungrad local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Muynak', 'poi', ['Aral Sea','Aralkum'], 'Regional natural feature is intentionally not parented to Muynak until natural-feature/region hierarchy is modeled.'),
   ...gaps('Beruniy', 'local_area', ['Center','Turtkul Road'], 'Beruniy local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Beruniy', 'poi', ['Beruniy Bazaar'], 'Beruniy landmark still needs a verified spatial match.'),
   ...gaps('Turtkul', 'local_area', ['Center','Bazaar','Railway Station area'], 'Turtkul local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Shahrixon', 'local_area', ['Center','Market','Andijan direction'], 'Shahrixon local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Xonobod', 'poi', ['Andijan Reservoir','Xonobod Sanatorium'], 'Xonobod landmark still needs a verified spatial match or natural-feature hierarchy.'),
+  ...gaps('Xonobod', 'poi', ['Andijan Reservoir'], 'Regional reservoir is intentionally not parented to Xonobod city until region/natural-feature hierarchy is modeled.'),
 ].map(Object.freeze));
 
 const gapKeys = new Set(UZ_TAIL_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));
