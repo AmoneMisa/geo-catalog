@@ -13,7 +13,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Jizzakh', 'poi', ['Sangzor River'], 'Regional natural feature is intentionally not parented to Jizzakh city until natural-feature hierarchy is modeled.'),
 
   ...gaps('Navoiy', 'mahalla', ['Guliston'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('Navoiy', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict','6 microdistrict','7 microdistrict','8 microdistrict','9 microdistrict','10 microdistrict','11 microdistrict','12 microdistrict'], 'Navoiy numbered microdistrict still needs a verified neighbourhood/residential object.'),
+  ...gaps('Navoiy', 'microdistrict', ['7 microdistrict','8 microdistrict','9 microdistrict','10 microdistrict','11 microdistrict','12 microdistrict'], 'Navoiy numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Navoiy', 'local_area', ['Uzbekiston Massiv','Yangi Navoiy','Center','Sputnik','Railway Station area'], 'Navoiy local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Navoiy', 'poi', ['Alisher Navoiy Park','Farhod Palace of Culture','Navoiy Mining and Metallurgical Company'], 'Navoiy landmark still needs a verified spatial match.'),
 
