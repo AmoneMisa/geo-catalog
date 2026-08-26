@@ -43,7 +43,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
 
   ...gaps('Shakhrisabz', 'local_area', ['Center','Old City','Oqsaroy','Dorus Saodat','Dorut Tilovat','Chorsu','Amir Temur','Kitob direction','Railway Station area'], 'Shakhrisabz local-area alias still needs a verified standalone spatial match.'),
 
-  ...gaps('Khiva', 'local_area', ['Ichan Kala','Dishan Kala','Old City','New City'], 'Khiva local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Khiva', 'local_area', ['Dishan Kala','Old City','New City'], 'Khiva local-area alias still needs a verified standalone spatial match.'),
 ].map(Object.freeze));
 
 const gapKeys = new Set(UZ_SECONDARY_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));
