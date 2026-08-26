@@ -6,17 +6,7 @@ import { GEO_COVERAGE_GAPS, isGeoCoverageGap } from '../src/coverage-gaps.js';
 
 const tashkentAreas = Object.values(TASHKENT_AREAS).flat();
 const typeByKey = Object.freeze({
-  districts: 'district',
-  microdistricts: 'microdistrict',
-  mahallas: 'mahalla',
-  localAreas: 'local_area',
-  suburbs: 'suburb',
-  settlements: 'settlement',
-  metro: 'metro',
-  residentialComplexes: 'residential_complex',
-  streets: 'street',
-  landmarks: 'poi',
-  pois: 'poi',
+  districts: 'district', microdistricts: 'microdistrict', mahallas: 'mahalla', localAreas: 'local_area', suburbs: 'suburb', settlements: 'settlement', metro: 'metro', residentialComplexes: 'residential_complex', streets: 'street', landmarks: 'poi', pois: 'poi',
 });
 
 function expandedCityEntries(city) {
@@ -40,10 +30,7 @@ const groups = [
   ['UA cities', UA_CITIES, (item) => ({ country: 'UA', type: 'city', canonical: item.canonical })],
   ['Tashkent districts', TASHKENT_DISTRICTS, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: item.canonical })],
   ['Tashkent areas', tashkentAreas, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: item.canonical })],
-  expandedGroup('Samarkand'),
-  expandedGroup('Namangan'),
-  expandedGroup('Andijan'),
-  expandedGroup('Fergana'),
+  expandedGroup('Samarkand'), expandedGroup('Namangan'), expandedGroup('Andijan'), expandedGroup('Fergana'), expandedGroup('Bukhara'),
 ];
 
 let unaccounted = 0;
