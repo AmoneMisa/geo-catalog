@@ -30,4 +30,5 @@ export const TASHKENT_RESIDENTIAL_EXTRA_ENTITIES = Object.freeze([
   sourcedResidential('assalom-sohil', 'Assalom Sohil', 41.282995, 69.30842, 'https://yandex.com/maps/10335/tashkent/geo/4098449809/', 140),
   sourcedResidential('xon-saroy', 'Xon Saroy', 41.373056, 69.315705, 'https://yandex.com/maps/10335/tashkent/geo/4859874576/', 160),
   sourcedResidential('infinity', 'Infinity', 41.3025714, 69.2889718, 'https://infinity.gh.uz/', 220),
+  sourcedResidential('cambridge-residence', 'Cambridge Residence', 41.348819, 69.253236, 'https://yandex.com/maps/org/cambridge_residence/50442206495/', 130),
 ]);
