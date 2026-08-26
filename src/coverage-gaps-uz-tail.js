@@ -9,7 +9,7 @@ const normalize = (value) => String(value ?? '')
 const gaps = (city, type, canonicals, reason) => canonicals.map((canonical) => ({ country: 'UZ', city, type, canonical, reason }));
 
 export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
-  ...gaps('Khiva', 'poi', ['Ichan Kala','Kalta Minor','Kunya Ark','Islam Khodja','Pahlavon Mahmud','Tosh Hovli','Olloqulixon'], 'Khiva landmark still needs an exact canonical spatial match.'),
+  ...gaps('Khiva', 'poi', ['Islam Khodja','Pahlavon Mahmud','Tosh Hovli','Olloqulixon'], 'Khiva landmark still needs an exact canonical spatial match.'),
 
   ...gaps('Denov', 'local_area', ['Center','Old Market','New Market','Chaganiyon','Railway Station area'], 'Denov local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Denov', 'poi', ['Denov Bazaar','Denov Arboretum'], 'Denov landmark still needs a verified spatial match.'),
