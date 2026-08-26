@@ -1,4 +1,5 @@
 import { GEO_ENTITIES } from './catalog.js';
+import { LEXICON_GEO_LINKS } from './data/lexicon-geo-links.js';
 
 function normalize(value) {
   return String(value ?? '')
@@ -19,6 +20,7 @@ function entityCity(entity) {
 
 const lexiconIndex = new Map();
 const canonicalIndex = new Map();
+const entityById = new Map(GEO_ENTITIES.map((entity) => [entity.id, entity]));
 for (const entity of GEO_ENTITIES) {
   const city = entityCity(entity);
   lexiconIndex.set(geoEntityKey({
@@ -38,6 +40,8 @@ for (const entity of GEO_ENTITIES) {
   }
 }
 
+const linkedGeoIndex = new Map(LEXICON_GEO_LINKS.map((link) => [geoEntityKey(link), link.geoId]));
+
 const compatibleTypes = Object.freeze({
   local_area: new Set(['microdistrict', 'mahalla', 'suburb', 'settlement', 'poi', 'street']),
 });
@@ -47,6 +51,9 @@ export function resolveLexiconGeoEntity(input) {
   const type = input.type || 'city';
   const direct = lexiconIndex.get(geoEntityKey({ ...input, type }));
   if (direct) return direct;
+
+  const linkedGeoId = linkedGeoIndex.get(geoEntityKey({ ...input, type }));
+  if (linkedGeoId) return entityById.get(linkedGeoId) ?? null;
 
   if (type === 'city') {
     return lexiconIndex.get(geoEntityKey({ country: input.country, type, canonical: input.canonical })) ?? null;
