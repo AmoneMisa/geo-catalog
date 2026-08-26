@@ -1,4 +1,4 @@
-export type GeoEntityType = 'country' | 'region' | 'city' | 'district' | 'microdistrict' | 'mahalla' | 'local_area' | 'suburb' | 'settlement' | 'street' | 'residential_complex' | 'metro' | 'poi';
+export type GeoEntityType = 'country' | 'region' | 'city' | 'district' | 'microdistrict' | 'mahalla' | 'local_area' | 'suburb' | 'settlement' | 'street' | 'address' | 'residential_complex' | 'metro' | 'poi';
 export type GeoSource = 'osm' | 'wikidata' | 'official' | 'manual';
 export type GeoAccuracy = 'country' | 'region' | 'city' | 'district' | 'neighborhood' | 'street' | 'building' | 'poi' | 'entrance' | 'approximate';
 
@@ -19,6 +19,8 @@ export interface GeoEntity {
   accuracyM?: number;
   accuracy?: GeoAccuracy;
   source?: GeoSource;
+  sourceUrl?: string;
+  lookupKey?: string;
 }
 
 export interface GeoEntityFilters {
@@ -38,9 +40,22 @@ export interface GeoCoverageGap extends LexiconGeoEntityInput {
   reason: string;
 }
 
+export interface GeoLookupKeyParts {
+  country: string;
+  type?: GeoEntityType | string;
+  city?: unknown;
+  district?: unknown;
+  street?: unknown;
+  houseNumber?: unknown;
+  building?: unknown;
+  canonical?: unknown;
+  name?: unknown;
+}
+
 export const GEO_ENTITIES: readonly Readonly<GeoEntity>[];
 export const GEO_COVERAGE_GAPS: readonly Readonly<GeoCoverageGap>[];
 export function getGeoEntity(id: string): Readonly<GeoEntity> | null;
+export function getGeoEntityByLookupKey(lookupKey: string): Readonly<GeoEntity> | null;
 export function hasGeoEntity(id: string): boolean;
 export function findGeoEntities(filters?: GeoEntityFilters): readonly Readonly<GeoEntity>[];
 export function getGeoChildren(parentId: string): readonly Readonly<GeoEntity>[];
@@ -54,3 +69,4 @@ export function geoEntityKey(input: LexiconGeoEntityInput): string;
 export function resolveLexiconGeoEntity(input: LexiconGeoEntityInput): Readonly<GeoEntity> | null;
 export function geoIdForLexiconEntity(input: LexiconGeoEntityInput): string | null;
 export function hasLexiconGeoEntity(input: LexiconGeoEntityInput): boolean;
+export function buildGeoLookupKey(parts?: GeoLookupKeyParts): string | null;
