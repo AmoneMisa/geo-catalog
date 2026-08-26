@@ -24,4 +24,16 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     osm: { type: 'way', id: 167449168 },
     wikidataId: 'Q12821481',
   },
+  {
+    id: 'uz:bekabad:local-area:syrdarya',
+    type: 'local_area',
+    country: 'UZ',
+    canonicalName: 'Syrdarya',
+    parentId: 'uz:bekabad',
+    center: { lat: 40.22467, lng: 69.25751 },
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 420,
+    osm: { type: 'way', id: 333537419 },
+  },
 ]);

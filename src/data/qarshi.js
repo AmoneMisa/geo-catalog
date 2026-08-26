@@ -37,6 +37,19 @@ const osmMahalla = (slug, canonicalName, lat, lng, osmId, accuracyM = 260) => ({
   osm: { type: 'node', id: osmId },
 });
 
+const osmMahallaWay = (slug, canonicalName, lat, lng, osmId, accuracyM = 380) => ({
+  id: `uz:qarshi:mahalla:${slug}`,
+  type: 'mahalla',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:qarshi',
+  center: { lat, lng },
+  source: 'osm',
+  accuracy: 'neighborhood',
+  accuracyM,
+  osm: { type: 'way', id: osmId },
+});
+
 export const QARSHI_ENTITIES = Object.freeze([
   wikidataPoi('odina-mosque', 'Odina Mosque', 38.867688, 65.803166, 'Q121536983', 120),
   wikidataPoi('kokgumbaz', 'Kokgumbaz', 38.863806, 65.791611, 'Q12825322', 120),
@@ -46,4 +59,6 @@ export const QARSHI_ENTITIES = Object.freeze([
   wikidataPoi('qarshi-bridge', 'Qarshi Bridge', 38.886694, 65.809611, 'Q86663919', 120),
   osmMahalla('navo', 'Navo', 38.83312, 65.77487, 12508490514),
   osmMahalla('gungon', 'Gungon', 38.82263, 65.81048, 12508490516),
+  osmMahallaWay('paxtazor', 'Paxtazor', 38.83504, 65.80160, 1027271676),
+  osmMahallaWay('nasaf', 'Nasaf', 38.86914, 65.79576, 1027629334),
 ]);
