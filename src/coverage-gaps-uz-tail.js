@@ -10,7 +10,6 @@ const gaps = (city, type, canonicals, reason) => canonicals.map((canonical) => (
 
 export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Denov', 'local_area', ['Old Market','New Market','Chaganiyon'], 'Denov local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Denov', 'poi', ['Denov Arboretum'], 'Denov landmark still needs a verified spatial match.'),
   ...gaps('Asaka', 'local_area', ['Auto Plant area','Old City'], 'Asaka local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Asaka', 'poi', ['Dehqon Bazaar'], 'Asaka landmark still needs a verified spatial match.'),
   ...gaps('Kogon', 'local_area', ['Railway Workers','Bukhara direction'], 'Kogon local-area alias still needs a verified standalone spatial match.'),
