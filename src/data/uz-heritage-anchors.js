@@ -12,6 +12,19 @@ const wikidataPoi = (citySlug, slug, canonicalName, lat, lng, wikidataId, extra 
   ...(extra.osm ? { osm: extra.osm } : {}),
 });
 
+const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 160) => ({
+  id: `uz:${citySlug}:poi:${slug}`,
+  type: 'poi',
+  country: 'UZ',
+  canonicalName,
+  parentId: `uz:${citySlug}`,
+  center: { lat, lng },
+  source: 'osm',
+  accuracy: 'poi',
+  accuracyM,
+  osm: { type: osmType, id: osmId },
+});
+
 export const UZ_HERITAGE_ANCHORS = Object.freeze([
   wikidataPoi('khiva', 'itchan-kala', 'Ichan Kala', 41.37810, 60.35980, 'Q535577', { osm: { type: 'way', id: 185036984 }, accuracyM: 250 }),
   wikidataPoi('khiva', 'kalta-minor', 'Kalta Minor', 41.37835, 60.35798, 'Q4294004', { osm: { type: 'way', id: 178606424 }, accuracyM: 90 }),
@@ -23,7 +36,9 @@ export const UZ_HERITAGE_ANCHORS = Object.freeze([
   wikidataPoi('shakhrisabz', 'ak-saray-palace', 'Ak-Saray Palace', 39.060776, 66.829475, 'Q2828887', { accuracyM: 140 }),
   wikidataPoi('kokand', 'khudayar-khan-palace', 'Khudoyar Khan Palace', 40.538333, 70.937500, 'Q7126242', { osm: { type: 'way', id: 174718684 }, accuracyM: 100 }),
   wikidataPoi('kokand', 'jami-mosque', 'Jami Mosque', 40.532642, 70.949230, 'Q20536410', { accuracyM: 120 }),
+  wikidataPoi('kokand', 'norbutabiy-madrasa', 'Norbutabiy Madrasa', 40.538660, 70.952389, 'Q20536332', { accuracyM: 100 }),
   wikidataPoi('termez', 'fayoztepa', 'Fayoztepa', 37.28622, 67.18796, 'Q25523471', { osm: { type: 'way', id: 244130562 }, accuracyM: 180 }),
   wikidataPoi('termez', 'karatepa', 'Karatepa', 37.27884, 67.18315, 'Q4213429', { osm: { type: 'way', id: 493758365 }, accuracyM: 180 }),
   wikidataPoi('termez', 'sultan-saodat', 'Sultan Saodat', 37.26311, 67.30940, 'Q7636738', { osm: { type: 'way', id: 448234922 }, accuracyM: 180 }),
+  osmPoi('termez', 'hakim-at-termiziy', 'Hakim at-Termiziy', 37.26587, 67.18920, 'way', 351273147, 160),
 ]);

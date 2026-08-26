@@ -19,7 +19,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
 
   ...gaps('Termez', 'mahalla', ['Farxod'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Termez', 'local_area', ['Center','Old Termez','Northern Gate','Railway Station area','Airport area','University area','Alpomish',"Navro'z",'Qiziljar'], 'Termez local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Termez', 'poi', ['Old Termez','Hakim at-Termiziy','Amu Darya','Afghanistan Friendship Bridge'], 'Termez landmark still needs a verified spatial match.'),
+  ...gaps('Termez', 'poi', ['Old Termez','Amu Darya','Afghanistan Friendship Bridge'], 'Termez landmark still needs a verified spatial match.'),
 
   ...gaps('Gulistan', 'mahalla', ['Sayqal'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Gulistan', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict'], 'Gulistan numbered microdistrict still needs a verified neighbourhood/residential object.'),
@@ -31,7 +31,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Chirchiq', 'poi', ['Chirchiq River','Chirchiq Pedagogical University','Maxam-Chirchiq'], 'Chirchiq landmark still needs a verified spatial match.'),
 
   ...gaps('Kokand', 'local_area', ['Center','Old City','Khudoyar Khan area','Orda','Chorsu','Dangara Road','Railway Station area'], 'Kokand local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Kokand', 'poi', ['Norbutabiy Madrasa','Kokand Bazaar'], 'Kokand landmark still needs a verified spatial match.'),
+  ...gaps('Kokand', 'poi', ['Kokand Bazaar'], 'Kokand landmark still needs a verified spatial match.'),
 
   ...gaps('Margilan', 'local_area', ['Center','Old City','Kumtepa','Yodgorlik','Atlas','Railway Station area'], 'Margilan local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Margilan', 'poi', ['Kumtepa Bazaar','Yodgorlik Silk Factory'], 'Margilan landmark still needs a verified spatial match.'),
