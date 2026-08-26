@@ -10,4 +10,17 @@ export const UA_ODESA_ANCHORS = Object.freeze([
     accuracy: 'neighborhood',
     accuracyM: 1200,
   }),
+  Object.freeze({
+    id: 'ua:odesa:local-area:malyi-fontan',
+    type: 'local_area',
+    country: 'UA',
+    canonicalName: 'Малий Фонтан',
+    parentId: 'ua:odesa',
+    center: Object.freeze({ lat: 46.44316, lng: 30.76538 }),
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 1200,
+    osm: Object.freeze({ type: 'node', id: 2151201622 }),
+    wikidataId: 'Q16706095',
+  }),
 ]);
