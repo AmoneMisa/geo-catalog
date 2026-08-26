@@ -40,4 +40,7 @@ export const UA_KYIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   sourcedResidential('slavutych-2', 'Slavutych 2.0', 50.395416, 30.60685, 'https://yandex.com/maps/143/kyiv/geo/zhytlovyi_kompleks_slavutych_2_0/3787573190/', 180),
   sourcedResidential('rusaniv-residence', 'Rusaniv Residence', 50.442213, 30.606969, 'https://novobudovy.com/novobudovy-kyieva/rusaniv-residence', 180),
   sourcedResidential('rusanivska-havan', 'Rusanivska Havan', 50.460189, 30.581331, 'https://novobudovy.com/novobudovy-kyieva/zhk-rusanivskij-m-kiiv-vul-m-raskovoi', 220),
+  sourcedResidential('slavutych', 'Slavutych', 50.394979, 30.604495, 'https://archi.ru/projects/world/9460/zhiloi-kompleks-slavutich', 200),
+  osmResidential('parkland', 'ParkLand', 50.39606, 30.46904, 'way', 464888988, 260),
+  sourcedResidential('nova-anhliia', 'Nova Anhliia', 50.394872, 30.474606, 'https://novobudovy.com/novobudovy-kyieva/novaya-angliya-kiev', 220),
 ]);
