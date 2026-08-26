@@ -37,6 +37,15 @@ export const CITY_ENTITIES = Object.freeze([
   city('uz:shahrixon','UZ','Shahrixon',40.7095,72.0485,{source:'osm',osm:{type:'way',id:27142752},wikidataId:'Q1659154',accuracyM:1700}),
   city('uz:xonobod','UZ','Xonobod',40.80711,72.99094,{source:'osm',osm:{type:'way',id:27642857},wikidataId:'Q650208',accuracyM:1700}),
   city('uz:khojeyli','UZ','Khojeyli',42.4149,59.45563,{source:'osm',osm:{type:'way',id:273457023},wikidataId:'Q1400173',accuracyM:1800}),
+  city('uz:shakhrisabz','UZ','Shakhrisabz',39.0526,66.8279,{source:'osm',osm:{type:'node',id:5358612795},wikidataId:'Q569766',accuracyM:1800}),
+  city('uz:takhiatash','UZ','Takhiatash',42.33466,59.5792,{source:'osm',osm:{type:'node',id:1516291435},wikidataId:'Q951239',accuracyM:1700}),
+  city('uz:kungrad','UZ','Kungrad',43.04573,58.84754,{source:'osm',osm:{type:'node',id:246347371},accuracyM:1800}),
+  city('uz:beruniy','UZ','Beruniy',41.6945,60.7497,{source:'osm',osm:{type:'node',id:246332769},wikidataId:'Q18242285',accuracyM:1700}),
+  city('uz:turtkul','UZ','Turtkul',41.55441,61.00024,{source:'osm',osm:{type:'node',id:246341040},wikidataId:'Q1027623',accuracyM:1700}),
+  city('uz:yangiyer','UZ','Yangiyer',40.27008,68.8166,{source:'osm',osm:{type:'node',id:246154460},wikidataId:'Q1658420',accuracyM:1600}),
+  city('uz:shirin','UZ','Shirin',40.2303,69.12631,{source:'osm',osm:{type:'node',id:246154148},wikidataId:'Q500208',accuracyM:1500}),
+  city('uz:gazalkent','UZ','Gazalkent',41.56294,69.77077,{source:'osm',osm:{type:'node',id:1324740947},wikidataId:'Q891863',accuracyM:1500}),
+  city('uz:muynak','UZ','Muynak',43.77127,59.02262,{source:'osm',osm:{type:'way',id:185039339},accuracyM:1800}),
 
   // Kazakhstan — mirrors @whiteslove/parsing-lexicon KZ_CITIES.
   city('kz:almaty','KZ','Almaty',43.2389,76.8897),

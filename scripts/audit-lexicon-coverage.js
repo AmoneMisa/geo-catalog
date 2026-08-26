@@ -1,5 +1,6 @@
-import { UZ_CITIES, KZ_CITIES, TASHKENT_DISTRICTS, TASHKENT_AREAS } from '@whiteslove/parsing-lexicon/geo';
+import { KZ_CITIES, TASHKENT_DISTRICTS, TASHKENT_AREAS } from '@whiteslove/parsing-lexicon/geo';
 import { UA_CITIES } from '@whiteslove/parsing-lexicon/geography';
+import { UZ_CITY_CATALOG } from '@whiteslove/parsing-lexicon/central-asia';
 import { UZ_EXPANDED_LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/central-asia-locations';
 import { resolveLexiconGeoEntity } from '../src/lexicon-bridge.js';
 import { GEO_COVERAGE_GAPS, isGeoCoverageGap } from '../src/coverage-gaps.js';
@@ -25,7 +26,7 @@ const expandedGroup = (city) => [
 ];
 
 const groups = [
-  ['UZ cities', UZ_CITIES, (item) => ({ country: 'UZ', type: 'city', canonical: item.canonical })],
+  ['UZ cities', UZ_CITY_CATALOG, (item) => ({ country: 'UZ', type: 'city', canonical: item.canonical })],
   ['KZ cities', KZ_CITIES, (item) => ({ country: 'KZ', type: 'city', canonical: item.canonical })],
   ['UA cities', UA_CITIES, (item) => ({ country: 'UA', type: 'city', canonical: item.canonical })],
   ['Tashkent districts', TASHKENT_DISTRICTS, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: item.canonical })],
