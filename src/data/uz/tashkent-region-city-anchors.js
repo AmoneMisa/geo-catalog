@@ -1,15 +1,15 @@
-import { UZ_REGIONAL_ANCHORS } from './uz-regional-anchors.js';
-import { UZ_P3_TRANSPORT_ENTITIES } from './uz-p3-transport.js';
-import { UZ_KARAKALPAKSTAN_ANCHORS } from './uz-karakalpakstan-anchors.js';
-import { CHIRCHIQ_MICRODISTRICT_ENTITIES } from './uz-chirchiq-microdistricts.js';
-import { UZ_SECONDARY_LOCALITY_ENTITIES } from './uz-secondary-localities.js';
-import { UZ_INDUSTRIAL_ANCHORS } from './uz-industrial-anchors.js';
-import { UZ_TAIL_POI_ANCHORS } from './uz-tail-poi-anchors.js';
-import { GULISTAN_SPATIAL_ENTITIES } from './uz-gulistan-anchors.js';
-import { UZ_SECONDARY_POI_ANCHORS } from './uz-secondary-poi-anchors.js';
-import { CHIRCHIQ_POI_ANCHORS } from './uz-chirchiq-poi-anchors.js';
-import { UZ_OFFICIAL_INSTITUTION_ANCHORS } from './uz-official-institution-anchors.js';
-import { NAVOIY_MICRODISTRICT_ENTITIES } from './uz-navoiy-microdistricts.js';
+import { UZ_REGIONAL_ANCHORS } from './regional-anchors.js';
+import { UZ_P3_TRANSPORT_ENTITIES } from './p3-transport.js';
+import { UZ_KARAKALPAKSTAN_ANCHORS } from './karakalpakstan-anchors.js';
+import { CHIRCHIQ_MICRODISTRICT_ENTITIES } from './chirchiq-microdistricts.js';
+import { UZ_SECONDARY_LOCALITY_ENTITIES } from './secondary-localities.js';
+import { UZ_INDUSTRIAL_ANCHORS } from './industrial-anchors.js';
+import { UZ_TAIL_POI_ANCHORS } from './tail-poi-anchors.js';
+import { GULISTAN_SPATIAL_ENTITIES } from './gulistan-anchors.js';
+import { UZ_SECONDARY_POI_ANCHORS } from './secondary-poi-anchors.js';
+import { CHIRCHIQ_POI_ANCHORS } from './chirchiq-poi-anchors.js';
+import { UZ_OFFICIAL_INSTITUTION_ANCHORS } from './official-institution-anchors.js';
+import { NAVOIY_MICRODISTRICT_ENTITIES } from './navoiy-microdistricts.js';
 
 const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 130) => ({
   id: `uz:${citySlug}:poi:${slug}`,

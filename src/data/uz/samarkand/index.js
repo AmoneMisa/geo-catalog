@@ -1,6 +1,6 @@
-import { SAMARKAND_POI_ENTITIES } from '../../samarkand-poi.js';
-import { SAMARKAND_AREA_ENTITIES } from '../../samarkand-areas.js';
-import { SAMARKAND_STREET_ENTITIES } from '../../samarkand-streets.js';
+import { SAMARKAND_POI_ENTITIES } from './poi.js';
+import { SAMARKAND_AREA_ENTITIES } from './areas.js';
+import { SAMARKAND_STREET_ENTITIES } from './streets.js';
 
 export const UZ_SAMARKAND_ENTITIES = Object.freeze([
   ...SAMARKAND_POI_ENTITIES,
