@@ -14,8 +14,13 @@ const station = (slug, canonicalName, lat, lng, wikidataId, osmId = null) => ({
 
 export const TASHKENT_METRO_ENTITIES = Object.freeze([
   station('buyuk-ipak-yoli', 'Buyuk Ipak Yoli', 41.3263444, 69.3277694, 'Q4100729', 1777037919),
+  station('hamid-olimjon', 'Hamid Olimjon', 41.3177694, 69.2948778, 'Q4495262', 1775848270),
+  station('amir-temur-xiyoboni', 'Amir Temur Xiyoboni', 41.3121639, 69.2814500, 'Q4064347'),
+  station('mustaqillik-maydoni', 'Mustaqillik Maydoni', 41.3149500, 69.2710611, 'Q4308514', 1778357473),
+  station('paxtakor', 'Paxtakor', 41.3177889, 69.2550806, 'Q2001497', 1777740154),
+  station('xalqlar-dostligi', 'Xalqlar Dostligi', 41.3118806, 69.2413917, 'Q4099275'),
+  station('milliy-bog', 'Milliy Bog', 41.3042806, 69.2354139, 'Q4293549', 1252201486),
   station('novza', 'Novza', 41.2920278, 69.2233417, 'Q4495260', 563751850),
-  station('paxtakor', 'Paxtakor', 41.3177889, 69.2550806, 'Q2001497'),
   station('mirzo-ulugbek', 'Mirzo Ulugbek', 41.2820806, 69.2124528, 'Q4295611'),
   station('chilonzor', 'Chilonzor', 41.2745472, 69.2047389, 'Q4515926'),
   station('olmazor', 'Olmazor', 41.2556111, 69.1960139, 'Q4333950'),
@@ -40,6 +45,7 @@ export const TASHKENT_METRO_ENTITIES = Object.freeze([
   station('yashnobod', 'Yashnobod', 41.2977589, 69.3497389, 'Q97344240'),
   station('tuzel', 'Tuzel', 41.2920561, 69.35617, 'Q97344275'),
   station('olmos', 'Olmos', 41.2819819, 69.3603239, 'Q65160455'),
+  station('rohat', 'Rohat', 41.2655361, 69.3649200, 'Q97344269'),
   station('qoyliq', 'Qoyliq', 41.2373911, 69.3274581, 'Q97344259'),
   station('qipchoq', 'Qipchoq', 41.2053889, 69.2213611, 'Q124820156'),
 ]);
