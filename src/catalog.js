@@ -20,6 +20,7 @@ import { TASHKENT_TTZ_EXTRA_LOCAL_AREA_ENTITIES } from './data/tashkent-local-ar
 import { TASHKENT_YASHNOBOD_LOCAL_AREA_ENTITIES } from './data/tashkent-local-areas-yashnobod.js';
 import { TASHKENT_YASHNOBOD_TUZEL_LOCAL_AREA_ENTITIES } from './data/tashkent-local-areas-yashnobod-tuzel.js';
 import { TASHKENT_SERGELI_YANGIHAYOT_LOCAL_AREA_ENTITIES } from './data/tashkent-local-areas-sergeli-yangihayot.js';
+import { TASHKENT_YANGIDARHAN_LOCAL_AREA_ENTITIES } from './data/tashkent-local-areas-yangidarhan.js';
 import { TASHKENT_MAHALLA_ENTITIES } from './data/tashkent-mahallas.js';
 import { TASHKENT_MIRZO_ULUGBEK_MAHALLA_ENTITIES } from './data/tashkent-mahallas-mirzo-ulugbek.js';
 import { TASHKENT_YANGIHAYOT_MAHALLA_ENTITIES } from './data/tashkent-mahallas-yangihayot.js';
@@ -51,6 +52,7 @@ const entities = [
   ...TASHKENT_YASHNOBOD_LOCAL_AREA_ENTITIES,
   ...TASHKENT_YASHNOBOD_TUZEL_LOCAL_AREA_ENTITIES,
   ...TASHKENT_SERGELI_YANGIHAYOT_LOCAL_AREA_ENTITIES,
+  ...TASHKENT_YANGIDARHAN_LOCAL_AREA_ENTITIES,
   ...TASHKENT_MAHALLA_ENTITIES,
   ...TASHKENT_MIRZO_ULUGBEK_MAHALLA_ENTITIES,
   ...TASHKENT_YANGIHAYOT_MAHALLA_ENTITIES,
