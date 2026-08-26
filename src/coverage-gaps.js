@@ -36,6 +36,12 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
     'Center','Old City','New City','Bobur','Navoiy','Mashinasozlar','North','South-West','University area','Railway Station area','Airport area',
   ], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Andijan', 'poi', ['Central Farmers Market','Yangi Bozor','Bobur Square'], 'Lexicon landmark still needs a verified spatial match.'),
+
+  ...gaps('UZ', 'Fergana', 'mahalla', ["Ma'rifat"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
+  ...gaps('UZ', 'Fergana', 'local_area', [
+    'Qirguli','Neftchi','Center','Mustaqillik','Al-Fargoniy','Margilon Road','Railway Station area','Airport area','University area','Navoiy',
+  ], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Fergana', 'poi', ['Al-Fargoniy Park','Independence Square'], 'Lexicon landmark still needs a verified spatial match.'),
 ].map(Object.freeze));
 
 const gapKeys = new Set(GEO_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));

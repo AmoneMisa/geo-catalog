@@ -28,15 +28,22 @@ function expandedCityEntries(city) {
   return rows;
 }
 
+const expandedGroup = (city) => [
+  `${city} expanded geography`,
+  expandedCityEntries(city),
+  ({ item, type }) => ({ country: 'UZ', city, type, canonical: item.canonical || item.name }),
+];
+
 const groups = [
   ['UZ cities', UZ_CITIES, (item) => ({ country: 'UZ', type: 'city', canonical: item.canonical })],
   ['KZ cities', KZ_CITIES, (item) => ({ country: 'KZ', type: 'city', canonical: item.canonical })],
   ['UA cities', UA_CITIES, (item) => ({ country: 'UA', type: 'city', canonical: item.canonical })],
   ['Tashkent districts', TASHKENT_DISTRICTS, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: item.canonical })],
   ['Tashkent areas', tashkentAreas, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: item.canonical })],
-  ['Samarkand expanded geography', expandedCityEntries('Samarkand'), ({ item, type }) => ({ country: 'UZ', city: 'Samarkand', type, canonical: item.canonical || item.name })],
-  ['Namangan expanded geography', expandedCityEntries('Namangan'), ({ item, type }) => ({ country: 'UZ', city: 'Namangan', type, canonical: item.canonical || item.name })],
-  ['Andijan expanded geography', expandedCityEntries('Andijan'), ({ item, type }) => ({ country: 'UZ', city: 'Andijan', type, canonical: item.canonical || item.name })],
+  expandedGroup('Samarkand'),
+  expandedGroup('Namangan'),
+  expandedGroup('Andijan'),
+  expandedGroup('Fergana'),
 ];
 
 let unaccounted = 0;
