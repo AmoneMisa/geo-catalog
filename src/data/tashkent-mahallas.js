@@ -1,0 +1,20 @@
+const mahalla = (slug, canonicalName, parentId, lat, lng, osmType, osmId, accuracyM = 420) => ({
+  id: `uz:tashkent:mahalla:${slug}`,
+  type: 'mahalla',
+  country: 'UZ',
+  canonicalName,
+  parentId,
+  center: { lat, lng },
+  source: 'osm',
+  accuracy: 'neighborhood',
+  accuracyM,
+  osm: { type: osmType, id: osmId },
+});
+
+export const TASHKENT_MAHALLA_ENTITIES = Object.freeze([
+  mahalla('khastimam', 'Khastimam', 'uz:tashkent:almazar', 41.33303, 69.24287, 'way', 1137236407, 420),
+  mahalla('kashgar', 'Kashgar', 'uz:tashkent:yunusabad', 41.31619, 69.27087, 'way', 1006384228, 420),
+  mahalla('buyuk-turan', 'Buyuk Turan', 'uz:tashkent:yunusabad', 41.32097, 69.28708, 'way', 1008828995, 460),
+  mahalla('minor', 'Minor', 'uz:tashkent:yunusabad', 41.33725, 69.27972, 'way', 1012743631, 460),
+  mahalla('labzak', 'Labzak', 'uz:tashkent:shaykhantahur', 41.33221, 69.26828, 'node', 11185280560, 420),
+]);
