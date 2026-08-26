@@ -49,7 +49,7 @@ export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
 
   ...gaps('Kungrad', 'local_area', ['Center','Railway Station area','Ustyurt direction','Muynak direction'], 'Kungrad local-area alias still needs a verified standalone spatial match.'),
 
-  ...gaps('Muynak', 'poi', ['Ship Cemetery','Aral Sea','Aral Sea Museum','Aralkum'], 'Muynak landmark still needs a verified spatial match.'),
+  ...gaps('Muynak', 'poi', ['Aral Sea','Aralkum'], 'Regional natural feature is intentionally not parented to Muynak until natural-feature/region hierarchy is modeled.'),
 
   ...gaps('Beruniy', 'local_area', ['Center','Turtkul Road'], 'Beruniy local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Beruniy', 'poi', ['Beruniy Bazaar'], 'Beruniy landmark still needs a verified spatial match.'),
