@@ -9,7 +9,6 @@ const normalize = (value) => String(value ?? '')
 const gaps = (city, type, canonicals, reason) => canonicals.map((canonical) => ({ country: 'UZ', city, type, canonical, reason }));
 
 export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
-  ...gaps('Jizzakh', 'mahalla', ['Ittifoq'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Jizzakh', 'local_area', ['Center','Sangzor','Zilol','Hamid Olimjon','Navoiy','Railway Station area','Airport area'], 'Jizzakh local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Jizzakh', 'poi', ['Jizzakh Pedagogical University','Sangzor River'], 'Jizzakh landmark still needs a verified spatial match.'),
 
