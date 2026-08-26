@@ -11,6 +11,19 @@ const osmArea = (slug, canonicalName, parentId, lat, lng, osmType, osmId, accura
   osm: { type: osmType, id: osmId },
 });
 
+const manualArea = (slug, canonicalName, parentId, lat, lng, sourceUrl, accuracyM = 650) => ({
+  id: `uz:tashkent:local-area:${slug}`,
+  type: 'local_area',
+  country: 'UZ',
+  canonicalName,
+  parentId,
+  center: { lat, lng },
+  source: 'manual',
+  sourceUrl,
+  accuracy: 'neighborhood',
+  accuracyM,
+});
+
 export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('takhtapul', 'Takhtapul', 'uz:tashkent:almazar', 41.33968, 69.26428, 'node', 9687947537, 550),
   osmArea('chimbay', 'Chimbay', 'uz:tashkent:almazar', 41.36257, 69.20025, 'node', 1866058485, 650),
@@ -28,4 +41,6 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('movarounnahr', 'Movarounnahr', 'uz:tashkent:mirobod', 41.29999, 69.28658, 'way', 1057801683, 520),
   osmArea('nakkoshlik', 'Nakkoshlik', 'uz:tashkent:chilanzar', 41.26695, 69.20273, 'way', 1180079691, 520),
   osmArea('alimkent', 'Alimkent', 'uz:tashkent:yashnobod', 41.29546, 69.33720, 'node', 12144738032, 520),
+  osmArea('oltinkul', 'Oltinkul', 'uz:tashkent:mirobod', 41.27363, 69.30646, 'way', 1068108841, 450),
+  manualArea('rakatboshi', 'Rakatboshi', 'uz:tashkent:yakkasaray', 41.293748, 69.246822, 'https://yandex.uz/maps/10335/tashkent/geo/1508577561/', 500),
 ]);
