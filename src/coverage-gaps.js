@@ -12,7 +12,6 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Tashkent', 'local_area', ['TTZ-3','Stroygorod','Glinka'], 'No verified standalone spatial locality match yet.'),
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Geofizika', reason: 'Mapped spatially as a separate village in Tashkent Region; requires region/settlement hierarchy instead of a Tashkent city child.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Dehqonobod', reason: 'Same-name settlements elsewhere in Uzbekistan require disambiguation.' },
-  { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Sputnik', reason: 'Available points refer to individual blocks, not the whole massif.' },
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z",'Shirin','Chilkuduk',"Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
   ...gaps('UZ', 'Samarkand', 'local_area', ['University area','Dahbed','Rudakiy','Gagarin area','Mirzo Ulugbek area','Spitamen','Panjakent Road','Bogishamol','Geofizika','Sugdiyona','Super Market area','Dinamo area',"So'zangaron",'Buyuk Ipak Yoli'], 'Lexicon local area still needs a verified standalone spatial match.'),
