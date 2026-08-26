@@ -25,7 +25,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
 
   ...gaps('Chirchiq', 'microdistrict', ['5 microdistrict','6 microdistrict','7 microdistrict','8 microdistrict','9 microdistrict'], 'Chirchiq numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Chirchiq', 'local_area', ['Center','Yubileiny','Khimik','KhimGorodok','Mashinostroitel','Troitsky','Railway Station area','Bochka','Olympic area'], 'Chirchiq local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Chirchiq', 'poi', ['Chirchiq River','Chirchiq Pedagogical University','Maxam-Chirchiq'], 'Chirchiq landmark still needs a verified spatial match.'),
+  ...gaps('Chirchiq', 'poi', ['Chirchiq River'], 'Regional natural feature is intentionally not parented to Chirchiq city until natural-feature hierarchy is modeled.'),
 
   ...gaps('Kokand', 'local_area', ['Center','Old City','Khudoyar Khan area','Orda','Chorsu','Dangara Road','Railway Station area'], 'Kokand local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Kokand', 'poi', ['Kokand Bazaar'], 'Kokand landmark still needs a verified spatial match.'),
