@@ -34,4 +34,6 @@ export const BUKHARA_ENTITIES = Object.freeze([
   wikidataPoi('samanids-mausoleum', 'Samanids Mausoleum', 39.777011, 64.40058, 'Q1268850', 120),
   wikidataPoi('bukhara-international-airport', 'Bukhara International Airport', 39.775, 64.483333, 'Q978200', 260, { type: 'relation', id: 12733977 }),
   wikidataPoi('sitorai-mohi-xosa', 'Sitorai Mohi Xosa', 39.81295, 64.44123, 'Q4421152', 140, { type: 'way', id: 197708190 }),
+  osmPoi('bukhara-1', 'Bukhara-1', 39.72249, 64.54841, 'node', 8328285677, 120),
+  osmPoi('bukhara-2', 'Bukhara-2', 39.75114, 64.46354, 'node', 1588259351, 120),
 ]);
