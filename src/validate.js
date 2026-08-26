@@ -8,10 +8,21 @@ const ENTITY_TYPES = new Set([
 const SOURCES = new Set(['osm', 'wikidata', 'official', 'manual']);
 const ACCURACY = new Set(['country', 'region', 'city', 'district', 'neighborhood', 'street', 'building', 'poi', 'entrance', 'approximate']);
 
+function semanticKey(entity) {
+  if (!entity?.canonicalName || !entity?.type || !entity?.country) return null;
+  return [
+    entity.country,
+    entity.parentId ?? '',
+    entity.type,
+    entity.canonicalName.normalize('NFKC').trim().toLocaleLowerCase(),
+  ].join('|');
+}
+
 export function validateGeoCatalog(entities) {
   const errors = [];
   const ids = new Set();
   const lookupKeys = new Set();
+  const semanticKeys = new Map();
 
   for (const entity of entities) {
     if (!entity?.id || typeof entity.id !== 'string') errors.push('Entity without a valid id');
@@ -22,6 +33,13 @@ export function validateGeoCatalog(entities) {
       if (typeof entity.lookupKey !== 'string') errors.push(`${entity.id}: lookupKey must be a string`);
       else if (lookupKeys.has(entity.lookupKey)) errors.push(`${entity.id}: duplicate lookupKey ${entity.lookupKey}`);
       else lookupKeys.add(entity.lookupKey);
+    }
+
+    const key = semanticKey(entity);
+    if (key) {
+      const existingId = semanticKeys.get(key);
+      if (existingId && existingId !== entity.id) errors.push(`${entity.id}: duplicate semantic entity ${key} (already ${existingId})`);
+      else semanticKeys.set(key, entity.id);
     }
 
     if (!ENTITY_TYPES.has(entity.type)) errors.push(`${entity.id}: unsupported type ${entity.type}`);

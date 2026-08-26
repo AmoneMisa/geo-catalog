@@ -45,11 +45,9 @@ import { UZ_SECONDARY_CITY_ANCHORS } from './data/uz-secondary-city-anchors.js';
 import { UZ_HERITAGE_ANCHORS } from './data/uz-heritage-anchors.js';
 import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './data/uz-heritage-transport.js';
 import { UZ_TASHKENT_REGION_CITY_ANCHORS } from './data/uz-tashkent-region-city-anchors.js';
-import { UA_SECONDARY_CITY_ANCHORS } from './data/ua-secondary-city-anchors.js';
-import { UA_KYIV_ANCHORS } from './data/ua-kyiv-anchors.js';
-import { UA_KYIV_EXTRA_ANCHORS } from './data/ua-kyiv-anchors-extra.js';
-import { UA_ODESA_ANCHORS } from './data/ua-odesa-anchors.js';
+import { UA_ENTITIES } from './data/ua/index.js';
 import { LEARNED_ADDRESS_ENTITIES } from './data/learned-addresses.js';
+import { validateGeoCatalog } from './validate.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -99,12 +97,14 @@ const entities = [
   ...UZ_HERITAGE_ANCHORS,
   ...UZ_HERITAGE_TRANSPORT_ENTITIES,
   ...UZ_TASHKENT_REGION_CITY_ANCHORS,
-  ...UA_SECONDARY_CITY_ANCHORS,
-  ...UA_KYIV_ANCHORS,
-  ...UA_KYIV_EXTRA_ANCHORS,
-  ...UA_ODESA_ANCHORS,
+  ...UA_ENTITIES,
   ...LEARNED_ADDRESS_ENTITIES,
 ];
+
+const validation = validateGeoCatalog(entities);
+if (!validation.valid) {
+  throw new Error(`Invalid geo catalog:\n${validation.errors.join('\n')}`);
+}
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
   ...entity,
