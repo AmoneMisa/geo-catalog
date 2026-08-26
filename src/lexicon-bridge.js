@@ -13,20 +13,34 @@ export function geoEntityKey({ country, city, type, canonical }) {
   return [country, city, type, canonical].map(normalize).join('|');
 }
 
+function entityCity(entity) {
+  return entity.type === 'city' ? undefined : entity.parentId?.split(':')[1];
+}
+
 const lexiconIndex = new Map();
+const canonicalIndex = new Map();
 for (const entity of GEO_ENTITIES) {
+  const city = entityCity(entity);
   lexiconIndex.set(geoEntityKey({
     country: entity.country,
-    city: entity.parentId?.split(':').length >= 2 ? entity.parentId.split(':')[1] : undefined,
+    city,
     type: entity.type,
     canonical: entity.canonicalName,
   }), entity);
 
-  // City entities have no city parent in the parser tuple.
+  const canonicalKey = [entity.country, city, entity.canonicalName].map(normalize).join('|');
+  const canonicalMatches = canonicalIndex.get(canonicalKey) ?? [];
+  canonicalMatches.push(entity);
+  canonicalIndex.set(canonicalKey, canonicalMatches);
+
   if (entity.type === 'city') {
     lexiconIndex.set(geoEntityKey({ country: entity.country, type: 'city', canonical: entity.canonicalName }), entity);
   }
 }
+
+const compatibleTypes = Object.freeze({
+  local_area: new Set(['microdistrict', 'mahalla', 'suburb', 'settlement', 'poi']),
+});
 
 export function resolveLexiconGeoEntity(input) {
   if (!input?.country || !input?.canonical) return null;
@@ -34,11 +48,15 @@ export function resolveLexiconGeoEntity(input) {
   const direct = lexiconIndex.get(geoEntityKey({ ...input, type }));
   if (direct) return direct;
 
-  // Parser structures sometimes expose city separately while the geo entity is the city itself.
   if (type === 'city') {
     return lexiconIndex.get(geoEntityKey({ country: input.country, type, canonical: input.canonical })) ?? null;
   }
-  return null;
+
+  const allowedFallbackTypes = compatibleTypes[type];
+  if (!allowedFallbackTypes) return null;
+  const canonicalKey = [input.country, input.city, input.canonical].map(normalize).join('|');
+  const matches = (canonicalIndex.get(canonicalKey) ?? []).filter((entity) => allowedFallbackTypes.has(entity.type));
+  return matches.length === 1 ? matches[0] : null;
 }
 
 export function geoIdForLexiconEntity(input) {

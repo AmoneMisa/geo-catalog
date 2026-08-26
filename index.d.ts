@@ -34,11 +34,17 @@ export interface LexiconGeoEntityInput {
   canonical: string;
 }
 
+export interface GeoCoverageGap extends LexiconGeoEntityInput {
+  reason: string;
+}
+
 export const GEO_ENTITIES: readonly Readonly<GeoEntity>[];
+export const GEO_COVERAGE_GAPS: readonly Readonly<GeoCoverageGap>[];
 export function getGeoEntity(id: string): Readonly<GeoEntity> | null;
 export function hasGeoEntity(id: string): boolean;
 export function findGeoEntities(filters?: GeoEntityFilters): readonly Readonly<GeoEntity>[];
 export function getGeoChildren(parentId: string): readonly Readonly<GeoEntity>[];
+export function isGeoCoverageGap(input: LexiconGeoEntityInput): boolean;
 export function isValidCoordinate(point: GeoPoint | null | undefined): boolean;
 export function containsPoint(point: GeoPoint, bbox: GeoBBox): boolean;
 export function distanceKm(a: GeoPoint, b: GeoPoint): number;
