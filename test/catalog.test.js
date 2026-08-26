@@ -24,10 +24,15 @@ test('stable IDs resolve deterministic entities', () => {
   assert.equal(getGeoEntity('missing'), null);
 });
 
-test('all canonical parser cities are represented for UA, UZ and KZ', () => {
-  assert.equal(findGeoEntities({ country: 'UA', type: 'city' }).length, 30);
-  assert.equal(findGeoEntities({ country: 'UZ', type: 'city' }).length, 15);
+test('expanded city catalogs are represented for UA, UZ and KZ', () => {
+  assert.ok(findGeoEntities({ country: 'UA', type: 'city' }).length >= 88);
+  assert.ok(findGeoEntities({ country: 'UZ', type: 'city' }).length >= 41);
   assert.equal(findGeoEntities({ country: 'KZ', type: 'city' }).length, 18);
+
+  assert.equal(getGeoEntity('ua:chuhuiv')?.canonicalName, 'Chuhuiv');
+  assert.equal(getGeoEntity('ua:vynohradiv')?.canonicalName, 'Vynohradiv');
+  assert.equal(getGeoEntity('uz:qarshi')?.canonicalName, 'Qarshi');
+  assert.equal(getGeoEntity('uz:muynak')?.canonicalName, 'Muynak');
 });
 
 test('Tashkent administrative districts are children of the city', () => {
@@ -50,6 +55,8 @@ test('parsing lexicon tuples resolve without duplicating aliases', () => {
   assert.equal(geoIdForLexiconEntity({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: 'Chilanzar' }), 'uz:tashkent:chilanzar');
   assert.equal(geoIdForLexiconEntity({ country: 'UZ', city: 'Tashkent', type: 'metro', canonical: 'Chorsu' }), 'uz:tashkent:metro:chorsu');
   assert.equal(resolveLexiconGeoEntity({ country: 'UA', type: 'city', canonical: 'Rivne' })?.id, 'ua:rivne');
+  assert.equal(resolveLexiconGeoEntity({ country: 'UA', type: 'city', canonical: 'Chuhuiv' })?.id, 'ua:chuhuiv');
+  assert.equal(resolveLexiconGeoEntity({ country: 'UA', city: 'Odesa', type: 'suburb', canonical: 'Крижанівка' })?.id, 'ua:odesa:suburb:kryzhanivka');
 });
 
 test('bbox containment accepts Tashkent center', () => {
