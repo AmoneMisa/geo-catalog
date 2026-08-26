@@ -47,6 +47,7 @@ import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './data/uz-heritage-transport.js'
 import { UZ_TASHKENT_REGION_CITY_ANCHORS } from './data/uz-tashkent-region-city-anchors.js';
 import { UA_SECONDARY_CITY_ANCHORS } from './data/ua-secondary-city-anchors.js';
 import { UA_ODESA_ANCHORS } from './data/ua-odesa-anchors.js';
+import { LEARNED_ADDRESS_ENTITIES } from './data/learned-addresses.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -98,6 +99,7 @@ const entities = [
   ...UZ_TASHKENT_REGION_CITY_ANCHORS,
   ...UA_SECONDARY_CITY_ANCHORS,
   ...UA_ODESA_ANCHORS,
+  ...LEARNED_ADDRESS_ENTITIES,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
@@ -108,9 +110,18 @@ export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze
 })));
 
 const byId = new Map(GEO_ENTITIES.map((entity) => [entity.id, entity]));
+const byLookupKey = new Map(
+  GEO_ENTITIES
+    .filter((entity) => entity.lookupKey)
+    .map((entity) => [entity.lookupKey, entity]),
+);
 
 export function getGeoEntity(id) {
   return byId.get(id) ?? null;
+}
+
+export function getGeoEntityByLookupKey(lookupKey) {
+  return byLookupKey.get(String(lookupKey || '')) ?? null;
 }
 
 export function hasGeoEntity(id) {

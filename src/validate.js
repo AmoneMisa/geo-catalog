@@ -2,7 +2,7 @@ import { isValidCoordinate } from './spatial.js';
 
 const ENTITY_TYPES = new Set([
   'country', 'region', 'city', 'district', 'microdistrict', 'mahalla', 'local_area', 'suburb',
-  'settlement', 'street', 'residential_complex', 'metro', 'poi'
+  'settlement', 'street', 'address', 'residential_complex', 'metro', 'poi'
 ]);
 
 const SOURCES = new Set(['osm', 'wikidata', 'official', 'manual']);
@@ -11,11 +11,18 @@ const ACCURACY = new Set(['country', 'region', 'city', 'district', 'neighborhood
 export function validateGeoCatalog(entities) {
   const errors = [];
   const ids = new Set();
+  const lookupKeys = new Set();
 
   for (const entity of entities) {
     if (!entity?.id || typeof entity.id !== 'string') errors.push('Entity without a valid id');
     else if (ids.has(entity.id)) errors.push(`Duplicate id: ${entity.id}`);
     else ids.add(entity.id);
+
+    if (entity.lookupKey) {
+      if (typeof entity.lookupKey !== 'string') errors.push(`${entity.id}: lookupKey must be a string`);
+      else if (lookupKeys.has(entity.lookupKey)) errors.push(`${entity.id}: duplicate lookupKey ${entity.lookupKey}`);
+      else lookupKeys.add(entity.lookupKey);
+    }
 
     if (!ENTITY_TYPES.has(entity.type)) errors.push(`${entity.id}: unsupported type ${entity.type}`);
     if (!/^[A-Z]{2}$/.test(entity.country ?? '')) errors.push(`${entity.id}: country must be ISO 3166-1 alpha-2`);
