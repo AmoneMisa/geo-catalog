@@ -9,6 +9,7 @@ import { TASHKENT_CHILANZAR_15_20_ENTITIES } from './data/tashkent-microdistrict
 import { TASHKENT_YUNUSABAD_4_9_ENTITIES } from './data/tashkent-microdistricts-yunusabad-4-9.js';
 import { TASHKENT_YUNUSABAD_11_16_ENTITIES } from './data/tashkent-microdistricts-yunusabad-11-16.js';
 import { TASHKENT_YUNUSABAD_17_19_ENTITIES } from './data/tashkent-microdistricts-yunusabad-17-19.js';
+import { TASHKENT_LOCAL_AREA_ENTITIES } from './data/tashkent-local-areas.js';
 import { TASHKENT_POI_ENTITIES } from './data/tashkent-poi.js';
 import { TASHKENT_POI_EXTRA_ENTITIES } from './data/tashkent-poi-extra.js';
 import { TASHKENT_RESIDENTIAL_ENTITIES } from './data/tashkent-residential.js';
@@ -26,6 +27,7 @@ const entities = [
   ...TASHKENT_YUNUSABAD_4_9_ENTITIES,
   ...TASHKENT_YUNUSABAD_11_16_ENTITIES,
   ...TASHKENT_YUNUSABAD_17_19_ENTITIES,
+  ...TASHKENT_LOCAL_AREA_ENTITIES,
   ...TASHKENT_POI_ENTITIES,
   ...TASHKENT_POI_EXTRA_ENTITIES,
   ...TASHKENT_RESIDENTIAL_ENTITIES,
