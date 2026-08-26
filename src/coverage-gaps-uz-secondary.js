@@ -21,10 +21,8 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Termez', 'local_area', ['Center','Old Termez','Northern Gate','Railway Station area','Airport area','University area','Alpomish',"Navro'z",'Qiziljar'], 'Termez local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Termez', 'poi', ['Old Termez','Amu Darya'], 'Termez landmark still needs a verified spatial match.'),
 
-  ...gaps('Gulistan', 'mahalla', ['Sayqal'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Gulistan', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict'], 'Gulistan numbered microdistrict still needs a verified neighbourhood/residential object.'),
-  ...gaps('Gulistan', 'local_area', ['Center','Dehqon Bazaar','University area','Railway Station area'], 'Gulistan local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Gulistan', 'poi', ['Gulistan State University','Central Stadium'], 'Gulistan landmark still needs a verified spatial match.'),
+  ...gaps('Gulistan', 'local_area', ['Center','University area','Railway Station area'], 'Gulistan local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Chirchiq', 'microdistrict', ['5 microdistrict','6 microdistrict','7 microdistrict','8 microdistrict','9 microdistrict'], 'Chirchiq numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Chirchiq', 'local_area', ['Center','Yubileiny','Khimik','KhimGorodok','Mashinostroitel','Troitsky','Railway Station area','Bochka','Olympic area'], 'Chirchiq local-area alias still needs a verified standalone spatial match.'),
