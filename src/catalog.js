@@ -3,6 +3,7 @@ import { TASHKENT_ENTITIES } from './data/tashkent.js';
 import { TASHKENT_METRO_ENTITIES } from './data/tashkent-metro.js';
 import { TASHKENT_METRO_EXTRA_ENTITIES } from './data/tashkent-metro-extra.js';
 import { TASHKENT_POI_ENTITIES } from './data/tashkent-poi.js';
+import { TASHKENT_POI_EXTRA_ENTITIES } from './data/tashkent-poi-extra.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -10,6 +11,7 @@ const entities = [
   ...TASHKENT_METRO_ENTITIES,
   ...TASHKENT_METRO_EXTRA_ENTITIES,
   ...TASHKENT_POI_ENTITIES,
+  ...TASHKENT_POI_EXTRA_ENTITIES,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
