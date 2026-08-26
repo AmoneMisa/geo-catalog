@@ -45,6 +45,8 @@ import { UZ_SECONDARY_CITY_ANCHORS } from './data/uz-secondary-city-anchors.js';
 import { UZ_HERITAGE_ANCHORS } from './data/uz-heritage-anchors.js';
 import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './data/uz-heritage-transport.js';
 import { UZ_TASHKENT_REGION_CITY_ANCHORS } from './data/uz-tashkent-region-city-anchors.js';
+import { UA_SECONDARY_CITY_ANCHORS } from './data/ua-secondary-city-anchors.js';
+import { UA_ODESA_ANCHORS } from './data/ua-odesa-anchors.js';
 
 const entities = [
   ...CITY_ENTITIES,
@@ -94,6 +96,8 @@ const entities = [
   ...UZ_HERITAGE_ANCHORS,
   ...UZ_HERITAGE_TRANSPORT_ENTITIES,
   ...UZ_TASHKENT_REGION_CITY_ANCHORS,
+  ...UA_SECONDARY_CITY_ANCHORS,
+  ...UA_ODESA_ANCHORS,
 ];
 
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
