@@ -25,4 +25,6 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('dustlik-2', 'Dustlik-2', 'uz:tashkent:yangihayot', 41.19341, 69.20803, 'node', 2206297964, 650),
   osmArea('vuzgorodok', 'Vuzgorodok', 'uz:tashkent:almazar', 41.35155, 69.20564, 'node', 1866061222, 650),
   osmArea('hospitalny', 'Hospitalny', 'uz:tashkent:mirobod', 41.29375, 69.27413, 'node', 3907644432, 550),
+  osmArea('movarounnahr', 'Movarounnahr', 'uz:tashkent:mirobod', 41.29999, 69.28658, 'way', 1057801683, 520),
+  osmArea('nakkoshlik', 'Nakkoshlik', 'uz:tashkent:chilanzar', 41.26695, 69.20273, 'way', 1180079691, 520),
 ]);

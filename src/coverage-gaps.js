@@ -9,7 +9,7 @@ const normalize = (value) => String(value ?? '')
 const gaps = (country, city, type, canonicals, reason) => canonicals.map((canonical) => ({ country, city, type, canonical, reason }));
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
-  ...gaps('UZ', 'Tashkent', 'local_area', ['Oltinkul','Movarounnahr','TTZ-3','Geofizika','Stroygorod','Nakkoshlik','Al-Khorezmi-1','Rakatboshi','Glinka','Alimkent'], 'No verified standalone spatial locality match yet.'),
+  ...gaps('UZ', 'Tashkent', 'local_area', ['Oltinkul','TTZ-3','Geofizika','Stroygorod','Al-Khorezmi-1','Rakatboshi','Glinka','Alimkent'], 'No verified standalone spatial locality match yet.'),
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Lolazor', reason: 'Ambiguous with same-name places outside Tashkent.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Buyuk Ipak Yuli', reason: 'Area must not be conflated with the metro station.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Dehqonobod', reason: 'Same-name settlements elsewhere in Uzbekistan require disambiguation.' },
