@@ -10,6 +10,8 @@ import { UZ_SECONDARY_POI_ANCHORS } from './uz-secondary-poi-anchors.js';
 import { CHIRCHIQ_POI_ANCHORS } from './uz-chirchiq-poi-anchors.js';
 import { UZ_OFFICIAL_INSTITUTION_ANCHORS } from './uz-official-institution-anchors.js';
 import { NAVOIY_MICRODISTRICT_ENTITIES } from './uz-navoiy-microdistricts.js';
+import { UZ_DERIVED_LOCAL_AREA_ENTITIES } from './uz-derived-local-areas.js';
+import { UZ_TAIL_RAILWAY_ENTITIES } from './uz-tail-railway.js';
 
 const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 130) => ({
   id: `uz:${citySlug}:poi:${slug}`,
@@ -39,4 +41,6 @@ export const UZ_TASHKENT_REGION_CITY_ANCHORS = Object.freeze([
   ...CHIRCHIQ_POI_ANCHORS,
   ...UZ_OFFICIAL_INSTITUTION_ANCHORS,
   ...NAVOIY_MICRODISTRICT_ENTITIES,
+  ...UZ_DERIVED_LOCAL_AREA_ENTITIES,
+  ...UZ_TAIL_RAILWAY_ENTITIES,
 ]);
