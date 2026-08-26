@@ -28,7 +28,6 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Chirchiq', 'poi', ['Chirchiq River'], 'Regional natural feature is intentionally not parented to Chirchiq city until natural-feature hierarchy is modeled.'),
 
   ...gaps('Kokand', 'local_area', ['Center','Old City','Khudoyar Khan area','Orda','Chorsu','Dangara Road','Railway Station area'], 'Kokand local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Kokand', 'poi', ['Kokand Bazaar'], 'Kokand landmark still needs a verified spatial match.'),
 
   ...gaps('Margilan', 'local_area', ['Center','Old City','Kumtepa','Yodgorlik','Atlas','Railway Station area'], 'Margilan local-area alias still needs a verified standalone spatial match.'),
 
@@ -40,7 +39,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Angren', 'local_area', ['Center','Old Angren','New Angren','Dukent','Geolog','Railway Station area'], 'Angren local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Bekabad', 'local_area', ['Center','Metallurg','Tsementnik','Vodnik','Syrdarya','Farhod','Railway Station area'], 'Bekabad local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Bekabad', 'poi', ['Uzmetkombinat','Farhod HPP'], 'Bekabad landmark still needs a verified spatial match.'),
+  ...gaps('Bekabad', 'poi', ['Farhod HPP'], 'Cross-border power infrastructure is intentionally not parented to Bekabad until infrastructure/region hierarchy is modeled.'),
 
   ...gaps('Shakhrisabz', 'local_area', ['Center','Old City','Oqsaroy','Dorus Saodat','Dorut Tilovat','Chorsu','Amir Temur','Kitob direction','Railway Station area'], 'Shakhrisabz local-area alias still needs a verified standalone spatial match.'),
 
