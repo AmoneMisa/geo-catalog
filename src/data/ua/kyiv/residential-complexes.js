@@ -31,4 +31,8 @@ export const UA_KYIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   osmResidential('french-quarter-2', 'French Quarter 2', 50.41533, 30.52629, 'way', 45489644, 180),
   sourcedResidential('novopecherski-lypky', 'Novopecherski Lypky', 50.4102, 30.545873, 'https://yandex.com/maps/143/kyiv/geo/zhytlovyi_kompleks_novopecherski_lypky/1724457490/', 180),
   sourcedResidential('taryan-towers', 'Taryan Towers', 50.419556, 30.533583, 'https://www.skyscraperpage.com/forum/showthread.php?t=241697', 140),
+  sourcedResidential('fayna-town', 'Fayna Town', 50.467283, 30.401051, 'https://novobudovy.com/novobudovy-kyieva/novobudovy-shevchenkivskyi-raion/fajna-taun', 220),
+  sourcedResidential('unit-home', 'UNIT.Home', 50.46656, 30.462732, 'https://novobudovy.com/novobudovy-kyieva/unit-home', 180),
+  sourcedResidential('comfort-town', 'Comfort Town', 50.435524, 30.621906, 'https://archi.ru/projects/world/9167/zhiloi-kvartal-komfort-taun', 220),
+  sourcedResidential('great', 'Great', 50.414846, 30.596114, 'https://novobudovy.com/novobudovy-kyieva/novobudova-m-kiiv-vul-urickogo-stadionna-copy-2-copy', 220),
 ]);
