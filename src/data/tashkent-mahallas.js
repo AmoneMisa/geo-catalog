@@ -21,4 +21,7 @@ export const TASHKENT_MAHALLA_ENTITIES = Object.freeze([
   mahalla('belaryk', 'Belaryk', 'uz:tashkent:yakkasaray', 41.29013, 69.24338, 'way', 1078174899, 420),
   mahalla('shahjahan', 'Shahjahan', 'uz:tashkent:yakkasaray', 41.28542, 69.24894, 'way', 1078458314, 420),
   mahalla('mukimiy', 'Mukimiy', 'uz:tashkent:yakkasaray', 41.27945, 69.23655, 'node', 1869638304, 380),
+  mahalla('birlashgan', 'Birlashgan', 'uz:tashkent:yashnobod', 41.29138, 69.35184, 'node', 12253307757, 380),
+  mahalla('nadyra', 'Nadyra', 'uz:tashkent:yashnobod', 41.27749, 69.35085, 'node', 12154016425, 380),
+  mahalla('makhmur', 'Makhmur', 'uz:tashkent:yashnobod', 41.28905, 69.33510, 'node', 12144738031, 380),
 ]);
