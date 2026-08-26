@@ -2,11 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   GEO_ENTITIES,
+  buildGeoLookupKey,
   containsPoint,
   distanceKm,
   findGeoEntities,
   getGeoChildren,
   getGeoEntity,
+  getGeoEntityByLookupKey,
   geoIdForLexiconEntity,
   hasGeoEntity,
   nearestGeoEntity,
@@ -22,6 +24,18 @@ test('stable IDs resolve deterministic entities', () => {
   assert.equal(hasGeoEntity('uz:tashkent'), true);
   assert.equal(getGeoEntity('uz:tashkent')?.canonicalName, 'Tashkent');
   assert.equal(getGeoEntity('missing'), null);
+  assert.equal(getGeoEntityByLookupKey('missing'), null);
+});
+
+test('learned geo lookup keys normalize punctuation without transliterating canonicals', () => {
+  const a = buildGeoLookupKey({
+    country: 'ua', type: 'address', city: 'Chernivtsi', street: 'Воробкевича', houseNumber: '12-А', building: '2',
+  });
+  const b = buildGeoLookupKey({
+    country: 'UA', type: 'address', city: ' Chernivtsi ', street: 'Воробкевича', houseNumber: '12-А', building: ' 2 ',
+  });
+  assert.equal(a, b);
+  assert.equal(a, 'v1|UA|address|chernivtsi||воробкевича|12-а|2');
 });
 
 test('expanded city catalogs are represented for UA, UZ and KZ', () => {
