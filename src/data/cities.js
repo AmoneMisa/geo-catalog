@@ -27,6 +27,16 @@ export const CITY_ENTITIES = Object.freeze([
   city('uz:bekabad','UZ','Bekabad',40.225833,69.229167,{source:'wikidata',wikidataId:'Q815053',accuracyM:1800}),
   city('uz:denov','UZ','Denov',38.266667,67.883333,{source:'wikidata',wikidataId:'Q1189758',accuracyM:1800}),
   city('uz:asaka','UZ','Asaka',40.633333,72.233333,{source:'wikidata',wikidataId:'Q378393',accuracyM:1800}),
+  city('uz:kogon','UZ','Kogon',39.7245,64.5452,{source:'osm',osm:{type:'node',id:245572050},wikidataId:'Q1658752',accuracyM:1600}),
+  city('uz:kattakurgan','UZ','Kattakurgan',39.895833,66.265556,{source:'wikidata',wikidataId:'Q422197',accuracyM:1800}),
+  city('uz:urgut','UZ','Urgut',39.4,67.25,{source:'wikidata',wikidataId:'Q263808',accuracyM:1800}),
+  city('uz:yangiyol','UZ','Yangiyol',41.1196,69.0568,{source:'osm',osm:{type:'node',id:246177830},wikidataId:'Q384774',accuracyM:1600}),
+  city('uz:chust','UZ','Chust',40.9998,71.2325,{source:'osm',osm:{type:'way',id:187354663},wikidataId:'Q1090050',accuracyM:1700}),
+  city('uz:chartak','UZ','Chartak',41.0714,71.819,{source:'osm',osm:{type:'node',id:247049310},wikidataId:'Q722997',accuracyM:1500}),
+  city('uz:kosonsoy','UZ','Kosonsoy',41.2529,71.5446,{source:'osm',osm:{type:'node',id:247050181},wikidataId:'Q609892',accuracyM:1600}),
+  city('uz:shahrixon','UZ','Shahrixon',40.7095,72.0485,{source:'osm',osm:{type:'way',id:27142752},wikidataId:'Q1659154',accuracyM:1700}),
+  city('uz:xonobod','UZ','Xonobod',40.80711,72.99094,{source:'osm',osm:{type:'way',id:27642857},wikidataId:'Q650208',accuracyM:1700}),
+  city('uz:khojeyli','UZ','Khojeyli',42.4149,59.45563,{source:'osm',osm:{type:'way',id:273457023},wikidataId:'Q1400173',accuracyM:1800}),
 
   // Kazakhstan — mirrors @whiteslove/parsing-lexicon KZ_CITIES.
   city('kz:almaty','KZ','Almaty',43.2389,76.8897),
