@@ -43,4 +43,6 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('alimkent', 'Alimkent', 'uz:tashkent:yashnobod', 41.29546, 69.33720, 'node', 12144738032, 520),
   osmArea('oltinkul', 'Oltinkul', 'uz:tashkent:mirobod', 41.27363, 69.30646, 'way', 1068108841, 450),
   manualArea('rakatboshi', 'Rakatboshi', 'uz:tashkent:yakkasaray', 41.293748, 69.246822, 'https://yandex.uz/maps/10335/tashkent/geo/1508577561/', 500),
+  manualArea('lolazor', 'Lolazor', 'uz:tashkent:mirobod', 41.296228, 69.272263, 'https://yandex.uz/maps/10335/tashkent/geo/1943336211/', 500),
+  manualArea('buyuk-ipak-yuli', 'Buyuk Ipak Yuli', 'uz:tashkent:mirzo-ulugbek', 41.312282, 69.291855, 'https://yandex.com/maps/10335/tashkent/geo/1508577401/', 500),
 ]);
