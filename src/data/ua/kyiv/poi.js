@@ -20,6 +20,12 @@ export const UA_KYIV_POI_ENTITIES = Object.freeze([
   poi('peremoha-park', 'poi.park', 'Парк Перемога', 50.46345, 30.60532, 850, { wikidataId: 'Q4344575' }),
   poi('kyoto-park', 'poi.park', 'Парк Кіото', 50.46445, 30.64479, 800, { wikidataId: 'Q4344289' }),
   poi('syretskyi-park', 'poi.park', 'Сирецький парк', 50.47368, 30.44074, 700, { wikidataId: 'Q4447980' }),
+  poi('volodymyrska-hirka', 'poi.park', 'Володимирська гірка', 50.456528, 30.525523, 550, { source: 'manual', sourceUrl: 'https://discover.ua/locations/vladimirskaya-gorka' }),
+  poi('feofaniia-park', 'poi.park', 'Парк Феофанія', 50.340833, 30.486944, 650, { wikidataId: 'Q4482871' }),
+  poi('nyvky-park', 'poi.park', 'Парк Нивки', 50.461303, 30.420408, 700, { wikidataId: 'Q4318469' }),
+  poi('partisan-glory-park', 'poi.park', 'Парк Партизанської слави', 50.417222, 30.6725, 900, { wikidataId: 'Q3400230', osm: Object.freeze({ type: 'way', id: 32870085 }) }),
+  poi('hydropark', 'poi.recreation_area', 'Гідропарк', 50.443611, 30.576944, 1000, { wikidataId: 'Q2639386' }),
+  poi('trukhaniv-island', 'poi.island', 'Труханів острів', 50.465719, 30.545371, 1800, { source: 'manual', sourceUrl: 'https://maps.visicom.ua/c/30.55109%2C50.46581%2C13/f/HSTC8?lang=uk', wikidataId: 'Q2992707', osm: Object.freeze({ type: 'relation', id: 20109338 }) }),
 
   poi('maidan-nezalezhnosti', 'poi.square', 'Майдан Незалежності', 50.45025, 30.523889, 220, { wikidataId: 'Q863759' }),
   poi('sofiiska-square', 'poi.square', 'Софійська площа', 50.453611, 30.516111, 180, { wikidataId: 'Q3406857', osm: Object.freeze({ type: 'relation', id: 9298900 }) }),
