@@ -1,0 +1,92 @@
+export const UA_KYIV_EXTRA_ANCHORS = Object.freeze([
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:obolon',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Оболонь', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.5107, lng: 30.5034 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1800,
+    osm: Object.freeze({ type: 'node', id: 1308227686 }), wikidataId: 'Q4329576',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:priorka',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Пріорка', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.50466, lng: 30.4525 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1300,
+    osm: Object.freeze({ type: 'node', id: 2951732588 }), wikidataId: 'Q4378982',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:vitriani-hory',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Вітряні гори', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.51255, lng: 30.43644 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1200,
+    osm: Object.freeze({ type: 'node', id: 2951732569 }), wikidataId: 'Q4110091',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:minskyi-masyv',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Мінський масив', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.51921, lng: 30.46192 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1500,
+    osm: Object.freeze({ type: 'node', id: 2951732574 }), wikidataId: 'Q4295223',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:troieshchyna',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Троєщина', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.5137, lng: 30.6065 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 2600,
+    osm: Object.freeze({ type: 'node', id: 1308227689 }), wikidataId: 'Q62226',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:lisovyi-masyv',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Лісовий масив', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.4746, lng: 30.6302 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1800,
+    osm: Object.freeze({ type: 'node', id: 1308284009 }),
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:voskresenka',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Воскресенка', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.4842, lng: 30.5986 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1700,
+    osm: Object.freeze({ type: 'node', id: 1308227684 }), wikidataId: 'Q4126145',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:mykilska-slobidka',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Микільська Слобідка', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.46393, lng: 30.58729 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1000,
+    osm: Object.freeze({ type: 'node', id: 7048229986 }), wikidataId: 'Q4320840',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:nova-darnytsia',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Нова Дарниця', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.42629, lng: 30.65956 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1300,
+    osm: Object.freeze({ type: 'node', id: 1308284045 }), wikidataId: 'Q4322033',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:bortnychi',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Бортничі', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.38006, lng: 30.69134 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1800,
+    osm: Object.freeze({ type: 'node', id: 708946837 }), wikidataId: 'Q4094780',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:bykivnia',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Биківня', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.47599, lng: 30.67046 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1600,
+    osm: Object.freeze({ type: 'node', id: 1308283983 }), wikidataId: 'Q1018526',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:dvrz',
+    type: 'microdistrict', country: 'UA', canonicalName: 'ДВРЗ', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.45158, lng: 30.67991 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1600,
+    osm: Object.freeze({ type: 'node', id: 1308227683 }), wikidataId: 'Q4153371',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:sviatoshyn',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Святошин', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.45362, lng: 30.37109 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1500,
+    osm: Object.freeze({ type: 'node', id: 2962023007 }), wikidataId: 'Q1975744',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:bilychi',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Біличі', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.45963, lng: 30.34605 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1500,
+    osm: Object.freeze({ type: 'node', id: 2962022992 }), wikidataId: 'Q4082000',
+  }),
+  Object.freeze({
+    id: 'ua:kyiv:microdistrict:novobilychi',
+    type: 'microdistrict', country: 'UA', canonicalName: 'Новобіличі', parentId: 'ua:kyiv',
+    center: Object.freeze({ lat: 50.47219, lng: 30.33747 }), source: 'osm', accuracy: 'neighborhood', accuracyM: 1500,
+    osm: Object.freeze({ type: 'node', id: 2189566462 }), wikidataId: 'Q4323219',
+  }),
+]);

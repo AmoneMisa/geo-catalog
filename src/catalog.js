@@ -47,6 +47,7 @@ import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './data/uz-heritage-transport.js'
 import { UZ_TASHKENT_REGION_CITY_ANCHORS } from './data/uz-tashkent-region-city-anchors.js';
 import { UA_SECONDARY_CITY_ANCHORS } from './data/ua-secondary-city-anchors.js';
 import { UA_KYIV_ANCHORS } from './data/ua-kyiv-anchors.js';
+import { UA_KYIV_EXTRA_ANCHORS } from './data/ua-kyiv-anchors-extra.js';
 import { UA_ODESA_ANCHORS } from './data/ua-odesa-anchors.js';
 import { LEARNED_ADDRESS_ENTITIES } from './data/learned-addresses.js';
 
@@ -100,6 +101,7 @@ const entities = [
   ...UZ_TASHKENT_REGION_CITY_ANCHORS,
   ...UA_SECONDARY_CITY_ANCHORS,
   ...UA_KYIV_ANCHORS,
+  ...UA_KYIV_EXTRA_ANCHORS,
   ...UA_ODESA_ANCHORS,
   ...LEARNED_ADDRESS_ENTITIES,
 ];
