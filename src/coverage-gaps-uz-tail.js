@@ -17,7 +17,7 @@ export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Kattakurgan', 'local_area', ['Center','Old City','Railway Station area','Bazaar'], 'Kattakurgan local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Kattakurgan', 'poi', ['Kattakurgan Reservoir'], 'Regional reservoir is intentionally not parented to Kattakurgan city until region/natural-feature hierarchy is modeled.'),
   ...gaps('Urgut', 'local_area', ['Center','Navoiy','Samarkand direction'], 'Urgut local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Yangiyol', 'local_area', ['Center','Railway Station area','Bazaar','Samarkand Highway','Tashkent direction'], 'Yangiyol local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Yangiyol', 'local_area', ['Center','Railway Station area','Samarkand Highway','Tashkent direction'], 'Yangiyol local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Yangiyer', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict'], 'Yangiyer numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Yangiyer', 'local_area', ['Center','Railway Station area'], 'Yangiyer local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Shirin', 'local_area', ['Center','Energetik','Farhod','Syrdarya'], 'Shirin local-area alias still needs a verified standalone spatial match.'),
