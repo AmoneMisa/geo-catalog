@@ -52,4 +52,10 @@ export const UA_KYIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   sourcedResidential('signature', 'Signature', 50.438464, 30.535436, 'https://novobudovy.com/novobudovy-kyieva/biznes-centr-m-kiiv-vul-mechnikova', 160),
   sourcedResidential('rybalsky', 'Rybalsky', 50.480058, 30.533506, 'https://novobudovy.com/all/rybalsky', 240),
   sourcedResidential('podil-plaza-residence', 'Podil Plaza & Residence', 50.463206, 30.502822, 'https://novobudovy.com/novobudovy-kyieva/novobudovy-shevchenkivskyi-raion/podol-plaza-rezidens', 180),
+  sourcedResidential('creator-city', 'Creator City', 50.462438, 30.46285, 'https://novobudovy.com/ru/novobudovy-kyieva/novobudovy-shevchenkivskyi-raion/kreator-siti', 200),
+  sourcedResidential('jack-house', 'Jack House', 50.434644, 30.532129, 'https://novobudovy.com/novobudovy-kyieva/pecherska-klovska/zhk-m-kiiv-bul-l-ukrainki-copy', 140),
+  sourcedResidential('central-park', 'Central Park', 50.416243, 30.53268, 'https://novobudovy.com/arkhiv/zhitlovij-kompleks-central-park-m-kiiv-vul-kudri-druzhbi-narodiv', 180),
+  sourcedResidential('poetica', 'Poetica', 50.462381, 30.456391, 'https://novobudovy.com/novobudovy-kyieva/zhk-poetychnyi', 220),
+  sourcedResidential('smart-plaza-polytech', 'Smart Plaza Polytech', 50.451596, 30.467569, 'https://novobudovy.com/novobudovy-kyieva/politekh-shuliavska/zhk-m-kiiv', 150),
+  sourcedResidential('smart-plaza-obolon', 'Smart Plaza Obolon', 50.513014, 30.49725, 'https://novobudovy.com/novobudovy-kyieva/smart-plaza-obolon', 150),
 ]);
