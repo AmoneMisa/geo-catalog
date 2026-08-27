@@ -13,6 +13,8 @@ const mahalla = (slug, canonicalName, parentId, lat, lng, osmType, osmId, accura
 
 export const TASHKENT_MAHALLA_ENTITIES = Object.freeze([
   mahalla('khastimam', 'Khastimam', 'uz:tashkent:almazar', 41.33303, 69.24287, 'way', 1137236407, 420),
+  mahalla('yangi-tashkent', 'Yangi Tashkent', 'uz:tashkent:almazar', 41.36743, 69.22415, 'node', 1866058486, 520),
+  mahalla('umid', 'Umid', 'uz:tashkent:almazar', 41.36899, 69.21901, 'way', 1137777682, 520),
   mahalla('kashgar', 'Kashgar', 'uz:tashkent:yunusabad', 41.31619, 69.27087, 'way', 1006384228, 420),
   mahalla('buyuk-turan', 'Buyuk Turan', 'uz:tashkent:yunusabad', 41.32097, 69.28708, 'way', 1008828995, 460),
   mahalla('minor', 'Minor', 'uz:tashkent:yunusabad', 41.33725, 69.27972, 'way', 1012743631, 460),
