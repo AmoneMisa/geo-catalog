@@ -2,11 +2,23 @@ import { isValidCoordinate } from './spatial.js';
 
 const ENTITY_TYPES = new Set([
   'country', 'region', 'city', 'district', 'microdistrict', 'mahalla', 'local_area', 'suburb',
-  'settlement', 'street', 'address', 'residential_complex', 'metro', 'poi'
+  'settlement', 'street', 'address', 'residential_complex', 'metro', 'poi', 'development_area',
 ]);
 
-const SOURCES = new Set(['osm', 'wikidata', 'official', 'manual']);
+const POI_TYPES = new Set([
+  'park', 'recreation_area', 'island', 'square', 'street', 'landmark', 'monument',
+  'stadium', 'cultural_venue', 'exhibition_center', 'zoo', 'shopping_mall', 'market',
+  'beach', 'memorial', 'university', 'botanical_garden',
+]);
+
+const SOURCES = new Set(['osm', 'wikidata', 'official', 'manual', 'geonames']);
 const ACCURACY = new Set(['country', 'region', 'city', 'district', 'neighborhood', 'street', 'building', 'poi', 'entrance', 'approximate']);
+
+function isSupportedEntityType(type) {
+  if (ENTITY_TYPES.has(type)) return true;
+  if (typeof type !== 'string' || !type.startsWith('poi.')) return false;
+  return POI_TYPES.has(type.slice(4));
+}
 
 function semanticKey(entity) {
   if (!entity?.canonicalName || !entity?.type || !entity?.country) return null;
@@ -42,7 +54,7 @@ export function validateGeoCatalog(entities) {
       else semanticKeys.set(key, entity.id);
     }
 
-    if (!ENTITY_TYPES.has(entity.type)) errors.push(`${entity.id}: unsupported type ${entity.type}`);
+    if (!isSupportedEntityType(entity.type)) errors.push(`${entity.id}: unsupported type ${entity.type}`);
     if (!/^[A-Z]{2}$/.test(entity.country ?? '')) errors.push(`${entity.id}: country must be ISO 3166-1 alpha-2`);
     if (!entity.canonicalName) errors.push(`${entity.id}: canonicalName is required`);
     if (!isValidCoordinate(entity.center)) errors.push(`${entity.id}: invalid center`);
