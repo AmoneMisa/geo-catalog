@@ -1,7 +1,5 @@
 import { TASHKENT_ENTITIES } from './districts.js';
 import { TASHKENT_METRO_ENTITIES } from './metro.js';
-import { TASHKENT_METRO_EXTRA_ENTITIES } from './metro-extra.js';
-import { TASHKENT_METRO_CIRCLE_EXTRA_ENTITIES } from './metro-circle-extra.js';
 import { TASHKENT_MICRODISTRICT_ENTITIES } from './microdistricts.js';
 import { TASHKENT_MICRODISTRICT_EXTRA_ENTITIES } from './microdistricts-extra.js';
 import { TASHKENT_CHILANZAR_11_14_ENTITIES } from './microdistricts-chilanzar-11-14.js';
@@ -34,8 +32,6 @@ import { TASHKENT_RESIDENTIAL_EXTRA_ENTITIES } from './residential-extra.js';
 export const UZ_TASHKENT_ENTITIES = Object.freeze([
   ...TASHKENT_ENTITIES,
   ...TASHKENT_METRO_ENTITIES,
-  ...TASHKENT_METRO_EXTRA_ENTITIES,
-  ...TASHKENT_METRO_CIRCLE_EXTRA_ENTITIES,
   ...TASHKENT_MICRODISTRICT_ENTITIES,
   ...TASHKENT_MICRODISTRICT_EXTRA_ENTITIES,
   ...TASHKENT_CHILANZAR_11_14_ENTITIES,
