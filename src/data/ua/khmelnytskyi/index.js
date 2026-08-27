@@ -1,0 +1,7 @@
+import { UA_KHMELNYTSKYI_NEIGHBORHOOD_ENTITIES } from './neighborhoods.js';
+import { UA_KHMELNYTSKYI_POI_ENTITIES } from './poi.js';
+
+export const UA_KHMELNYTSKYI_ENTITIES = Object.freeze([
+  ...UA_KHMELNYTSKYI_NEIGHBORHOOD_ENTITIES,
+  ...UA_KHMELNYTSKYI_POI_ENTITIES,
+]);
