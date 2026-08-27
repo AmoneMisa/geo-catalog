@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readdirSync } from 'node:fs';
 import {
   GEO_ENTITIES,
   buildGeoLookupKey,
@@ -18,6 +19,11 @@ import {
 
 test('catalog passes invariants', () => {
   assert.deepEqual(validateGeoCatalog(GEO_ENTITIES), { valid: true, errors: [] });
+});
+
+test('data modules use stable domain/geography names instead of *-extra.js', () => {
+  const files = readdirSync(new URL('../src/data/', import.meta.url), { recursive: true });
+  assert.deepEqual(files.filter((file) => /(?:^|[/\\])[^/\\]*-extra\.js$/.test(file)), []);
 });
 
 test('stable IDs resolve deterministic entities', () => {
