@@ -13,10 +13,12 @@ const station = (slug, canonicalName, lat, lng, wikidataId, osmId = null) => ({
 });
 
 export const TASHKENT_METRO_ENTITIES = Object.freeze([
+  // Chilonzor Line — 17 stations.
   station('buyuk-ipak-yoli', 'Buyuk Ipak Yoli', 41.3263444, 69.3277694, 'Q4100729', 1777037919),
+  station('pushkin', 'Pushkin', 41.32195, 69.3111, 'Q4384777', 1777037922),
   station('hamid-olimjon', 'Hamid Olimjon', 41.3177694, 69.2948778, 'Q4495262', 1775848270),
-  station('amir-temur-xiyoboni', 'Amir Temur Xiyoboni', 41.3121639, 69.2814500, 'Q4064347'),
-  station('mustaqillik-maydoni', 'Mustaqillik Maydoni', 41.3149500, 69.2710611, 'Q4308514', 1778357473),
+  station('amir-temur-xiyoboni', 'Amir Temur Xiyoboni', 41.3121639, 69.28145, 'Q4064347'),
+  station('mustaqillik-maydoni', 'Mustaqillik Maydoni', 41.31495, 69.2710611, 'Q4308514', 1778357473),
   station('paxtakor', 'Paxtakor', 41.3177889, 69.2550806, 'Q2001497', 1777740154),
   station('xalqlar-dostligi', 'Xalqlar Dostligi', 41.3118806, 69.2413917, 'Q4099275'),
   station('milliy-bog', 'Milliy Bog', 41.3042806, 69.2354139, 'Q4293549', 1252201486),
@@ -25,7 +27,12 @@ export const TASHKENT_METRO_ENTITIES = Object.freeze([
   station('chilonzor', 'Chilonzor', 41.2745472, 69.2047389, 'Q4515926'),
   station('olmazor', 'Olmazor', 41.2556111, 69.1960139, 'Q4333950'),
   station('choshtepa', 'Choshtepa', 41.2388089, 69.1956789, 'Q12820877', 10538244112),
+  station('ozgarish', 'Ozgarish', 41.2272694, 69.2040389, 'Q12817052', 10538244113),
+  station('sergeli', 'Sergeli', 41.22064, 69.20884, 'Q12831211'),
+  station('yangihayot', 'Yangihayot', 41.2126889, 69.2146694, 'Q105642828', 10538244119),
   station('chinor', 'Chinor', 41.2060111, 69.2195, 'Q12831407', 10538244120),
+
+  // Oʻzbekiston Line — 11 stations.
   station('beruniy', 'Beruniy', 41.3454278, 69.2067667, 'Q4085250', 1631211328),
   station('tinchlik', 'Tinchlik', 41.3318611, 69.219925, 'Q4457872'),
   station('chorsu', 'Chorsu', 41.3252389, 69.2320639, 'Q2452951'),
@@ -36,16 +43,31 @@ export const TASHKENT_METRO_ENTITIES = Object.freeze([
   station('oybek', 'Oybek', 41.2986861, 69.2733333, 'Q4058725'),
   station('toshkent', 'Toshkent', 41.2921361, 69.28615, 'Q4120994'),
   station('mashinasozlar', 'Mashinasozlar', 41.2994389, 69.3039472, 'Q4286137', 1765133546),
+  station('dostlik', 'Dostlik', 41.2935389, 69.3226861, 'Q4171201', 1777856012),
+
+  // Yunusobod Line — 8 stations.
+  station('turkiston', 'Turkiston', 41.37752, 69.29602, 'Q10276199', 7861940928),
   station('yunusobod', 'Yunusobod', 41.3666389, 69.2921111, 'Q12832415'),
   station('shahriston', 'Shahriston', 41.3538361, 69.2881972, 'Q4494388', 1633822600),
   station('bodomzor', 'Bodomzor', 41.3462, 69.28595, 'Q4074926', 1775804030),
+  station('minor', 'Minor', 41.328094, 69.283661, 'Q719456'),
   station('abdulla-qodiriy', 'Abdulla Qodiriy', 41.3194111, 69.2824583, 'Q4054555', 1772575475),
   station('yunus-rajabiy', 'Yunus Rajabiy', 41.3123111, 69.2810417, 'Q4534676', 1777051512),
   station('ming-orik', 'Ming Orik', 41.2989917, 69.2730194, 'Q4294045', 1579080943),
+
+  // Circle Line — 14 stations.
+  station('texnopark', 'Texnopark', 41.2945731, 69.3233761, 'Q65160427', 10537927077),
   station('yashnobod', 'Yashnobod', 41.2977589, 69.3497389, 'Q97344240'),
   station('tuzel', 'Tuzel', 41.2920561, 69.35617, 'Q97344275'),
   station('olmos', 'Olmos', 41.2819819, 69.3603239, 'Q65160455'),
-  station('rohat', 'Rohat', 41.2655361, 69.3649200, 'Q97344269'),
+  station('rohat', 'Rohat', 41.2655361, 69.36492, 'Q97344269'),
+  station('yangiobod', 'Yangiobod', 41.25651, 69.35872, 'Q97344283', 10537927082),
   station('qoyliq', 'Qoyliq', 41.2373911, 69.3274581, 'Q97344259'),
+  station('matonat', 'Matonat', 41.24447, 69.30832, 'Q117865916', 10537931294),
+  station('qiyot', 'Qiyot', 41.24448, 69.29973, 'Q117865934', 10537931295),
+  station('tolariq', 'Tolariq', 41.24451, 69.28496, 'Q117868715', 10538303447),
+  station('xonobod', 'Xonobod', 41.23001, 69.27044, 'Q117868791', 10637629351),
+  station('quruvchilar', 'Quruvchilar', 41.22164, 69.2605, 'Q117868858', 10637629352),
+  station('turon', 'Turon', 41.21068, 69.23415, 'Q124820177', 11218653779),
   station('qipchoq', 'Qipchoq', 41.2053889, 69.2213611, 'Q124820156'),
 ]);
