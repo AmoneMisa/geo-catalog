@@ -27,6 +27,25 @@ test('stable IDs resolve deterministic entities', () => {
   assert.equal(getGeoEntityByLookupKey('missing'), null);
 });
 
+test('typed POIs and GeoNames provenance are first-class catalog values', () => {
+  const park = getGeoEntity('ua:kyiv:poi:taras-shevchenko-park');
+  assert.equal(park?.type, 'poi.park');
+  assert.ok(findGeoEntities({ country: 'UA', type: 'poi' }).includes(park));
+
+  const nyvky = getGeoEntity('ua:kyiv:microdistrict:nyvky');
+  assert.equal(nyvky?.source, 'geonames');
+
+  const developmentArea = getGeoEntity('ua:odesa:development-area:sovinion');
+  assert.equal(developmentArea?.type, 'development_area');
+});
+
+test('generic POI lexicon lookup resolves typed POIs', () => {
+  assert.equal(
+    resolveLexiconGeoEntity({ country: 'UA', city: 'Kyiv', type: 'poi', canonical: 'Taras Shevchenko Park' })?.id,
+    'ua:kyiv:poi:taras-shevchenko-park',
+  );
+});
+
 test('learned geo lookup keys normalize punctuation without transliterating canonicals', () => {
   const a = buildGeoLookupKey({
     country: 'ua', type: 'address', city: 'Chernivtsi', district: 'A', street: 'Воробкевича', houseNumber: '12-А', building: '2',
