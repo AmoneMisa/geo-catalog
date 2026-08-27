@@ -11,6 +11,19 @@ const wikidataResidential = (slug, canonicalName, lat, lng, wikidataId, accuracy
   wikidataId,
 });
 
+const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 100) => ({
+  id: `uz:tashkent:residential:${slug}`,
+  type: 'residential_complex',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:tashkent',
+  center: { lat, lng },
+  source: 'osm',
+  accuracy: 'building',
+  accuracyM,
+  osm: { type: 'way', id: osmWayId },
+});
+
 const sourcedResidential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 150) => ({
   id: `uz:tashkent:residential:${slug}`,
   type: 'residential_complex',
@@ -26,8 +39,14 @@ const sourcedResidential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM 
 
 export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
   wikidataResidential('nest-one', 'Nest One', 41.3121000, 69.2519000, 'Q97658661', 80),
+  osmResidential('nrg-u-tower', 'NRG U-Tower', 41.31104, 69.23932, 1075340743, 90),
+  osmResidential('nrg-oybek', 'NRG Oybek', 41.29354, 69.28185, 1126838984, 90),
   sourcedResidential('gardens-residence', 'Gardens Residence', 41.3199950, 69.2467130, 'https://www.ehotelsreviews.com/gardens-residence-8635294-ru', 220),
   sourcedResidential('boulevard', 'Boulevard', 41.3158190, 69.2440140, 'https://www.ehotelsreviews.com/boulevard-residence-8865047-en', 220),
   sourcedResidential('mirabad-avenue', 'Mirabad Avenue', 41.2914990, 69.2715170, 'https://yandex.com/maps/10335/tashkent/geo/3287591157/', 180),
   sourcedResidential('darkhan-residence', 'Darkhan Residence', 41.3318190, 69.3106570, 'https://yandex.com/maps/10335/tashkent/geo/5491604117/', 150),
+  sourcedResidential('assalom-sohil', 'Assalom Sohil', 41.282995, 69.30842, 'https://yandex.com/maps/10335/tashkent/geo/4098449809/', 140),
+  sourcedResidential('xon-saroy', 'Xon Saroy', 41.373056, 69.315705, 'https://yandex.com/maps/10335/tashkent/geo/4859874576/', 160),
+  sourcedResidential('infinity', 'Infinity', 41.3025714, 69.2889718, 'https://infinity.gh.uz/', 220),
+  sourcedResidential('cambridge-residence', 'Cambridge Residence', 41.348819, 69.253236, 'https://yandex.com/maps/org/cambridge_residence/50442206495/', 130),
 ]);
