@@ -30,6 +30,12 @@ const byLookupKey = new Map(
     .map((entity) => [entity.lookupKey, entity]),
 );
 
+function matchesType(entityType, requestedType) {
+  if (!requestedType) return true;
+  if (entityType === requestedType) return true;
+  return requestedType === 'poi' && typeof entityType === 'string' && entityType.startsWith('poi.');
+}
+
 export function getGeoEntity(id) {
   return byId.get(id) ?? null;
 }
@@ -46,7 +52,7 @@ export function findGeoEntities(filters = {}) {
   const { country, type, parentId } = filters;
   return GEO_ENTITIES.filter((entity) =>
     (!country || entity.country === country) &&
-    (!type || entity.type === type) &&
+    matchesType(entity.type, type) &&
     (parentId === undefined || entity.parentId === parentId)
   );
 }
