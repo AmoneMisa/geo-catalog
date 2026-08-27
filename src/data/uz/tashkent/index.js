@@ -1,7 +1,6 @@
 import { TASHKENT_ENTITIES } from './districts.js';
 import { TASHKENT_METRO_ENTITIES } from './metro.js';
 import { TASHKENT_MICRODISTRICT_ENTITIES } from './microdistricts.js';
-import { TASHKENT_MICRODISTRICT_EXTRA_ENTITIES } from './microdistricts-extra.js';
 import { TASHKENT_CHILANZAR_11_14_ENTITIES } from './microdistricts-chilanzar-11-14.js';
 import { TASHKENT_CHILANZAR_15_20_ENTITIES } from './microdistricts-chilanzar-15-20.js';
 import { TASHKENT_YUNUSABAD_4_9_ENTITIES } from './microdistricts-yunusabad-4-9.js';
@@ -11,9 +10,9 @@ import { TASHKENT_NAMED_MICRODISTRICT_ENTITIES } from './microdistricts-named.js
 import { TASHKENT_LOCAL_AREA_ENTITIES } from './local-areas.js';
 import { TASHKENT_ALMAZAR_LOCAL_AREA_ENTITIES } from './local-areas-almazar.js';
 import { TASHKENT_SHAYKHANTAHUR_LOCAL_AREA_ENTITIES } from './local-areas-shaykhantahur.js';
-import { TASHKENT_CORE_EXTRA_LOCAL_AREA_ENTITIES } from './local-areas-core-extra.js';
 import { TASHKENT_MIRZO_ULUGBEK_LOCAL_AREA_ENTITIES } from './local-areas-mirzo-ulugbek.js';
-import { TASHKENT_TTZ_EXTRA_LOCAL_AREA_ENTITIES } from './local-areas-ttz-extra.js';
+import { TASHKENT_YUNUSABAD_LOCAL_AREA_ENTITIES } from './local-areas-yunusabad.js';
+import { TASHKENT_YAKKASARAY_LOCAL_AREA_ENTITIES } from './local-areas-yakkasaray.js';
 import { TASHKENT_YASHNOBOD_LOCAL_AREA_ENTITIES } from './local-areas-yashnobod.js';
 import { TASHKENT_YASHNOBOD_TUZEL_LOCAL_AREA_ENTITIES } from './local-areas-yashnobod-tuzel.js';
 import { TASHKENT_SERGELI_YANGIHAYOT_LOCAL_AREA_ENTITIES } from './local-areas-sergeli-yangihayot.js';
@@ -21,19 +20,15 @@ import { TASHKENT_SERGELI_BLOCK_LOCAL_AREA_ENTITIES } from './local-areas-sergel
 import { TASHKENT_YANGIDARHAN_LOCAL_AREA_ENTITIES } from './local-areas-yangidarhan.js';
 import { TASHKENT_VERIFIED_AREA_ENTITIES } from './local-areas-verified.js';
 import { TASHKENT_MAHALLA_ENTITIES } from './mahallas.js';
-import { TASHKENT_ALMAZAR_EXTRA_MAHALLA_ENTITIES } from './mahallas-almazar-extra.js';
 import { TASHKENT_MIRZO_ULUGBEK_MAHALLA_ENTITIES } from './mahallas-mirzo-ulugbek.js';
 import { TASHKENT_YANGIHAYOT_MAHALLA_ENTITIES } from './mahallas-yangihayot.js';
 import { TASHKENT_POI_ENTITIES } from './poi.js';
-import { TASHKENT_POI_EXTRA_ENTITIES } from './poi-extra.js';
 import { TASHKENT_RESIDENTIAL_ENTITIES } from './residential.js';
-import { TASHKENT_RESIDENTIAL_EXTRA_ENTITIES } from './residential-extra.js';
 
 export const UZ_TASHKENT_ENTITIES = Object.freeze([
   ...TASHKENT_ENTITIES,
   ...TASHKENT_METRO_ENTITIES,
   ...TASHKENT_MICRODISTRICT_ENTITIES,
-  ...TASHKENT_MICRODISTRICT_EXTRA_ENTITIES,
   ...TASHKENT_CHILANZAR_11_14_ENTITIES,
   ...TASHKENT_CHILANZAR_15_20_ENTITIES,
   ...TASHKENT_YUNUSABAD_4_9_ENTITIES,
@@ -43,9 +38,9 @@ export const UZ_TASHKENT_ENTITIES = Object.freeze([
   ...TASHKENT_LOCAL_AREA_ENTITIES,
   ...TASHKENT_ALMAZAR_LOCAL_AREA_ENTITIES,
   ...TASHKENT_SHAYKHANTAHUR_LOCAL_AREA_ENTITIES,
-  ...TASHKENT_CORE_EXTRA_LOCAL_AREA_ENTITIES,
   ...TASHKENT_MIRZO_ULUGBEK_LOCAL_AREA_ENTITIES,
-  ...TASHKENT_TTZ_EXTRA_LOCAL_AREA_ENTITIES,
+  ...TASHKENT_YUNUSABAD_LOCAL_AREA_ENTITIES,
+  ...TASHKENT_YAKKASARAY_LOCAL_AREA_ENTITIES,
   ...TASHKENT_YASHNOBOD_LOCAL_AREA_ENTITIES,
   ...TASHKENT_YASHNOBOD_TUZEL_LOCAL_AREA_ENTITIES,
   ...TASHKENT_SERGELI_YANGIHAYOT_LOCAL_AREA_ENTITIES,
@@ -53,11 +48,8 @@ export const UZ_TASHKENT_ENTITIES = Object.freeze([
   ...TASHKENT_YANGIDARHAN_LOCAL_AREA_ENTITIES,
   ...TASHKENT_VERIFIED_AREA_ENTITIES,
   ...TASHKENT_MAHALLA_ENTITIES,
-  ...TASHKENT_ALMAZAR_EXTRA_MAHALLA_ENTITIES,
   ...TASHKENT_MIRZO_ULUGBEK_MAHALLA_ENTITIES,
   ...TASHKENT_YANGIHAYOT_MAHALLA_ENTITIES,
   ...TASHKENT_POI_ENTITIES,
-  ...TASHKENT_POI_EXTRA_ENTITIES,
   ...TASHKENT_RESIDENTIAL_ENTITIES,
-  ...TASHKENT_RESIDENTIAL_EXTRA_ENTITIES,
 ]);
