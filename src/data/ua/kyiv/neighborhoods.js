@@ -12,20 +12,6 @@ const microdistrict = (slug, canonicalName, lat, lng, osmId, accuracyM, wikidata
   ...(wikidataId ? { wikidataId } : {}),
 });
 
-const osmWayMicrodistrict = (slug, canonicalName, lat, lng, osmId, accuracyM, wikidataId = null) => Object.freeze({
-  id: `ua:kyiv:microdistrict:${slug}`,
-  type: 'microdistrict',
-  country: 'UA',
-  canonicalName,
-  parentId: 'ua:kyiv',
-  center: Object.freeze({ lat, lng }),
-  source: 'osm',
-  accuracy: 'neighborhood',
-  accuracyM,
-  osm: Object.freeze({ type: 'way', id: osmId }),
-  ...(wikidataId ? { wikidataId } : {}),
-});
-
 export const UA_KYIV_NEIGHBORHOODS = Object.freeze([
   microdistrict('zvirynets', 'Звіринець', 50.41922, 30.55325, 1308227685, 1300, 'Q4189587'),
   microdistrict('chorna-hora', 'Чорна гора', 50.41035, 30.53995, 1308227676, 900, 'Q4518648'),
