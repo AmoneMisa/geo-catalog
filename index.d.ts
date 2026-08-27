@@ -1,5 +1,41 @@
-export type GeoEntityType = 'country' | 'region' | 'city' | 'district' | 'microdistrict' | 'mahalla' | 'local_area' | 'suburb' | 'settlement' | 'street' | 'address' | 'residential_complex' | 'metro' | 'poi';
-export type GeoSource = 'osm' | 'wikidata' | 'official' | 'manual';
+export type GeoPoiType =
+  | 'poi.park'
+  | 'poi.recreation_area'
+  | 'poi.island'
+  | 'poi.square'
+  | 'poi.street'
+  | 'poi.landmark'
+  | 'poi.monument'
+  | 'poi.stadium'
+  | 'poi.cultural_venue'
+  | 'poi.exhibition_center'
+  | 'poi.zoo'
+  | 'poi.shopping_mall'
+  | 'poi.market'
+  | 'poi.beach'
+  | 'poi.memorial'
+  | 'poi.university'
+  | 'poi.botanical_garden';
+
+export type GeoEntityType =
+  | 'country'
+  | 'region'
+  | 'city'
+  | 'district'
+  | 'microdistrict'
+  | 'mahalla'
+  | 'local_area'
+  | 'suburb'
+  | 'settlement'
+  | 'street'
+  | 'address'
+  | 'residential_complex'
+  | 'metro'
+  | 'poi'
+  | GeoPoiType
+  | 'development_area';
+
+export type GeoSource = 'osm' | 'wikidata' | 'official' | 'manual' | 'geonames';
 export type GeoAccuracy = 'country' | 'region' | 'city' | 'district' | 'neighborhood' | 'street' | 'building' | 'poi' | 'entrance' | 'approximate';
 
 export interface GeoPoint { lat: number; lng: number }
