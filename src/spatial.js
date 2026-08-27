@@ -4,6 +4,12 @@ function toRadians(value) {
   return value * Math.PI / 180;
 }
 
+function matchesType(entityType, requestedType) {
+  if (!requestedType) return true;
+  if (entityType === requestedType) return true;
+  return requestedType === 'poi' && typeof entityType === 'string' && entityType.startsWith('poi.');
+}
+
 export function isValidCoordinate(point) {
   if (!point || !Number.isFinite(point.lat) || !Number.isFinite(point.lng)) return false;
   return Math.abs(point.lat) <= 90 && Math.abs(point.lng) <= 180;
@@ -31,7 +37,7 @@ export function nearestGeoEntity(point, entities, filters = {}) {
   let nearestDistance = Infinity;
   for (const entity of entities) {
     if (country && entity.country !== country) continue;
-    if (type && entity.type !== type) continue;
+    if (!matchesType(entity.type, type)) continue;
     const distance = distanceKm(point, entity.center);
     if (distance < nearestDistance) {
       nearest = entity;
