@@ -17,6 +17,10 @@ function entityCity(entity) {
   return entity.type === 'city' ? undefined : entity.parentId?.split(':')[1];
 }
 
+function isPoiType(type) {
+  return type === 'poi' || (typeof type === 'string' && type.startsWith('poi.'));
+}
+
 const lexiconIndex = new Map();
 const canonicalIndex = new Map();
 for (const entity of GEO_ENTITIES) {
@@ -42,6 +46,11 @@ const compatibleTypes = Object.freeze({
   local_area: new Set(['microdistrict', 'mahalla', 'suburb', 'settlement', 'poi', 'street']),
 });
 
+function matchesCompatibleType(entityType, allowedTypes) {
+  if (allowedTypes.has(entityType)) return true;
+  return allowedTypes.has('poi') && isPoiType(entityType);
+}
+
 export function resolveLexiconGeoEntity(input) {
   if (!input?.country || !input?.canonical) return null;
   const type = input.type || 'city';
@@ -52,11 +61,18 @@ export function resolveLexiconGeoEntity(input) {
     return lexiconIndex.get(geoEntityKey({ country: input.country, type, canonical: input.canonical })) ?? null;
   }
 
+  const canonicalKey = [input.country, input.city, input.canonical].map(normalize).join('|');
+  const matches = canonicalIndex.get(canonicalKey) ?? [];
+
+  if (type === 'poi') {
+    const poiMatches = matches.filter((entity) => isPoiType(entity.type));
+    return poiMatches.length === 1 ? poiMatches[0] : null;
+  }
+
   const allowedFallbackTypes = compatibleTypes[type];
   if (!allowedFallbackTypes) return null;
-  const canonicalKey = [input.country, input.city, input.canonical].map(normalize).join('|');
-  const matches = (canonicalIndex.get(canonicalKey) ?? []).filter((entity) => allowedFallbackTypes.has(entity.type));
-  return matches.length === 1 ? matches[0] : null;
+  const compatibleMatches = matches.filter((entity) => matchesCompatibleType(entity.type, allowedFallbackTypes));
+  return compatibleMatches.length === 1 ? compatibleMatches[0] : null;
 }
 
 export function geoIdForLexiconEntity(input) {
