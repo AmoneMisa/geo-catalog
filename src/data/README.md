@@ -39,10 +39,9 @@ Use a city directory when that city has multiple subject modules. Country-wide d
 - Use lowercase kebab-case.
 - Name files by semantic category, not by batch or chronology.
 - Preferred names: `cities.js`, `districts.js`, `neighborhoods.js`, `microdistricts.js`, `local-areas.js`, `mahallas.js`, `metro.js`, `poi.js`, `residential-complexes.js`.
-- Do not create new `*-extra.js`, `*-part-2.js`, `*-new.js`, or similarly chronological files.
+- Do not create `*-extra.js`, `*-part-2.js`, `*-new.js`, or similarly chronological data modules.
 - If an existing category becomes large, split it by stable domain/geography, e.g. `microdistricts-chilanzar.js`, not `microdistricts-extra.js`.
-
-Existing legacy `*-extra.js` modules may remain until that city/category is next refactored, but new code must not add to the pattern.
+- CI enforces the `*-extra.js` prohibition under `src/data`.
 
 ## Exports
 
