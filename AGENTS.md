@@ -157,6 +157,38 @@ When adding geo coverage specifically for lexical entities:
 - if the lexicon contains a false-city or non-physical candidate, fix/remove it in `parsing-lexicon` instead of fabricating an anchor here;
 - keep canonical names aligned where possible, or make a deliberate bridge-compatible choice when the real project display name differs.
 
+## Bridge and cross-city name ambiguity
+
+Bridge resolution is city-scoped. The canonical bridge identity is effectively:
+
+`country + city + type + canonical`
+
+Do not resolve a city-local lexicon entity by canonical name alone when the city is known or expected. Do not add a fallback that searches all cities and picks the first matching name.
+
+The same or very similar canonical name may legitimately represent different physical entities in different cities. Generic names such as `Central`, `Panorama`, `Comfort`, `Park Avenue`, `Riviera`, `Admiral`, `Family House`, `Shevchenko Park`, or `Teatralna Square` must never be treated as globally unique.
+
+Cross-city name equality is **not** a semantic duplicate when `parentId` differs and the entities are genuinely different physical places. Keep separate city-scoped geo entities with distinct IDs and parents.
+
+Before adding a generic or reused canonical name:
+
+- search `GEO_ENTITIES` for the normalized canonical name across all cities;
+- inspect `parsing-lexicon` for the same or confusingly similar canonical/alias forms in other cities;
+- verify the candidate's address, coordinates, source, and parent city independently;
+- confirm that the bridge resolves the intended `(country, city, type, canonical)` tuple and not another city's entity.
+
+Names should also be checked for near-collisions, not only exact equality. Pay special attention to punctuation, transliteration, suffix/version differences, translated forms, numeral variants, and branding variants such as `Central` vs `Center`, `Comfort Town` vs `Comfort Hall`, or `Varshavskyi` vs `Varshavskyi 2`.
+
+A near-collision must be classified as one of:
+
+1. the same physical entity expressed through aliases -> keep one geo entity and put aliases in `parsing-lexicon`;
+2. distinct physical entities in the same city -> keep separate geo entities with distinct IDs and verified centers;
+3. distinct physical entities in different cities -> keep separate city-scoped geo entities;
+4. an ambiguous/incorrect lexicon candidate -> fix the lexicon rather than forcing bridge resolution.
+
+If city context is missing and multiple compatible geo entities remain possible, the bridge/consumer must return no deterministic match rather than guess. Ambiguity is preferable to silently resolving to the wrong city.
+
+Any change to `src/lexicon-bridge.js` must preserve these invariants and should include regression tests with same-name or near-name entities in different cities.
+
 ## Public API
 
 Do not add exports “just in case”.
@@ -208,6 +240,8 @@ For architecture changes, add regression assertions that protect architectural i
 - `center` is preserved as stored catalog data;
 - aliases are not represented as duplicate physical entities;
 - lexicon bridge resolution remains deterministic for parent/type collisions;
+- same-name entities in different cities resolve only with the correct city scope;
+- ambiguous bridge input does not silently select another city's entity;
 - public lookup/filter functions still return canonical catalog entities;
 - splitting a module does not duplicate or reorder entities unexpectedly.
 
@@ -217,14 +251,16 @@ Before making a change, inspect the current `master` and answer these questions 
 
 1. Which existing country/city/subject module owns this physical entity?
 2. Does this entity already exist under another canonical name, alias, or nearby type?
-3. Is the candidate a real physical entity, or only a parsing phrase/listing convention?
-4. Is `center` independently defensible, and is `accuracyM` realistic for the object's footprint?
-5. Does the attached OSM/Wikidata/GeoNames metadata identify the same physical object?
-6. Am I duplicating lexical aliases that belong in `AmoneMisa/parsing-lexicon`?
-7. Am I adding a second aggregation path, public API, helper, or registry unnecessarily?
-8. Can this be implemented in an existing semantic file instead of creating a batch/temporary file?
-9. Which validation/test protects this change from regression?
-10. If this task is driven by parsing-lexicon coverage, is the lexicon entry itself correct before I add coordinates for it?
+3. Does the same or a confusingly similar canonical/alias name exist in another city, and have I verified the correct parent city?
+4. Is the candidate a real physical entity, or only a parsing phrase/listing convention?
+5. Is `center` independently defensible, and is `accuracyM` realistic for the object's footprint?
+6. Does the attached OSM/Wikidata/GeoNames metadata identify the same physical object?
+7. Am I duplicating lexical aliases that belong in `AmoneMisa/parsing-lexicon`?
+8. Am I adding a second aggregation path, public API, helper, or registry unnecessarily?
+9. Can this be implemented in an existing semantic file instead of creating a batch/temporary file?
+10. Which validation/test protects this change from regression?
+11. If this task is driven by parsing-lexicon coverage, is the lexicon entry itself correct before I add coordinates for it?
+12. Will `src/lexicon-bridge.js` resolve this entity only in the intended city/type scope, or could another city's similarly named entity win?
 
 If the answer reveals a conflict with this file, preserve the architecture and data integrity first, then add the requested coverage.
 
