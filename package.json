@@ -2,6 +2,10 @@
   "name": "@whiteslove/geo-catalog",
   "version": "0.2.0",
   "description": "Structured geographic catalog for cities, districts, neighborhoods, residential complexes, transit and POIs with coordinates, bounds and OSM metadata.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmoneMisa/geo-catalog.git"
+  },
   "type": "module",
   "main": "./src/index.js",
   "types": "./index.d.ts",
