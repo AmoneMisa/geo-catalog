@@ -19,4 +19,5 @@ export const UA_CHERNIVTSI_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('lenkivtsi', 'Ленківці', 48.325841, 25.900117, 1300, { source: 'manual', sourceUrl: 'https://www.geonames.org/advanced-search.html?q=Ukraine%2C+Chernivtsi' }),
   neighborhood('hraviton', 'Гравітон', 48.27592, 25.99461, 1100, { osm: Object.freeze({ type: 'node', id: 10650273334 }) }),
   neighborhood('rosha-stynka', 'Роша-Стинка', 48.275699, 25.891529, 1200, { source: 'manual', sourceUrl: 'https://bukowina.org.ua/blog/budynok-folkloru-rosha-stynka/' }),
+  neighborhood('tsetsyno', 'Цецино', 48.298134, 25.887101, 1500, { source: 'manual', sourceUrl: 'https://maps.visicom.ua/c/25.88708%2C48.29826%2C17/f/STR3KJH06MO0?lang=uk' }),
 ]);

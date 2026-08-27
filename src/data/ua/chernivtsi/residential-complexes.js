@@ -19,4 +19,5 @@ export const UA_CHERNIVTSI_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('park-avenue', 'Park Avenue', 48.265065, 25.919969, 'https://novobudovy.com/novobudovy-chernivtsiv/park-avenyu-chernivci', 300),
   residential('kyivskyi', 'Kyivskyi', 48.28605, 25.919641, 'https://novobudovy.com/novobudovy-chernivtsiv/novobudova-m-chernivci-zhitlovij-kompleks-zoloti-kliuchi', 320),
   residential('rodynnyi', 'Rodynnyi', 48.266941, 25.915267, 'https://novobudovy.com/arkhiv/novobudova-m-chernivci-vul-rovenska', 300),
+  residential('central', 'Central', 48.280368, 25.926241, 'https://novobudovy.com/novobudovy-chernivtsiv/kobrinskoyi', 180),
 ]);
