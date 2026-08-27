@@ -41,7 +41,7 @@ test('typed POIs and GeoNames provenance are first-class catalog values', () => 
 
 test('generic POI lexicon lookup resolves typed POIs', () => {
   assert.equal(
-    resolveLexiconGeoEntity({ country: 'UA', city: 'Kyiv', type: 'poi', canonical: 'Taras Shevchenko Park' })?.id,
+    resolveLexiconGeoEntity({ country: 'UA', city: 'Kyiv', type: 'poi', canonical: 'Парк Тараса Шевченка' })?.id,
     'ua:kyiv:poi:taras-shevchenko-park',
   );
 });
@@ -82,7 +82,7 @@ test('Tashkent administrative districts are children of the city', () => {
 
 test('verified Tashkent metro stations expose point provenance', () => {
   const metro = findGeoEntities({ country: 'UZ', type: 'metro' });
-  assert.equal(metro.length, 29);
+  assert.equal(metro.length, 49);
   const station = getGeoEntity('uz:tashkent:metro:buyuk-ipak-yoli');
   assert.equal(station?.canonicalName, 'Buyuk Ipak Yoli');
   assert.equal(station?.wikidataId, 'Q4100729');
