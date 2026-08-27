@@ -80,14 +80,19 @@ test('Tashkent administrative districts are children of the city', () => {
   assert.equal(districts.length, 12);
 });
 
-test('verified Tashkent metro stations expose point provenance', () => {
+test('verified Tashkent metro catalog contains all 50 stations', () => {
   const metro = findGeoEntities({ country: 'UZ', type: 'metro' });
-  assert.equal(metro.length, 49);
+  assert.equal(metro.length, 50);
+
   const station = getGeoEntity('uz:tashkent:metro:buyuk-ipak-yoli');
   assert.equal(station?.canonicalName, 'Buyuk Ipak Yoli');
   assert.equal(station?.wikidataId, 'Q4100729');
   assert.equal(station?.osm?.id, 1777037919);
   assert.equal(station?.accuracy, 'entrance');
+
+  const minor = getGeoEntity('uz:tashkent:metro:minor');
+  assert.equal(minor?.canonicalName, 'Minor');
+  assert.equal(minor?.wikidataId, 'Q719456');
 });
 
 test('parsing lexicon tuples resolve without duplicating aliases', () => {
