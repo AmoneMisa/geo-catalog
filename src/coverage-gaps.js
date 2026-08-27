@@ -9,7 +9,7 @@ const normalize = (value) => String(value ?? '')
 const gaps = (country, city, type, canonicals, reason) => canonicals.map((canonical) => ({ country, city, type, canonical, reason }));
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
-  ...gaps('UZ', 'Tashkent', 'local_area', ['Oltinkul','TTZ-3','Stroygorod','Al-Khorezmi-1','Rakatboshi','Glinka'], 'No verified standalone spatial locality match yet.'),
+  ...gaps('UZ', 'Tashkent', 'local_area', ['Oltinkul','TTZ-3','Stroygorod','Al-Khorezmi-1','Rakatboshi','Glinka','Karasu-6','Chorsu'], 'No verified standalone spatial locality match yet.'),
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Geofizika', reason: 'Mapped spatially as a separate village in Tashkent Region; requires region/settlement hierarchy instead of a Tashkent city child.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Lolazor', reason: 'Ambiguous with same-name places outside Tashkent.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Buyuk Ipak Yuli', reason: 'Area must not be conflated with the metro station.' },
@@ -19,14 +19,16 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Shohimardon', reason: 'Ambiguous with the Fergana Valley settlement; Tashkent match not verified.' },
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z",'Shirin','Chilkuduk',"Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
-  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob','Registon','Center','University area','Dahbed','Railway Station area','Rudakiy','Gagarin area','Mirzo Ulugbek area','Spitamen','Panjakent Road','Bogishamol','Geofizika','Sugdiyona','Super Market area','Dinamo area',"So'zangaron",'Buyuk Ipak Yoli'], 'Lexicon local area still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Samarkand', 'poi', ['Samarkand City','Youth Park','Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'microdistrict', ['Sogdiana','Sartepa','Sat-Tepo','Kimyogarlar','Vokzal','Universitet','Registan','Dagbitskaya','Rudaki'], 'Lexicon microdistrict still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob','Registon','Center','University area','Dahbed','Railway Station area','Rudakiy','Gagarin area','Mirzo Ulugbek area','Spitamen','Panjakent Road','Bogishamol','Geofizika','Sugdiyona','Super Market area','Dinamo area',"So'zangaron",'Buyuk Ipak Yoli','University Boulevard'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'residential_complex', ['Samarkand City','Bogishamol City','Marokand Avenue','Silk Road Residence','Registan Residence'], 'Lexicon residential complex still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'poi', ['Samarkand City','Youth Park','Yangi Ozbekiston Park','Siab Bazaar','Alisher Navoiy Park'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Namangan', 'mahalla', ['Obihayot','Porloq','Mustaqillikning 5 yilligi'], 'Official mahalla is confirmed, but no verified standalone spatial boundary/locality object is available yet.'),
   ...gaps('UZ', 'Namangan', 'local_area', ['Center','North','Chortoq area','Uychi area','Turaqorgon area','Galaba','Bobur','Navoiy','Islom Karimov','Qoqimboyshox','Afrosiyob','Boburshox','Ibrat','Nodira'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Namangan', 'poi', ['Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
 
-  ...gaps('UZ', 'Andijan', 'mahalla', ["Bo'ston",'Obod','Temur Malik',"Qoraqo'rg'on",'Mustaqillikning 21 yilligi','Birlashgan',"Taxtako'prik"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
+  ...gaps('UZ', 'Andijan', 'mahalla', ["Bo'ston",'Obod','Temur Malik',"Qoraqo'rg'on","Ma'rifat",'Mustaqillikning 21 yilligi','Birlashgan',"Taxtako'prik"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('UZ', 'Andijan', 'local_area', ['Center','Old City','New City','Bobur','Navoiy','Mashinasozlar','North','South-West','University area','Railway Station area','Airport area'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Andijan', 'poi', ['Bobur Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
@@ -46,7 +48,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Nukus', 'local_area', ['Center','Dosliq','Beruniy area','Qizketken','Nayman','Turtkul Road','Khojeyli Road','Airport area','Railway Station area'], 'Nukus local-area alias still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Nukus', 'poi', ['Berdakh Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
-  ...gaps('UZ', 'Urgench', 'mahalla', ['Ashxobod'], 'Official Urgench mahalla; verified standalone OSM neighbourhood/residential geometry still pending.'),
+  ...gaps('UZ', 'Urgench', 'mahalla', ['Mustaqillik','Feruz',"Ma'rifat","Yuqori bog'",'Al Xorazmiy','Besh mergan','Shodlik','Gulshan','Gulzor','Navbahor','Avesto','Ashxobod'], 'Official Urgench mahalla; verified standalone OSM neighbourhood/residential geometry still pending.'),
   ...gaps('UZ', 'Urgench', 'local_area', ['Center','Olimpiya','Railway Station area','Airport area','University area','Al-Xorazmiy area','Navoiy','Gurlan Road','Khiva Road'], 'Urgench local-area alias still needs a verified standalone spatial match.'),
 ].map(Object.freeze));
 
