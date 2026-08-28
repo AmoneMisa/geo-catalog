@@ -12,7 +12,7 @@ This package owns:
 
 - stable geographic entity IDs;
 - center coordinates;
-- bounding boxes and, later, polygons;
+- bounding boxes and GeoJSON administrative boundaries;
 - administrative and locality hierarchy via `parentId`;
 - cities, districts, microdistricts, mahallas, local areas, suburbs and settlements;
 - residential complexes, metro stations and POIs;
@@ -87,6 +87,7 @@ interface GeoEntity {
   parentId?: string;
   center: { lat: number; lng: number };
   bbox?: { south: number; west: number; north: number; east: number };
+  boundary?: GeoPolygonGeometry | GeoMultiPolygonGeometry;
   osm?: { type: 'node' | 'way' | 'relation'; id: number };
   accuracyM?: number;
   accuracy?: GeoAccuracy;
@@ -106,7 +107,7 @@ IDs are deliberately language-independent. Aliases such as `Чиланзар`, `
 - Tashkent: all 12 canonical administrative districts;
 - total current catalog: 75 spatial entities.
 
-Tashkent district centers are explicitly marked `approximate` until exact verified boundaries/centroids are imported. This is intentional: approximate coordinates are preferable to falsely claiming building-level or OSM-verified precision.
+Tashkent's 12 districts include stored OSM administrative boundaries and boundary-derived representative centers. Consumers can render those polygons directly instead of approximating district extents with radius circles.
 
 The next spatial layers are Tashkent metro, microdistricts, mahallas, residential complexes and POIs, followed by detailed Uzbekistan, Ukraine and Kazakhstan city datasets. Those layers can be added without changing the public bridge/API.
 
@@ -133,6 +134,7 @@ If a new canonical parser city/district is added without a matching geo entity, 
 - Country codes use ISO 3166-1 alpha-2 uppercase values.
 - Centers must be valid WGS84 latitude/longitude coordinates.
 - A center must lie inside its bbox when a bbox is supplied.
+- Administrative boundary geometry must be a non-empty, closed GeoJSON Polygon or MultiPolygon with valid WGS84 positions, and its entity center must lie inside it.
 - `parentId` must resolve to another catalog entity.
 - OSM references must identify a valid node, way or relation ID.
 - Text aliases and transliterations must not be duplicated here.

@@ -34,6 +34,8 @@ export const TASHKENT_POI_ENTITIES = Object.freeze([
   wikidataPoi('tashkent-city-mall', 'Tashkent City Mall', 41.3160620, 69.2524370, 'Q121749626', 90),
   sourcedPoi('alay-bazaar', 'Alay Bazaar', 41.3188097, 69.2811263, 'https://www.dookinternational.com/poi/alay-bazaar/77759', 120),
   sourcedPoi('magic-city', 'Magic City', 41.3035350, 69.2449160, 'https://aboutthepoint.com/en/point/enh-magic-city', 140),
+  sourcedPoi('tashkent-city-park', 'Tashkent City Park', 41.316540, 69.248410, 'https://mapcarta.com/W749136173', 120),
+  sourcedPoi('central-park', 'Central Park', 41.312400, 69.298530, 'https://www.mypacer.com/parks/183181/central-park-tashkent', 180),
   sourcedPoi('farhod-bazaar', 'Farhod Bazaar', 41.285950, 69.190732, 'https://yandex.com/maps/10335/tashkent/house/YkAYdw5gTkYFQFprfX55dHVmZA%3D%3D/', 160),
   sourcedPoi('sergeli-car-bazaar', 'Sergeli Car Bazaar', 41.229909, 69.216971, 'https://yandex.com/maps/org/avtomobilny_rynok/166523932658/', 180),
 ]);

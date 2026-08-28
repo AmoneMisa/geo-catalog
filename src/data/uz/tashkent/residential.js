@@ -38,6 +38,23 @@ const sourcedResidential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM 
 });
 
 export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
+  sourcedResidential('akay-city', 'AKAY CITY', 41.320741, 69.294792, 'https://yandex.com/maps/10335/tashkent/geo/3778343660/', 80),
+  sourcedResidential('musaffo', 'Musaffo', 41.360158, 69.315909, 'https://uysot.uz/', 120),
+  sourcedResidential('resim-tashkent', 'Resim Taşkent', 41.304469932119, 69.311761523192, 'https://uysot.uz/', 120),
+  sourcedResidential('twins', 'TWINS', 41.242982, 69.221541, 'https://uysot.uz/', 120),
+  sourcedResidential('trinity', 'TRINITY', 41.357651, 69.316136, 'https://uysot.uz/', 120),
+  sourcedResidential('jomiy-residence', 'JOMIY RESIDENCE', 41.352168, 69.257766, 'https://uysot.uz/', 120),
+  sourcedResidential('mezbon', 'MEZBON', 41.388024, 69.310258, 'https://uysot.uz/', 120),
+  sourcedResidential('bunyodobod', 'Bunyodobod', 41.231164, 69.21168, 'https://uysot.uz/', 120),
+  sourcedResidential('terminal', 'TERMINAL', 41.287412, 69.287681, 'https://uysot.uz/', 120),
+  sourcedResidential('mirabad-residence', 'Mirabad Residence', 41.266864, 69.29879, 'https://uysot.uz/', 120),
+  sourcedResidential('favorit-residence', 'FAVORIT RESIDENCE', 41.252705, 69.300814, 'https://uysot.uz/', 120),
+  sourcedResidential('dombirobod-tower', "Do'mbirobod Tower", 41.251597, 69.207063, 'https://uysot.uz/', 120),
+  sourcedResidential('islomobod-tjm', 'ISLOMOBOD TJM', 41.38792, 69.276617, 'https://uysot.uz/', 120),
+  sourcedResidential('kelajak-residence', 'KELAJAK RESIDENCE', 41.294585, 69.461079, 'https://uysot.uz/', 120),
+  sourcedResidential('bektemir-residence', 'BEKTEMIR RESIDENCE', 41.23778, 69.34556, 'https://uysot.uz/', 120),
+  sourcedResidential('makon-residence', 'MAKON RESIDENCE', 41.348041947883, 69.164988791071, 'https://uysot.uz/', 120),
+  sourcedResidential('mehribon', 'MEHRIBON', 41.356167, 69.31278, 'https://uysot.uz/', 120),
   wikidataResidential('nest-one', 'Nest One', 41.3121000, 69.2519000, 'Q97658661', 80),
   osmResidential('nrg-u-tower', 'NRG U-Tower', 41.31104, 69.23932, 1075340743, 90),
   osmResidential('nrg-oybek', 'NRG Oybek', 41.29354, 69.28185, 1126838984, 90),

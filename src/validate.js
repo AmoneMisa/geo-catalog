@@ -35,9 +35,73 @@ function osmKey(entity) {
   return `${entity.osm.type}:${entity.osm.id}`;
 }
 
+function positionsEqual(a, b) {
+  return a[0] === b[0] && a[1] === b[1];
+}
+
+function isValidPosition(position) {
+  return Array.isArray(position)
+    && position.length === 2
+    && position.every(Number.isFinite)
+    && Math.abs(position[0]) <= 180
+    && Math.abs(position[1]) <= 90;
+}
+
+function ringArea(ring) {
+  let twiceArea = 0;
+  for (let index = 1; index < ring.length; index += 1) {
+    twiceArea += ring[index - 1][0] * ring[index][1] - ring[index][0] * ring[index - 1][1];
+  }
+  return twiceArea / 2;
+}
+
+function isValidLinearRing(ring) {
+  return Array.isArray(ring)
+    && ring.length >= 4
+    && ring.every(isValidPosition)
+    && positionsEqual(ring[0], ring.at(-1))
+    && ringArea(ring) !== 0;
+}
+
+function isValidPolygonCoordinates(coordinates) {
+  return Array.isArray(coordinates) && coordinates.length > 0 && coordinates.every(isValidLinearRing);
+}
+
+function pointOnSegment([lng, lat], a, b) {
+  const cross = (lat - a[1]) * (b[0] - a[0]) - (lng - a[0]) * (b[1] - a[1]);
+  if (Math.abs(cross) > 1e-10) return false;
+  return lng >= Math.min(a[0], b[0]) && lng <= Math.max(a[0], b[0])
+    && lat >= Math.min(a[1], b[1]) && lat <= Math.max(a[1], b[1]);
+}
+
+function pointInRing(position, ring) {
+  let inside = false;
+  for (let index = 0, previous = ring.length - 1; index < ring.length; previous = index, index += 1) {
+    const a = ring[previous];
+    const b = ring[index];
+    if (pointOnSegment(position, a, b)) return true;
+    if ((a[1] > position[1]) !== (b[1] > position[1])
+      && position[0] < ((b[0] - a[0]) * (position[1] - a[1])) / (b[1] - a[1]) + a[0]) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+function pointInPolygon(position, polygon) {
+  return pointInRing(position, polygon[0]) && !polygon.slice(1).some((hole) => pointInRing(position, hole));
+}
+
+function boundaryContainsCenter(boundary, center) {
+  const position = [center.lng, center.lat];
+  const polygons = boundary.type === 'Polygon' ? [boundary.coordinates] : boundary.coordinates;
+  return polygons.some((polygon) => pointInPolygon(position, polygon));
+}
+
 export function validateGeoCatalog(entities) {
   const errors = [];
   const ids = new Set();
+  const entitiesById = new Map();
   const lookupKeys = new Set();
   const semanticKeys = new Map();
   const osmOwners = new Map();
@@ -45,7 +109,10 @@ export function validateGeoCatalog(entities) {
   for (const entity of entities) {
     if (!entity?.id || typeof entity.id !== 'string') errors.push('Entity without a valid id');
     else if (ids.has(entity.id)) errors.push(`Duplicate id: ${entity.id}`);
-    else ids.add(entity.id);
+    else {
+      ids.add(entity.id);
+      entitiesById.set(entity.id, entity);
+    }
 
     if (entity.lookupKey) {
       if (typeof entity.lookupKey !== 'string') errors.push(`${entity.id}: lookupKey must be a string`);
@@ -81,16 +148,16 @@ export function validateGeoCatalog(entities) {
       errors.push(`${entity.id}: invalid OSM metadata`);
     }
 
-    if (entity.boundary) {
-      const { type, coordinates } = entity.boundary;
-      const isPolygon = type === 'Polygon' && Array.isArray(coordinates);
-      const isMultiPolygon = type === 'MultiPolygon' && Array.isArray(coordinates);
+    if (entity.boundary !== undefined) {
+      const { type, coordinates } = entity.boundary ?? {};
+      const isPolygon = type === 'Polygon' && isValidPolygonCoordinates(coordinates);
+      const isMultiPolygon = type === 'MultiPolygon'
+        && Array.isArray(coordinates)
+        && coordinates.length > 0
+        && coordinates.every(isValidPolygonCoordinates);
       if (!isPolygon && !isMultiPolygon) errors.push(`${entity.id}: boundary must be a GeoJSON Polygon or MultiPolygon`);
-      else {
-        const rings = isPolygon ? coordinates : coordinates.flat();
-        const badRing = rings.some((ring) => !Array.isArray(ring) || ring.length < 4
-          || ring.some((point) => !Array.isArray(point) || point.length !== 2 || !point.every(Number.isFinite)));
-        if (badRing) errors.push(`${entity.id}: boundary has a malformed ring`);
+      else if (isValidCoordinate(entity.center) && !boundaryContainsCenter(entity.boundary, entity.center)) {
+        errors.push(`${entity.id}: center must be inside boundary`);
       }
     }
 
@@ -104,6 +171,10 @@ export function validateGeoCatalog(entities) {
 
   for (const entity of entities) {
     if (entity.parentId && !ids.has(entity.parentId)) errors.push(`${entity.id}: unknown parentId ${entity.parentId}`);
+    const parent = entitiesById.get(entity.parentId);
+    if (parent?.boundary && isValidCoordinate(entity.center) && !boundaryContainsCenter(parent.boundary, entity.center)) {
+      errors.push(`${entity.id}: center must be inside parent boundary ${entity.parentId}`);
+    }
   }
 
   return { valid: errors.length === 0, errors };

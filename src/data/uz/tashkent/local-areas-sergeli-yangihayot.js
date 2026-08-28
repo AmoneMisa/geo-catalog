@@ -12,6 +12,6 @@ const osmLocalArea = (slug, canonicalName, parentId, lat, lng, osmWayId, accurac
 });
 
 export const TASHKENT_SERGELI_YANGIHAYOT_LOCAL_AREA_ENTITIES = Object.freeze([
-  osmLocalArea('yangi-sergeli', 'Yangi Sergeli', 'uz:tashkent:sergeli', 41.22292, 69.22462, 516431539, 760),
-  osmLocalArea('uzgarish', 'Uzgarish', 'uz:tashkent:yangihayot', 41.25084, 69.22791, 82881043, 900),
+  osmLocalArea('yangi-sergeli', 'Yangi Sergeli', 'uz:tashkent:sergeli', 41.2228385, 69.2252417, 516431539, 760),
+  osmLocalArea('uzgarish', 'Uzgarish', 'uz:tashkent:sergeli', 41.2511102, 69.2239233, 82881043, 900),
 ]);

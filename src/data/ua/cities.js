@@ -10,12 +10,12 @@ const city = (id, canonicalName, lat, lng, extra = {}) => ({
 });
 
 export const UA_CITY_ENTITIES = Object.freeze([
-  city('ua:kyiv','Kyiv',50.4501,30.5234),
-  city('ua:kharkiv','Kharkiv',49.9935,36.2304),
-  city('ua:odesa','Odesa',46.4825,30.7233),
-  city('ua:dnipro','Dnipro',48.4647,35.0462),
-  city('ua:lviv','Lviv',49.8397,24.0297),
-  city('ua:zaporizhzhia','Zaporizhzhia',47.8388,35.1396),
+  city('ua:kyiv','Kyiv',50.4500336,30.5241361,{source:'osm',osm:{type:'relation',id:421866},bbox:{south:50.2132422,west:30.2361453,north:50.5908142,east:30.8263593}}),
+  city('ua:kharkiv','Kharkiv',49.9923181,36.2310146,{source:'osm',osm:{type:'relation',id:3154746},bbox:{south:49.8784822,west:36.1055541,north:50.1047533,east:36.4554864}}),
+  city('ua:odesa','Odesa',46.4843023,30.7322878,{source:'osm',osm:{type:'relation',id:1413934},bbox:{south:46.3426662,west:30.6114013,north:46.6291187,east:30.8313753}}),
+  city('ua:dnipro','Dnipro',48.4680221,35.0417711,{source:'osm',osm:{type:'relation',id:1017311},bbox:{south:48.3558547,west:34.7489459,north:48.5763901,east:35.2421952}}),
+  city('ua:lviv','Lviv',49.841952,24.0315921,{source:'osm',osm:{type:'relation',id:2032280},bbox:{south:49.7681748,west:23.8980549,north:49.9037122,east:24.1334136}}),
+  city('ua:zaporizhzhia','Zaporizhzhia',47.8507859,35.1182867,{source:'osm',osm:{type:'relation',id:1418311},bbox:{south:47.7526201,west:34.9866698,north:47.9544669,east:35.369035}}),
   city('ua:vinnytsia','Vinnytsia',49.2331,28.4682),
   city('ua:ivano-frankivsk','Ivano-Frankivsk',48.9226,24.7111),
   city('ua:chernivtsi','Chernivtsi',48.2915,25.9403),
@@ -37,7 +37,7 @@ export const UA_CITY_ENTITIES = Object.freeze([
   city('ua:bucha','Bucha',50.5434,30.2120),
   city('ua:brovary','Brovary',50.5114,30.7900),
   city('ua:bila-tserkva','Bila Tserkva',49.7950,30.1150),
-  city('ua:kryvyi-rih','Kryvyi Rih',47.9105,33.3918),
+  city('ua:kryvyi-rih','Kryvyi Rih',47.9102734,33.3917703,{source:'osm',osm:{type:'relation',id:1821193},bbox:{south:47.6503431,west:33.139351,north:48.1954303,east:33.6001181}}),
   city('ua:kremenchuk','Kremenchuk',49.0670,33.4204),
   city('ua:uman','Uman',48.7484,30.2218),
 ]);

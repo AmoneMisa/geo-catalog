@@ -27,7 +27,7 @@ export const UA_ODESA_MICRODISTRICT_ENTITIES = Object.freeze([
     osm: Object.freeze({ type: 'node', id: 2151206626 }),
   }),
   microdistrict('serednii-fontan', 'Serednii Fontan', 46.41252, 30.75456, 1600, {
-    parentId: 'ua:odesa:district:prymorskyi',
+    parentId: 'ua:odesa:district:kyivskyi',
     osm: Object.freeze({ type: 'node', id: 2151201621 }),
     wikidataId: 'Q28706753',
   }),

@@ -10,7 +10,11 @@ const city = (id, canonicalName, lat, lng, extra = {}) => ({
 });
 
 export const UZ_CITY_ENTITIES = Object.freeze([
-  city('uz:tashkent','Tashkent',41.2995,69.2401,{bbox:{south:41.1666,west:69.1282,north:41.3988,east:69.4122}}),
+  city('uz:tashkent','Tashkent',41.3123363,69.2787079,{
+    source:'osm',
+    osm:{type:'relation',id:2216724},
+    bbox:{south:41.1577334,west:69.121797,north:41.4224955,east:69.525908},
+  }),
   city('uz:samarkand','Samarkand',39.6542,66.9597),
   city('uz:bukhara','Bukhara',39.7681,64.4556),
   city('uz:namangan','Namangan',40.9983,71.6726),

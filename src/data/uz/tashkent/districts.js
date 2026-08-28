@@ -9,8 +9,8 @@ const district = (slug, canonicalName, lat, lng, accuracyM = 4500) => {
     canonicalName,
     parentId: 'uz:tashkent',
     center: { lat, lng },
-    source: 'manual',
-    accuracy: 'approximate',
+    source: 'osm',
+    accuracy: 'district',
     accuracyM,
     ...(boundary ? {
       boundary: boundary.geometry,
@@ -20,19 +20,17 @@ const district = (slug, canonicalName, lat, lng, accuracyM = 4500) => {
 };
 
 export const TASHKENT_ENTITIES = Object.freeze([
-  // Center points remain hand-picked approximations (accuracyM reflects that), but each
-  // entity now also carries a real administrative boundary polygon from OSM, sourced via
-  // ./district-boundaries.js, for consumers that need the actual district shape.
-  district('almazar','Almazar',41.3483,69.2052),
-  district('bektemir','Bektemir',41.2093,69.3341),
-  district('mirobod','Mirobod',41.2914,69.2898),
-  district('mirzo-ulugbek','Mirzo Ulugbek',41.3263,69.3367),
-  district('sergeli','Sergeli',41.2262,69.2192),
-  district('uchtepa','Uchtepa',41.2923,69.1794),
-  district('chilanzar','Chilanzar',41.2732,69.2036),
-  district('shaykhantahur','Shaykhantahur',41.3224,69.2414),
-  district('yunusabad','Yunusabad',41.3653,69.2887),
-  district('yakkasaray','Yakkasaray',41.2771,69.2531),
-  district('yangihayot','Yangihayot',41.2180,69.1960),
-  district('yashnobod','Yashnobod',41.2960,69.3320),
+  // Representative centers are area centroids derived from each stored OSM boundary.
+  district('almazar','Almazar',41.357716,69.223139),
+  district('bektemir','Bektemir',41.224394,69.334250),
+  district('mirobod','Mirobod',41.276883,69.292956),
+  district('mirzo-ulugbek','Mirzo Ulugbek',41.344635,69.361239),
+  district('sergeli','Sergeli',41.236180,69.256710),
+  district('uchtepa','Uchtepa',41.295762,69.166476),
+  district('chilanzar','Chilanzar',41.270121,69.200434),
+  district('shaykhantahur','Shaykhantahur',41.325019,69.216329),
+  district('yunusabad','Yunusabad',41.360602,69.285550),
+  district('yakkasaray','Yakkasaray',41.280992,69.247897),
+  district('yangihayot','Yangihayot',41.192804,69.235217),
+  district('yashnobod','Yashnobod',41.300488,69.372703),
 ]);

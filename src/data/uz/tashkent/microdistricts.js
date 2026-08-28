@@ -14,8 +14,8 @@ const osmMicrodistrict = (slug, canonicalName, parentId, lat, lng, osmType, osmI
 export const TASHKENT_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('chilanzar-1', 'Chilanzar-1', 'uz:tashkent:chilanzar', 41.28424, 69.22845, 'node', 1868258435, 450),
   osmMicrodistrict('chilanzar-2', 'Chilanzar-2', 'uz:tashkent:chilanzar', 41.27934, 69.22306, 'node', 1868258436, 450),
-  osmMicrodistrict('chilanzar-3', 'Chilanzar-3', 'uz:tashkent:chilanzar', 41.28449, 69.22325, 'way', 103635640, 500),
-  osmMicrodistrict('chilanzar-5', 'Chilanzar-5', 'uz:tashkent:chilanzar', 41.29199, 69.21716, 'way', 1101206979, 500),
+  osmMicrodistrict('chilanzar-3', 'Chilanzar-3', 'uz:tashkent:chilanzar', 41.2863696, 69.2229307, 'way', 103635640, 500),
+  osmMicrodistrict('chilanzar-5', 'Chilanzar-5', 'uz:tashkent:chilanzar', 41.2915638, 69.2170508, 'way', 1101206979, 500),
   osmMicrodistrict('chilanzar-6', 'Chilanzar-6', 'uz:tashkent:chilanzar', 41.28683, 69.21111, 'node', 1868258439, 500),
   osmMicrodistrict('chilanzar-7', 'Chilanzar-7', 'uz:tashkent:chilanzar', 41.29658, 69.21007, 'node', 1866884785, 500),
   osmMicrodistrict('chilanzar-8', 'Chilanzar-8', 'uz:tashkent:chilanzar', 41.29096, 69.20434, 'node', 1866884786, 500),

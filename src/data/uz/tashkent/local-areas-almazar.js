@@ -13,7 +13,7 @@ const osmLocalArea = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM =
 
 export const TASHKENT_ALMAZAR_LOCAL_AREA_ENTITIES = Object.freeze([
   osmLocalArea('karakamysh-1-2', 'Karakamysh-1/2', 41.35729, 69.23594, 'node', 1866791241),
-  osmLocalArea('karakamysh-2-3', 'Karakamysh-2/3', 41.36769, 69.21694, 'way', 134756857),
+  osmLocalArea('karakamysh-2-3', 'Karakamysh-2/3', 41.3674364, 69.2156743, 'way', 134756857),
   osmLocalArea('karakamysh-2-4', 'Karakamysh-2/4', 41.36786, 69.20858, 'node', 1866058432),
   osmLocalArea('karakamysh-2-5', 'Karakamysh-2/5', 41.36092, 69.20909, 'node', 1866058434),
 ]);

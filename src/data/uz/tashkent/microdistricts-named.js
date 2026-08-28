@@ -26,7 +26,7 @@ const manualMicrodistrict = (slug, canonicalName, parentId, lat, lng, accuracyM 
 export const TASHKENT_NAMED_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('tashselmash', 'Tashselmash', 'uz:tashkent:yashnobod', 41.30804, 69.30694, 'node', 4750099124, 800),
   osmMicrodistrict('aviasozlar', 'Aviasozlar', 'uz:tashkent:yashnobod', 41.30222, 69.31107, 'node', 1867099580, 850),
-  osmMicrodistrict('kuylyuk', 'Kuylyuk', 'uz:tashkent:mirobod', 41.2486, 69.30096, 'node', 10122671692, 1300),
+  osmMicrodistrict('kuylyuk', 'Kuylyuk', 'uz:tashkent:sergeli', 41.2485954, 69.3009584, 'node', 10122671692, 1300),
   osmMicrodistrict('yangi-choshtepa', 'Yangi Choshtepa', 'uz:tashkent:yangihayot', 41.23265, 69.19364, 'node', 11548947032, 850),
 
   osmMicrodistrict('olympia', 'Olympia', 'uz:tashkent:almazar', 41.36188, 69.19401, 'node', 1866058437, 700),

@@ -84,6 +84,37 @@ test('expanded city catalogs are represented for UA, UZ and KZ', () => {
 test('Tashkent administrative districts are children of the city', () => {
   const districts = getGeoChildren('uz:tashkent').filter((entity) => entity.type === 'district');
   assert.equal(districts.length, 12);
+  assert.ok(districts.every((entity) => entity.boundary?.type === 'Polygon' || entity.boundary?.type === 'MultiPolygon'));
+  assert.ok(districts.every((entity) => entity.source === 'osm' && entity.accuracy === 'district'));
+});
+
+test('boundary validation rejects malformed geometry and mismatched centers', () => {
+  const entity = (boundary, center = { lat: 0.5, lng: 0.5 }) => ({
+    id: 'xx:test', type: 'district', country: 'XX', canonicalName: 'Test', center, boundary,
+  });
+  const validBoundary = { type: 'Polygon', coordinates: [[[0, 0], [1, 0], [1, 1], [0, 0]]] };
+
+  assert.deepEqual(validateGeoCatalog([entity(validBoundary)]), { valid: true, errors: [] });
+  for (const boundary of [
+    null,
+    { type: 'Polygon', coordinates: [] },
+    { type: 'MultiPolygon', coordinates: [] },
+    { type: 'Polygon', coordinates: [[[0, 0], [1, 0], [1, 1], [0, 1]]] },
+    { type: 'Polygon', coordinates: [[[0, 0], [181, 0], [1, 1], [0, 0]]] },
+    { type: 'Polygon', coordinates: [[[0, 0], [1, 0], [2, 0], [0, 0]]] },
+  ]) {
+    assert.equal(validateGeoCatalog([entity(boundary)]).valid, false);
+  }
+  assert.ok(validateGeoCatalog([entity(validBoundary, { lat: 2, lng: 2 })]).errors.includes('xx:test: center must be inside boundary'));
+
+  const parent = { ...entity(validBoundary), id: 'xx:parent' };
+  const child = {
+    id: 'xx:child', type: 'local_area', country: 'XX', canonicalName: 'Child',
+    parentId: parent.id, center: { lat: 2, lng: 2 },
+  };
+  assert.ok(
+    validateGeoCatalog([parent, child]).errors.includes('xx:child: center must be inside parent boundary xx:parent'),
+  );
 });
 
 test('verified Tashkent metro catalog contains all 50 stations', () => {
@@ -128,4 +159,32 @@ test('catalog data is immutable at runtime', () => {
   assert.equal(Object.isFrozen(GEO_ENTITIES), true);
   assert.equal(Object.isFrozen(getGeoEntity('uz:tashkent')), true);
   assert.equal(Object.isFrozen(getGeoEntity('uz:tashkent').center), true);
+});
+
+test('Tashkent and major Ukrainian cities use verified OSM administrative coordinates', () => {
+  const expectedRelations = new Map([
+    ['uz:tashkent', 2216724],
+    ['ua:kyiv', 421866],
+    ['ua:kharkiv', 3154746],
+    ['ua:odesa', 1413934],
+    ['ua:dnipro', 1017311],
+    ['ua:lviv', 2032280],
+    ['ua:zaporizhzhia', 1418311],
+    ['ua:kryvyi-rih', 1821193],
+  ]);
+
+  for (const [id, relationId] of expectedRelations) {
+    const city = getGeoEntity(id);
+    assert.equal(city?.source, 'osm');
+    assert.deepEqual(city?.osm, { type: 'relation', id: relationId });
+    assert.ok(city?.bbox);
+    assert.equal(containsPoint(city.center, city.bbox), true);
+  }
+});
+
+test('Odesa administrative districts expose validated OSM boundaries', () => {
+  const districts = findGeoEntities({ country: 'UA', parentId: 'ua:odesa', type: 'district' });
+  assert.equal(districts.length, 4);
+  assert.ok(districts.every((district) => district.source === 'osm' && district.accuracy === 'district' && district.boundary));
+  assert.equal(getGeoEntity('ua:odesa:microdistrict:serednii-fontan')?.parentId, 'ua:odesa:district:kyivskyi');
 });
