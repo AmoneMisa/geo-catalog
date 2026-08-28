@@ -1,0 +1,7 @@
+import { UA_KROPYVNYTSKYI_NEIGHBORHOOD_ENTITIES } from './neighborhoods.js';
+import { UA_KROPYVNYTSKYI_POI_ENTITIES } from './poi.js';
+
+export const UA_KROPYVNYTSKYI_ENTITIES = Object.freeze([
+  ...UA_KROPYVNYTSKYI_NEIGHBORHOOD_ENTITIES,
+  ...UA_KROPYVNYTSKYI_POI_ENTITIES,
+]);
