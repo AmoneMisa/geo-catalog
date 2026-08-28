@@ -1,4 +1,4 @@
-const city = (id, canonicalName, lat, lng, accuracyM = 3000) => Object.freeze({
+const city = (id, canonicalName, lat, lng, accuracyM = 3000, extra = {}) => Object.freeze({
   id,
   type: 'city',
   country: 'UA',
@@ -7,21 +7,22 @@ const city = (id, canonicalName, lat, lng, accuracyM = 3000) => Object.freeze({
   source: 'manual',
   accuracy: 'city',
   accuracyM,
+  ...extra,
 });
 
 // Secondary Ukrainian city centers migrated from parsing-lexicon.
 // The parser owns canonical names and aliases; spatial metadata belongs here.
 export const UA_SECONDARY_CITY_ANCHORS = Object.freeze([
-  city('ua:kamianske', 'Kamianske', 48.5167, 34.6133),
-  city('ua:nikopol', 'Nikopol', 47.5667, 34.4000),
-  city('ua:pavlohrad', 'Pavlohrad', 48.5200, 35.8700),
-  city('ua:kamianets-podilskyi', 'Kamianets-Podilskyi', 48.6806, 26.5806),
-  city('ua:drohobych', 'Drohobych', 49.3500, 23.5000),
-  city('ua:stryi', 'Stryi', 49.2500, 23.8500),
-  city('ua:kolomyia', 'Kolomyia', 48.5167, 25.0333),
-  city('ua:kalush', 'Kalush', 49.0442, 24.3597),
-  city('ua:fastiv', 'Fastiv', 50.0747, 29.9181),
-  city('ua:vasylkiv', 'Vasylkiv', 50.1775, 30.3217),
+  city('ua:kamianske', 'Kamianske', 48.5168, 34.6069, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 1756064253 }) }),
+  city('ua:nikopol', 'Nikopol', 47.5692, 34.3917, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 265058407 }) }),
+  city('ua:pavlohrad', 'Pavlohrad', 48.5317, 35.8704, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 265059962 }) }),
+  city('ua:kamianets-podilskyi', 'Kamianets-Podilskyi', 48.6781, 26.5854, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 268081010 }) }),
+  city('ua:drohobych', 'Drohobych', 49.3514, 23.5062, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 313248206 }) }),
+  city('ua:stryi', 'Stryi', 49.2559, 23.8531, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 247880583 }) }),
+  city('ua:kolomyia', 'Kolomyia', 48.5259, 25.0381, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 284716726 }) }),
+  city('ua:kalush', 'Kalush', 49.0289, 24.3613, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 312270776 }) }),
+  city('ua:fastiv', 'Fastiv', 50.07993, 29.91628, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 337535126 }) }),
+  city('ua:vasylkiv', 'Vasylkiv', 50.17814, 30.3175, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 337527490 }) }),
   city('ua:boyarka', 'Boyarka', 50.3292, 30.2886),
   city('ua:pereiaslav', 'Pereiaslav', 50.0650, 31.4450),
   city('ua:chuhuiv', 'Chuhuiv', 49.8372, 36.6899),
