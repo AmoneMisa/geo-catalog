@@ -26,5 +26,5 @@ test('Odesa microdistrict provenance stays explicit and district-scoped', () => 
   assert.deepEqual(getGeoEntity('ua:odesa:microdistrict:velykyi-fontan')?.osm, { type: 'node', id: 3901671563 });
   assert.equal(getGeoEntity('ua:odesa:microdistrict:velykyi-fontan')?.parentId, 'ua:odesa:district:kyivskyi');
   assert.equal(getGeoEntity('ua:odesa:microdistrict:otrada')?.source, 'manual');
-  assert.equal(getGeoEntity('ua:odesa:microdistrict:otrada')?.accuracy, 'approximate');
+  assert.equal(getGeoEntity('ua:odesa:microdistrict:otrada')?.accuracy, 'neighborhood');
 });
