@@ -11,6 +11,7 @@ import { UA_BILA_TSERKVA_ENTITIES } from './bila-tserkva/index.js';
 import { UA_RIVNE_ENTITIES } from './rivne/index.js';
 import { UA_KHERSON_ENTITIES } from './kherson/index.js';
 import { UA_VINNYTSIA_ENTITIES } from './vinnytsia/index.js';
+import { UA_MYKOLAIV_ENTITIES } from './mykolaiv/index.js';
 
 export const UA_ENTITIES = Object.freeze([
   ...UA_CITY_ENTITIES,
@@ -26,4 +27,5 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_RIVNE_ENTITIES,
   ...UA_KHERSON_ENTITIES,
   ...UA_VINNYTSIA_ENTITIES,
+  ...UA_MYKOLAIV_ENTITIES,
 ]);
