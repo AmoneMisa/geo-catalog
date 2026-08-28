@@ -35,6 +35,78 @@ function osmKey(entity) {
   return `${entity.osm.type}:${entity.osm.id}`;
 }
 
+function positionsEqual(a, b) {
+  return Array.isArray(a) && Array.isArray(b) && a.length === 2 && b.length === 2 && a[0] === b[0] && a[1] === b[1];
+}
+
+function validatePosition(position, path, errors) {
+  if (!Array.isArray(position) || position.length !== 2) {
+    errors.push(`${path}: position must be [lng, lat]`);
+    return;
+  }
+
+  const [lng, lat] = position;
+  if (!Number.isFinite(lng) || lng < -180 || lng > 180) errors.push(`${path}: longitude out of range`);
+  if (!Number.isFinite(lat) || lat < -90 || lat > 90) errors.push(`${path}: latitude out of range`);
+}
+
+function validateLinearRing(ring, path, errors) {
+  if (!Array.isArray(ring)) {
+    errors.push(`${path}: linear ring must be an array`);
+    return;
+  }
+
+  if (ring.length < 4) errors.push(`${path}: linear ring must contain at least 4 positions`);
+  ring.forEach((position, index) => validatePosition(position, `${path}[${index}]`, errors));
+
+  if (ring.length > 0 && !positionsEqual(ring[0], ring[ring.length - 1])) {
+    errors.push(`${path}: linear ring must be closed`);
+  }
+}
+
+function validatePolygonCoordinates(coordinates, path, errors) {
+  if (!Array.isArray(coordinates) || coordinates.length === 0) {
+    errors.push(`${path}: polygon must contain at least one linear ring`);
+    return;
+  }
+
+  coordinates.forEach((ring, index) => validateLinearRing(ring, `${path}[${index}]`, errors));
+}
+
+function validateBoundary(boundary, entityId, errors) {
+  if (boundary === undefined) return;
+
+  const path = `${entityId}: boundary`;
+  if (!boundary || typeof boundary !== 'object' || Array.isArray(boundary)) {
+    errors.push(`${path} must be a GeoJSON geometry object`);
+    return;
+  }
+
+  if (boundary.type !== 'Polygon' && boundary.type !== 'MultiPolygon') {
+    errors.push(`${path}.type must be Polygon or MultiPolygon`);
+    return;
+  }
+
+  if (!Array.isArray(boundary.coordinates)) {
+    errors.push(`${path}.coordinates must be an array`);
+    return;
+  }
+
+  if (boundary.type === 'Polygon') {
+    validatePolygonCoordinates(boundary.coordinates, `${path}.coordinates`, errors);
+    return;
+  }
+
+  if (boundary.coordinates.length === 0) {
+    errors.push(`${path}.coordinates: MultiPolygon must contain at least one polygon`);
+    return;
+  }
+
+  boundary.coordinates.forEach((polygon, index) => {
+    validatePolygonCoordinates(polygon, `${path}.coordinates[${index}]`, errors);
+  });
+}
+
 export function validateGeoCatalog(entities) {
   const errors = [];
   const ids = new Set();
@@ -77,21 +149,10 @@ export function validateGeoCatalog(entities) {
       }
     }
 
+    validateBoundary(entity.boundary, entity.id, errors);
+
     if (entity.osm && (!['node', 'way', 'relation'].includes(entity.osm.type) || !Number.isInteger(entity.osm.id) || entity.osm.id <= 0)) {
       errors.push(`${entity.id}: invalid OSM metadata`);
-    }
-
-    if (entity.boundary) {
-      const { type, coordinates } = entity.boundary;
-      const isPolygon = type === 'Polygon' && Array.isArray(coordinates);
-      const isMultiPolygon = type === 'MultiPolygon' && Array.isArray(coordinates);
-      if (!isPolygon && !isMultiPolygon) errors.push(`${entity.id}: boundary must be a GeoJSON Polygon or MultiPolygon`);
-      else {
-        const rings = isPolygon ? coordinates : coordinates.flat();
-        const badRing = rings.some((ring) => !Array.isArray(ring) || ring.length < 4
-          || ring.some((point) => !Array.isArray(point) || point.length !== 2 || !point.every(Number.isFinite)));
-        if (badRing) errors.push(`${entity.id}: boundary has a malformed ring`);
-      }
     }
 
     const physicalKey = osmKey(entity);
