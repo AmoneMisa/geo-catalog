@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import {
   getGeoEntity,
+  isGeoCoverageGap,
   resolveLexiconGeoEntity,
   validateGeoCatalog,
 } from '../src/index.js';
@@ -21,10 +22,31 @@ test('Tashkent 0.3 spatial identities use semantic types and district parents', 
     ['uz:tashkent:microdistrict:sergeli-3a', 'microdistrict', 'uz:tashkent:yangihayot'],
     ['uz:tashkent:microdistrict:sergeli-5a', 'microdistrict', 'uz:tashkent:yangihayot'],
     ['uz:tashkent:microdistrict:sergeli-7a', 'microdistrict', 'uz:tashkent:yangihayot'],
+    ['uz:tashkent:microdistrict:sebzar', 'microdistrict', 'uz:tashkent:almazar'],
+    ['uz:tashkent:microdistrict:karakamysh', 'microdistrict', 'uz:tashkent:almazar'],
+    ['uz:tashkent:microdistrict:chilanzar-1', 'microdistrict', 'uz:tashkent:chilanzar'],
+    ['uz:tashkent:microdistrict:chilanzar-20', 'microdistrict', 'uz:tashkent:chilanzar'],
+    ['uz:tashkent:microdistrict:yunusabad-4', 'microdistrict', 'uz:tashkent:yunusabad'],
+    ['uz:tashkent:microdistrict:yunusabad-19', 'microdistrict', 'uz:tashkent:yunusabad'],
   ]) {
     const entity = getGeoEntity(id);
     assert.equal(entity?.type, type, id);
     assert.equal(entity?.parentId, parentId, id);
+  }
+});
+
+test('unresolved Tashkent massif shells stay explicit coverage gaps', () => {
+  for (const canonical of ['TTZ-3', 'Sputnik', 'Karasu-6', 'Qorasuv', 'Yunusabad-5', 'Yunusabad-20', 'Yunusabad-21', 'Yunusabad-22', 'Sergeli']) {
+    assert.equal(
+      isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical }),
+      true,
+      canonical,
+    );
+    assert.equal(
+      resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical }),
+      null,
+      canonical,
+    );
   }
 });
 
