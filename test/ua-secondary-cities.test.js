@@ -1,6 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getGeoEntity } from '../src/index.js';
+import { findGeoEntities, getGeoEntity } from '../src/index.js';
+
+test('all Ukrainian city entities are OSM-backed', () => {
+  const cities = findGeoEntities({ country: 'UA', type: 'city' });
+  assert.equal(cities.length, 88);
+  assert.ok(cities.every((city) => city.source === 'osm' && city.osm), 'every UA city must have explicit OSM provenance');
+});
 
 test('all secondary Ukrainian city centers use verified OSM named-place nodes', () => {
   const expected = new Map([
