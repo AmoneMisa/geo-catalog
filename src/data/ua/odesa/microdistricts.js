@@ -40,6 +40,6 @@ export const UA_ODESA_MICRODISTRICT_ENTITIES = Object.freeze([
     parentId: 'ua:odesa:district:prymorskyi',
     source: 'manual',
     accuracy: 'neighborhood',
-    sourceUrl: 'https://cyclowiki.org/wiki/%D0%9E%D1%82%D1%80%D0%B0%D0%B4%D0%B0_%28%D1%80%D0%B0%D0%B9%D0%BE%D0%B4%D0%B5%D1%81%D1%81%D1%8B%29',
+    sourceUrl: 'https://cyclowiki.org/wiki/%D0%9E%D1%82%D1%80%D0%B0%D0%B4%D0%B0_%28%D1%80%D0%B0%D0%B9%D0%BE%D0%BD_%D0%9E%D0%B4%D0%B5%D1%81%D1%81%D1%8B%29',
   }),
 ]);
