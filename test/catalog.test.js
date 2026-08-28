@@ -159,6 +159,12 @@ test('catalog data is immutable at runtime', () => {
   assert.equal(Object.isFrozen(GEO_ENTITIES), true);
   assert.equal(Object.isFrozen(getGeoEntity('uz:tashkent')), true);
   assert.equal(Object.isFrozen(getGeoEntity('uz:tashkent').center), true);
+
+  const district = getGeoEntity('uz:tashkent:chilanzar');
+  assert.equal(Object.isFrozen(district?.boundary), true);
+  assert.equal(Object.isFrozen(district?.boundary?.coordinates), true);
+  assert.equal(Object.isFrozen(district?.boundary?.coordinates?.[0]), true);
+  assert.equal(Object.isFrozen(district?.boundary?.coordinates?.[0]?.[0]), true);
 });
 
 test('Tashkent and major Ukrainian cities use verified OSM administrative coordinates', () => {
