@@ -224,28 +224,30 @@ test('verified OSM named-place nodes own representative city centers', () => {
   }
 });
 
-test('verified OSM city provenance does not overwrite manual authoritative centers', () => {
-  const expectedRelations = new Map([
-    ['ua:uzhhorod', 2692232],
-    ['ua:lutsk', 1951964],
-    ['ua:rivne', 448930],
-    ['ua:ternopil', 3058686],
-    ['ua:zhytomyr', 2692156],
-    ['ua:poltava', 1641691],
-    ['ua:sumy', 3678531],
-    ['ua:mykolaiv', 11622860],
-    ['ua:kherson', 2175078],
-    ['ua:kropyvnytskyi', 2825228],
-    ['ua:bila-tserkva', 2069683],
-    ['ua:kremenchuk', 2320579],
-    ['ua:uman', 3058556],
+test('verified OSM city relations retain explicit point-source center provenance', () => {
+  const expected = new Map([
+    ['ua:uzhhorod', [{ lat: 48.6224, lng: 22.3023 }, 2692232, 111353560]],
+    ['ua:lutsk', [{ lat: 50.7451, lng: 25.3201 }, 1951964, 146570870]],
+    ['ua:rivne', [{ lat: 50.6196, lng: 26.2513 }, 448930, 146541158]],
+    ['ua:ternopil', [{ lat: 49.5558, lng: 25.5924 }, 3058686, 1643945522]],
+    ['ua:zhytomyr', [{ lat: 50.2601, lng: 28.6696 }, 2692156, 252098339]],
+    ['ua:poltava', [{ lat: 49.5897, lng: 34.5508 }, 1641691, 27121360]],
+    ['ua:sumy', [{ lat: 50.912, lng: 34.8028 }, 3678531, 265057614]],
+    ['ua:mykolaiv', [{ lat: 46.9759, lng: 31.994 }, 11622860, 60410873]],
+    ['ua:kherson', [{ lat: 46.6401, lng: 32.6144 }, 2175078, 255466573]],
+    ['ua:kropyvnytskyi', [{ lat: 48.5106, lng: 32.2656 }, 2825228, 4126283179]],
+    ['ua:bila-tserkva', [{ lat: 49.797, lng: 30.1158 }, 2069683, 255259998]],
+    ['ua:kremenchuk', [{ lat: 49.063, lng: 33.4035 }, 2320579, 265058149]],
+    ['ua:uman', [{ lat: 48.7498, lng: 30.2203 }, 3058556, 248777764]],
   ]);
 
-  for (const [id, relationId] of expectedRelations) {
+  for (const [id, [center, relationId, pointNodeId]] of expected) {
     const city = getGeoEntity(id);
-    assert.equal(city?.source, 'manual', id);
+    assert.equal(city?.source, 'osm', id);
     assert.equal(city?.accuracy, 'city', id);
+    assert.deepEqual(city?.center, center, id);
     assert.deepEqual(city?.osm, { type: 'relation', id: relationId }, id);
+    assert.equal(city?.sourceUrl, `https://www.openstreetmap.org/node/${pointNodeId}`, id);
   }
 });
 
