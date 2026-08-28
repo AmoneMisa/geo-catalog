@@ -3,7 +3,7 @@ const osmMicrodistrict = (slug, canonicalName, lat, lng, osmId, accuracyM = 500)
   type: 'microdistrict',
   country: 'UZ',
   canonicalName,
-  parentId: 'uz:tashkent',
+  parentId: 'uz:tashkent:chilanzar',
   center: { lat, lng },
   source: 'osm',
   accuracy: 'neighborhood',
