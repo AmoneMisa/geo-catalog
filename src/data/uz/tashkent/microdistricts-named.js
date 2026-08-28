@@ -11,6 +11,18 @@ const osmMicrodistrict = (slug, canonicalName, parentId, lat, lng, osmType, osmI
   osm: { type: osmType, id: osmId },
 });
 
+const manualMicrodistrict = (slug, canonicalName, parentId, lat, lng, accuracyM = 1800) => ({
+  id: `uz:tashkent:microdistrict:${slug}`,
+  type: 'microdistrict',
+  country: 'UZ',
+  canonicalName,
+  parentId,
+  center: { lat, lng },
+  source: 'manual',
+  accuracy: 'approximate',
+  accuracyM,
+});
+
 export const TASHKENT_NAMED_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('tashselmash', 'Tashselmash', 'uz:tashkent:yashnobod', 41.30804, 69.30694, 'node', 4750099124, 800),
   osmMicrodistrict('aviasozlar', 'Aviasozlar', 'uz:tashkent:yashnobod', 41.30222, 69.31107, 'node', 1867099580, 850),
@@ -20,6 +32,8 @@ export const TASHKENT_NAMED_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('olympia', 'Olympia', 'uz:tashkent:almazar', 41.36188, 69.19401, 'node', 1866058437, 700),
   osmMicrodistrict('dustlik-1', 'Dustlik-1', 'uz:tashkent:yangihayot', 41.19324, 69.21269, 'way', 169301463, 650),
   osmMicrodistrict('dustlik-2', 'Dustlik-2', 'uz:tashkent:yangihayot', 41.19341, 69.20803, 'node', 2206297964, 650),
+  // Representative centroid from verified numbered Yo'ldosh/Sputnik mavze points.
+  manualMicrodistrict('sputnik', 'Sputnik', 'uz:tashkent:yangihayot', 41.198542, 69.218634, 2200),
 
   osmMicrodistrict('karasu-1', 'Karasu-1', 'uz:tashkent:mirzo-ulugbek', 41.33717, 69.37403, 'node', 1868229636, 650),
   osmMicrodistrict('karasu-2', 'Karasu-2', 'uz:tashkent:mirzo-ulugbek', 41.33194, 69.36380, 'node', 1868229637, 650),
