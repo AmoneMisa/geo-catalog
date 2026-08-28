@@ -1,5 +1,6 @@
 import { KZ_CITIES, TASHKENT_DISTRICTS, TASHKENT_AREAS } from '@whiteslove/parsing-lexicon/geo';
 import { UA_CITIES } from '@whiteslove/parsing-lexicon/geography';
+import { UA_MAJOR_LOCATION_EXTENSIONS } from '@whiteslove/parsing-lexicon/ua-location-extensions-major';
 import { UA_REGIONAL_LOCATION_EXTENSIONS } from '@whiteslove/parsing-lexicon/ua-location-extensions-regional';
 import { UZ_CITY_CATALOG } from '@whiteslove/parsing-lexicon/central-asia';
 import { UZ_EXPANDED_LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/central-asia-locations';
@@ -40,10 +41,12 @@ const expandedGroup = (city, keys) => [
   ({ item, type }) => ({ country: 'UZ', city, type, canonical: item.canonical || item.name }),
 ];
 
-const uaRegionalGroup = (city, key, type) => [
-  `${city} ${key}`, UA_REGIONAL_LOCATION_EXTENSIONS[city]?.[key] || [],
+const uaGroup = (registry, city, key, type) => [
+  `${city} ${key}`, registry[city]?.[key] || [],
   (item) => ({ country: 'UA', city, type, canonical: item.canonical || item.name }),
 ];
+const uaRegionalGroup = (city, key, type) => uaGroup(UA_REGIONAL_LOCATION_EXTENSIONS, city, key, type);
+const uaMajorGroup = (city, key, type) => uaGroup(UA_MAJOR_LOCATION_EXTENSIONS, city, key, type);
 
 const expandedUzCities = [
   'Samarkand','Namangan','Andijan','Fergana','Bukhara','Qarshi','Nukus','Urgench','Jizzakh','Navoiy','Termez','Gulistan','Chirchiq','Kokand','Margilan','Almalyk','Angren','Bekabad','Shakhrisabz','Khiva','Denov','Asaka','Kogon','Kattakurgan','Urgut','Yangiyol','Yangiyer','Shirin','Gazalkent','Chartak','Chust','Kosonsoy','Khojeyli','Takhiatash','Kungrad','Muynak','Beruniy','Turtkul','Shahrixon','Xonobod',
@@ -57,6 +60,15 @@ const groups = [
   ['Tashkent districts', TASHKENT_DISTRICTS, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: item.canonical })],
   ['Tashkent typed areas', tashkentAreas, ({ item }) => ({ country: 'UZ', city: 'Tashkent', type: item.type || 'local_area', canonical: item.canonical })],
   expandedGroup('Tashkent', tashkentSemanticKeys),
+
+  uaMajorGroup('Odesa', 'districts', 'district'),
+  uaMajorGroup('Odesa', 'microdistricts', 'microdistrict'),
+  uaMajorGroup('Odesa', 'residentialComplexes', 'residential_complex'),
+  uaMajorGroup('Odesa', 'landmarks', 'poi'),
+
+  uaRegionalGroup('Chernivtsi', 'microdistricts', 'microdistrict'),
+  uaRegionalGroup('Chernivtsi', 'residentialComplexes', 'residential_complex'),
+  uaRegionalGroup('Chernivtsi', 'landmarks', 'poi'),
   uaRegionalGroup('Kropyvnytskyi', 'microdistricts', 'microdistrict'),
   uaRegionalGroup('Kropyvnytskyi', 'residentialComplexes', 'residential_complex'),
   uaRegionalGroup('Kropyvnytskyi', 'landmarks', 'poi'),
