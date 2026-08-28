@@ -16,4 +16,5 @@ export const UA_KROPYVNYTSKYI_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('novomykolaivka', 'Новомиколаївка', 48.53393, 32.2619, 1500, { osm: Object.freeze({ type: 'node', id: 2047705329 }), wikidataId: 'Q12134110' }),
   neighborhood('balashivka', 'Балашівка', 48.52386, 32.23103, 1600, { osm: Object.freeze({ type: 'node', id: 2047705326 }), wikidataId: 'Q12080606' }),
   neighborhood('lelekivka', 'Лелеківка', 48.55669, 32.23356, 1700, { osm: Object.freeze({ type: 'node', id: 2047705328 }), wikidataId: 'Q12117560' }),
+  neighborhood('ozerna-balka', 'Озерна Балка', 48.51479, 32.23331, 1500, { osm: Object.freeze({ type: 'node', id: 2047705330 }) }),
 ]);
