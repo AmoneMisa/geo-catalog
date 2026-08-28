@@ -53,6 +53,8 @@ const groups = [
   uaRegionalGroup('Kremenchuk', 'microdistricts', 'microdistrict'),
   uaRegionalGroup('Kremenchuk', 'residentialComplexes', 'residential_complex'),
   uaRegionalGroup('Kremenchuk', 'landmarks', 'poi'),
+  uaRegionalGroup('Bila Tserkva', 'microdistricts', 'microdistrict'),
+  uaRegionalGroup('Bila Tserkva', 'landmarks', 'poi'),
   ...expandedUzCities.map(expandedGroup),
 ];
 

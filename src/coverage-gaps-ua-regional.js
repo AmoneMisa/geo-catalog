@@ -48,6 +48,43 @@ export const UA_REGIONAL_COVERAGE_GAPS = Object.freeze([
     country: 'UA', city: 'Kremenchuk', type: 'poi', canonical: 'Dnipro Embankment',
     reason: 'Generic riverfront wording is not yet tied to a standalone named POI and must not be conflated with Velyka Naberezhna street or Prydniprovskyi Park.',
   }),
+
+  Object.freeze({
+    country: 'UA', city: 'Bila Tserkva', type: 'microdistrict', canonical: 'Tsentr',
+    reason: 'The central planning area is attested, but no standalone locality geometry or independently defensible centroid is verified yet.',
+  }),
+  Object.freeze({
+    country: 'UA', city: 'Bila Tserkva', type: 'microdistrict', canonical: 'Vokzalna',
+    reason: 'Vokzalna is present as a standalone OSM suburb, but its locality center has not yet been independently recovered; do not substitute the railway station or Vokzalna Street point.',
+  }),
+  Object.freeze({
+    country: 'UA', city: 'Bila Tserkva', type: 'microdistrict', canonical: 'Zarichchia',
+    reason: 'Zarichchia is a verified Bila Tserkva residential area, but a standalone locality center is still pending; same-name places outside the city must not be used.',
+  }),
+  Object.freeze({
+    country: 'UA', city: 'Bila Tserkva', type: 'microdistrict', canonical: 'DNS',
+    reason: 'DNS is present as a standalone OSM suburb, but a reliable locality center/OSM object reference has not yet been recovered.',
+  }),
+  Object.freeze({
+    country: 'UA', city: 'Bila Tserkva', type: 'microdistrict', canonical: 'Pionerska',
+    reason: 'Pionerska is attested as a city-local area, but a stale map cache collides with the current Oleksandriiskyi OSM node; do not reuse that node without a current spatial match.',
+  }),
+  Object.freeze({
+    country: 'UA', city: 'Bila Tserkva', type: 'microdistrict', canonical: '4 microdistrict',
+    reason: 'The 4th microdistrict is a verified standalone neighborhood, but its authoritative OSM center/object id is still pending; low-quality aggregate coordinates are intentionally not used.',
+  }),
+  Object.freeze({
+    country: 'UA', city: 'Bila Tserkva', type: 'microdistrict', canonical: '5 microdistrict',
+    reason: 'No independently verified standalone spatial locality for the parser canonical has been established yet.',
+  }),
+  Object.freeze({
+    country: 'UA', city: 'Bila Tserkva', type: 'microdistrict', canonical: '6 microdistrict',
+    reason: 'No independently verified standalone spatial locality for the parser canonical has been established yet.',
+  }),
+  Object.freeze({
+    country: 'UA', city: 'Bila Tserkva', type: 'poi', canonical: 'Ros River',
+    reason: 'The Ros is a regional river extending far beyond Bila Tserkva and must not be parented to the city until natural-feature/region hierarchy is modeled.',
+  }),
 ]);
 
 const gapKeys = new Set(UA_REGIONAL_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));
