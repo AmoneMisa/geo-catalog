@@ -12,7 +12,7 @@ const city = (id, canonicalName, lat, lng, accuracyM = 3000, extra = {}) => Obje
 
 // Secondary Ukrainian city centers migrated from parsing-lexicon.
 // The parser owns canonical names and aliases; spatial metadata belongs here.
-export const UA_SECONDARY_CITY_ANCHORS = Object.freeze([
+export const UA_SECONDARY_CITY_ENTITIES = Object.freeze([
   city('ua:kamianske', 'Kamianske', 48.5168, 34.6069, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 1756064253 }) }),
   city('ua:nikopol', 'Nikopol', 47.5692, 34.3917, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 265058407 }) }),
   city('ua:pavlohrad', 'Pavlohrad', 48.5317, 35.8704, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 265059962 }) }),
