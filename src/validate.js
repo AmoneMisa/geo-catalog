@@ -81,6 +81,19 @@ export function validateGeoCatalog(entities) {
       errors.push(`${entity.id}: invalid OSM metadata`);
     }
 
+    if (entity.boundary) {
+      const { type, coordinates } = entity.boundary;
+      const isPolygon = type === 'Polygon' && Array.isArray(coordinates);
+      const isMultiPolygon = type === 'MultiPolygon' && Array.isArray(coordinates);
+      if (!isPolygon && !isMultiPolygon) errors.push(`${entity.id}: boundary must be a GeoJSON Polygon or MultiPolygon`);
+      else {
+        const rings = isPolygon ? coordinates : coordinates.flat();
+        const badRing = rings.some((ring) => !Array.isArray(ring) || ring.length < 4
+          || ring.some((point) => !Array.isArray(point) || point.length !== 2 || !point.every(Number.isFinite)));
+        if (badRing) errors.push(`${entity.id}: boundary has a malformed ring`);
+      }
+    }
+
     const physicalKey = osmKey(entity);
     if (physicalKey) {
       const existingId = osmOwners.get(physicalKey);

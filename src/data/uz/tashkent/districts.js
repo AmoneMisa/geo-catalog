@@ -1,18 +1,28 @@
-const district = (slug, canonicalName, lat, lng, accuracyM = 4500) => ({
-  id: `uz:tashkent:${slug}`,
-  type: 'district',
-  country: 'UZ',
-  canonicalName,
-  parentId: 'uz:tashkent',
-  center: { lat, lng },
-  source: 'manual',
-  accuracy: 'approximate',
-  accuracyM,
-});
+import { TASHKENT_DISTRICT_BOUNDARIES } from './district-boundaries.js';
+
+const district = (slug, canonicalName, lat, lng, accuracyM = 4500) => {
+  const boundary = TASHKENT_DISTRICT_BOUNDARIES[slug];
+  return {
+    id: `uz:tashkent:${slug}`,
+    type: 'district',
+    country: 'UZ',
+    canonicalName,
+    parentId: 'uz:tashkent',
+    center: { lat, lng },
+    source: 'manual',
+    accuracy: 'approximate',
+    accuracyM,
+    ...(boundary ? {
+      boundary: boundary.geometry,
+      osm: { type: 'relation', id: boundary.relId },
+    } : {}),
+  };
+};
 
 export const TASHKENT_ENTITIES = Object.freeze([
-  // Administrative district centroids. These are intentionally marked approximate:
-  // exact boundaries belong in bbox/polygon data once verified against OSM/official GIS.
+  // Center points remain hand-picked approximations (accuracyM reflects that), but each
+  // entity now also carries a real administrative boundary polygon from OSM, sourced via
+  // ./district-boundaries.js, for consumers that need the actual district shape.
   district('almazar','Almazar',41.3483,69.2052),
   district('bektemir','Bektemir',41.2093,69.3341),
   district('mirobod','Mirobod',41.2914,69.2898),
