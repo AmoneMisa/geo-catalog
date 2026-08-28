@@ -21,6 +21,7 @@ test('Tashkent 0.3 spatial identities use semantic types and district parents', 
     ['uz:tashkent:microdistrict:karasu-1', 'microdistrict', 'uz:tashkent:mirzo-ulugbek'],
     ['uz:tashkent:microdistrict:karasu-6', 'microdistrict', 'uz:tashkent:mirzo-ulugbek'],
     ['uz:tashkent:microdistrict:ttz-1', 'microdistrict', 'uz:tashkent:mirzo-ulugbek'],
+    ['uz:tashkent:microdistrict:ttz-3', 'microdistrict', 'uz:tashkent:mirzo-ulugbek'],
     ['uz:tashkent:microdistrict:sergeli-3a', 'microdistrict', 'uz:tashkent:yangihayot'],
     ['uz:tashkent:microdistrict:sergeli-5a', 'microdistrict', 'uz:tashkent:yangihayot'],
     ['uz:tashkent:microdistrict:sergeli-7a', 'microdistrict', 'uz:tashkent:yangihayot'],
@@ -53,23 +54,22 @@ test('newly resolved Tashkent massifs keep defensible provenance', () => {
   assert.equal(sputnik?.accuracy, 'approximate');
   assert.ok(sputnik?.accuracyM >= 2000);
 
+  const ttz3 = getGeoEntity('uz:tashkent:microdistrict:ttz-3');
+  assert.equal(ttz3?.source, 'manual');
+  assert.equal(ttz3?.accuracy, 'approximate');
+  assert.equal(ttz3?.center?.lat, 41.3537);
+  assert.equal(ttz3?.center?.lng, 69.3831);
+  assert.ok(ttz3?.accuracyM >= 900);
+  assert.equal(ttz3?.osm, undefined);
+
   const qorasuv = getGeoEntity('uz:tashkent:local-area:qorasuv');
   assert.equal(qorasuv?.source, 'manual');
   assert.equal(qorasuv?.center?.lat, 41.333675);
   assert.equal(qorasuv?.center?.lng, 69.372236);
 });
 
-test('only TTZ-3 remains an unresolved Tashkent massif gap from this batch', () => {
-  assert.equal(
-    isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'TTZ-3' }),
-    true,
-  );
-  assert.equal(
-    resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'TTZ-3' }),
-    null,
-  );
-
-  for (const canonical of ['Sputnik', 'Karasu-6', 'Yunusabad-5']) {
+test('resolved Tashkent massif batch has no remaining spatial gap', () => {
+  for (const canonical of ['Sputnik', 'Karasu-6', 'Yunusabad-5', 'TTZ-3']) {
     assert.equal(
       isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical }),
       false,
