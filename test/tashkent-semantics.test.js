@@ -17,7 +17,9 @@ test('Tashkent 0.3 spatial identities use semantic types and district parents', 
     ['uz:tashkent:microdistrict:olympia', 'microdistrict', 'uz:tashkent:almazar'],
     ['uz:tashkent:microdistrict:dustlik-1', 'microdistrict', 'uz:tashkent:yangihayot'],
     ['uz:tashkent:microdistrict:dustlik-2', 'microdistrict', 'uz:tashkent:yangihayot'],
+    ['uz:tashkent:microdistrict:sputnik', 'microdistrict', 'uz:tashkent:yangihayot'],
     ['uz:tashkent:microdistrict:karasu-1', 'microdistrict', 'uz:tashkent:mirzo-ulugbek'],
+    ['uz:tashkent:microdistrict:karasu-6', 'microdistrict', 'uz:tashkent:mirzo-ulugbek'],
     ['uz:tashkent:microdistrict:ttz-1', 'microdistrict', 'uz:tashkent:mirzo-ulugbek'],
     ['uz:tashkent:microdistrict:sergeli-3a', 'microdistrict', 'uz:tashkent:yangihayot'],
     ['uz:tashkent:microdistrict:sergeli-5a', 'microdistrict', 'uz:tashkent:yangihayot'],
@@ -27,7 +29,9 @@ test('Tashkent 0.3 spatial identities use semantic types and district parents', 
     ['uz:tashkent:microdistrict:chilanzar-1', 'microdistrict', 'uz:tashkent:chilanzar'],
     ['uz:tashkent:microdistrict:chilanzar-20', 'microdistrict', 'uz:tashkent:chilanzar'],
     ['uz:tashkent:microdistrict:yunusabad-4', 'microdistrict', 'uz:tashkent:yunusabad'],
+    ['uz:tashkent:microdistrict:yunusabad-5', 'microdistrict', 'uz:tashkent:yunusabad'],
     ['uz:tashkent:microdistrict:yunusabad-19', 'microdistrict', 'uz:tashkent:yunusabad'],
+    ['uz:tashkent:local-area:qorasuv', 'local_area', 'uz:tashkent:mirzo-ulugbek'],
   ]) {
     const entity = getGeoEntity(id);
     assert.equal(entity?.type, type, id);
@@ -35,19 +39,56 @@ test('Tashkent 0.3 spatial identities use semantic types and district parents', 
   }
 });
 
-test('unresolved Tashkent massif shells stay explicit coverage gaps', () => {
-  for (const canonical of ['TTZ-3', 'Sputnik', 'Karasu-6', 'Qorasuv', 'Yunusabad-5', 'Yunusabad-20', 'Yunusabad-21', 'Yunusabad-22', 'Sergeli']) {
+test('newly resolved Tashkent massifs keep defensible provenance', () => {
+  const karasu6 = getGeoEntity('uz:tashkent:microdistrict:karasu-6');
+  assert.equal(karasu6?.osm?.type, 'node');
+  assert.equal(karasu6?.osm?.id, 1868229640);
+
+  const yunusabad5 = getGeoEntity('uz:tashkent:microdistrict:yunusabad-5');
+  assert.equal(yunusabad5?.osm?.type, 'node');
+  assert.equal(yunusabad5?.osm?.id, 1867002800);
+
+  const sputnik = getGeoEntity('uz:tashkent:microdistrict:sputnik');
+  assert.equal(sputnik?.source, 'manual');
+  assert.equal(sputnik?.accuracy, 'approximate');
+  assert.ok(sputnik?.accuracyM >= 2000);
+
+  const qorasuv = getGeoEntity('uz:tashkent:local-area:qorasuv');
+  assert.equal(qorasuv?.source, 'manual');
+  assert.equal(qorasuv?.center?.lat, 41.333675);
+  assert.equal(qorasuv?.center?.lng, 69.372236);
+});
+
+test('only TTZ-3 remains an unresolved Tashkent massif gap from this batch', () => {
+  assert.equal(
+    isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'TTZ-3' }),
+    true,
+  );
+  assert.equal(
+    resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'TTZ-3' }),
+    null,
+  );
+
+  for (const canonical of ['Sputnik', 'Karasu-6', 'Yunusabad-5']) {
     assert.equal(
       isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical }),
-      true,
+      false,
       canonical,
     );
-    assert.equal(
+    assert.ok(
       resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical }),
-      null,
       canonical,
     );
   }
+
+  assert.equal(
+    isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Qorasuv' }),
+    false,
+  );
+  assert.equal(
+    resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Qorasuv' })?.id,
+    'uz:tashkent:local-area:qorasuv',
+  );
 });
 
 test('Tashkent City has a development-area identity instead of a local-area identity', () => {
