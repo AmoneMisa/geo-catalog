@@ -188,6 +188,24 @@ test('Tashkent and major Ukrainian cities use verified OSM administrative coordi
   }
 });
 
+test('additional Ukrainian regional centers use verified OSM city relations', () => {
+  const expected = new Map([
+    ['ua:vinnytsia', [{ lat: 49.2317, lng: 28.4678 }, 361818]],
+    ['ua:chernivtsi', [{ lat: 48.28, lng: 25.93 }, 1742393]],
+    ['ua:khmelnytskyi', [{ lat: 49.42, lng: 26.98 }, 1792913]],
+    ['ua:cherkasy', [{ lat: 49.444444, lng: 32.059722 }, 2825507]],
+    ['ua:chernihiv', [{ lat: 51.491111, lng: 31.298611 }, 1952636]],
+  ]);
+
+  for (const [id, [center, relationId]] of expected) {
+    const city = getGeoEntity(id);
+    assert.equal(city?.source, 'osm', id);
+    assert.equal(city?.accuracy, 'city', id);
+    assert.deepEqual(city?.center, center, id);
+    assert.deepEqual(city?.osm, { type: 'relation', id: relationId }, id);
+  }
+});
+
 test('Odesa administrative districts expose validated OSM boundaries', () => {
   const districts = findGeoEntities({ country: 'UA', parentId: 'ua:odesa', type: 'district' });
   assert.equal(districts.length, 4);
