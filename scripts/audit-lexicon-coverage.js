@@ -13,6 +13,7 @@ import { UA_VINNYTSIA_COVERAGE_GAPS, isUaVinnytsiaCoverageGap } from '../src/cov
 import { UA_MYKOLAIV_COVERAGE_GAPS, isUaMykolaivCoverageGap } from '../src/coverage-gaps-ua-mykolaiv.js';
 import { UA_CHERKASY_COVERAGE_GAPS, isUaCherkasyCoverageGap } from '../src/coverage-gaps-ua-cherkasy.js';
 import { UA_POLTAVA_COVERAGE_GAPS, isUaPoltavaCoverageGap } from '../src/coverage-gaps-ua-poltava.js';
+import { UA_CHERNIHIV_COVERAGE_GAPS, isUaChernihivCoverageGap } from '../src/coverage-gaps-ua-chernihiv.js';
 import { UZ_SECONDARY_COVERAGE_GAPS, isUzSecondaryCoverageGap } from '../src/coverage-gaps-uz-secondary.js';
 import { UZ_TAIL_COVERAGE_GAPS, isUzTailCoverageGap } from '../src/coverage-gaps-uz-tail.js';
 
@@ -82,11 +83,15 @@ const groups = [
   uaRegionalGroup('Poltava', 'microdistricts', 'microdistrict'),
   uaRegionalGroup('Poltava', 'residentialComplexes', 'residential_complex'),
   uaRegionalGroup('Poltava', 'landmarks', 'poi'),
+  uaRegionalGroup('Chernihiv', 'districts', 'district'),
+  uaRegionalGroup('Chernihiv', 'microdistricts', 'microdistrict'),
+  uaRegionalGroup('Chernihiv', 'residentialComplexes', 'residential_complex'),
+  uaRegionalGroup('Chernihiv', 'landmarks', 'poi'),
   ...expandedUzCities.map(expandedGroup),
 ];
 
-const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUaVinnytsiaCoverageGap(input) || isUaMykolaivCoverageGap(input) || isUaCherkasyCoverageGap(input) || isUaPoltavaCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
-const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UA_VINNYTSIA_COVERAGE_GAPS, ...UA_MYKOLAIV_COVERAGE_GAPS, ...UA_CHERKASY_COVERAGE_GAPS, ...UA_POLTAVA_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
+const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUaVinnytsiaCoverageGap(input) || isUaMykolaivCoverageGap(input) || isUaCherkasyCoverageGap(input) || isUaPoltavaCoverageGap(input) || isUaChernihivCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
+const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UA_VINNYTSIA_COVERAGE_GAPS, ...UA_MYKOLAIV_COVERAGE_GAPS, ...UA_CHERKASY_COVERAGE_GAPS, ...UA_POLTAVA_COVERAGE_GAPS, ...UA_CHERNIHIV_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
 
 let unaccounted = 0;
 for (const [label, items, toInput] of groups) {
