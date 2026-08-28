@@ -10,7 +10,6 @@ const gaps = (country, city, type, canonicals, reason) => canonicals.map((canoni
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Tashkent', 'local_area', ['Oltinkul','Stroygorod','Al-Khorezmi-1','Rakatboshi','Chorsu'], 'No verified standalone spatial locality match yet.'),
-  { country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'TTZ-3', reason: 'TTZ-3 residential massif is confirmed, but no verified standalone center or OSM geometry is available yet.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Geofizika', reason: 'Mapped spatially as a separate village in Tashkent Region; requires region/settlement hierarchy instead of a Tashkent city child.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Lolazor', reason: 'Ambiguous with same-name places outside Tashkent.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Buyuk Ipak Yuli', reason: 'Area must not be conflated with the metro station.' },
