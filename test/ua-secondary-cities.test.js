@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { getGeoEntity } from '../src/index.js';
 
-test('verified secondary Ukrainian city centers use their OSM named-place nodes', () => {
+test('all secondary Ukrainian city centers use verified OSM named-place nodes', () => {
   const expected = new Map([
     ['ua:kamianske', [{ lat: 48.5168, lng: 34.6069 }, 1756064253]],
     ['ua:nikopol', [{ lat: 47.5692, lng: 34.3917 }, 265058407]],
@@ -39,8 +39,32 @@ test('verified secondary Ukrainian city centers use their OSM named-place nodes'
     ['ua:khmilnyk', [{ lat: 49.55618, lng: 27.94912 }, 1723694093]],
     ['ua:smila', [{ lat: 49.2337, lng: 31.8829 }, 337566618]],
     ['ua:myrhorod', [{ lat: 49.9658, lng: 33.6114 }, 337538836]],
+    ['ua:konotop', [{ lat: 51.2398, lng: 33.2067 }, 337510526]],
+    ['ua:shostka', [{ lat: 51.8644, lng: 33.4729 }, 337504305]],
+    ['ua:hlukhiv', [{ lat: 51.67831, lng: 33.9093 }, 337505758]],
+    ['ua:nizhyn', [{ lat: 51.0465, lng: 31.8806 }, 337512379]],
+    ['ua:pervomaisk', [{ lat: 48.0457, lng: 30.8476 }, 337661270]],
+    ['ua:voznesensk', [{ lat: 47.56796, lng: 31.33386 }, 313670944]],
+    ['ua:yuzhnoukrainsk', [{ lat: 47.82427, lng: 31.17868 }, 337668729]],
+    ['ua:melitopol', [{ lat: 46.8467, lng: 35.3827 }, 1756064266]],
+    ['ua:berdiansk', [{ lat: 46.7557, lng: 36.7888 }, 258057686]],
+    ['ua:mariupol', [{ lat: 47.0958, lng: 37.55 }, 29980666]],
+    ['ua:kramatorsk', [{ lat: 48.7389, lng: 37.5844 }, 274929523]],
+    ['ua:sloviansk', [{ lat: 48.8523, lng: 37.6058 }, 256613986]],
+    ['ua:bakhmut', [{ lat: 48.5894, lng: 38.0021 }, 256613679]],
+    ['ua:pokrovsk', [{ lat: 48.2771, lng: 37.1772 }, 256613916]],
+    ['ua:kostiantynivka', [{ lat: 48.5349, lng: 37.6924 }, 256613898]],
+    ['ua:toretsk', [{ lat: 48.39705, lng: 37.85014 }, 256613774]],
+    ['ua:avdiivka', [{ lat: 48.13388, lng: 37.74667 }, 1602171866]],
+    ['ua:luhansk', [{ lat: 48.5717, lng: 39.2973 }, 253874196]],
+    ['ua:sievierodonetsk', [{ lat: 48.9479, lng: 38.4936 }, 337579368]],
+    ['ua:lysychansk', [{ lat: 48.9173, lng: 38.4286 }, 337582086]],
+    ['ua:alchevsk', [{ lat: 48.4702, lng: 38.801 }, 253877159]],
+    ['ua:rubizhne', [{ lat: 49.0329, lng: 38.3726 }, 337576644]],
+    ['ua:vynohradiv', [{ lat: 48.14042, lng: 23.03602 }, 337658507]],
   ]);
 
+  assert.equal(expected.size, 58);
   for (const [id, [center, nodeId]] of expected) {
     const city = getGeoEntity(id);
     assert.equal(city?.source, 'osm', id);
