@@ -30,11 +30,17 @@ function semanticKey(entity) {
   ].join('|');
 }
 
+function osmKey(entity) {
+  if (!entity?.osm || !['node', 'way', 'relation'].includes(entity.osm.type) || !Number.isInteger(entity.osm.id) || entity.osm.id <= 0) return null;
+  return `${entity.osm.type}:${entity.osm.id}`;
+}
+
 export function validateGeoCatalog(entities) {
   const errors = [];
   const ids = new Set();
   const lookupKeys = new Set();
   const semanticKeys = new Map();
+  const osmOwners = new Map();
 
   for (const entity of entities) {
     if (!entity?.id || typeof entity.id !== 'string') errors.push('Entity without a valid id');
@@ -73,6 +79,13 @@ export function validateGeoCatalog(entities) {
 
     if (entity.osm && (!['node', 'way', 'relation'].includes(entity.osm.type) || !Number.isInteger(entity.osm.id) || entity.osm.id <= 0)) {
       errors.push(`${entity.id}: invalid OSM metadata`);
+    }
+
+    const physicalKey = osmKey(entity);
+    if (physicalKey) {
+      const existingId = osmOwners.get(physicalKey);
+      if (existingId && existingId !== entity.id) errors.push(`${entity.id}: duplicate physical OSM entity ${physicalKey} (already ${existingId})`);
+      else osmOwners.set(physicalKey, entity.id);
     }
   }
 

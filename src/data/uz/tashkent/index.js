@@ -7,7 +7,7 @@ import { TASHKENT_YUNUSABAD_4_9_ENTITIES } from './microdistricts-yunusabad-4-9.
 import { TASHKENT_YUNUSABAD_11_16_ENTITIES } from './microdistricts-yunusabad-11-16.js';
 import { TASHKENT_YUNUSABAD_17_19_ENTITIES } from './microdistricts-yunusabad-17-19.js';
 import { TASHKENT_NAMED_MICRODISTRICT_ENTITIES } from './microdistricts-named.js';
-import { TASHKENT_LOCAL_AREA_ENTITIES } from './local-areas.js';
+import { TASHKENT_DEVELOPMENT_AREA_ENTITIES } from './development-areas.js';
 import { TASHKENT_ALMAZAR_LOCAL_AREA_ENTITIES } from './local-areas-almazar.js';
 import { TASHKENT_SHAYKHANTAHUR_LOCAL_AREA_ENTITIES } from './local-areas-shaykhantahur.js';
 import { TASHKENT_MIRZO_ULUGBEK_LOCAL_AREA_ENTITIES } from './local-areas-mirzo-ulugbek.js';
@@ -16,7 +16,6 @@ import { TASHKENT_YAKKASARAY_LOCAL_AREA_ENTITIES } from './local-areas-yakkasara
 import { TASHKENT_YASHNOBOD_LOCAL_AREA_ENTITIES } from './local-areas-yashnobod.js';
 import { TASHKENT_YASHNOBOD_TUZEL_LOCAL_AREA_ENTITIES } from './local-areas-yashnobod-tuzel.js';
 import { TASHKENT_SERGELI_YANGIHAYOT_LOCAL_AREA_ENTITIES } from './local-areas-sergeli-yangihayot.js';
-import { TASHKENT_SERGELI_BLOCK_LOCAL_AREA_ENTITIES } from './local-areas-sergeli-blocks.js';
 import { TASHKENT_YANGIDARHAN_LOCAL_AREA_ENTITIES } from './local-areas-yangidarhan.js';
 import { TASHKENT_VERIFIED_AREA_ENTITIES } from './local-areas-verified.js';
 import { TASHKENT_MAHALLA_ENTITIES } from './mahallas.js';
@@ -35,7 +34,7 @@ export const UZ_TASHKENT_ENTITIES = Object.freeze([
   ...TASHKENT_YUNUSABAD_11_16_ENTITIES,
   ...TASHKENT_YUNUSABAD_17_19_ENTITIES,
   ...TASHKENT_NAMED_MICRODISTRICT_ENTITIES,
-  ...TASHKENT_LOCAL_AREA_ENTITIES,
+  ...TASHKENT_DEVELOPMENT_AREA_ENTITIES,
   ...TASHKENT_ALMAZAR_LOCAL_AREA_ENTITIES,
   ...TASHKENT_SHAYKHANTAHUR_LOCAL_AREA_ENTITIES,
   ...TASHKENT_MIRZO_ULUGBEK_LOCAL_AREA_ENTITIES,
@@ -44,7 +43,6 @@ export const UZ_TASHKENT_ENTITIES = Object.freeze([
   ...TASHKENT_YASHNOBOD_LOCAL_AREA_ENTITIES,
   ...TASHKENT_YASHNOBOD_TUZEL_LOCAL_AREA_ENTITIES,
   ...TASHKENT_SERGELI_YANGIHAYOT_LOCAL_AREA_ENTITIES,
-  ...TASHKENT_SERGELI_BLOCK_LOCAL_AREA_ENTITIES,
   ...TASHKENT_YANGIDARHAN_LOCAL_AREA_ENTITIES,
   ...TASHKENT_VERIFIED_AREA_ENTITIES,
   ...TASHKENT_MAHALLA_ENTITIES,
