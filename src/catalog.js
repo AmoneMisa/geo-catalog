@@ -16,10 +16,23 @@ if (!validation.valid) {
   throw new Error(`Invalid geo catalog:\n${validation.errors.join('\n')}`);
 }
 
+function freezeBoundaryCoordinates(value) {
+  if (!Array.isArray(value)) return value;
+  return Object.freeze(value.map(freezeBoundaryCoordinates));
+}
+
+function freezeBoundary(boundary) {
+  return Object.freeze({
+    type: boundary.type,
+    coordinates: freezeBoundaryCoordinates(boundary.coordinates),
+  });
+}
+
 export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
   ...entity,
   center: Object.freeze({ ...entity.center }),
   ...(entity.bbox ? { bbox: Object.freeze({ ...entity.bbox }) } : {}),
+  ...(entity.boundary ? { boundary: freezeBoundary(entity.boundary) } : {}),
   ...(entity.osm ? { osm: Object.freeze({ ...entity.osm }) } : {})
 })));
 
