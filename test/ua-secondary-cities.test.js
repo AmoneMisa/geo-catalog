@@ -14,6 +14,17 @@ test('verified secondary Ukrainian city centers use their OSM named-place nodes'
     ['ua:kalush', [{ lat: 49.0289, lng: 24.3613 }, 312270776]],
     ['ua:fastiv', [{ lat: 50.07993, lng: 29.91628 }, 337535126]],
     ['ua:vasylkiv', [{ lat: 50.17814, lng: 30.3175 }, 337527490]],
+    ['ua:boyarka', [{ lat: 50.33567, lng: 30.28476 }, 36507632]],
+    ['ua:pereiaslav', [{ lat: 50.0644, lng: 31.44473 }, 337535557]],
+    ['ua:chuhuiv', [{ lat: 49.83663, lng: 36.68994 }, 264282090]],
+    ['ua:lozova', [{ lat: 48.8842, lng: 36.316 }, 337581295]],
+    ['ua:izium', [{ lat: 49.19132, lng: 37.27841 }, 337568004]],
+    ['ua:kupiansk', [{ lat: 49.7133, lng: 37.6142 }, 337548383]],
+    ['ua:merefa', [{ lat: 49.81834, lng: 36.06287 }, 1685829433]],
+    ['ua:liubotyn', [{ lat: 49.94356, lng: 35.91852 }, 337539733]],
+    ['ua:chornomorsk', [{ lat: 46.3013, lng: 30.6549 }, 337690843]],
+    ['ua:bilhorod-dnistrovskyi', [{ lat: 46.191, lng: 30.3458 }, 738536340]],
+    ['ua:podilsk', [{ lat: 47.74974, lng: 29.5305 }, 337670266]],
   ]);
 
   for (const [id, [center, nodeId]] of expected) {
