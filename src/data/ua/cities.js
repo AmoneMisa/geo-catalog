@@ -9,13 +9,20 @@ const city = (id, canonicalName, lat, lng, extra = {}) => ({
   ...extra,
 });
 
+const osmCity = (id, canonicalName, lat, lng, osmRelation) => city(id, canonicalName, lat, lng, {
+  source: 'osm',
+  osm: { type: 'relation', id: osmRelation },
+  sourceUrl: `https://www.openstreetmap.org/relation/${osmRelation}`,
+});
+
 export const UA_CITY_ENTITIES = Object.freeze([
-  city('ua:kyiv','Kyiv',50.4501,30.5234),
-  city('ua:kharkiv','Kharkiv',49.9935,36.2304),
-  city('ua:odesa','Odesa',46.4825,30.7233),
-  city('ua:dnipro','Dnipro',48.4647,35.0462),
-  city('ua:lviv','Lviv',49.8397,24.0297),
-  city('ua:zaporizhzhia','Zaporizhzhia',47.8388,35.1396),
+  // OSM administrative-boundary reference coordinates and relation provenance for the first major-city batch.
+  osmCity('ua:kyiv','Kyiv',50.4024,30.5324,421866),
+  osmCity('ua:kharkiv','Kharkiv',49.9914,36.2810,3154746),
+  osmCity('ua:odesa','Odesa',46.4713468,30.7296333,1413934),
+  osmCity('ua:dnipro','Dnipro',48.485,35.070,1017311),
+  osmCity('ua:lviv','Lviv',49.8358,24.0193,2032280),
+  osmCity('ua:zaporizhzhia','Zaporizhzhia',47.837778,35.138333,1418311),
   city('ua:vinnytsia','Vinnytsia',49.2331,28.4682),
   city('ua:ivano-frankivsk','Ivano-Frankivsk',48.9226,24.7111),
   city('ua:chernivtsi','Chernivtsi',48.2915,25.9403),
