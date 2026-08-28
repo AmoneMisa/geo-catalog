@@ -46,10 +46,12 @@ export interface GeoPoint { lat: number; lng: number }
 export interface GeoBBox { south: number; west: number; north: number; east: number }
 export interface OsmRef { type: 'node' | 'way' | 'relation'; id: number }
 
-// GeoJSON-compatible boundary geometry: [lng, lat] coordinate pairs, ring-nested per the
-// GeoJSON spec (Polygon: [ring][point], MultiPolygon: [polygon][ring][point]).
-export interface GeoPolygonGeometry { type: 'Polygon'; coordinates: number[][][] }
-export interface GeoMultiPolygonGeometry { type: 'MultiPolygon'; coordinates: number[][][][] }
+// GeoJSON RFC 7946 position order is [longitude, latitude].
+export type GeoPosition = readonly [number, number];
+export type GeoLinearRing = readonly GeoPosition[];
+export type GeoPolygonCoordinates = readonly GeoLinearRing[];
+export interface GeoPolygonGeometry { type: 'Polygon'; coordinates: GeoPolygonCoordinates }
+export interface GeoMultiPolygonGeometry { type: 'MultiPolygon'; coordinates: readonly GeoPolygonCoordinates[] }
 export type GeoBoundaryGeometry = GeoPolygonGeometry | GeoMultiPolygonGeometry;
 
 export interface GeoEntity {
