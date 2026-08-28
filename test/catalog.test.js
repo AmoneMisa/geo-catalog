@@ -188,21 +188,22 @@ test('Tashkent and major Ukrainian cities use verified OSM administrative coordi
   }
 });
 
-test('additional Ukrainian regional centers use verified OSM city relations', () => {
+test('additional Ukrainian regional centers retain explicit point-source center provenance', () => {
   const expected = new Map([
-    ['ua:vinnytsia', [{ lat: 49.2317, lng: 28.4678 }, 361818]],
-    ['ua:chernivtsi', [{ lat: 48.28, lng: 25.93 }, 1742393]],
-    ['ua:khmelnytskyi', [{ lat: 49.42, lng: 26.98 }, 1792913]],
-    ['ua:cherkasy', [{ lat: 49.444444, lng: 32.059722 }, 2825507]],
-    ['ua:chernihiv', [{ lat: 51.491111, lng: 31.298611 }, 1952636]],
+    ['ua:vinnytsia', [{ lat: 49.232, lng: 28.468 }, 361818, 249748477]],
+    ['ua:chernivtsi', [{ lat: 48.2865, lng: 25.9377 }, 1742393, 428339505]],
+    ['ua:khmelnytskyi', [{ lat: 49.4196, lng: 26.9794 }, 1792913, 251223522]],
+    ['ua:cherkasy', [{ lat: 49.4447, lng: 32.0588 }, 2825507, 265056942]],
+    ['ua:chernihiv', [{ lat: 51.4941, lng: 31.2943 }, 1952636, 26150436]],
   ]);
 
-  for (const [id, [center, relationId]] of expected) {
+  for (const [id, [center, relationId, pointNodeId]] of expected) {
     const city = getGeoEntity(id);
     assert.equal(city?.source, 'osm', id);
     assert.equal(city?.accuracy, 'city', id);
     assert.deepEqual(city?.center, center, id);
     assert.deepEqual(city?.osm, { type: 'relation', id: relationId }, id);
+    assert.equal(city?.sourceUrl, `https://www.openstreetmap.org/node/${pointNodeId}`, id);
   }
 });
 
