@@ -6,9 +6,9 @@ const ENTITY_TYPES = new Set([
 ]);
 
 const POI_TYPES = new Set([
-  'park', 'recreation_area', 'island', 'square', 'street', 'landmark', 'monument',
-  'stadium', 'cultural_venue', 'exhibition_center', 'zoo', 'shopping_mall', 'market',
-  'beach', 'memorial', 'university', 'botanical_garden',
+  'park', 'recreation_area', 'island', 'square', 'street', 'landmark', 'monument', 'fortress',
+  'embankment', 'lake', 'cathedral', 'stadium', 'cultural_venue', 'exhibition_center', 'zoo',
+  'shopping_mall', 'market', 'beach', 'memorial', 'university', 'botanical_garden',
 ]);
 
 const SOURCES = new Set(['osm', 'wikidata', 'official', 'manual', 'geonames']);

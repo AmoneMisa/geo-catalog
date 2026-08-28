@@ -1,9 +1,12 @@
 import { KZ_CITIES, TASHKENT_DISTRICTS, TASHKENT_AREAS } from '@whiteslove/parsing-lexicon/geo';
 import { UA_CITIES } from '@whiteslove/parsing-lexicon/geography';
+import { UA_REGIONAL_LOCATION_EXTENSIONS } from '@whiteslove/parsing-lexicon/ua-location-extensions-regional';
 import { UZ_CITY_CATALOG } from '@whiteslove/parsing-lexicon/central-asia';
 import { UZ_EXPANDED_LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/central-asia-locations';
 import { resolveLexiconGeoEntity } from '../src/lexicon-bridge.js';
 import { GEO_COVERAGE_GAPS, isGeoCoverageGap } from '../src/coverage-gaps.js';
+import { KZ_CITY_COVERAGE_GAPS, isKzCityCoverageGap } from '../src/coverage-gaps-kz-cities.js';
+import { UA_REGIONAL_COVERAGE_GAPS, isUaRegionalCoverageGap } from '../src/coverage-gaps-ua-regional.js';
 import { UZ_SECONDARY_COVERAGE_GAPS, isUzSecondaryCoverageGap } from '../src/coverage-gaps-uz-secondary.js';
 import { UZ_TAIL_COVERAGE_GAPS, isUzTailCoverageGap } from '../src/coverage-gaps-uz-tail.js';
 
@@ -27,6 +30,12 @@ const expandedGroup = (city) => [
   ({ item, type }) => ({ country: 'UZ', city, type, canonical: item.canonical || item.name }),
 ];
 
+const uaRegionalGroup = (city, key, type) => [
+  `${city} ${key}`,
+  UA_REGIONAL_LOCATION_EXTENSIONS[city]?.[key] || [],
+  (item) => ({ country: 'UA', city, type, canonical: item.canonical || item.name }),
+];
+
 const expandedUzCities = [
   'Samarkand','Namangan','Andijan','Fergana','Bukhara','Qarshi','Nukus','Urgench','Jizzakh','Navoiy','Termez','Gulistan','Chirchiq','Kokand','Margilan','Almalyk','Angren','Bekabad','Shakhrisabz','Khiva','Denov','Asaka','Kogon','Kattakurgan','Urgut','Yangiyol','Yangiyer','Shirin','Gazalkent','Chartak','Chust','Kosonsoy','Khojeyli','Takhiatash','Kungrad','Muynak','Beruniy','Turtkul','Shahrixon','Xonobod',
 ];
@@ -37,11 +46,14 @@ const groups = [
   ['UA cities', UA_CITIES, (item) => ({ country: 'UA', type: 'city', canonical: item.canonical })],
   ['Tashkent districts', TASHKENT_DISTRICTS, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: item.canonical })],
   ['Tashkent areas', tashkentAreas, (item) => ({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: item.canonical })],
+  uaRegionalGroup('Kropyvnytskyi', 'microdistricts', 'microdistrict'),
+  uaRegionalGroup('Kropyvnytskyi', 'residentialComplexes', 'residential_complex'),
+  uaRegionalGroup('Kropyvnytskyi', 'landmarks', 'poi'),
   ...expandedUzCities.map(expandedGroup),
 ];
 
-const isTrackedGap = (input) => isGeoCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
-const allGaps = [...GEO_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
+const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
+const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
 
 let unaccounted = 0;
 for (const [label, items, toInput] of groups) {
