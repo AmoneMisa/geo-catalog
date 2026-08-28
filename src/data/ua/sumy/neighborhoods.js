@@ -21,4 +21,5 @@ export const UA_SUMY_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('veretenivka', 'Веретенівка', 50.94359, 34.74607, 1600, { osm: Object.freeze({ type: 'node', id: 4290163086 }) }),
   neighborhood('dobrovilna', 'Добровільна', 50.93025, 34.76673, 1300, { osm: Object.freeze({ type: 'node', id: 4290194732 }) }),
   neighborhood('11-microdistrict', '11 мікрорайон', 50.913303, 34.832885, 1000, { source: 'manual', sourceUrl: 'https://yandex.com/maps/965/sumy/geo/11_y_mikroraion/1570351272/' }),
+  neighborhood('9-microdistrict', '9 мікрорайон', 50.907753, 34.816032, 1100, { source: 'manual', sourceUrl: 'https://lun.ua/new/sumy/esplanada' }),
 ]);
