@@ -15,6 +15,7 @@ import { UA_MYKOLAIV_ENTITIES } from './mykolaiv/index.js';
 import { UA_CHERKASY_ENTITIES } from './cherkasy/index.js';
 import { UA_POLTAVA_ENTITIES } from './poltava/index.js';
 import { UA_CHERNIHIV_ENTITIES } from './chernihiv/index.js';
+import { UA_KHARKIV_ENTITIES } from './kharkiv/index.js';
 
 export const UA_ENTITIES = Object.freeze([
   ...UA_CITY_ENTITIES,
@@ -34,4 +35,5 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_CHERKASY_ENTITIES,
   ...UA_POLTAVA_ENTITIES,
   ...UA_CHERNIHIV_ENTITIES,
+  ...UA_KHARKIV_ENTITIES,
 ]);

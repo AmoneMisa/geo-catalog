@@ -164,10 +164,11 @@ export const UA_ODESA_CORE_ENTITIES = Object.freeze([
     country: 'UA',
     canonicalName: 'Dacha Kovalevskoho',
     parentId: 'ua:odesa',
-    center: Object.freeze({ lat: 46.3768, lng: 30.7367 }),
+    center: Object.freeze({ lat: 46.379996, lng: 30.735938 }),
     source: 'manual',
     accuracy: 'neighborhood',
-    accuracyM: 1600,
+    accuracyM: 700,
+    sourceUrl: 'https://yandex.com/maps/145/odesa/geo/dacha_kovalevskoho/1930352721/',
   }),
   Object.freeze({
     id: 'ua:odesa:microdistrict:lenselyshche',
@@ -178,7 +179,8 @@ export const UA_ODESA_CORE_ENTITIES = Object.freeze([
     center: Object.freeze({ lat: 46.47367, lng: 30.63067 }),
     source: 'manual',
     accuracy: 'neighborhood',
-    accuracyM: 1800,
+    accuracyM: 900,
+    sourceUrl: 'https://cyclowiki.org/wiki/%D0%9B%D0%B5%D0%BD%D0%BF%D0%BE%D1%81%D1%91%D0%BB%D0%BE%D0%BA_%28%D0%9E%D0%B4%D0%B5%D1%81%D1%81%D0%B0%29',
   }),
   Object.freeze({
     id: 'ua:odesa:microdistrict:slobidka',
@@ -201,7 +203,8 @@ export const UA_ODESA_CORE_ENTITIES = Object.freeze([
     center: Object.freeze({ lat: 46.46667, lng: 30.65 }),
     source: 'manual',
     accuracy: 'neighborhood',
-    accuracyM: 1600,
+    accuracyM: 800,
+    sourceUrl: 'https://mapcarta.com/13720842',
   }),
   Object.freeze({
     id: 'ua:odesa:microdistrict:tairova',
@@ -273,7 +276,8 @@ export const UA_ODESA_CORE_ENTITIES = Object.freeze([
     center: Object.freeze({ lat: 46.372665, lng: 30.718042 }),
     source: 'manual',
     accuracy: 'poi',
-    accuracyM: 120,
+    accuracyM: 80,
+    sourceUrl: 'https://discover.ua/en/locations/memorial-of-odesa-defense',
   }),
   Object.freeze({
     id: 'ua:odesa:poi:pivdennyi-market',
@@ -444,7 +448,8 @@ export const UA_ODESA_CORE_ENTITIES = Object.freeze([
     center: Object.freeze({ lat: 46.56108, lng: 30.836926 }),
     source: 'manual',
     accuracy: 'neighborhood',
-    accuracyM: 500,
+    accuracyM: 350,
+    sourceUrl: 'https://riviera-gardens.com.ua/about',
   }),
   Object.freeze({
     id: 'ua:odesa:residential-complex:sady-riviery',
@@ -455,6 +460,7 @@ export const UA_ODESA_CORE_ENTITIES = Object.freeze([
     center: Object.freeze({ lat: 46.565648, lng: 30.831509 }),
     source: 'manual',
     accuracy: 'poi',
-    accuracyM: 250,
+    accuracyM: 150,
+    sourceUrl: 'https://novobudovy.com/ru/novobudovy-odesy/rivera-siti',
   }),
 ]);
