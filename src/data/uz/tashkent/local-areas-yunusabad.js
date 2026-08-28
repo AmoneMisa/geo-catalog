@@ -14,5 +14,4 @@ const osmLocalArea = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM =
 export const TASHKENT_YUNUSABAD_LOCAL_AREA_ENTITIES = Object.freeze([
   osmLocalArea('kashgar', 'Kashgar', 41.32022, 69.27649, 'node', 1866932729, 320),
   osmLocalArea('kiyot', 'Kiyot', 41.32538, 69.27791, 'node', 4778058865, 320),
-  osmLocalArea('minor', 'Minor', 41.33725, 69.27972, 'way', 1012743631, 360),
 ]);
