@@ -19,4 +19,6 @@ export const UA_SUMY_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('kurskyi', 'Курський', 50.93984, 34.77317, 1400, { osm: Object.freeze({ type: 'node', id: 4290194731 }) }),
   neighborhood('luka', 'Лука', 50.93283, 34.83362, 1500, { source: 'manual', sourceUrl: 'https://mapcarta.com/13960318', geonamesId: '807320' }),
   neighborhood('veretenivka', 'Веретенівка', 50.94359, 34.74607, 1600, { osm: Object.freeze({ type: 'node', id: 4290163086 }) }),
+  neighborhood('dobrovilna', 'Добровільна', 50.93025, 34.76673, 1300, { osm: Object.freeze({ type: 'node', id: 4290194732 }) }),
+  neighborhood('11-microdistrict', '11 мікрорайон', 50.913303, 34.832885, 1000, { source: 'manual', sourceUrl: 'https://yandex.com/maps/965/sumy/geo/11_y_mikroraion/1570351272/' }),
 ]);
