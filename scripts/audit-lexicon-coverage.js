@@ -10,6 +10,7 @@ import { UA_REGIONAL_COVERAGE_GAPS, isUaRegionalCoverageGap } from '../src/cover
 import { UA_RIVNE_COVERAGE_GAPS, isUaRivneCoverageGap } from '../src/coverage-gaps-ua-rivne.js';
 import { UA_KHERSON_COVERAGE_GAPS, isUaKhersonCoverageGap } from '../src/coverage-gaps-ua-kherson.js';
 import { UA_VINNYTSIA_COVERAGE_GAPS, isUaVinnytsiaCoverageGap } from '../src/coverage-gaps-ua-vinnytsia.js';
+import { UA_MYKOLAIV_COVERAGE_GAPS, isUaMykolaivCoverageGap } from '../src/coverage-gaps-ua-mykolaiv.js';
 import { UZ_SECONDARY_COVERAGE_GAPS, isUzSecondaryCoverageGap } from '../src/coverage-gaps-uz-secondary.js';
 import { UZ_TAIL_COVERAGE_GAPS, isUzTailCoverageGap } from '../src/coverage-gaps-uz-tail.js';
 
@@ -28,14 +29,12 @@ function expandedCityEntries(city) {
 }
 
 const expandedGroup = (city) => [
-  `${city} expanded geography`,
-  expandedCityEntries(city),
+  `${city} expanded geography`, expandedCityEntries(city),
   ({ item, type }) => ({ country: 'UZ', city, type, canonical: item.canonical || item.name }),
 ];
 
 const uaRegionalGroup = (city, key, type) => [
-  `${city} ${key}`,
-  UA_REGIONAL_LOCATION_EXTENSIONS[city]?.[key] || [],
+  `${city} ${key}`, UA_REGIONAL_LOCATION_EXTENSIONS[city]?.[key] || [],
   (item) => ({ country: 'UA', city, type, canonical: item.canonical || item.name }),
 ];
 
@@ -69,11 +68,15 @@ const groups = [
   uaRegionalGroup('Vinnytsia', 'microdistricts', 'microdistrict'),
   uaRegionalGroup('Vinnytsia', 'residentialComplexes', 'residential_complex'),
   uaRegionalGroup('Vinnytsia', 'landmarks', 'poi'),
+  uaRegionalGroup('Mykolaiv', 'districts', 'district'),
+  uaRegionalGroup('Mykolaiv', 'microdistricts', 'microdistrict'),
+  uaRegionalGroup('Mykolaiv', 'residentialComplexes', 'residential_complex'),
+  uaRegionalGroup('Mykolaiv', 'landmarks', 'poi'),
   ...expandedUzCities.map(expandedGroup),
 ];
 
-const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUaVinnytsiaCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
-const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UA_VINNYTSIA_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
+const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUaVinnytsiaCoverageGap(input) || isUaMykolaivCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
+const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UA_VINNYTSIA_COVERAGE_GAPS, ...UA_MYKOLAIV_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
 
 let unaccounted = 0;
 for (const [label, items, toInput] of groups) {
