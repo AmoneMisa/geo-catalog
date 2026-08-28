@@ -8,6 +8,7 @@ import { GEO_COVERAGE_GAPS, isGeoCoverageGap } from '../src/coverage-gaps.js';
 import { KZ_CITY_COVERAGE_GAPS, isKzCityCoverageGap } from '../src/coverage-gaps-kz-cities.js';
 import { UA_REGIONAL_COVERAGE_GAPS, isUaRegionalCoverageGap } from '../src/coverage-gaps-ua-regional.js';
 import { UA_RIVNE_COVERAGE_GAPS, isUaRivneCoverageGap } from '../src/coverage-gaps-ua-rivne.js';
+import { UA_KHERSON_COVERAGE_GAPS, isUaKhersonCoverageGap } from '../src/coverage-gaps-ua-kherson.js';
 import { UZ_SECONDARY_COVERAGE_GAPS, isUzSecondaryCoverageGap } from '../src/coverage-gaps-uz-secondary.js';
 import { UZ_TAIL_COVERAGE_GAPS, isUzTailCoverageGap } from '../src/coverage-gaps-uz-tail.js';
 
@@ -60,11 +61,15 @@ const groups = [
   uaRegionalGroup('Rivne', 'microdistricts', 'microdistrict'),
   uaRegionalGroup('Rivne', 'residentialComplexes', 'residential_complex'),
   uaRegionalGroup('Rivne', 'landmarks', 'poi'),
+  uaRegionalGroup('Kherson', 'districts', 'district'),
+  uaRegionalGroup('Kherson', 'microdistricts', 'microdistrict'),
+  uaRegionalGroup('Kherson', 'residentialComplexes', 'residential_complex'),
+  uaRegionalGroup('Kherson', 'landmarks', 'poi'),
   ...expandedUzCities.map(expandedGroup),
 ];
 
-const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaRivneCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
-const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
+const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
+const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
 
 let unaccounted = 0;
 for (const [label, items, toInput] of groups) {
