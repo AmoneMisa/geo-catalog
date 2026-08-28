@@ -20,4 +20,6 @@ export const UA_KHMELNYTSKYI_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('grand-royal', 'Grand Royal', 49.450073, 27.014687, 'https://novobudovy.com/novobudovy-khmelnytskoho/zhk-grand-palace-m-hmelnickij-3-cherga', 320),
   residential('paradise', 'Paradise', 49.4312, 26.974944, 'https://maps.visicom.ua/c/26.97495%2C49.4312%2C17/f/ADR3KH6BB7TVWKXM80?lang=uk', 180),
   residential('harmony-garden', 'Harmony Garden', 49.431309, 27.020404, 'https://novobudovy.com/novobudovy-khmelnytskoho/harmony-garden', 300),
+  residential('ozernyi', 'Ozernyi', 49.447442, 26.997049, 'https://novobudovy.com/novobudovy-khmelnytskoho/novobudova-m-hmelnickij-vul-ozerna', 300),
+  residential('design-park', 'Design Park', 49.405347, 26.999859, 'https://novobudovy.com/novobudovy-khmelnytskoho/dizajn-park', 320),
 ]);

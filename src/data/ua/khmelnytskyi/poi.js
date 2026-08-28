@@ -19,4 +19,5 @@ export const UA_KHMELNYTSKYI_POI_ENTITIES = Object.freeze([
   poi('franko-park', 'poi.park', 'Парк Франка', 49.41963, 26.99598, 360, { osm: Object.freeze({ type: 'way', id: 1081705794 }), wikidataId: 'Q12138932' }),
   poi('podillia-dendropark', 'poi.park', 'Дендропарк Поділля', 49.439334, 27.021432, 700, { wikidataId: 'Q20076172', source: 'manual', sourceUrl: 'https://maps.visicom.ua/c/27.02036%2C49.4395%2C17/f/POIPZM4KI8?lang=uk' }),
   poi('philharmonic', 'poi.cultural_venue', 'Хмельницька обласна філармонія', 49.41856, 26.97613, 160, { source: 'manual', sourceUrl: 'https://oblfilarmonia.com/contact', osm: Object.freeze({ type: 'node', id: 9888980327 }) }),
+  poi('southern-bug-embankment', 'poi.embankment', 'Набережна Південного Бугу', 49.432372, 26.975744, 900, { source: 'manual', sourceUrl: 'https://www.khm.gov.ua/uk/content/zatyshnyy-prostir-bilya-pivdennogo-bugu-chym-pryvablyuye-naberezhna-hmelnyckogo-video' }),
 ]);

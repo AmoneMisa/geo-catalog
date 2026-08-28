@@ -22,4 +22,7 @@ export const UA_KHMELNYTSKYI_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('lezneve', 'Лезневе', 49.42843, 27.0536, 1800, { source: 'manual', sourceUrl: 'https://mapcarta.com/13751876', geonamesId: '703099' }),
   neighborhood('zarichchia', 'Заріччя', 49.44179, 26.98003, 1400, { osm: Object.freeze({ type: 'node', id: 4045996626 }) }),
   neighborhood('vystavka', 'Виставка', 49.4342, 27.0135, 1800, { source: 'manual', sourceUrl: 'https://cbs.km.ua/?dep=1&dep_cur=165&dep_up=109' }),
+  neighborhood('blyzhni-hrechany', 'Ближні Гречани', 49.431757, 26.953121, 1700, { source: 'manual', sourceUrl: 'https://maps.visicom.ua/c/26.953120954999%2C49.431756963049594%2C12/f/HSTOI?lang=uk' }),
+  neighborhood('dalni-hrechany', 'Дальні Гречани', 49.44598, 26.93015, 1800, { osm: Object.freeze({ type: 'node', id: 5921329130 }) }),
+  neighborhood('stare-misto', 'Старе місто', 49.4208, 26.9822, 1500, { source: 'manual', sourceUrl: 'https://khm.gov.ua/sites/default/files/2024-06/programa_no5_strategiya_rozvytku_0.pdf' }),
 ]);
