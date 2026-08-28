@@ -49,6 +49,10 @@ const groups = [
   uaRegionalGroup('Kropyvnytskyi', 'microdistricts', 'microdistrict'),
   uaRegionalGroup('Kropyvnytskyi', 'residentialComplexes', 'residential_complex'),
   uaRegionalGroup('Kropyvnytskyi', 'landmarks', 'poi'),
+  uaRegionalGroup('Kremenchuk', 'districts', 'district'),
+  uaRegionalGroup('Kremenchuk', 'microdistricts', 'microdistrict'),
+  uaRegionalGroup('Kremenchuk', 'residentialComplexes', 'residential_complex'),
+  uaRegionalGroup('Kremenchuk', 'landmarks', 'poi'),
   ...expandedUzCities.map(expandedGroup),
 ];
 

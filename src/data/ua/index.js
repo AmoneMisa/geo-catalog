@@ -6,6 +6,7 @@ import { UA_CHERNIVTSI_ENTITIES } from './chernivtsi/index.js';
 import { UA_KHMELNYTSKYI_ENTITIES } from './khmelnytskyi/index.js';
 import { UA_SUMY_ENTITIES } from './sumy/index.js';
 import { UA_KROPYVNYTSKYI_ENTITIES } from './kropyvnytskyi/index.js';
+import { UA_KREMENCHUK_ENTITIES } from './kremenchuk/index.js';
 
 export const UA_ENTITIES = Object.freeze([
   ...UA_CITY_ENTITIES,
@@ -16,4 +17,5 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_KHMELNYTSKYI_ENTITIES,
   ...UA_SUMY_ENTITIES,
   ...UA_KROPYVNYTSKYI_ENTITIES,
+  ...UA_KREMENCHUK_ENTITIES,
 ]);
