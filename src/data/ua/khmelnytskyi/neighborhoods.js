@@ -21,4 +21,5 @@ export const UA_KHMELNYTSKYI_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('ruzhychna', 'Ружична', 49.38702, 26.95415, 1600, { osm: Object.freeze({ type: 'node', id: 2853030840 }) }),
   neighborhood('lezneve', 'Лезневе', 49.42843, 27.0536, 1800, { source: 'manual', sourceUrl: 'https://mapcarta.com/13751876', geonamesId: '703099' }),
   neighborhood('zarichchia', 'Заріччя', 49.44179, 26.98003, 1400, { osm: Object.freeze({ type: 'node', id: 4045996626 }) }),
+  neighborhood('vystavka', 'Виставка', 49.4342, 27.0135, 1800, { source: 'manual', sourceUrl: 'https://cbs.km.ua/?dep=1&dep_cur=165&dep_up=109' }),
 ]);
