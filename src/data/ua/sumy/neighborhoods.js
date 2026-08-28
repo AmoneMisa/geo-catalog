@@ -22,4 +22,6 @@ export const UA_SUMY_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('dobrovilna', 'Добровільна', 50.93025, 34.76673, 1300, { osm: Object.freeze({ type: 'node', id: 4290194732 }) }),
   neighborhood('11-microdistrict', '11 мікрорайон', 50.913303, 34.832885, 1000, { source: 'manual', sourceUrl: 'https://yandex.com/maps/965/sumy/geo/11_y_mikroraion/1570351272/' }),
   neighborhood('9-microdistrict', '9 мікрорайон', 50.907753, 34.816032, 1100, { source: 'manual', sourceUrl: 'https://lun.ua/new/sumy/esplanada' }),
+  neighborhood('romenskyi', 'Роменський', 50.895135, 34.760841, 1800, { source: 'manual', sourceUrl: 'https://maps.visicom.ua/c/34.76167%2C50.89162%2C15/f/STR3KD1GXZIZ%3Flang%3Duk' }),
+  neighborhood('teplychnyi', 'Тепличний', 50.928247, 34.741812, 1600, { source: 'manual', sourceUrl: 'https://maps.visicom.ua/c/34.74184%2C50.92826%2C17/f/ADR3KD1GXZA0H5XQC1?lang=uk' }),
 ]);
