@@ -10,8 +10,7 @@ const gaps = (country, city, type, canonicals, reason) => canonicals.map((canoni
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Tashkent', 'local_area', ['Oltinkul','Stroygorod','Al-Khorezmi-1','Rakatboshi','Chorsu'], 'No verified standalone spatial locality match yet.'),
-  ...gaps('UZ', 'Tashkent', 'microdistrict', ['TTZ-3','Sputnik','Karasu-6','Qorasuv','Yunusabad-5','Yunusabad-20','Yunusabad-21','Yunusabad-22'], 'Verified residential-massif semantics; no verified standalone spatial object for the whole microdistrict yet.'),
-  { country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'Sergeli', reason: 'Generic unnumbered Sergeli massif wording does not identify one spatial object: numbered Sergeli massifs span different present-day district scopes.' },
+  { country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'TTZ-3', reason: 'TTZ-3 residential massif is confirmed, but no verified standalone center or OSM geometry is available yet.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Geofizika', reason: 'Mapped spatially as a separate village in Tashkent Region; requires region/settlement hierarchy instead of a Tashkent city child.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Lolazor', reason: 'Ambiguous with same-name places outside Tashkent.' },
   { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Buyuk Ipak Yuli', reason: 'Area must not be conflated with the metro station.' },
