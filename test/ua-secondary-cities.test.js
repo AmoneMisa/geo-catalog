@@ -25,6 +25,20 @@ test('verified secondary Ukrainian city centers use their OSM named-place nodes'
     ['ua:chornomorsk', [{ lat: 46.3013, lng: 30.6549 }, 337690843]],
     ['ua:bilhorod-dnistrovskyi', [{ lat: 46.191, lng: 30.3458 }, 738536340]],
     ['ua:podilsk', [{ lat: 47.74974, lng: 29.5305 }, 337670266]],
+    ['ua:sambir', [{ lat: 49.51822, lng: 23.19704 }, 337556659]],
+    ['ua:truskavets', [{ lat: 49.2782, lng: 23.506 }, 254262743]],
+    ['ua:boryslav', [{ lat: 49.28244, lng: 23.41388 }, 313246159]],
+    ['ua:sheptytskyi', [{ lat: 50.394, lng: 24.2396 }, 260943265]],
+    ['ua:kovel', [{ lat: 51.2121, lng: 24.7089 }, 146651245]],
+    ['ua:dubno', [{ lat: 50.41879, lng: 25.7456 }, 337522487]],
+    ['ua:berdychiv', [{ lat: 49.894, lng: 28.5815 }, 337541446]],
+    ['ua:korosten', [{ lat: 50.9491, lng: 28.6418 }, 337513583]],
+    ['ua:zviahel', [{ lat: 50.5918, lng: 27.6067 }, 146498192]],
+    ['ua:zhmerynka', [{ lat: 49.03546, lng: 28.11473 }, 337574997]],
+    ['ua:mohyliv-podilskyi', [{ lat: 48.44254, lng: 27.79911 }, 337598184]],
+    ['ua:khmilnyk', [{ lat: 49.55618, lng: 27.94912 }, 1723694093]],
+    ['ua:smila', [{ lat: 49.2337, lng: 31.8829 }, 337566618]],
+    ['ua:myrhorod', [{ lat: 49.9658, lng: 33.6114 }, 337538836]],
   ]);
 
   for (const [id, [center, nodeId]] of expected) {
