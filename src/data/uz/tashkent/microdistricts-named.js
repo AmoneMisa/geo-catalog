@@ -25,6 +25,7 @@ export const TASHKENT_NAMED_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('karasu-2', 'Karasu-2', 'uz:tashkent:mirzo-ulugbek', 41.33194, 69.36380, 'node', 1868229637, 650),
   osmMicrodistrict('karasu-3', 'Karasu-3', 'uz:tashkent:mirzo-ulugbek', 41.33252, 69.36891, 'node', 1868229638, 650),
   osmMicrodistrict('karasu-4', 'Karasu-4', 'uz:tashkent:mirzo-ulugbek', 41.33160, 69.37323, 'node', 1868229639, 650),
+  osmMicrodistrict('karasu-6', 'Karasu-6', 'uz:tashkent:mirzo-ulugbek', 41.31961, 69.35460, 'node', 1868229640, 650),
   osmMicrodistrict('ttz-1', 'TTZ-1', 'uz:tashkent:mirzo-ulugbek', 41.35890, 69.39140, 'node', 1868216233, 650),
   osmMicrodistrict('ttz-2', 'TTZ-2', 'uz:tashkent:mirzo-ulugbek', 41.35480, 69.38302, 'node', 7492673045, 650),
   osmMicrodistrict('ttz-4', 'TTZ-4', 'uz:tashkent:mirzo-ulugbek', 41.36259, 69.38818, 'node', 1868216234, 620),
