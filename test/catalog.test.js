@@ -206,6 +206,24 @@ test('additional Ukrainian regional centers use verified OSM city relations', ()
   }
 });
 
+test('verified OSM named-place nodes own representative city centers', () => {
+  const expected = new Map([
+    ['ua:ivano-frankivsk', [{ lat: 48.9225, lng: 24.7103 }, 268459612]],
+    ['ua:mukachevo', [{ lat: 48.4421, lng: 22.7185 }, 337598436]],
+    ['ua:irpin', [{ lat: 50.5207, lng: 30.2449 }, 36505064]],
+    ['ua:bucha', [{ lat: 50.55031, lng: 30.21069 }, 312987923]],
+    ['ua:brovary', [{ lat: 50.5111, lng: 30.79 }, 3673183717]],
+  ]);
+
+  for (const [id, [center, nodeId]] of expected) {
+    const city = getGeoEntity(id);
+    assert.equal(city?.source, 'osm', id);
+    assert.equal(city?.accuracy, 'city', id);
+    assert.deepEqual(city?.center, center, id);
+    assert.deepEqual(city?.osm, { type: 'node', id: nodeId }, id);
+  }
+});
+
 test('verified OSM city provenance does not overwrite manual authoritative centers', () => {
   const expectedRelations = new Map([
     ['ua:uzhhorod', 2692232],
