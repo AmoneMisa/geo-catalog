@@ -206,6 +206,31 @@ test('additional Ukrainian regional centers use verified OSM city relations', ()
   }
 });
 
+test('verified OSM city provenance does not overwrite manual authoritative centers', () => {
+  const expectedRelations = new Map([
+    ['ua:uzhhorod', 2692232],
+    ['ua:lutsk', 1951964],
+    ['ua:rivne', 448930],
+    ['ua:ternopil', 3058686],
+    ['ua:zhytomyr', 2692156],
+    ['ua:poltava', 1641691],
+    ['ua:sumy', 3678531],
+    ['ua:mykolaiv', 11622860],
+    ['ua:kherson', 2175078],
+    ['ua:kropyvnytskyi', 2825228],
+    ['ua:bila-tserkva', 2069683],
+    ['ua:kremenchuk', 2320579],
+    ['ua:uman', 3058556],
+  ]);
+
+  for (const [id, relationId] of expectedRelations) {
+    const city = getGeoEntity(id);
+    assert.equal(city?.source, 'manual', id);
+    assert.equal(city?.accuracy, 'city', id);
+    assert.deepEqual(city?.osm, { type: 'relation', id: relationId }, id);
+  }
+});
+
 test('Odesa administrative districts expose validated OSM boundaries', () => {
   const districts = findGeoEntities({ country: 'UA', parentId: 'ua:odesa', type: 'district' });
   assert.equal(districts.length, 4);
