@@ -17,4 +17,5 @@ export const UA_KROPYVNYTSKYI_POI_ENTITIES = Object.freeze([
   poi('st-elizabeth-fortress', 'poi.fortress', 'Фортеця Святої Єлисавети', 48.49821, 32.25436, 700, { osm: Object.freeze({ type: 'way', id: 355793873 }), wikidataId: 'Q4240278', sourceUrl: 'https://discover.kr.ua/locations/fortecya-svyatoyi-ielisaveti' }),
   poi('dendropark', 'poi.park', 'Дендропарк', 48.500523, 32.232135, 700, { wikidataId: 'Q12116600', source: 'manual', sourceUrl: 'https://travel.library.kr.ua/turmagnit/dendropark/' }),
   poi('kropyvnytskyi-theatre', 'poi.cultural_venue', 'Театр Кропивницького', 48.514166, 32.258984, 180, { source: 'manual', sourceUrl: 'https://discover.kr.ua/locations/kropivnickij-akademicnij-oblasnij-ukrainskij-muzicno-dramaticnij-teatr-im-m-l-kropivnickogo' }),
+  poi('velyka-perspektyvna', 'poi.street', 'Велика Перспективна', 48.510656, 32.267505, 1200, { wikidataId: 'Q4091575', source: 'manual', sourceUrl: 'https://maps.visicom.ua/c/32.2667%2C48.51057%2C14/f/STR3K20JYOWF?lang=uk' }),
 ]);
