@@ -16,4 +16,5 @@ export const CHIRCHIQ_MICRODISTRICT_ENTITIES = Object.freeze([
   microdistrict(2, 41.48968, 69.57119, 6986095607),
   microdistrict(3, 41.49382, 69.57752, 6986095608),
   microdistrict(4, 41.49342, 69.58493, 6986095609),
+  microdistrict(8, 41.46214, 69.55030, 6986049350),
 ]);
