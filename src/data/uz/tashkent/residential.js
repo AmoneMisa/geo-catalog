@@ -38,6 +38,17 @@ const sourcedResidential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM 
 });
 
 export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
+  Object.freeze({
+    id: 'uz:tashkent:residential:manzara',
+    type: 'residential_complex',
+    country: 'UZ',
+    canonicalName: 'Manzara',
+    parentId: 'uz:tashkent:yunusabad',
+    center: Object.freeze({ lat: 41.356109, lng: 69.314573 }),
+    source: 'manual',
+    accuracy: 'building',
+    accuracyM: 80,
+  }),
   sourcedResidential('akay-city', 'AKAY CITY', 41.320741, 69.294792, 'https://yandex.com/maps/10335/tashkent/geo/3778343660/', 80),
   sourcedResidential('musaffo', 'Musaffo', 41.360158, 69.315909, 'https://uysot.uz/', 120),
   sourcedResidential('resim-tashkent', 'Resim Taşkent', 41.304469932119, 69.311761523192, 'https://uysot.uz/', 120),

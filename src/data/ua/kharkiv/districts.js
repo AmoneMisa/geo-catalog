@@ -1,25 +1,27 @@
-const district = (slug, canonicalName, lat, lng, accuracyM, sourceUrl, osmRelationId) => Object.freeze({
+import { KHARKIV_DISTRICT_BOUNDARIES } from './district-boundaries.js';
+
+const district = (slug, canonicalName, lat, lng, accuracyM, osmRelationId) => Object.freeze({
   id: `ua:kharkiv:district:${slug}`,
   type: 'district',
   country: 'UA',
   canonicalName,
   parentId: 'ua:kharkiv',
   center: Object.freeze({ lat, lng }),
-  source: 'geonames',
+  source: 'osm',
   accuracy: 'district',
   accuracyM,
-  sourceUrl,
   osm: Object.freeze({ type: 'relation', id: osmRelationId }),
+  boundary: KHARKIV_DISTRICT_BOUNDARIES[slug].geometry,
 });
 
 export const UA_KHARKIV_DISTRICT_ENTITIES = Object.freeze([
-  district('shevchenkivskyi', 'Шевченківський', 50.0202, 36.2247, 3000, 'https://mapcarta.com/39706880', 3796255),
-  district('saltivskyi', 'Салтівський', 50.005841, 36.337823, 800, 'https://www.openstreetmap.org/relation/7340971', 7340971),
-  district('kholodnohirskyi', 'Холодногірський', 49.99535, 36.17737, 2600, 'https://www.wikidata.org/wiki/Q7242862', 3801249),
-  district('nemyshlianskyi', 'Немишлянський', 49.964369, 36.334740, 2600, 'https://harkiv.streetmaps.ru/administrative/nemyshlyanskiy-rayon-r7340972', 7340972),
-  district('kyivskyi', 'Київський', 50.004865, 36.239911, 1200, 'https://www.openstreetmap.org/node/13620290149', 7340973),
-  district('novobavarskyi', 'Новобаварський', 49.987693, 36.221992, 1200, 'https://www.openstreetmap.org/node/4311863673', 3801278),
-  district('industrialnyi', 'Індустріальний', 49.987371, 36.235081, 1200, 'https://www.openstreetmap.org/node/13883680330', 7340969),
-  district('osnovianskyi', 'Основ’янський', 49.968528, 36.233872, 1000, 'https://www.openstreetmap.org/way/87343468', 3801315),
-  district('slobidskyi', 'Слобідський', 49.949094, 36.311270, 900, 'https://www.openstreetmap.org/relation/7340970', 7340970),
+  district('shevchenkivskyi', 'Shevchenkivskyi', 50.0384635, 36.2268220, 3000, 3796255),
+  district('saltivskyi', 'Saltivskyi', 50.0058412, 36.3378230, 800, 7340971),
+  district('kholodnohirskyi', 'Kholodnohirskyi', 50.0064351, 36.1679569, 2600, 3801249),
+  district('nemyshlianskyi', 'Nemyshlianskyi', 49.9643691, 36.3347396, 2600, 7340972),
+  district('kyivskyi', 'Kyivskyi', 50.0368244, 36.3214449, 1200, 7340973),
+  district('novobavarskyi', 'Novobavarskyi', 49.9527302, 36.1713389, 1200, 3801278),
+  district('industrialnyi', 'Industrialnyi', 49.9406171, 36.3950524, 1200, 7340969),
+  district('osnovianskyi', 'Osnovianskyi', 49.9347654, 36.2328047, 1000, 3801315),
+  district('slobidskyi', 'Slobidskyi', 49.9490935, 36.3112697, 900, 7340970),
 ]);

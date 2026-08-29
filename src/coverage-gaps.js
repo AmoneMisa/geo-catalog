@@ -9,13 +9,14 @@ const normalize = (value) => String(value ?? '')
 const gaps = (country, city, type, canonicals, reason) => canonicals.map((canonical) => ({ country, city, type, canonical, reason }));
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
-  ...gaps('UZ', 'Tashkent', 'local_area', ['Oltinkul','Stroygorod','Al-Khorezmi-1','Rakatboshi','Chorsu'], 'No verified standalone spatial locality match yet.'),
-  { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Geofizika', reason: 'Mapped spatially as a separate village in Tashkent Region; requires region/settlement hierarchy instead of a Tashkent city child.' },
-  { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Lolazor', reason: 'Ambiguous with same-name places outside Tashkent.' },
-  { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Buyuk Ipak Yuli', reason: 'Area must not be conflated with the metro station.' },
-  { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Dehqonobod', reason: 'Same-name settlements elsewhere in Uzbekistan require disambiguation.' },
-  { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Kuylyuk Center', reason: 'Must not be conflated with the broader Kuylyuk microdistrict.' },
-  { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Shohimardon', reason: 'Ambiguous with the Fergana Valley settlement; Tashkent match not verified.' },
+  ...gaps('UZ', 'Tashkent', 'local_area', ['Stroygorod'], 'No verified standalone spatial locality match yet.'),
+  ...gaps('UZ', 'Tashkent', 'microdistrict', ['Manzara'], 'Official Tashkent microdistrict name, but no independently verifiable standalone OSM object or boundary was found.'),
+  ...gaps('UZ', 'Tashkent', 'mahalla', [
+    'Ahmad Yugnakiy','Humoyun',"Bog'ko'cha",'Gulobod','Qalqon',"Bog'bon",'Shifokorlar','Taraqqiyot',"Chamanbog'",'Asalobod',"Sug'diyona",'Olimpiya','Sebzor','Yangi Choshtepa','Taxtapul','Ibn Sino','Traktorsozlar',
+  ], 'Official mahalla name from the lexicon; no independently verified spatial object or boundary is available yet.'),
+  ...gaps('UZ', 'Tashkent', 'local_area', [
+    'Manzara','Takhtapul','Taxtapul','Suvsoz-1','Suvsoz-2','Suvsoz-3','Suvsoz-4','Suvsoz-5',"Bo'z-1","Bo'z-2",'Ahmad Yugnakiy','Humoyun','Feruza-2','Feruza-3','Quruvchi',"Bog'ko'cha",'Gulobod',"Beshqo'rg'on-1","Beshqo'rg'on-2","Beshqo'rg'on-3","Beshqo'rg'on-4","Qo'yliq-1","Qo'yliq-2","Qo'yliq-3","Qo'yliq-4","Qo'yliq-5","Qo'yliq-6","Qo'yliq-7",'Parkent-Riyoziy','Parkent-Siolkovskiy','Qalqon',"Bog'bon",'Akademgorodok','C-7','Minora','Guruchariq','Muxbir','Chuqursoy','Shimoliy Olmazor','Shimoliy Olmazor-1','Shimoliy Olmazor-2','Taraqqiyot-1','Taraqqiyot-2','Taraqqiyot-3','Taraqqiyot-4','Shifokorlar-1','Shifokorlar-2','Shifokorlar-3','Shifokorlar-4','Shifokorlar-5','Shifokorlar-6','Beruniy-B1','Beruniy-B3',"Chamanbog'",'Irrigator','Parkent','Markaz-12',"So'lim",'Asalobod-1','Asalobod-2','ToshGRES',"Sug'diyona",'Olimpiya','Sebzor','Ibn Sino-1','Ibn Sino-2',
+  ], 'Lexicon area name still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z",'Shirin','Chilkuduk',"Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
   ...gaps('UZ', 'Samarkand', 'microdistrict', ['Sogdiana','Sartepa','Sat-Tepo','Kimyogarlar','Vokzal','Universitet','Registan','Dagbitskaya','Rudaki'], 'Lexicon microdistrict still needs a verified standalone spatial match.'),

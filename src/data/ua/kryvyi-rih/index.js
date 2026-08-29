@@ -1,0 +1,2 @@
+import { UA_KRYVYI_RIH_DISTRICT_ENTITIES } from './districts.js';
+export const UA_KRYVYI_RIH_ENTITIES = UA_KRYVYI_RIH_DISTRICT_ENTITIES;

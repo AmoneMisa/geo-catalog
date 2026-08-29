@@ -258,3 +258,16 @@ test('Odesa administrative districts expose validated OSM boundaries', () => {
   assert.ok(districts.every((district) => district.source === 'osm' && district.accuracy === 'district' && district.boundary));
   assert.equal(getGeoEntity('ua:odesa:microdistrict:serednii-fontan')?.parentId, 'ua:odesa:district:kyivskyi');
 });
+
+test('Stroy Gorod hardware store belongs to Paxtazor rather than Tashkent Stroygorod', () => {
+  const settlement = getGeoEntity('uz:paxtazor');
+  assert.equal(settlement?.type, 'settlement');
+  assert.deepEqual(settlement?.osm, { type: 'way', id: 514231681 });
+  assert.equal(containsPoint({ lat: 40.698506, lng: 68.0290325 }, settlement?.bbox), true);
+
+  const store = getGeoEntity('uz:paxtazor:poi:stroy-gorod');
+  assert.equal(store?.parentId, settlement?.id);
+  assert.equal(store?.type, 'poi');
+  assert.deepEqual(store?.center, { lat: 40.698506, lng: 68.0290325 });
+  assert.equal(store?.accuracy, 'poi');
+});

@@ -13,6 +13,29 @@ const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accurac
 });
 
 export const UZ_REGIONAL_ANCHORS = Object.freeze([
+  Object.freeze({
+    id: 'uz:paxtazor',
+    type: 'settlement',
+    country: 'UZ',
+    canonicalName: 'Paxtazor',
+    center: Object.freeze({ lat: 40.6969846, lng: 68.0294066 }),
+    bbox: Object.freeze({ south: 40.6918796, west: 68.0210522, north: 40.7025357, east: 68.0372848 }),
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 700,
+    osm: Object.freeze({ type: 'way', id: 514231681 }),
+  }),
+  Object.freeze({
+    id: 'uz:paxtazor:poi:stroy-gorod',
+    type: 'poi',
+    country: 'UZ',
+    canonicalName: 'Stroy Gorod',
+    parentId: 'uz:paxtazor',
+    center: Object.freeze({ lat: 40.698506, lng: 68.0290325 }),
+    source: 'manual',
+    accuracy: 'poi',
+    accuracyM: 25,
+  }),
   osmPoi('denov', 'denov-railway-station', 'Denov Railway Station', 38.27216, 67.90639, 'node', 245671270, 120),
   osmPoi('asaka', 'asaka-railway-station', 'Asaka Railway Station', 40.65515, 72.20600, 'node', 1588631402, 120),
   osmPoi('kogon', 'kogon-railway-station', 'Kogon Railway Station', 39.72483, 64.57633, 'way', 1083455223, 130),

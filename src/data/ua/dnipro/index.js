@@ -1,0 +1,2 @@
+import { UA_DNIPRO_DISTRICT_ENTITIES } from './districts.js';
+export const UA_DNIPRO_ENTITIES = UA_DNIPRO_DISTRICT_ENTITIES;

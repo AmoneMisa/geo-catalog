@@ -1,3 +1,5 @@
+import { TASHKENT_NAMED_MICRODISTRICT_BOUNDARIES } from './microdistrict-boundaries.js';
+
 const osmMicrodistrict = (slug, canonicalName, parentId, lat, lng, osmType, osmId, accuracyM = 800) => ({
   id: `uz:tashkent:microdistrict:${slug}`,
   type: 'microdistrict',
@@ -23,6 +25,23 @@ const manualMicrodistrict = (slug, canonicalName, parentId, lat, lng, accuracyM 
   accuracyM,
 });
 
+const boundaryMicrodistrict = (slug, boundarySlug, canonicalName, parentId, accuracyM = 650) => {
+  const { relId, center, geometry } = TASHKENT_NAMED_MICRODISTRICT_BOUNDARIES[boundarySlug];
+  return {
+    id: `uz:tashkent:microdistrict:${slug}`,
+    type: 'microdistrict',
+    country: 'UZ',
+    canonicalName,
+    parentId,
+    center,
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM,
+    osm: { type: 'relation', id: relId },
+    boundary: geometry,
+  };
+};
+
 export const TASHKENT_NAMED_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('tashselmash', 'Tashselmash', 'uz:tashkent:yashnobod', 41.30804, 69.30694, 'node', 4750099124, 800),
   osmMicrodistrict('aviasozlar', 'Aviasozlar', 'uz:tashkent:yashnobod', 41.30222, 69.31107, 'node', 1867099580, 850),
@@ -40,11 +59,12 @@ export const TASHKENT_NAMED_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('karasu-3', 'Karasu-3', 'uz:tashkent:mirzo-ulugbek', 41.33252, 69.36891, 'node', 1868229638, 650),
   osmMicrodistrict('karasu-4', 'Karasu-4', 'uz:tashkent:mirzo-ulugbek', 41.33160, 69.37323, 'node', 1868229639, 650),
   osmMicrodistrict('karasu-6', 'Karasu-6', 'uz:tashkent:mirzo-ulugbek', 41.31961, 69.35460, 'node', 1868229640, 650),
-  osmMicrodistrict('ttz-1', 'TTZ-1', 'uz:tashkent:mirzo-ulugbek', 41.35890, 69.39140, 'node', 1868216233, 650),
-  osmMicrodistrict('ttz-2', 'TTZ-2', 'uz:tashkent:mirzo-ulugbek', 41.35480, 69.38302, 'node', 7492673045, 650),
+  boundaryMicrodistrict('ttz-1', 'traktorsozlar-1', 'Traktorsozlar-1', 'uz:tashkent:mirzo-ulugbek'),
+  boundaryMicrodistrict('ttz-2', 'traktorsozlar-2', 'Traktorsozlar-2', 'uz:tashkent:mirzo-ulugbek'),
   // Representative center around the TTZ cultural/transport hub. No OSM object is claimed for the massif itself.
   manualMicrodistrict('ttz-3', 'TTZ-3', 'uz:tashkent:mirzo-ulugbek', 41.3537, 69.3831, 900),
-  osmMicrodistrict('ttz-4', 'TTZ-4', 'uz:tashkent:mirzo-ulugbek', 41.36259, 69.38818, 'node', 1868216234, 620),
+  boundaryMicrodistrict('ttz-4', 'traktorsozlar-4', 'Traktorsozlar-4', 'uz:tashkent:mirzo-ulugbek', 620),
+  boundaryMicrodistrict('qiyot', 'qiyot', 'Qiyot', 'uz:tashkent:yunusabad', 600),
 
   osmMicrodistrict('sergeli-3a', 'Sergeli-3A', 'uz:tashkent:yangihayot', 41.21801, 69.20280, 'node', 9672641058, 520),
   osmMicrodistrict('sergeli-5a', 'Sergeli-5A', 'uz:tashkent:yangihayot', 41.22330, 69.20291, 'node', 6602145049, 520),
