@@ -119,3 +119,137 @@ export function resolveLexiconGeoEntity(input: LexiconGeoEntityInput): Readonly<
 export function geoIdForLexiconEntity(input: LexiconGeoEntityInput): string | null;
 export function hasLexiconGeoEntity(input: LexiconGeoEntityInput): boolean;
 export function buildGeoLookupKey(parts?: GeoLookupKeyParts): string | null;
+
+export interface NearestGeoEntityToMetroResult {
+  station: Readonly<GeoEntity>;
+  entity: Readonly<GeoEntity>;
+  distanceKm: number;
+}
+
+export interface NearestParkToMetroResult {
+  station: Readonly<GeoEntity>;
+  park: Readonly<GeoEntity>;
+  distanceKm: number;
+}
+
+export interface NearestToMetroInput {
+  country: string;
+  city?: string;
+  canonical: string;
+}
+
+export interface NearestFromMetroInput extends NearestToMetroInput {
+  /** Type of the source entity being resolved from the lexicon (e.g. 'poi', 'mahalla', 'microdistrict', 'local_area'). Defaults to 'poi'. */
+  type?: GeoEntityType;
+}
+
+export interface NearestToMetroOptions {
+  /** Broad type ('poi', 'mahalla', 'microdistrict', 'local_area', 'address', 'street', ...) or 'poi.<category>' subtype. Defaults to 'poi'. */
+  type?: GeoEntityType;
+  maxDistanceKm?: number;
+  /** Candidate entities to search instead of the static GEO_ENTITIES catalog — e.g. address rows loaded from Postgres. */
+  entities?: readonly GeoEntity[];
+}
+
+export interface NearestMetroToGeoEntityResult {
+  entity: Readonly<GeoEntity>;
+  station: Readonly<GeoEntity>;
+  distanceKm: number;
+}
+
+export interface NearestMetroToParkResult {
+  park: Readonly<GeoEntity>;
+  station: Readonly<GeoEntity>;
+  distanceKm: number;
+}
+
+export interface NearestMetroToPointResult {
+  station: Readonly<GeoEntity>;
+  distanceKm: number;
+}
+
+export function nearestGeoEntityToMetro(
+  input: NearestToMetroInput,
+  options?: NearestToMetroOptions,
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+export function nearestMetroToGeoEntity(
+  input: NearestFromMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestMetroToGeoEntityResult> | null;
+
+export function nearestMetroToPoint(
+  point: GeoPoint,
+  options?: { country?: string; maxDistanceKm?: number },
+): Readonly<NearestMetroToPointResult> | null;
+
+export function nearestParkToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestParkToMetroResult> | null;
+
+export function nearestMetroToPark(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestMetroToParkResult> | null;
+
+export function nearestPoiToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+export function nearestMetroToPoi(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestMetroToGeoEntityResult> | null;
+
+export function nearestMahallaToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+export function nearestMetroToMahalla(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestMetroToGeoEntityResult> | null;
+
+export function nearestMicrodistrictToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+export function nearestMetroToMicrodistrict(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestMetroToGeoEntityResult> | null;
+
+export function nearestLocalAreaToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+export function nearestMetroToLocalArea(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestMetroToGeoEntityResult> | null;
+
+/**
+ * Nearest address to a metro station, searching a caller-supplied array of
+ * address rows (e.g. loaded from Postgres for the relevant city/country)
+ * instead of the static catalog. Each row must be shaped like a GeoEntity —
+ * at minimum { center: {lat, lng}, country, type: 'address' }.
+ */
+export function nearestAddressToMetro(
+  input: NearestToMetroInput,
+  addresses: readonly GeoEntity[],
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+/**
+ * Nearest metro station to an address row loaded from Postgres (or any other
+ * external store) — pass its geocoded coordinates directly.
+ */
+export function nearestMetroToAddress(
+  addressPoint: GeoPoint,
+  options?: { country?: string; maxDistanceKm?: number },
+): Readonly<NearestMetroToPointResult> | null;
