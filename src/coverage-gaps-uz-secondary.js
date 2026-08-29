@@ -15,7 +15,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Navoiy', 'mahalla', ['Guliston'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Navoiy', 'microdistrict', ['8 microdistrict','11 microdistrict','12 microdistrict'], 'Navoiy numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Navoiy', 'local_area', ['Uzbekiston Massiv','Yangi Navoiy','Center','Sputnik'], 'Navoiy local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Navoiy', 'poi', ['Alisher Navoiy Park','Farhod Palace of Culture'], 'Navoiy landmark still needs a verified spatial match.'),
+  ...gaps('Navoiy', 'poi', ['Alisher Navoiy Park'], 'Navoiy landmark still needs a verified spatial match.'),
 
   ...gaps('Termez', 'mahalla', ['Farxod'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Termez', 'local_area', ['Center','Old Termez','Northern Gate','University area','Alpomish',"Navro'z",'Qiziljar'], 'Termez local-area alias still needs a verified standalone spatial match.'),
