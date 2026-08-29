@@ -24,6 +24,7 @@ export const ANGREN_QUARTER_ENTITIES = Object.freeze([
   quarter('2-2-quarter', '2/2 quarter', 41.02050, 70.09218, 3132947339),
   quarter('2-5-quarter', '2/5 quarter', 41.01392, 70.10429, 12511090516),
   quarter('3-2-quarter', '3/2 quarter', 41.02624, 70.08093, 12512983418),
+  quarter('3-3-quarter', '3/3 quarter', 41.02690, 70.08693, 11842421523),
   quarter('4-5-quarter', '4/5 quarter', 41.01325, 70.08212, 12511090520),
   quarter('4-6-quarter', '4/6 quarter', 41.01153, 70.07833, 3341366553),
   quarter('5-1a-quarter', '5/1A quarter', 41.00460, 70.07288, 12511090502),
