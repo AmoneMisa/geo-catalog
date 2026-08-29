@@ -52,4 +52,5 @@ export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
   approximateArea('termez', 'airport-area', 'Airport area', 37.28670, 67.30990, 1500),
   approximateArea('gulistan', 'railway-station-area', 'Railway Station area', 40.49617, 68.76487, 1000),
   approximateArea('chirchiq', 'railway-station-area', 'Railway Station area', 41.47914, 69.59745, 1100),
+  approximateArea('angren', 'railway-station-area', 'Railway Station area', 40.99905, 70.08266, 1100),
 ]);
