@@ -34,6 +34,18 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     accuracyM: 2500,
   },
   {
+    id: 'uz:angren:settlement:dukent',
+    type: 'settlement',
+    country: 'UZ',
+    canonicalName: 'Dukent',
+    parentId: 'uz:angren',
+    center: { lat: 41.02983, lng: 70.09285 },
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 650,
+    osm: { type: 'node', id: 2520618202 },
+  },
+  {
     id: 'uz:khiva:local-area:dishan-kala',
     type: 'local_area',
     country: 'UZ',
