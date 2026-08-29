@@ -21,4 +21,5 @@ export const NAVOIY_MICRODISTRICT_ENTITIES = Object.freeze([
   microdistrict(7, 40.11123, 65.37316, 10734160834),
   microdistrict(9, 40.12090, 65.36798, 10734160841),
   microdistrict(10, 40.11885, 65.36079, 10734160842),
+  microdistrict(17, 40.11312, 65.37880, 10734160833),
 ]);
