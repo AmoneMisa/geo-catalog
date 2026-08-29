@@ -12,6 +12,7 @@ const quarter = (slug, canonicalName, lat, lng, osmId) => ({
 });
 
 export const ANGREN_QUARTER_ENTITIES = Object.freeze([
+  quarter('2-quarter', '2 quarter', 41.00674, 70.08757, 12511090503),
   quarter('3-quarter', '3 quarter', 41.00522, 70.08401, 3341366556),
   quarter('5-quarter', '5 quarter', 41.00745, 70.07844, 12511090507),
   quarter('6-quarter', '6 quarter', 41.00916, 70.08169, 12511090506),
