@@ -16,6 +16,7 @@ export const UZ_SECONDARY_POI_ANCHORS = Object.freeze([
   osmPoi('margilan', 'kumtepa-bazaar', 'Kumtepa Bazaar', 40.45504, 71.66594, 'way', 253749024, 180),
   osmPoi('almalyk', 'metallurg-stadium', 'Metallurg Stadium', 40.84495, 69.60070, 'way', 257413698, 170, 'Q5927465'),
   osmPoi('kokand', 'kokand-bazaar', 'Kokand Bazaar', 40.55218, 70.95907, 'way', 174506939, 190),
+  osmPoi('navoiy', 'farhod-palace-of-culture', 'Farhod Palace of Culture', 40.09845, 65.37636, 'way', 146696792, 120),
   {
     id: 'uz:navoiy:poi:nmmc',
     type: 'poi',
