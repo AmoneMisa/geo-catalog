@@ -12,6 +12,17 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     osm: { type: 'node', id: 10048580831 },
   },
   {
+    id: 'uz:almalyk:mahalla:kamalak',
+    type: 'mahalla',
+    country: 'UZ',
+    canonicalName: 'Kamalak',
+    parentId: 'uz:almalyk',
+    center: { lat: 40.85209, lng: 69.59927 },
+    source: 'manual',
+    accuracy: 'approximate',
+    accuracyM: 900,
+  },
+  {
     id: 'uz:khiva:local-area:dishan-kala',
     type: 'local_area',
     country: 'UZ',
