@@ -23,6 +23,17 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     accuracyM: 900,
   },
   {
+    id: 'uz:angren:mahalla:geolog',
+    type: 'mahalla',
+    country: 'UZ',
+    canonicalName: 'Geolog',
+    parentId: 'uz:angren',
+    center: { lat: 40.99013, lng: 70.04007 },
+    source: 'manual',
+    accuracy: 'approximate',
+    accuracyM: 2500,
+  },
+  {
     id: 'uz:khiva:local-area:dishan-kala',
     type: 'local_area',
     country: 'UZ',
