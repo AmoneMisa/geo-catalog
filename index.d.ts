@@ -120,13 +120,61 @@ export function geoIdForLexiconEntity(input: LexiconGeoEntityInput): string | nu
 export function hasLexiconGeoEntity(input: LexiconGeoEntityInput): boolean;
 export function buildGeoLookupKey(parts?: GeoLookupKeyParts): string | null;
 
+export interface NearestGeoEntityToMetroResult {
+  station: Readonly<GeoEntity>;
+  entity: Readonly<GeoEntity>;
+  distanceKm: number;
+}
+
 export interface NearestParkToMetroResult {
   station: Readonly<GeoEntity>;
   park: Readonly<GeoEntity>;
   distanceKm: number;
 }
 
+export interface NearestToMetroInput {
+  country: string;
+  city?: string;
+  canonical: string;
+}
+
+export interface NearestToMetroOptions {
+  /** Broad type ('poi', 'mahalla', 'microdistrict', 'local_area', 'address', 'street', ...) or 'poi.<category>' subtype. Defaults to 'poi'. */
+  type?: GeoEntityType;
+  maxDistanceKm?: number;
+}
+
+export function nearestGeoEntityToMetro(
+  input: NearestToMetroInput,
+  options?: NearestToMetroOptions,
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
 export function nearestParkToMetro(
-  input: LexiconGeoEntityInput,
+  input: NearestToMetroInput,
   options?: { maxDistanceKm?: number },
 ): Readonly<NearestParkToMetroResult> | null;
+
+export function nearestPoiToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+export function nearestMahallaToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+export function nearestMicrodistrictToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+export function nearestLocalAreaToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
+
+export function nearestAddressToMetro(
+  input: NearestToMetroInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestGeoEntityToMetroResult> | null;
