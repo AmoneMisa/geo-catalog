@@ -1,6 +1,6 @@
-const wikidataPoi = (slug, canonicalName, lat, lng, wikidataId, accuracyM = 100) => ({
+const wikidataPoi = (slug, canonicalName, lat, lng, wikidataId, accuracyM = 100, type = 'poi') => ({
   id: `uz:tashkent:poi:${slug}`,
-  type: 'poi',
+  type,
   country: 'UZ',
   canonicalName,
   parentId: 'uz:tashkent',
@@ -11,9 +11,9 @@ const wikidataPoi = (slug, canonicalName, lat, lng, wikidataId, accuracyM = 100)
   wikidataId,
 });
 
-const sourcedPoi = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 120) => ({
+const sourcedPoi = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 120, type = 'poi') => ({
   id: `uz:tashkent:poi:${slug}`,
-  type: 'poi',
+  type,
   country: 'UZ',
   canonicalName,
   parentId: 'uz:tashkent',
@@ -34,8 +34,8 @@ export const TASHKENT_POI_ENTITIES = Object.freeze([
   wikidataPoi('tashkent-city-mall', 'Tashkent City Mall', 41.3160620, 69.2524370, 'Q121749626', 90),
   sourcedPoi('alay-bazaar', 'Alay Bazaar', 41.3188097, 69.2811263, 'https://www.dookinternational.com/poi/alay-bazaar/77759', 120),
   sourcedPoi('magic-city', 'Magic City', 41.3035350, 69.2449160, 'https://aboutthepoint.com/en/point/enh-magic-city', 140),
-  sourcedPoi('tashkent-city-park', 'Tashkent City Park', 41.316540, 69.248410, 'https://mapcarta.com/W749136173', 120),
-  sourcedPoi('central-park', 'Central Park Mirzo Ulugbek', 41.312400, 69.298530, 'https://www.mypacer.com/parks/183181/central-park-tashkent', 180),
+  sourcedPoi('tashkent-city-park', 'Tashkent City Park', 41.316540, 69.248410, 'https://mapcarta.com/W749136173', 120, 'poi.park'),
+  sourcedPoi('central-park', 'Central Park Mirzo Ulugbek', 41.312400, 69.298530, 'https://www.mypacer.com/parks/183181/central-park-tashkent', 180, 'poi.park'),
   sourcedPoi('kuyluk-bazaar', 'Kuyluk Bazaar', 41.236480, 69.329550, 'https://mapcarta.com/N4639171490', 180),
   sourcedPoi('yangiabad-bazaar', 'Yangiabad Bazaar', 41.2585846, 69.3525647, 'https://topgid.net/6020-bazar-jangiabad.html', 220),
   sourcedPoi('compass-mall', 'Compass Mall', 41.239040, 69.328570, 'https://mapcarta.com/W637541617', 120),

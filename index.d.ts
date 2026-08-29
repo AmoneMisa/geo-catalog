@@ -119,3 +119,14 @@ export function resolveLexiconGeoEntity(input: LexiconGeoEntityInput): Readonly<
 export function geoIdForLexiconEntity(input: LexiconGeoEntityInput): string | null;
 export function hasLexiconGeoEntity(input: LexiconGeoEntityInput): boolean;
 export function buildGeoLookupKey(parts?: GeoLookupKeyParts): string | null;
+
+export interface NearestParkToMetroResult {
+  station: Readonly<GeoEntity>;
+  park: Readonly<GeoEntity>;
+  distanceKm: number;
+}
+
+export function nearestParkToMetro(
+  input: LexiconGeoEntityInput,
+  options?: { maxDistanceKm?: number },
+): Readonly<NearestParkToMetroResult> | null;
