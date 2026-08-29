@@ -1,0 +1,25 @@
+const quarter = (slug, canonicalName, lat, lng, osmId) => ({
+  id: `uz:angren:microdistrict:${slug}`,
+  type: 'microdistrict',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:angren',
+  center: { lat, lng },
+  source: 'osm',
+  accuracy: 'neighborhood',
+  accuracyM: 220,
+  osm: { type: 'node', id: osmId },
+});
+
+export const ANGREN_QUARTER_ENTITIES = Object.freeze([
+  quarter('3-quarter', '3 quarter', 41.00522, 70.08401, 3341366556),
+  quarter('5-quarter', '5 quarter', 41.00745, 70.07844, 12511090507),
+  quarter('6-quarter', '6 quarter', 41.00916, 70.08169, 12511090506),
+  quarter('7-quarter', '7 quarter', 41.00717, 70.08254, 12511090509),
+  quarter('5-1a-quarter', '5/1A quarter', 41.00460, 70.07288, 12511090502),
+  quarter('5-1b-quarter', '5/1B quarter', 41.00174, 70.07451, 6480652021),
+  quarter('5-3-quarter', '5/3 quarter', 40.99609, 70.05461, 3341366554),
+  quarter('5-4-quarter', '5/4 quarter', 40.99928, 70.05760, 3341366555),
+  quarter('5-5-quarter', '5/5 quarter', 41.00305, 70.05573, 12510995291),
+  quarter('6-4-quarter', '6/4 quarter', 41.00910, 70.06467, 12511090501),
+]);
