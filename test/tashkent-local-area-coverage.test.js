@@ -56,6 +56,7 @@ const derivedAreas = Object.freeze([
   ['Taraqqiyot-4', 'uz:tashkent:local-area:taraqqiyot-4', 'uz:tashkent:almazar', 41.352292, 69.238791],
   ['Beruniy-B1', 'uz:tashkent:local-area:beruniy-b1', 'uz:tashkent:almazar', 41.3324073, 69.2230774],
   ['Taxtapul', 'uz:tashkent:local-area:taxtapul', 'uz:tashkent:almazar', 41.343113, 69.259525],
+  ['Manzara', 'uz:tashkent:local-area:manzara', 'uz:tashkent:yunusabad', 41.356428, 69.315445],
 ]);
 
 test('verified Tashkent local areas resolve to their exact OSM owners', () => {
@@ -85,6 +86,20 @@ test('verified approximate Tashkent local-area centers remain explicitly non-OSM
     assert.ok(Math.abs(entity.center.lng - lng) < 1e-9, canonical);
     assert.equal(isGeoCoverageGap(input), false, canonical);
   }
+});
+
+test('Manzara local area does not consume the unresolved microdistrict identity', () => {
+  const area = getGeoEntity('uz:tashkent:local-area:manzara');
+  assert.equal(area?.type, 'local_area');
+  assert.equal(area?.parentId, 'uz:tashkent:yunusabad');
+  assert.equal(
+    isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'Manzara' }),
+    true,
+  );
+  assert.equal(
+    isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Manzara' }),
+    false,
+  );
 });
 
 test('same-name Tashkent mahallas remain independent spatial identities', () => {
