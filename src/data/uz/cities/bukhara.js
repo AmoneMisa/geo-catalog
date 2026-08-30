@@ -25,7 +25,20 @@ const osmPoi = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 140) 
   osm: { type: osmType, id: osmId },
 });
 
+const officialLocalArea = (slug, canonicalName, lat, lng, accuracyM = 1400) => ({
+  id: `uz:bukhara:local-area:${slug}`,
+  type: 'local_area',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:bukhara',
+  center: { lat, lng },
+  source: 'official',
+  accuracy: 'approximate',
+  accuracyM,
+});
+
 export const BUKHARA_ENTITIES = Object.freeze([
+  officialLocalArea('old-city', 'Old City', 39.77472, 64.42861, 1200),
   wikidataPoi('bukhara-ark', 'Bukhara Ark', 39.777778, 64.410278, 'Q4069358', 160),
   wikidataPoi('poi-kalon', 'Poi Kalon', 39.776001, 64.414244, 'Q4368936', 140, { type: 'way', id: 1446270185 }),
   osmPoi('lyabi-hauz', 'Lyabi Hauz', 39.77311, 64.42026, 'way', 67412309, 140),
