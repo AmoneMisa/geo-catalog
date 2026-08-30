@@ -15,7 +15,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
     'Ahmad Yugnakiy', 'Humoyun', "Bog'ko'cha", 'Gulobod', 'Qalqon', "Bog'bon", 'Shifokorlar', "Chamanbog'", 'Asalobod', "Sug'diyona", 'Olimpiya', 'Sebzor', 'Yangi Choshtepa', 'Traktorsozlar',
   ], 'Official mahalla name from the lexicon; no independently verified spatial object or boundary is available yet.'),
   ...gaps('UZ', 'Tashkent', 'local_area', [
-    'Manzara', 'Suvsoz-5', 'Shimoliy Olmazor-1', 'Shifokorlar-2', 'Shifokorlar-3', 'Shifokorlar-5', 'Shifokorlar-6', "So'lim", "Sug'diyona",
+    'Suvsoz-5', 'Shimoliy Olmazor-1', 'Shifokorlar-2', 'Shifokorlar-3', 'Shifokorlar-5', 'Shifokorlar-6', "So'lim", "Sug'diyona",
   ], 'Lexicon area name remains unresolved until a standalone owner or defensible map center can be verified; a same-name street, stop, mahalla, or isolated building address is not sufficient.'),
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z", 'Shirin', 'Chilkuduk', "Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
@@ -37,7 +37,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Fergana', 'poi', ['Independence Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Bukhara', 'mahalla', ['M. Narshaxiy', 'S. Raximov nomli 17-MFY'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('UZ', 'Bukhara', 'local_area', ['Old City', 'Center', 'Gijduvon Road', 'Gazli Road', 'Railway Station area', 'Bukhara-1', 'Bukhara-2', 'University area', 'Namozgoh', 'Sharq', 'Mohi Xosa'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Bukhara', 'local_area', ['Old City', 'Center', 'Gijduvon Road', 'Gazli Road', 'Railway Station area', 'Bukhara-1', 'Bukhara-2', 'University area', 'Namozgoh', 'Sharq', 'Mohi Xosa'], 'Bukhara local area still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Qarshi', 'mahalla', ['Navo', 'Gungon', 'Buyuk Turon'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('UZ', 'Qarshi', 'local_area', ['Center', 'Old City', 'Geolog', 'Sharq', 'Paxtazor', 'Nasaf', 'Qat', 'Railway Station area', 'Airport area', 'University area', 'Xonobod', 'Jayxun'], 'Lexicon local area still needs a verified standalone spatial match.'),
