@@ -18,6 +18,7 @@ const BATCH_SIZE = 12;
 const STOP_PARTS = 4;
 const VARIANT_PARTS = 3;
 const SHAPE_PARTS = 3;
+const REQUEST_TIMEOUT_MS = 35_000;
 const OVERPASS_ENDPOINTS = Object.freeze([
   process.env.OVERPASS_URL,
   'https://overpass-api.de/api/interpreter',
@@ -50,13 +51,13 @@ const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const insideBbox = ([lng, lat]) =>
   lat >= BBOX.south && lat <= BBOX.north && lng >= BBOX.west && lng <= BBOX.east;
 
-function elementPoint(element) {
-  if (!element) return null;
-  if (element.type === 'node' && Number.isFinite(element.lat) && Number.isFinite(element.lon)) {
-    return [round6(element.lon), round6(element.lat)];
+function memberPoint(member) {
+  if (!member) return null;
+  if (member.type === 'node' && Number.isFinite(member.lat) && Number.isFinite(member.lon)) {
+    return [round6(member.lon), round6(member.lat)];
   }
-  const geometry = Array.isArray(element.geometry)
-    ? element.geometry.filter((point) => Number.isFinite(point?.lat) && Number.isFinite(point?.lon))
+  const geometry = Array.isArray(member.geometry)
+    ? member.geometry.filter((point) => Number.isFinite(point?.lat) && Number.isFinite(point?.lon))
     : [];
   if (!geometry.length) return null;
   const sum = geometry.reduce((acc, point) => {
@@ -67,20 +68,7 @@ function elementPoint(element) {
   return [round6(sum.lng / geometry.length), round6(sum.lat / geometry.length)];
 }
 
-function elementName(element) {
-  const tags = element?.tags || {};
-  return tags.name || tags['name:ru'] || tags['name:uz'] || tags.official_name || null;
-}
-
-function isStopLike(element) {
-  const tags = element?.tags || {};
-  return tags.public_transport === 'platform' ||
-    tags.public_transport === 'stop_position' ||
-    tags.highway === 'bus_stop' ||
-    tags.amenity === 'bus_station';
-}
-
-function passengerMembers(relation, elementsByKey) {
+function passengerMembers(relation) {
   const members = relation.members || [];
   const platforms = members.filter((member) => String(member.role || '').startsWith('platform'));
   if (platforms.length >= 2) return platforms;
@@ -88,17 +76,16 @@ function passengerMembers(relation, elementsByKey) {
   const stops = members.filter((member) => String(member.role || '').startsWith('stop'));
   if (stops.length >= 2) return stops;
 
-  return members.filter((member) => isStopLike(elementsByKey.get(osmKey(member.type, member.ref))));
+  return [];
 }
 
-function buildShape(relation, elementsByKey) {
+function buildShape(relation) {
   const segments = [];
   for (const member of relation.members || []) {
     if (member.type !== 'way') continue;
     const role = String(member.role || '');
     if (role.startsWith('platform') || role.startsWith('stop')) continue;
-    const way = elementsByKey.get(osmKey('way', member.ref));
-    const coordinates = (way?.geometry || [])
+    const coordinates = (member.geometry || [])
       .filter((point) => Number.isFinite(point?.lat) && Number.isFinite(point?.lon))
       .map((point) => [round6(point.lon), round6(point.lat)]);
     if (coordinates.length >= 2) segments.push(coordinates);
@@ -120,20 +107,20 @@ function buildShape(relation, elementsByKey) {
   return { segments, bounds: [west, south, east, north] };
 }
 
-function buildCandidate(relation, elementsByKey, stopRecords) {
+function buildCandidate(relation, stopRecords) {
   const normalized = normalizeRef(relation.tags?.ref);
   const ref = registryByNormalizedRef.get(normalized);
   if (!ref) return null;
 
-  const members = passengerMembers(relation, elementsByKey);
+  const members = passengerMembers(relation);
   const stopKeys = [];
   const stopPoints = [];
   for (const member of members) {
-    const element = elementsByKey.get(osmKey(member.type, member.ref));
-    const point = elementPoint(element);
+    const point = memberPoint(member);
     if (!point) continue;
     const key = osmKey(member.type, member.ref);
-    stopRecords.set(key, [member.type, member.ref, elementName(element), point[1], point[0]]);
+    const previous = stopRecords.get(key);
+    stopRecords.set(key, [member.type, member.ref, previous?.[2] ?? null, point[1], point[0]]);
     if (stopKeys.at(-1) !== key) {
       stopKeys.push(key);
       stopPoints.push(point);
@@ -144,7 +131,7 @@ function buildCandidate(relation, elementsByKey, stopRecords) {
   const insideCount = stopPoints.filter(insideBbox).length;
   if (insideCount < 2 || insideCount / stopPoints.length < 0.5) return null;
 
-  const shape = buildShape(relation, elementsByKey);
+  const shape = buildShape(relation);
   if (!shape) return null;
 
   const tags = relation.tags || {};
@@ -162,7 +149,7 @@ function buildCandidate(relation, elementsByKey, stopRecords) {
 
 function relationQuery(refs) {
   const regex = `^(?:${refs.map((ref) => escapeRegex(ref)).join('|')})$`;
-  return `[out:json][timeout:180];rel["type"="route"]["route"="bus"]["ref"~"${regex}"](${BBOX_QUERY});(._;>>;);out body geom;`;
+  return `[out:json][timeout:45];rel["type"="route"]["route"="bus"]["ref"~"${regex}"](${BBOX_QUERY});out body geom;`;
 }
 
 async function fetchBatch(refs) {
@@ -178,6 +165,7 @@ async function fetchBatch(refs) {
             'user-agent': '@whiteslove/geo-catalog Tashkent bus discovery refresh',
           },
           body: new URLSearchParams({ data: query }),
+          signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
         });
         if (!response.ok) {
           const text = (await response.text()).replace(/\s+/g, ' ').slice(0, 280);
@@ -188,7 +176,7 @@ async function fetchBatch(refs) {
         const message = `${endpoint} attempt ${attempt}: ${error?.message || error}`;
         failures.push(message);
         console.warn(message);
-        await sleep(1200 * attempt);
+        await sleep(900 * attempt);
       }
     }
   }
@@ -246,12 +234,11 @@ for (let offset = 0; offset < TASHKENT_BUS_ROUTE_REFS_2026_08_18.length; offset 
     continue;
   }
 
-  const elements = payload.elements || [];
-  const elementsByKey = new Map(elements.map((element) => [osmKey(element.type, element.id), element]));
   const candidatesByRef = new Map();
-
-  for (const relation of elements.filter((element) => element.type === 'relation' && element.tags?.type === 'route' && element.tags?.route === 'bus')) {
-    const candidate = buildCandidate(relation, elementsByKey, state.stopRecords);
+  for (const relation of (payload.elements || []).filter((element) =>
+    element.type === 'relation' && element.tags?.type === 'route' && element.tags?.route === 'bus'
+  )) {
+    const candidate = buildCandidate(relation, state.stopRecords);
     if (!candidate) continue;
     const items = candidatesByRef.get(candidate.ref) ?? [];
     items.push(candidate);
@@ -274,7 +261,7 @@ for (let offset = 0; offset < TASHKENT_BUS_ROUTE_REFS_2026_08_18.length; offset 
     }
   }
 
-  await sleep(400);
+  await sleep(250);
 }
 
 const variants = [...state.variants.values()].sort((a, b) =>
