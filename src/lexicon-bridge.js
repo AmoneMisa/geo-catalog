@@ -43,10 +43,58 @@ for (const entity of GEO_ENTITIES) {
   }
 }
 
+const alias = (country, city, type, canonical, id) => [
+  geoEntityKey({ country, city, type, canonical }),
+  id,
+];
+
 // Parser canonicals can evolve independently from OSM/source naming. Keep narrowly
-// verified spelling aliases here instead of duplicating physical geo entities.
+// verified aliases here instead of duplicating physical geo entities. Kharkiv also
+// has listing-area canonicals based on metro stations and major POIs; those resolve
+// to the existing physical owner rather than creating fake microdistrict geometry.
 const lexiconAliases = new Map([
-  [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'TashGRES' }), 'uz:tashkent:local-area:tashgres'],
+  alias('UZ', 'Tashkent', 'local_area', 'TashGRES', 'uz:tashkent:local-area:tashgres'),
+
+  alias('UA', 'Kharkiv', 'microdistrict', 'Saltivka', 'ua:kharkiv:microdistrict:saltivka'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'North Saltivka', 'ua:kharkiv:microdistrict:pivnichna-saltivka'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'North Saltivka-1', 'ua:kharkiv:microdistrict:pivnichna-saltivka-1'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'North Saltivka-2', 'ua:kharkiv:microdistrict:pivnichna-saltivka-2'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'North Saltivka-3', 'ua:kharkiv:microdistrict:pivnichna-saltivka-3'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'North Saltivka-4', 'ua:kharkiv:microdistrict:pivnichna-saltivka-4'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'North Saltivka-5', 'ua:kharkiv:microdistrict:pivnichna-saltivka-5'),
+  alias('UA', 'Kharkiv', 'microdistrict', '524 microdistrict', 'ua:kharkiv:microdistrict:524-mikroraion'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Pavlove Pole', 'ua:kharkiv:microdistrict:pavlove-pole'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Oleksiivka', 'ua:kharkiv:microdistrict:oleksiivka'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Shatylivka', 'ua:kharkiv:microdistrict:shatylivka'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Center', 'ua:kharkiv:microdistrict:nahirnyi'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Zhuravlivka', 'ua:kharkiv:microdistrict:zhuravlivka'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Velyka Danylivka', 'ua:kharkiv:microdistrict:velyka-danylivka'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Piatykhatky', 'ua:kharkiv:microdistrict:piatykhatky'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Pomerky', 'ua:kharkiv:microdistrict:pomerky'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Sokolnyky', 'ua:kharkiv:microdistrict:sokilnyky'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Barabashovo', 'ua:kharkiv:microdistrict:barabashovo'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'HTZ', 'ua:kharkiv:microdistrict:khtz'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Novi Budynky', 'ua:kharkiv:microdistrict:novi-budynky'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Kholodna Hora', 'ua:kharkiv:microdistrict:kholodna-hora'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Zaliutyne', 'ua:kharkiv:microdistrict:zaliutyne'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Osnova', 'ua:kharkiv:microdistrict:osnova'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Levada', 'ua:kharkiv:microdistrict:levada'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Rohan', 'ua:kharkiv:microdistrict:rohan'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Zhykhar', 'ua:kharkiv:microdistrict:zhykhar'),
+
+  alias('UA', 'Kharkiv', 'microdistrict', 'Botanical Garden', 'ua:kharkiv:metro:botanichnyi-sad'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Derzhprom', 'ua:kharkiv:metro:derzhprom'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Heroiv Pratsi', 'ua:kharkiv:metro:heroiv-pratsi'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Studentska', 'ua:kharkiv:metro:studentska'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Akademika Pavlova', 'ua:kharkiv:metro:akademika-pavlova'),
+  alias('UA', 'Kharkiv', 'microdistrict', '23 Serpnia', 'ua:kharkiv:metro:23-serpnia'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Pivdennyi Vokzal', 'ua:kharkiv:metro:pivdennyi-vokzal'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Haharina', 'ua:kharkiv:metro:levada'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Sportyvna', 'ua:kharkiv:metro:sportyvna'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Zakhysnykiv Ukrainy', 'ua:kharkiv:metro:zakhysnykiv-ukrainy'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Industrialna', 'ua:kharkiv:metro:industrialna'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Metalist', 'ua:kharkiv:poi:metalist'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Karavan', 'ua:kharkiv:poi:karavan'),
 ]);
 
 const compatibleTypes = Object.freeze({
