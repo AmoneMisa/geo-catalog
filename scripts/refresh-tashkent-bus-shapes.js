@@ -3,15 +3,21 @@ import variantRows1 from '../src/transport/generated/tashkent-bus-osm-variants-1
 import variantRows2 from '../src/transport/generated/tashkent-bus-osm-variants-2.js';
 import variantRows3 from '../src/transport/generated/tashkent-bus-osm-variants-3.js';
 
-const OVERPASS_URL = process.env.OVERPASS_URL || 'https://overpass-api.de/api/interpreter';
+const OVERPASS_URLS = (process.env.OVERPASS_URLS || [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.nchc.org.tw/api/interpreter',
+].join(',')).split(',').map((value) => value.trim()).filter(Boolean);
 const SOURCE_DATE = new Date().toISOString().slice(0, 10);
-const BATCH_SIZE = 18;
+const BATCH_SIZE = 6;
 const OUTPUT_PARTS = 3;
+const MAX_ATTEMPTS_PER_ENDPOINT = 2;
 
 const variantRows = [...variantRows1, ...variantRows2, ...variantRows3];
 const relationIds = [...new Set(variantRows.map((row) => row[1]))].sort((a, b) => a - b);
 
 const round6 = (value) => Math.round(value * 1e6) / 1e6;
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function memberGeometry(member) {
   if (member?.type !== 'way' || !Array.isArray(member.geometry) || member.geometry.length < 2) return null;
@@ -21,8 +27,7 @@ function memberGeometry(member) {
     .filter((point) => Number.isFinite(point?.lat) && Number.isFinite(point?.lon))
     .map((point) => [round6(point.lon), round6(point.lat)]);
 
-  if (coordinates.length < 2) return null;
-  return coordinates;
+  return coordinates.length >= 2 ? coordinates : null;
 }
 
 function buildShape(relation) {
@@ -46,23 +51,49 @@ function buildShape(relation) {
   return [relation.id, segments, [west, south, east, north]];
 }
 
-async function fetchRelations(ids) {
-  const query = `[out:json][timeout:180];rel(id:${ids.join(',')});out geom;`;
-  const response = await fetch(OVERPASS_URL, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      'user-agent': '@whiteslove/geo-catalog transport refresh',
-    },
-    body: new URLSearchParams({ data: query }),
-  });
+async function fetchFromEndpoint(endpoint, ids, attempt) {
+  const query = `[out:json][timeout:120];rel(id:${ids.join(',')});out geom;`;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 150_000);
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'user-agent': '@whiteslove/geo-catalog transport refresh',
+      },
+      body: new URLSearchParams({ data: query }),
+      signal: controller.signal,
+    });
 
-  if (!response.ok) {
-    throw new Error(`Overpass request failed (${response.status}): ${await response.text()}`);
+    if (!response.ok) {
+      const body = (await response.text()).replace(/\s+/g, ' ').slice(0, 300);
+      throw new Error(`${response.status} ${body}`);
+    }
+
+    const payload = await response.json();
+    return (payload.elements || []).filter((element) => element.type === 'relation');
+  } catch (error) {
+    throw new Error(`${endpoint} attempt ${attempt}: ${error.message}`);
+  } finally {
+    clearTimeout(timeout);
   }
+}
 
-  const payload = await response.json();
-  return (payload.elements || []).filter((element) => element.type === 'relation');
+async function fetchRelations(ids) {
+  const failures = [];
+  for (const endpoint of OVERPASS_URLS) {
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS_PER_ENDPOINT; attempt += 1) {
+      try {
+        return await fetchFromEndpoint(endpoint, ids, attempt);
+      } catch (error) {
+        failures.push(error.message);
+        console.warn(error.message);
+        await sleep(1_500 * attempt);
+      }
+    }
+  }
+  throw new Error(`All Overpass endpoints failed for relations ${ids.join(', ')}: ${failures.join(' | ')}`);
 }
 
 const shapes = [];
@@ -74,6 +105,7 @@ for (let offset = 0; offset < relationIds.length; offset += BATCH_SIZE) {
     const shape = buildShape(relation);
     if (shape) shapes.push(shape);
   }
+  await sleep(350);
 }
 
 shapes.sort((a, b) => a[0] - b[0]);
