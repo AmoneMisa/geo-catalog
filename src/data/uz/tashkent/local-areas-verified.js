@@ -98,6 +98,10 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('alimkent', 'Alimkent', 'uz:tashkent:yashnobod', 41.29546, 69.33720, 'node', 12144738032, 520),
   // Approximate center from current map anchors on Fayzibaland-2 and Guruchariq-1, the official S-22/Guruchariq mavzesi bounds.
   derivedArea('guruchariq', 'Guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304, 900),
+  // 2025 City Council defines Minora mavzesi between Qorasaroy, Minora and Fayzibaland-1; center is the centroid of mapped boundary-street anchors.
+  derivedArea('minora', 'Minora', 'uz:tashkent:almazar', 41.34768, 69.242429, 800),
+  // 2025 City Council defines Muxbir mavzesi between Muxbir/Qoraqamish/Qoraqamish-4, Damashi canal and Qoraqamish-2/5; center is a conservative boundary-anchor centroid.
+  derivedArea('muxbir', 'Muxbir', 'uz:tashkent:almazar', 41.363531, 69.203296, 900),
   // Harbiylar-58a shaharchasi was officially renamed Qalqon mavzesi; retain its OSM locality owner.
   osmArea('qalqon', 'Qalqon', 'uz:tashkent:yashnobod', 41.28172, 69.3708, 'node', 12173937446, 650),
   // Normuhammedov mavzesi was officially renamed Bog'bon mavzesi; use the matching residential landuse owner.
@@ -121,6 +125,8 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   derivedArea('taraqqiyot-1', 'Taraqqiyot-1', 'uz:tashkent:almazar', 41.354837, 69.241154, 600),
   derivedArea('taraqqiyot-2', 'Taraqqiyot-2', 'uz:tashkent:almazar', 41.352779, 69.241154, 600),
   derivedArea('taraqqiyot-3', 'Taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708, 600),
+  // Official Tashkent reference confirms Taraqqiyot-4 as a distinct mavze; center uses a current mapped in-area address anchor.
+  derivedArea('taraqqiyot-4', 'Taraqqiyot-4', 'uz:tashkent:almazar', 41.352292, 69.238791, 700),
   osmArea('shifokorlar-1', 'Shifokorlar-1', 'uz:tashkent:almazar', 41.361, 69.18198, 'way', 149513658, 700),
   osmArea('shifokorlar-4', 'Shifokorlar-4', 'uz:tashkent:almazar', 41.35963, 69.18595, 'way', 142245652, 650),
   // Representative center derived from a dense set of Beruniy-B1 building coordinates in Chustiy mahalla.

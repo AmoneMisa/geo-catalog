@@ -44,6 +44,8 @@ const resolvedAreas = Object.freeze([
 const derivedAreas = Object.freeze([
   ['Humoyun', 'uz:tashkent:local-area:humoyun', 'uz:tashkent:mirzo-ulugbek', 41.34339, 69.388945],
   ['Guruchariq', 'uz:tashkent:local-area:guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304],
+  ['Minora', 'uz:tashkent:local-area:minora', 'uz:tashkent:almazar', 41.34768, 69.242429],
+  ['Muxbir', 'uz:tashkent:local-area:muxbir', 'uz:tashkent:almazar', 41.363531, 69.203296],
   ['Shimoliy Olmazor-2', 'uz:tashkent:local-area:shimoliy-olmazor-2', 'uz:tashkent:almazar', 41.351744, 69.255455],
   ['Suvsoz-3', 'uz:tashkent:local-area:suvsoz-3', 'uz:tashkent:bektemir', 41.244307, 69.36724],
   ['Suvsoz-4', 'uz:tashkent:local-area:suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753],
@@ -51,6 +53,7 @@ const derivedAreas = Object.freeze([
   ['Taraqqiyot-1', 'uz:tashkent:local-area:taraqqiyot-1', 'uz:tashkent:almazar', 41.354837, 69.241154],
   ['Taraqqiyot-2', 'uz:tashkent:local-area:taraqqiyot-2', 'uz:tashkent:almazar', 41.352779, 69.241154],
   ['Taraqqiyot-3', 'uz:tashkent:local-area:taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708],
+  ['Taraqqiyot-4', 'uz:tashkent:local-area:taraqqiyot-4', 'uz:tashkent:almazar', 41.352292, 69.238791],
   ['Beruniy-B1', 'uz:tashkent:local-area:beruniy-b1', 'uz:tashkent:almazar', 41.3324073, 69.2230774],
 ]);
 

@@ -348,10 +348,10 @@ test('Taraqqiyot mahalla remains distinct from its numbered local areas', () => 
   assert.equal(mahalla?.boundary?.type, 'Polygon');
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Taraqqiyot' }), false);
 
-  for (const canonical of ['Taraqqiyot-1', 'Taraqqiyot-2', 'Taraqqiyot-3']) {
+  for (const canonical of ['Taraqqiyot-1', 'Taraqqiyot-2', 'Taraqqiyot-3', 'Taraqqiyot-4']) {
     assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), false, canonical);
+    assert.notEqual(resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical })?.id, mahalla?.id, canonical);
   }
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taraqqiyot-4' }), true);
 });
 
 test('C-7, Chuqursoy and Shimoliy Olmazor resolve to distinct OSM residential polygons', () => {
@@ -447,7 +447,7 @@ test("Bog'bon Street remains distinct from Yashnobod mahalla and resolved local 
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Bog'bon" }), false);
 });
 
-test('newly recorded same-name streets do not consume unresolved area identities', () => {
+test('same-name streets remain independent from resolved area identities', () => {
   const expected = new Map([
     ['muxbir', ['uz:tashkent:almazar', 139815768]],
     ['minora', ['uz:tashkent:almazar', 1133450564]],
@@ -462,7 +462,11 @@ test('newly recorded same-name streets do not consume unresolved area identities
   }
 
   for (const canonical of ['Muxbir', 'Minora']) {
-    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), true, canonical);
+    const area = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical });
+    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), false, canonical);
+    assert.equal(area?.source, 'manual', canonical);
+    assert.equal(area?.osm, undefined, canonical);
+    assert.notEqual(area?.id, `uz:tashkent:street:${canonical.toLowerCase()}`, canonical);
   }
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Asalobod' }), true);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Shifokorlar' }), true);
