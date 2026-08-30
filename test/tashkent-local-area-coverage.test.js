@@ -26,6 +26,8 @@ const resolvedAreas = Object.freeze([
   ['Ibn Sino-1', 'uz:tashkent:local-area:ibn-sino-1', 'uz:tashkent:shaykhantahur', 'way', 103249732],
   ['Ibn Sino-2', 'uz:tashkent:local-area:ibn-sino-2', 'uz:tashkent:shaykhantahur', 'way', 149989839],
   ['Parkent-Riyoziy', 'uz:tashkent:local-area:parkent-riyoziy', 'uz:tashkent:yashnobod', 'node', 1867099585],
+  ['Qalqon', 'uz:tashkent:local-area:qalqon', 'uz:tashkent:yashnobod', 'node', 12173937446],
+  ["Bog'bon", 'uz:tashkent:local-area:bogbon', 'uz:tashkent:yashnobod', 'way', 557224880],
   ['Shifokorlar-1', 'uz:tashkent:local-area:shifokorlar-1', 'uz:tashkent:almazar', 'way', 149513658],
   ['Shifokorlar-4', 'uz:tashkent:local-area:shifokorlar-4', 'uz:tashkent:almazar', 'way', 142245652],
   ['Markaz-12', 'uz:tashkent:local-area:markaz-12', 'uz:tashkent:shaykhantahur', 'node', 4984463379],
@@ -43,6 +45,7 @@ const derivedAreas = Object.freeze([
   ['Taraqqiyot-1', 'uz:tashkent:local-area:taraqqiyot-1', 'uz:tashkent:almazar', 41.354837, 69.241154],
   ['Taraqqiyot-2', 'uz:tashkent:local-area:taraqqiyot-2', 'uz:tashkent:almazar', 41.352779, 69.241154],
   ['Taraqqiyot-3', 'uz:tashkent:local-area:taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708],
+  ['Beruniy-B1', 'uz:tashkent:local-area:beruniy-b1', 'uz:tashkent:almazar', 41.3324073, 69.2230774],
 ]);
 
 test('verified Tashkent local areas resolve to their exact OSM owners', () => {
@@ -75,7 +78,7 @@ test('verified approximate Tashkent local-area centers remain explicitly non-OSM
 });
 
 test('same-name Tashkent mahallas remain independent spatial identities', () => {
-  for (const canonical of ['Humoyun', 'Gulobod', "Chamanbog'", 'Olimpiya', 'Sebzor', 'Asalobod']) {
+  for (const canonical of ['Humoyun', 'Gulobod', 'Qalqon', "Bog'bon", "Chamanbog'", 'Olimpiya', 'Sebzor', 'Asalobod']) {
     assert.equal(
       isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical }),
       true,
