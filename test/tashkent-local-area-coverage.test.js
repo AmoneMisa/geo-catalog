@@ -55,6 +55,7 @@ const derivedAreas = Object.freeze([
   ['Taraqqiyot-3', 'uz:tashkent:local-area:taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708],
   ['Taraqqiyot-4', 'uz:tashkent:local-area:taraqqiyot-4', 'uz:tashkent:almazar', 41.352292, 69.238791],
   ['Beruniy-B1', 'uz:tashkent:local-area:beruniy-b1', 'uz:tashkent:almazar', 41.3324073, 69.2230774],
+  ['Taxtapul', 'uz:tashkent:local-area:taxtapul', 'uz:tashkent:almazar', 41.343113, 69.259525],
 ]);
 
 test('verified Tashkent local areas resolve to their exact OSM owners', () => {
