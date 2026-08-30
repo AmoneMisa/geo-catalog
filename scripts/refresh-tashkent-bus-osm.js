@@ -14,7 +14,7 @@ import shapeRows3 from '../src/transport/generated/tashkent-bus-osm-shapes-3.js'
 const SOURCE_DATE = new Date().toISOString().slice(0, 10);
 const BBOX = Object.freeze({ south: 41.15, west: 69.10, north: 41.45, east: 69.50 });
 const BBOX_QUERY = `${BBOX.south},${BBOX.west},${BBOX.north},${BBOX.east}`;
-const BATCH_SIZE = 12;
+const BATCH_SIZE = 16;
 const STOP_PARTS = 4;
 const VARIANT_PARTS = 3;
 const SHAPE_PARTS = 3;
@@ -47,7 +47,6 @@ const compareRefs = (a, b) => {
   return a.localeCompare(b, 'en', { numeric: true });
 };
 
-const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const insideBbox = ([lng, lat]) =>
   lat >= BBOX.south && lat <= BBOX.north && lng >= BBOX.west && lng <= BBOX.east;
 
@@ -96,14 +95,21 @@ function buildShape(relation) {
   let south = Infinity;
   let east = -Infinity;
   let north = -Infinity;
+  let totalPoints = 0;
+  let insidePoints = 0;
   for (const segment of segments) {
     for (const [lng, lat] of segment) {
       west = Math.min(west, lng);
       south = Math.min(south, lat);
       east = Math.max(east, lng);
       north = Math.max(north, lat);
+      totalPoints += 1;
+      if (insideBbox([lng, lat])) insidePoints += 1;
     }
   }
+
+  const minimumInside = Math.max(2, Math.min(5, Math.ceil(totalPoints * 0.1)));
+  if (insidePoints < minimumInside) return null;
   return { segments, bounds: [west, south, east, north] };
 }
 
@@ -112,27 +118,18 @@ function buildCandidate(relation, stopRecords) {
   const ref = registryByNormalizedRef.get(normalized);
   if (!ref) return null;
 
-  const members = passengerMembers(relation);
+  const shape = buildShape(relation);
+  if (!shape) return null;
+
   const stopKeys = [];
-  const stopPoints = [];
-  for (const member of members) {
+  for (const member of passengerMembers(relation)) {
     const point = memberPoint(member);
     if (!point) continue;
     const key = osmKey(member.type, member.ref);
     const previous = stopRecords.get(key);
     stopRecords.set(key, [member.type, member.ref, previous?.[2] ?? null, point[1], point[0]]);
-    if (stopKeys.at(-1) !== key) {
-      stopKeys.push(key);
-      stopPoints.push(point);
-    }
+    if (stopKeys.at(-1) !== key) stopKeys.push(key);
   }
-
-  if (stopKeys.length < 2) return null;
-  const insideCount = stopPoints.filter(insideBbox).length;
-  if (insideCount < 2 || insideCount / stopPoints.length < 0.5) return null;
-
-  const shape = buildShape(relation);
-  if (!shape) return null;
 
   const tags = relation.tags || {};
   return {
@@ -148,7 +145,7 @@ function buildCandidate(relation, stopRecords) {
 }
 
 function relationQuery(refs) {
-  const regex = `^(?:${refs.map((ref) => escapeRegex(ref)).join('|')})$`;
+  const regex = `^(?:${refs.join('|')})$`;
   return `[out:json][timeout:45];rel["type"="route"]["route"="bus"]["ref"~"${regex}"](${BBOX_QUERY});out body geom;`;
 }
 
@@ -219,11 +216,20 @@ async function writeParts(prefix, rows, parts, header) {
 const state = existingState();
 const oldRelationIds = new Set(state.variants.keys());
 const oldRefs = new Set([...state.variants.values()].map((variant) => variant.ref));
-const failedRefs = [];
+const variantCountByRef = new Map();
+for (const variant of state.variants.values()) {
+  variantCountByRef.set(variant.ref, (variantCountByRef.get(variant.ref) ?? 0) + 1);
+}
 
-for (let offset = 0; offset < TASHKENT_BUS_ROUTE_REFS_2026_08_18.length; offset += BATCH_SIZE) {
-  const refs = TASHKENT_BUS_ROUTE_REFS_2026_08_18.slice(offset, offset + BATCH_SIZE);
-  console.log(`Discovering bus refs ${offset + 1}-${Math.min(offset + refs.length, TASHKENT_BUS_ROUTE_REFS_2026_08_18.length)} / ${TASHKENT_BUS_ROUTE_REFS_2026_08_18.length}: ${refs.join(', ')}`);
+const discoveryRefs = TASHKENT_BUS_ROUTE_REFS_2026_08_18.filter((ref) =>
+  (variantCountByRef.get(ref) ?? 0) < 2,
+);
+const failedRefs = [];
+console.log(`Scanning ${discoveryRefs.length}/${TASHKENT_BUS_ROUTE_REFS_2026_08_18.length} refs that currently have fewer than two OSM variants.`);
+
+for (let offset = 0; offset < discoveryRefs.length; offset += BATCH_SIZE) {
+  const refs = discoveryRefs.slice(offset, offset + BATCH_SIZE);
+  console.log(`Discovering refs ${offset + 1}-${Math.min(offset + refs.length, discoveryRefs.length)} / ${discoveryRefs.length}: ${refs.join(', ')}`);
 
   let payload;
   try {
@@ -234,31 +240,13 @@ for (let offset = 0; offset < TASHKENT_BUS_ROUTE_REFS_2026_08_18.length; offset 
     continue;
   }
 
-  const candidatesByRef = new Map();
   for (const relation of (payload.elements || []).filter((element) =>
     element.type === 'relation' && element.tags?.type === 'route' && element.tags?.route === 'bus'
   )) {
     const candidate = buildCandidate(relation, state.stopRecords);
     if (!candidate) continue;
-    const items = candidatesByRef.get(candidate.ref) ?? [];
-    items.push(candidate);
-    candidatesByRef.set(candidate.ref, items);
-  }
-
-  for (const ref of refs) {
-    const candidates = candidatesByRef.get(ref);
-    if (!candidates?.length) continue;
-
-    for (const [relationId, variant] of [...state.variants]) {
-      if (variant.ref !== ref) continue;
-      state.variants.delete(relationId);
-      state.shapes.delete(relationId);
-    }
-
-    for (const candidate of candidates) {
-      state.variants.set(candidate.relationId, candidate);
-      state.shapes.set(candidate.relationId, candidate.shape);
-    }
+    state.variants.set(candidate.relationId, candidate);
+    state.shapes.set(candidate.relationId, candidate.shape);
   }
 
   await sleep(250);
@@ -310,11 +298,10 @@ await writeParts(
 const newRelationIds = new Set(variants.map((variant) => variant.relationId));
 const newRefs = new Set(variants.map((variant) => variant.ref));
 const addedRelations = [...newRelationIds].filter((id) => !oldRelationIds.has(id));
-const removedRelations = [...oldRelationIds].filter((id) => !newRelationIds.has(id));
 const addedRefs = [...newRefs].filter((ref) => !oldRefs.has(ref)).sort(compareRefs);
-const lostRefs = [...oldRefs].filter((ref) => !newRefs.has(ref)).sort(compareRefs);
+const topologyRefs = new Set(variants.filter((variant) => variant.stopKeys.length >= 2).map((variant) => variant.ref));
 
-console.log(`OSM bus discovery complete: ${newRefs.size}/${TASHKENT_BUS_ROUTE_REFS_2026_08_18.length} registry refs, ${variants.length} variants, ${stopRows.length} unique passenger stops.`);
-console.log(`Added refs (${addedRefs.length}): ${addedRefs.join(', ') || 'none'}`);
-console.log(`Added relations: ${addedRelations.length}; removed relations: ${removedRelations.length}; lost refs: ${lostRefs.join(', ') || 'none'}.`);
-if (failedRefs.length) console.warn(`Preserved existing data for failed discovery refs (${failedRefs.length}): ${failedRefs.join(', ')}`);
+console.log(`OSM bus discovery complete: map geometry ${newRefs.size}/${TASHKENT_BUS_ROUTE_REFS_2026_08_18.length} refs, stop topology ${topologyRefs.size}/${TASHKENT_BUS_ROUTE_REFS_2026_08_18.length} refs, ${variants.length} variants, ${stopRows.length} unique passenger stops.`);
+console.log(`Added map refs (${addedRefs.length}): ${addedRefs.join(', ') || 'none'}`);
+console.log(`Added relations: ${addedRelations.length}.`);
+if (failedRefs.length) console.warn(`Discovery failed for ${failedRefs.length} refs without changing existing data: ${failedRefs.join(', ')}`);
