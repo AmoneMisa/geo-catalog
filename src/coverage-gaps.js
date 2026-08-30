@@ -20,7 +20,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z",'Shirin','Chilkuduk',"Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
   ...gaps('UZ', 'Samarkand', 'microdistrict', ['Sogdiana','Sartepa','Sat-Tepo','Kimyogarlar','Vokzal','Universitet','Registan','Dagbitskaya','Rudaki'], 'Lexicon microdistrict still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob','Registon','Center','University area','Dahbed','Rudakiy','Gagarin area','Mirzo Ulugbek area','Spitamen','Panjakent Road','Geofizika','Sugdiyona','Super Market area','Dinamo area',"So'zangaron",'Buyuk Ipak Yoli'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob','Registon','Center','Dahbed','Rudakiy','Gagarin area','Mirzo Ulugbek area','Spitamen','Panjakent Road','Geofizika','Sugdiyona','Super Market area','Dinamo area',"So'zangaron",'Buyuk Ipak Yoli'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'residential_complex', ['Samarkand City','Bogishamol City','Marokand Avenue','Silk Road Residence','Registan Residence'], 'Lexicon residential complex still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'poi', ['Samarkand City','Youth Park','Yangi Ozbekiston Park','Siab Bazaar','University Boulevard','Alisher Navoiy Park'], 'Lexicon landmark still needs a verified spatial match.'),
 
@@ -33,14 +33,14 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Andijan', 'poi', ['Bobur Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Fergana', 'mahalla', ["Ma'rifat"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('UZ', 'Fergana', 'local_area', ['Qirguli','Neftchi','Center','Mustaqillik','Al-Fargoniy','Margilon Road','University area','Navoiy'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Fergana', 'local_area', ['Qirguli','Neftchi','Center','Mustaqillik','Al-Fargoniy','Margilon Road','Navoiy'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Fergana', 'poi', ['Independence Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Bukhara', 'mahalla', ['M. Narshaxiy','S. Raximov nomli 17-MFY'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('UZ', 'Bukhara', 'local_area', ['Old City','Center','Gijduvon Road','Gazli Road','Railway Station area','Bukhara-1','Bukhara-2','University area','Namozgoh','Sharq','Mohi Xosa'], 'Lexicon local area still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Qarshi', 'mahalla', ['Navo','Gungon','Buyuk Turon'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('UZ', 'Qarshi', 'local_area', ['Center','Old City','Geolog','Sharq','Paxtazor','Nasaf','Qat','University area','Xonobod','Jayxun'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Qarshi', 'local_area', ['Center','Old City','Geolog','Sharq','Paxtazor','Nasaf','Qat','Xonobod','Jayxun'], 'Lexicon local area still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Nukus', 'mahalla', [
     'Bes tobe','Juwazshı','Nurli bostan','Qarataw','Janabazar','Bereket','Qizil qum','Gúzar','Jeke terek','Isbilermenler aymagi','Darbent','Nawkan baǵ','Abat makan',"Jasil bag'","Shig'is",'Uzin kol','Amanliq guzari','Allaniyaz Qaxraman','Shimbay guzari','Ata makan','Jolshilar','Qutli qonis','Dosliq guzari','Hawa joli',"Botanika bag'i",'Taslaq','Qum awil','Qutli makan','Aydin jol','Shimbay shayxana','Sarbinaz','Eliabat','Shayirlar awili','Tungish qonis','Qurilisshi','Almazar','Ornek','Jana zaman','Qos kol','Baqshiliq','Dosliq','Tinishliq','Xaliqlar dosligi','Boz awil','Jas awlad','Qos bulaq','Jiydeli baysin','Aq jagis','Kok ozek','Amudarya','Tele oray','Shadli awil','Altin jagis','Qumbiz awil','Nawpir'
