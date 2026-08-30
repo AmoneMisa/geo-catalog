@@ -8,6 +8,7 @@ import { BUKHARA_ENTITIES } from './cities/bukhara.js';
 import { QARSHI_ENTITIES } from './cities/qarshi.js';
 import { NUKUS_ENTITIES } from './cities/nukus.js';
 import { URGENCH_ENTITIES } from './cities/urgench.js';
+import { TURTKUL_ENTITIES } from './cities/turtkul.js';
 import { UZ_SECONDARY_CITY_ANCHORS } from './secondary-city-anchors.js';
 import { UZ_HERITAGE_ANCHORS } from './heritage-anchors.js';
 import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './heritage-transport.js';
@@ -24,6 +25,7 @@ export const UZ_ENTITIES = Object.freeze([
   ...QARSHI_ENTITIES,
   ...NUKUS_ENTITIES,
   ...URGENCH_ENTITIES,
+  ...TURTKUL_ENTITIES,
   ...UZ_SECONDARY_CITY_ANCHORS,
   ...UZ_HERITAGE_ANCHORS,
   ...UZ_HERITAGE_TRANSPORT_ENTITIES,
