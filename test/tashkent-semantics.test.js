@@ -432,12 +432,18 @@ test('Taxtapul mahalla does not consume the distinct Almazar local-area identity
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taxtapul' }), true);
 });
 
-test("Bog'bon Street remains distinct from Yashnobod mahalla and area identities", () => {
+test("Bog'bon Street remains distinct from Yashnobod mahalla and resolved local area", () => {
   const street = getGeoEntity('uz:tashkent:street:bogbon');
   assert.equal(street?.parentId, 'uz:tashkent:yunusabad');
   assert.deepEqual(street?.osm, { type: 'way', id: 105705400 });
+
+  const area = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Bog'bon" });
+  assert.equal(area?.id, 'uz:tashkent:local-area:bogbon');
+  assert.equal(area?.parentId, 'uz:tashkent:yashnobod');
+  assert.deepEqual(area?.osm, { type: 'way', id: 557224880 });
+
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: "Bog'bon" }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Bog'bon" }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Bog'bon" }), false);
 });
 
 test('newly recorded same-name streets do not consume unresolved area identities', () => {
