@@ -9,6 +9,7 @@ import {
   getRoutesForStop,
   getStopsForRoute,
   getTransfersForStop,
+  getTransportCoverage,
   getTransportRoute,
   getTransportStop,
   validateTransportCatalog,
@@ -52,9 +53,34 @@ test('route and interchange indexes support transfer-aware consumers', () => {
   assert.equal(TRANSPORT_TRANSFERS.length, 4);
 });
 
-test('current bus seed distinguishes terminal-only coverage from navigable topology', () => {
+test('Tashkent bus snapshot contains all 170 route refs known after route 79 launch', () => {
+  const buses = findTransportRoutes({ cityId: 'uz:tashkent', mode: 'bus' });
+  assert.equal(buses.length, 170);
+  assert.equal(TRANSPORT_ROUTES.length, 174);
+
+  assert.ok(getTransportRoute('uz:tashkent:route:bus:1'));
+  assert.ok(getTransportRoute('uz:tashkent:route:bus:8t'));
+  assert.ok(getTransportRoute('uz:tashkent:route:bus:199'));
+  assert.equal(getTransportRoute('uz:tashkent:route:bus:4'), null);
+});
+
+test('bus coverage report separates registry metadata from routable topology', () => {
+  assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
+    total: 170,
+    full: 0,
+    terminalsOnly: 1,
+    metadataOnly: 169,
+  });
+  assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
+    total: 174,
+    full: 4,
+    terminalsOnly: 1,
+    metadataOnly: 169,
+  });
+});
+
+test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
   assert.equal(TRANSPORT_STOPS.length, 51);
-  assert.equal(TRANSPORT_ROUTES.length, 5);
 
   const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
   assert.equal(busStops.length, 1);
