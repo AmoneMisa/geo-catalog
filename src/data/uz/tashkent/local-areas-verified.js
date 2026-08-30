@@ -56,6 +56,8 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   // University-area usage centered on the verified Geology Sciences University campus.
   // The separate same-name residential polygon in Yashnobod is not this lexical area.
   derivedArea('geofizika', 'Geofizika', 'uz:tashkent:mirzo-ulugbek', 41.3413252, 69.3403061, 1000),
+  // Standalone residential-area center from the current address map; distinct from Humoyun mahalla.
+  derivedArea('humoyun', 'Humoyun', 'uz:tashkent:mirzo-ulugbek', 41.34339, 69.388945, 650),
   // User-verified Qo'yliq markaz residential-area center near the Yashnobod/Bektemir border.
   derivedArea('kuylyuk-center', 'Kuylyuk Center', 'uz:tashkent:yashnobod', 41.240623, 69.332279, 750),
   // User-supplied point on Lolazor Street inside Bog'ichinor Mahallah.
@@ -101,6 +103,10 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('asalobod-2', 'Asalobod-2', 'uz:tashkent:yashnobod', 41.28204, 69.33594, 'way', 165626941, 650),
   osmArea('ibn-sino-1', 'Ibn Sino-1', 'uz:tashkent:shaykhantahur', 41.33426, 69.16822, 'way', 103249732, 700),
   osmArea('ibn-sino-2', 'Ibn Sino-2', 'uz:tashkent:shaykhantahur', 41.33847, 69.17059, 'way', 149989839, 700),
+  // Standalone Taraqqiyot mavze centers from the current address map; the Taraqqiyot mahalla remains separate.
+  derivedArea('taraqqiyot-1', 'Taraqqiyot-1', 'uz:tashkent:almazar', 41.354837, 69.241154, 600),
+  derivedArea('taraqqiyot-2', 'Taraqqiyot-2', 'uz:tashkent:almazar', 41.352779, 69.241154, 600),
+  derivedArea('taraqqiyot-3', 'Taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708, 600),
   osmArea('shifokorlar-1', 'Shifokorlar-1', 'uz:tashkent:almazar', 41.361, 69.18198, 'way', 149513658, 700),
   osmArea('shifokorlar-4', 'Shifokorlar-4', 'uz:tashkent:almazar', 41.35963, 69.18595, 'way', 142245652, 650),
   osmArea('markaz-12', 'Markaz-12', 'uz:tashkent:shaykhantahur', 41.32974, 69.26738, 'node', 4984463379, 650),
