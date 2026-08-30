@@ -16,7 +16,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
     'Ahmad Yugnakiy','Humoyun',"Bog'ko'cha",'Gulobod','Qalqon',"Bog'bon",'Shifokorlar',"Chamanbog'",'Asalobod',"Sug'diyona",'Olimpiya','Sebzor','Yangi Choshtepa','Traktorsozlar',
   ], 'Official mahalla name from the lexicon; no independently verified spatial object or boundary is available yet.'),
   ...gaps('UZ', 'Tashkent', 'local_area', [
-    'Manzara','Takhtapul','Taxtapul','Suvsoz-3','Suvsoz-4','Suvsoz-5',"Bo'z-1","Bo'z-2",'Humoyun',"Qo'yliq-3","Qo'yliq-4","Qo'yliq-5","Qo'yliq-6",'Parkent-Riyoziy','Parkent-Siolkovskiy','Qalqon',"Bog'bon",'Minora','Guruchariq','Muxbir','Shimoliy Olmazor-1','Shimoliy Olmazor-2','Taraqqiyot-1','Taraqqiyot-2','Taraqqiyot-3','Taraqqiyot-4','Shifokorlar-1','Shifokorlar-2','Shifokorlar-3','Shifokorlar-4','Shifokorlar-5','Shifokorlar-6','Beruniy-B1','Beruniy-B3','Markaz-12',"So'lim",'Asalobod-1','Asalobod-2',"Sug'diyona",'Ibn Sino-1','Ibn Sino-2',
+    'Manzara','Takhtapul','Taxtapul','Suvsoz-3','Suvsoz-4','Suvsoz-5','Humoyun',"Qo'yliq-3","Qo'yliq-4","Qo'yliq-5","Qo'yliq-6",'Parkent-Riyoziy','Parkent-Siolkovskiy','Qalqon',"Bog'bon",'Minora','Guruchariq','Muxbir','Shimoliy Olmazor-1','Shimoliy Olmazor-2','Taraqqiyot-1','Taraqqiyot-2','Taraqqiyot-3','Taraqqiyot-4','Shifokorlar-1','Shifokorlar-2','Shifokorlar-3','Shifokorlar-4','Shifokorlar-5','Shifokorlar-6','Beruniy-B1','Beruniy-B3','Markaz-12',"So'lim", "Sug'diyona",
   ], 'Lexicon area name still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z",'Shirin','Chilkuduk',"Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
