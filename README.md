@@ -48,6 +48,36 @@ resolveLexiconGeoEntity({
 // -> { id: 'uz:tashkent:chilanzar', ... }
 ```
 
+## Public transport topology
+
+Routes are stored separately from `GEO_ENTITIES` because a route is a graph/topology object, not a point geometry. Transport stops remain spatial points and may reference an existing geo entity through `geoEntityId`.
+
+```js
+import {
+  findTransportRoutes,
+  getStopsForRoute,
+  getTransportCoverage,
+} from '@whiteslove/geo-catalog/transport';
+
+const metro = findTransportRoutes({
+  country: 'UZ',
+  cityId: 'uz:tashkent',
+  mode: 'metro',
+  coverage: 'full',
+});
+
+const stops = getStopsForRoute('uz:tashkent:route:metro:chilonzor');
+const busCoverage = getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' });
+```
+
+Route coverage is explicit:
+
+- `full` — verified ordered stop sequence, safe for topology/navigation consumers;
+- `terminals_only` — verified terminals but incomplete intermediate sequence;
+- `metadata_only` — route exists in the current registry, but no verified stop sequence is stored yet.
+
+The Tashkent bus layer is snapshot-aware because routes change frequently. Consumers should use `sourceUpdatedAt`, `validFrom` and `validTo` when available rather than assuming route metadata is immutable.
+
 ## Usage
 
 ```js
@@ -99,17 +129,7 @@ IDs are deliberately language-independent. Aliases such as `Чиланзар`, `
 
 ## Current coverage
 
-`0.2.x` synchronizes the canonical city layer used by the parser and establishes the first administrative layer:
-
-- Uzbekistan: all 15 canonical `UZ_CITIES`;
-- Kazakhstan: all 18 canonical `KZ_CITIES`;
-- Ukraine: all 30 canonical `UA_CITIES`;
-- Tashkent: all 12 canonical administrative districts;
-- total current catalog: 75 spatial entities.
-
-Tashkent's 12 districts include stored OSM administrative boundaries and boundary-derived representative centers. Consumers can render those polygons directly instead of approximating district extents with radius circles.
-
-The next spatial layers are Tashkent metro, microdistricts, mahallas, residential complexes and POIs, followed by detailed Uzbekistan, Ukraine and Kazakhstan city datasets. Those layers can be added without changing the public bridge/API.
+Uzbekistan, Kazakhstan and Ukraine city layers are synchronized with the parser catalog, with increasingly detailed administrative, neighborhood, transport and POI coverage added incrementally. Tashkent includes administrative boundaries, metro stations and transport topology; the bus registry is represented as a freshness-aware snapshot and promoted from metadata to full stop topology only when verified sequences are available.
 
 ## Lexicon coverage gate
 
@@ -119,14 +139,7 @@ Development CI installs the current `AmoneMisa/parsing-lexicon` and runs:
 npm run audit:lexicon
 ```
 
-The audit currently enforces complete coverage for:
-
-- `UZ_CITIES`;
-- `KZ_CITIES`;
-- `UA_CITIES`;
-- `TASHKENT_DISTRICTS`.
-
-If a new canonical parser city/district is added without a matching geo entity, CI fails and prints the missing canonical names. The parser package is a development-only audit dependency; `@whiteslove/geo-catalog` remains dependency-free for consumers.
+If a new canonical parser entity covered by the audit is added without a matching geo entity, CI fails and prints the missing canonical names. The parser package is a development-only audit dependency; `@whiteslove/geo-catalog` remains dependency-free for consumers.
 
 ## Data-quality rules
 
@@ -137,6 +150,7 @@ If a new canonical parser city/district is added without a matching geo entity, 
 - Administrative boundary geometry must be a non-empty, closed GeoJSON Polygon or MultiPolygon with valid WGS84 positions, and its entity center must lie inside it.
 - `parentId` must resolve to another catalog entity.
 - OSM references must identify a valid node, way or relation ID.
+- Transport routes must declare topology coverage explicitly; incomplete route metadata must not be treated as navigable stop sequences.
 - Text aliases and transliterations must not be duplicated here.
 - Approximate data must be marked as such instead of pretending to be precise.
 - Network geocoding is never performed during package import or lookup.
