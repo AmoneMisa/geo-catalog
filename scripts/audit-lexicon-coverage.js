@@ -4,7 +4,7 @@ import { UA_REGIONAL_LOCATION_EXTENSIONS } from '@whiteslove/parsing-lexicon/ua-
 import { UA_MAJOR_LOCATION_EXTENSIONS } from '@whiteslove/parsing-lexicon/ua-location-extensions-major';
 import { UZ_CITY_CATALOG } from '@whiteslove/parsing-lexicon/central-asia';
 import { UZ_EXPANDED_LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/central-asia-locations';
-import { resolveLexiconGeoEntity } from '../src/lexicon-bridge.js';
+import { resolveLexiconGeoEntity, resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
 import { GEO_COVERAGE_GAPS, isGeoCoverageGap } from '../src/coverage-gaps.js';
 import { KZ_CITY_COVERAGE_GAPS, isKzCityCoverageGap } from '../src/coverage-gaps-kz-cities.js';
 import { UA_REGIONAL_COVERAGE_GAPS, isUaRegionalCoverageGap } from '../src/coverage-gaps-ua-regional.js';
@@ -17,6 +17,7 @@ import { UA_POLTAVA_COVERAGE_GAPS, isUaPoltavaCoverageGap } from '../src/coverag
 import { UA_CHERNIHIV_COVERAGE_GAPS, isUaChernihivCoverageGap } from '../src/coverage-gaps-ua-chernihiv.js';
 import { UZ_SECONDARY_COVERAGE_GAPS, isUzSecondaryCoverageGap } from '../src/coverage-gaps-uz-secondary.js';
 import { UZ_TAIL_COVERAGE_GAPS, isUzTailCoverageGap } from '../src/coverage-gaps-uz-tail.js';
+import { UZ_EXPANSION_COVERAGE_GAPS, isUzExpansionCoverageGap } from '../src/coverage-gaps-uz-expansion.js';
 
 const tashkentAreas = Object.entries(TASHKENT_AREAS).flatMap(([district, items]) =>
   items.map((item) => ({ item, district })),
@@ -107,14 +108,28 @@ const groups = [
   ...expandedUzCities.map((city) => expandedGroup(city)),
 ];
 
-const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUaVinnytsiaCoverageGap(input) || isUaMykolaivCoverageGap(input) || isUaCherkasyCoverageGap(input) || isUaPoltavaCoverageGap(input) || isUaChernihivCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
-const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UA_VINNYTSIA_COVERAGE_GAPS, ...UA_MYKOLAIV_COVERAGE_GAPS, ...UA_CHERKASY_COVERAGE_GAPS, ...UA_POLTAVA_COVERAGE_GAPS, ...UA_CHERNIHIV_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
+const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUaVinnytsiaCoverageGap(input) || isUaMykolaivCoverageGap(input) || isUaCherkasyCoverageGap(input) || isUaPoltavaCoverageGap(input) || isUaChernihivCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input) || isUzExpansionCoverageGap(input);
+const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UA_VINNYTSIA_COVERAGE_GAPS, ...UA_MYKOLAIV_COVERAGE_GAPS, ...UA_CHERKASY_COVERAGE_GAPS, ...UA_POLTAVA_COVERAGE_GAPS, ...UA_CHERNIHIV_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS, ...UZ_EXPANSION_COVERAGE_GAPS];
+
+function hasExactOwner(input) {
+  return resolveLexiconGeoEntityExact(input) !== null;
+}
 
 let unaccounted = 0;
 for (const [label, items, toInput] of groups) {
-  const resolved = items.filter((item) => resolveLexiconGeoEntity(toInput(item)));
-  const gaps = items.filter((item) => !resolveLexiconGeoEntity(toInput(item)) && isTrackedGap(toInput(item)));
-  const missing = items.filter((item) => !resolveLexiconGeoEntity(toInput(item)) && !isTrackedGap(toInput(item)));
+  const resolved = items.filter((item) => {
+    const input = toInput(item);
+    if (isTrackedGap(input) && !hasExactOwner(input)) return false;
+    return resolveLexiconGeoEntity(input) !== null;
+  });
+  const gaps = items.filter((item) => {
+    const input = toInput(item);
+    return isTrackedGap(input) && !hasExactOwner(input);
+  });
+  const missing = items.filter((item) => {
+    const input = toInput(item);
+    return resolveLexiconGeoEntity(input) === null && !isTrackedGap(input);
+  });
   console.log(`${label}: ${resolved.length}/${items.length} spatial, ${gaps.length} tracked gaps`);
   for (const item of missing) console.log(`  unaccounted: ${toInput(item).canonical}`);
   unaccounted += missing.length;
@@ -123,9 +138,9 @@ for (const [label, items, toInput] of groups) {
 let parentMismatches = 0;
 function auditTashkentParent(input, parentCanonical, label) {
   if (!parentCanonical) return;
-  const entity = resolveLexiconGeoEntity(input);
+  const entity = resolveLexiconGeoEntityExact(input);
   if (!entity) return;
-  const parent = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: parentCanonical });
+  const parent = resolveLexiconGeoEntityExact({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: parentCanonical });
   if (!parent) {
     console.log(`  parent unresolved: ${label} -> ${parentCanonical}`);
     parentMismatches += 1;
@@ -153,7 +168,7 @@ for (const { item, type } of expandedCityEntries('Tashkent', tashkentSemanticKey
   );
 }
 
-const staleGaps = allGaps.filter((gap) => resolveLexiconGeoEntity(gap));
+const staleGaps = allGaps.filter((gap) => resolveLexiconGeoEntityExact(gap));
 for (const gap of staleGaps) console.log(`stale gap: ${gap.city || gap.country} / ${gap.canonical}`);
 
 if (unaccounted > 0 || staleGaps.length > 0 || parentMismatches > 0) {

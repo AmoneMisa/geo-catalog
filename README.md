@@ -76,6 +76,43 @@ const nearest = nearestGeoEntity(
 if (tashkent.bbox) containsPoint(tashkent.center, tashkent.bbox);
 ```
 
+## Transport catalog
+
+Public transport topology is exposed separately from `GEO_ENTITIES` through:
+
+```js
+import {
+  TRANSPORT_STOPS,
+  TRANSPORT_ROUTES,
+  TRANSPORT_ROUTE_VARIANTS,
+  TRANSPORT_TRANSFERS,
+  findTransportRoutes,
+  findTransportStops,
+  findTransportRouteVariants,
+  getRoutesForStop,
+  getStopsForRoute,
+  getRouteVariants,
+  getStopsForRouteVariant,
+  getTransportCoverage,
+} from '@whiteslove/geo-catalog/transport';
+```
+
+Routes explicitly declare topology coverage:
+
+- `full` — at least one verified ordered stop sequence is available directly on `stopIds` or through a directional `variant`; it does **not** imply both travel directions are mapped;
+- `terminals_only` — only verified endpoints are known; do not treat `stopIds` as a full route sequence;
+- `metadata_only` — the route is present in the registry snapshot, but no spatial stop topology is asserted yet.
+
+Directional bus topology is modeled separately from the route registry object. Each accepted OSM `type=route` relation becomes a stable `route_variant` with its own relation ID, `from`, `to`, operator/network metadata and ordered `stopIds`. This preserves asymmetric outbound/inbound stop sequences instead of flattening two directions into one incorrect list. Consumers requiring both directions should inspect the returned variants rather than interpreting route-level `full` as bidirectional completeness.
+
+`getRoutesForStop(stopId, { requireFullSequence: true })` includes a route when the stop appears in a verified full sequence, including an OSM route variant. `getRouteVariants(routeId)` returns all directional variants; `getStopsForRouteVariant(routeId, variantId)` resolves one ordered sequence.
+
+The current Tashkent transport snapshot exposes 174 route objects total: 4 full metro routes and 170 bus route refs. Of the bus registry, 60 refs have at least one full OSM directional sequence, 4 retain verified terminal-only coverage, and 106 remain metadata-only. The OSM snapshot dated 2026-08-30 contributes 117 accepted directional route variants and 1,227 unique platform/stop spatial objects. Incomplete relations are not promoted to full coverage, and radius-query false positives are excluded using municipal network/operator evidence.
+
+Tashkent metro stops are derived from canonical metro geo entities so their centers and provenance cannot drift independently. Manual bus endpoints continue to reuse canonical geo entities whenever an exact semantic owner exists; standalone endpoint anchors require explicit spatial provenance. A route endpoint may intentionally be a verified locality anchor rather than a platform/stop position, in which case its `accuracy`/`accuracyM` records that lower precision explicitly. OSM route-variant stops use stable IDs based on their OSM element type and ID.
+
+OpenStreetMap-derived transport topology is maintained under the ODbL and records the source snapshot date in generated data. The raw Overpass response is an ingestion artifact rather than a runtime dependency; the package ships only normalized stops and ordered route variants.
+
 ## Entity model
 
 ```ts
