@@ -47,6 +47,7 @@ for (const entity of GEO_ENTITIES) {
 // verified spelling aliases here instead of duplicating physical geo entities.
 const lexiconAliases = new Map([
   [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'TashGRES' }), 'uz:tashkent:local-area:tashgres'],
+  [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Takhtapul' }), 'uz:tashkent:local-area:taxtapul'],
 ]);
 
 const compatibleTypes = Object.freeze({
