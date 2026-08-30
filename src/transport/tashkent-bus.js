@@ -60,6 +60,10 @@ export const TASHKENT_BUS_STOPS = Object.freeze([
     accuracy: 'neighborhood',
     accuracyM: 600,
   }),
+  stop('chilanzar-25', 'Chilanzar-25', 41.27984, 69.16786, 'node', 1866856603, {
+    accuracy: 'neighborhood',
+    accuracyM: 650,
+  }),
   stopFromGeo('yunusabad-17', 'Yunusabad-17', 'uz:tashkent:microdistrict:yunusabad-17'),
   stopFromGeo('yunusabad-19', 'Yunusabad-19', 'uz:tashkent:microdistrict:yunusabad-19'),
   stopFromGeo('yunusabad-9', 'Yunusabad-9', 'uz:tashkent:microdistrict:yunusabad-9'),
@@ -119,6 +123,14 @@ const enrichedRoutes = new Map([
   ['7', terminalRoute('7', '2026-08-18', ['Yunusabad-10', 'Yunusabad-19'], [
     'uz:tashkent:stop:bus:yunusabad-10',
     'uz:tashkent:stop:bus:yunusabad-19',
+  ])],
+  ['8', terminalRoute('8', '2026-08-18', ['Sergeli-10', 'Chilanzar-25'], [
+    'uz:tashkent:stop:bus:sergeli-10',
+    'uz:tashkent:stop:bus:chilanzar-25',
+  ])],
+  ['9T', terminalRoute('9T', '2026-08-18', ['Chilanzar-25', 'Tashkent Railway Station'], [
+    'uz:tashkent:stop:bus:chilanzar-25',
+    'uz:tashkent:stop:bus:tashkent-railway-station',
   ])],
   ['12', terminalRoute('12', '2026-08-08', ['Kuyluk Bazaar', 'Tashkent International Airport'], [
     'uz:tashkent:stop:bus:kuyluk-bazaar',
