@@ -88,6 +88,10 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('movarounnahr', 'Movarounnahr', 'uz:tashkent:mirobod', 41.29999, 69.28658, 'way', 1057801683, 520),
   osmArea('nakkoshlik', 'Nakkoshlik', 'uz:tashkent:chilanzar', 41.2674213, 69.202444, 'way', 1180079691, 520),
   osmArea('alimkent', 'Alimkent', 'uz:tashkent:yashnobod', 41.29546, 69.33720, 'node', 12144738032, 520),
+  // Harbiylar-58a shaharchasi was officially renamed Qalqon mavzesi; retain its OSM locality owner.
+  osmArea('qalqon', 'Qalqon', 'uz:tashkent:yashnobod', 41.28172, 69.3708, 'node', 12173937446, 650),
+  // Normuhammedov mavzesi was officially renamed Bog'bon mavzesi; use the matching residential landuse owner.
+  osmArea('bogbon', "Bog'bon", 'uz:tashkent:yashnobod', 41.27947, 69.37667, 'way', 557224880, 650),
   osmArea('gulobod', 'Gulobod', 'uz:tashkent:shaykhantahur', 41.32507, 69.22454, 'way', 144061796, 650),
   osmArea('sebzor', 'Sebzor', 'uz:tashkent:almazar', 41.3348, 69.24967, 'way', 32593826, 650),
   osmArea('olimpiya', 'Olimpiya', 'uz:tashkent:almazar', 41.3628, 69.19735, 'way', 1146998118, 650),
@@ -109,6 +113,8 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   derivedArea('taraqqiyot-3', 'Taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708, 600),
   osmArea('shifokorlar-1', 'Shifokorlar-1', 'uz:tashkent:almazar', 41.361, 69.18198, 'way', 149513658, 700),
   osmArea('shifokorlar-4', 'Shifokorlar-4', 'uz:tashkent:almazar', 41.35963, 69.18595, 'way', 142245652, 650),
+  // Representative center derived from a dense set of Beruniy-B1 building coordinates in Chustiy mahalla.
+  derivedArea('beruniy-b1', 'Beruniy-B1', 'uz:tashkent:almazar', 41.3324073, 69.2230774, 750),
   osmArea('markaz-12', 'Markaz-12', 'uz:tashkent:shaykhantahur', 41.32974, 69.26738, 'node', 4984463379, 650),
   osmArea('qoyliq-1', "Qo'yliq-1", 'uz:tashkent:mirobod', 41.24728, 69.31556, 'node', 3991877003, 650),
   osmArea('qoyliq-2', "Qo'yliq-2", 'uz:tashkent:mirobod', 41.25094, 69.30599, 'node', 3991877004, 650),
