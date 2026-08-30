@@ -6,8 +6,12 @@ import { isUzSecondaryCoverageGap } from '../src/coverage-gaps-uz-secondary.js';
 
 const expected = Object.freeze([
   ['Andijan', 40.78948, 72.37338, 'main'],
+  ['Fergana', 40.38721, 71.77555, 'main'],
+  ['Qarshi', 38.85755, 65.80887, 'main'],
+  ['Samarkand', 39.64445, 66.96182, 'main'],
   ['Urgench', 41.55635, 60.60703, 'main'],
   ['Gulistan', 40.50611, 68.78324, 'secondary'],
+  ['Termez', 37.23307, 67.28675, 'secondary'],
 ]);
 
 test('university listing areas reuse verified university anchors conservatively', () => {
