@@ -72,6 +72,18 @@ export function getTransfersForStop(stopId) {
   return TRANSPORT_TRANSFERS.filter((transfer) => transfer.stopIds.includes(id));
 }
 
+export function getTransportCoverage(filters = {}) {
+  const routes = findTransportRoutes(filters);
+  const byCoverage = { full: 0, terminals_only: 0, metadata_only: 0 };
+  for (const route of routes) byCoverage[route.coverage] += 1;
+  return Object.freeze({
+    total: routes.length,
+    full: byCoverage.full,
+    terminalsOnly: byCoverage.terminals_only,
+    metadataOnly: byCoverage.metadata_only,
+  });
+}
+
 export function validateTransportCatalog({
   stops = TRANSPORT_STOPS,
   routes = TRANSPORT_ROUTES,
