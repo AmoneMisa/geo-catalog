@@ -60,6 +60,14 @@ export const UA_KHARKIV_POI_ENTITIES = Object.freeze([
     sourceUrl: 'https://novobudovy.com/ru/novobudovy/torgovo-rozvazhalnij-centr-francuzkij-bulvar-m-harkiv',
   }),
   osmPoi('barabashovo-market', 'Barabashovo Market', 'market', 50.00428, 36.30141, 'way', 89433884, 350),
+  poi('horse-market', 'Horse Market', 'market', 49.9860832659406, 36.2629331468434, 220, {
+    source: 'manual',
+    sourceUrl: 'https://kharkov.wiki/buildings/72983/',
+  }),
+  poi('central-market', 'Central Market', 'market', 49.9933, 36.2197, 280, {
+    source: 'manual',
+    sourceUrl: 'https://www.turpravda.ua/places/ua/harkov/Blagoveshchenskij_bazar-s3356/',
+  }),
   poi('sumskyi-market', 'Sumskyi Market', 'market', 50.011593, 36.23866, 180, {
     source: 'manual',
     sourceUrl: 'https://novobudovy.com/uk/torhovi-tsentry-kharkova/tc-sumskij-rinok-m-harkiv-vul',
