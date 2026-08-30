@@ -44,8 +44,11 @@ export const TASHKENT_BUS_STOPS = Object.freeze([
     accuracyM: 500,
     wikidataId: 'Q860952',
   }),
+  stop('tashkent-tsum', 'TSUM Tashkent', 41.30825, 69.26919, 'way', 31953937, { accuracyM: 140 }),
+  stop('food-city', 'Food City Bazaar', 41.20492, 69.32138, 'way', 825133525, { accuracyM: 280 }),
   stopFromGeo('yunusabad-17', 'Yunusabad-17', 'uz:tashkent:microdistrict:yunusabad-17'),
   stopFromGeo('yunusabad-19', 'Yunusabad-19', 'uz:tashkent:microdistrict:yunusabad-19'),
+  stopFromGeo('yunusabad-9', 'Yunusabad-9', 'uz:tashkent:microdistrict:yunusabad-9'),
   stopFromGeo('yunusabad-6', 'Yunusabad-6', 'uz:tashkent:microdistrict:yunusabad-6'),
   stopFromGeo('tashkent-railway-station', 'Tashkent Railway Station', 'uz:tashkent:poi:tashkent-north-railway-station'),
   stopFromGeo('kuyluk-bazaar', 'Kuyluk Bazaar', 'uz:tashkent:poi:kuyluk-bazaar'),
@@ -104,9 +107,17 @@ const enrichedRoutes = new Map([
     'uz:tashkent:stop:bus:tashkent-railway-station',
     'uz:tashkent:stop:bus:ttz-bus-station',
   ])],
+  ['22', terminalRoute('22', '2026-08-18', ['TSUM Tashkent', 'Dostlik Metro'], [
+    'uz:tashkent:stop:bus:tashkent-tsum',
+    'uz:tashkent:stop:metro:dostlik',
+  ])],
   ['23', terminalRoute('23', '2026-08-18', ['Farhod Bazaar', 'Chorsu Metro'], [
     'uz:tashkent:stop:bus:farhod-bazaar',
     'uz:tashkent:stop:metro:chorsu',
+  ])],
+  ['39', terminalRoute('39', '2026-08-18', ['Tuzel Metro', 'Food City Bazaar'], [
+    'uz:tashkent:stop:metro:tuzel',
+    'uz:tashkent:stop:bus:food-city',
   ])],
   ['67', terminalRoute('67', '2026-08-08', ['Yunusabad-19', 'Tashkent International Airport'], [
     'uz:tashkent:stop:bus:yunusabad-19',
@@ -115,6 +126,18 @@ const enrichedRoutes = new Map([
   ['79', terminalRoute('79', '2026-08-18', ['Beruniy Metro', 'TTZ Bus Station'], [
     'uz:tashkent:stop:metro:beruniy',
     'uz:tashkent:stop:bus:ttz-bus-station',
+  ])],
+  ['93', terminalRoute('93', '2026-08-18', ['Food City Bazaar', 'Yunusabad-9'], [
+    'uz:tashkent:stop:bus:food-city',
+    'uz:tashkent:stop:bus:yunusabad-9',
+  ])],
+  ['110', terminalRoute('110', '2026-08-18', ['Food City Bazaar', 'TTZ Bus Station'], [
+    'uz:tashkent:stop:bus:food-city',
+    'uz:tashkent:stop:bus:ttz-bus-station',
+  ])],
+  ['133', terminalRoute('133', '2026-08-18', ['Chinor Metro', 'Food City Bazaar'], [
+    'uz:tashkent:stop:metro:chinor',
+    'uz:tashkent:stop:bus:food-city',
   ])],
 ]);
 
