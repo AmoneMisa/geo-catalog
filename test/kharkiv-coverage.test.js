@@ -90,11 +90,14 @@ test('Kharkiv metro uses current station names and has exactly 30 stations', asy
 test('Kharkiv residential complexes use parser canonicals and explicit sources', () => {
   const expected = new Map([
     ['Kliuch', 'ua:kharkiv:residential:kliuch'],
+    ['Dim na Sumskii', 'ua:kharkiv:residential:dim-na-sumskii'],
+    ['Myronosytska', 'ua:kharkiv:residential:myronosytska'],
     ['Ptashka', 'ua:kharkiv:residential:ptashka'],
     ['Newton', 'ua:kharkiv:residential:newton'],
     ['Meridian', 'ua:kharkiv:residential:meridian'],
     ['Mira', 'ua:kharkiv:residential:mira'],
     ['Nimeckyi Proekt', 'ua:kharkiv:residential:nimeckyi-proekt'],
+    ['Mlechnyi Shliakh', 'ua:kharkiv:residential:mlechnyi-shliakh'],
     ['Levada 2', 'ua:kharkiv:residential:levada-2'],
     ['Vorobiovi Hory', 'ua:kharkiv:residential:vorobiovi-hory'],
     ['Vorobiovi Hory Family', 'ua:kharkiv:residential:vorobiovi-hory-family'],
@@ -161,5 +164,8 @@ test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.equal(getGeoEntity('ua:kharkiv:poi:machine-builders-park')?.source, 'manual');
   assert.equal(getGeoEntity('ua:kharkiv:poi:french-boulevard')?.type, 'poi.shopping_mall');
   assert.equal(getGeoEntity('ua:kharkiv:residential:kliuch')?.accuracy, 'building');
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:dim-na-sumskii')?.center, { lat: 50.01274, lng: 36.242743 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:myronosytska')?.center, { lat: 50.010003, lng: 36.242821 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:mlechnyi-shliakh')?.center, { lat: 50.006117, lng: 36.257562 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:street:heroiv-kharkova-avenue')?.osm, { type: 'relation', id: 1295889 });
 });
