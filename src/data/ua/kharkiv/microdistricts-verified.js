@@ -24,6 +24,7 @@ const osmMicrodistrict = (slug, canonicalName, lat, lng, osmId, accuracyM = 700)
 );
 
 export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
+  osmMicrodistrict('455-microdistrict', '455 microdistrict', 49.98330, 36.26975, 12380753513, 500),
   osmMicrodistrict('520-microdistrict', '520 microdistrict', 50.01195, 36.33236, 12215617088, 500),
   osmMicrodistrict('606-microdistrict', '606 microdistrict', 50.01369, 36.35884, 12196622366, 500),
   osmMicrodistrict('moskalevka', 'Moskalevka', 49.97553, 36.22016, 1985548337, 900),
