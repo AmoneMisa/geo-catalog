@@ -21,10 +21,13 @@ test("Sug'diyona mahalla has an approximate Sergeli spatial center", () => {
   assert.equal(isGeoCoverageGap(input), false);
 });
 
-test("Sug'diyona local area remains unresolved independently of the mahalla", () => {
+test("Sug'diyona local area remains an explicit gap despite the same-name mahalla fallback", () => {
   const input = { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Sug'diyona" };
+  const fallback = resolveLexiconGeoEntity(input);
 
   assert.equal(isGeoCoverageGap(input), true);
-  assert.equal(resolveLexiconGeoEntity(input), null);
+  assert.equal(fallback?.id, 'uz:tashkent:mahalla:sugdiyona');
+  assert.equal(fallback?.type, 'mahalla');
   assert.ok(getGeoEntity('uz:tashkent:mahalla:sugdiyona'));
+  assert.equal(getGeoEntity('uz:tashkent:local-area:sugdiyona'), null);
 });
