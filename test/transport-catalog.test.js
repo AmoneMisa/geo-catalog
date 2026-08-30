@@ -68,15 +68,33 @@ test('bus coverage report separates registry metadata from terminal and full top
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
     total: 170,
     full: 0,
-    terminalsOnly: 18,
-    metadataOnly: 152,
+    terminalsOnly: 20,
+    metadataOnly: 150,
   });
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
     total: 174,
     full: 4,
-    terminalsOnly: 18,
-    metadataOnly: 152,
+    terminalsOnly: 20,
+    metadataOnly: 150,
   });
+});
+
+test('routes 5 and 7 use verified locality terminal anchors', () => {
+  const feruza = getTransportStop('uz:tashkent:stop:bus:feruza');
+  assert.deepEqual(feruza?.osm, { type: 'node', id: 10938027477 });
+  assert.equal(feruza?.accuracy, 'neighborhood');
+  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:5')?.stopIds, [
+    'uz:tashkent:stop:bus:feruza',
+    'uz:tashkent:stop:metro:chorsu',
+  ]);
+
+  const yunusabad10 = getTransportStop('uz:tashkent:stop:bus:yunusabad-10');
+  assert.deepEqual(yunusabad10?.osm, { type: 'node', id: 1866983397 });
+  assert.equal(yunusabad10?.accuracy, 'neighborhood');
+  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:7')?.stopIds, [
+    'uz:tashkent:stop:bus:yunusabad-10',
+    'uz:tashkent:stop:bus:yunusabad-19',
+  ]);
 });
 
 test('route 6 reuses verified Yunusabad geo entities as terminal points', () => {
@@ -238,10 +256,10 @@ test('Food City terminal is shared by routes 39, 93, 110 and 133', () => {
 });
 
 test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
-  assert.equal(TRANSPORT_STOPS.length, 67);
+  assert.equal(TRANSPORT_STOPS.length, 69);
 
   const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(busStops.length, 17);
+  assert.equal(busStops.length, 19);
   assert.equal(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.canonicalName, 'TTZ Bus Station');
   assert.deepEqual(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.osm, { type: 'way', id: 98599092 });
 
