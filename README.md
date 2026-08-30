@@ -128,7 +128,7 @@ IDs are deliberately language-independent. Aliases such as `Чиланзар`, `
 
 The catalog is continuously synchronized with canonical geography from `@whiteslove/parsing-lexicon`. It currently includes broad city coverage across Uzbekistan, Ukraine and Kazakhstan, detailed Tashkent administrative and semantic geography, verified metro stations, POIs, streets and other spatial anchors, plus explicit coverage-gap registries for lexicon entities that still need verified geometry.
 
-Public transport is maintained as a separate topology layer. For Tashkent, the current snapshot contains all 170 published city-bus route refs plus the four metro lines. Bus routes are promoted from metadata to endpoint or full topology only when the corresponding spatial evidence is verified.
+Public transport is maintained as a separate topology layer. For Tashkent, the current snapshot contains all 170 published city-bus route refs plus four metro routes. Of the bus routes, 14 currently have verified terminal topology and 156 remain metadata-only; the four metro routes have full ordered stop topology. Bus routes are promoted only when the corresponding spatial evidence is verified.
 
 ## Lexicon coverage gate
 
