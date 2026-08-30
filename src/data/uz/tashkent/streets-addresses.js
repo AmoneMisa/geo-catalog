@@ -95,7 +95,7 @@ export const TASHKENT_STREET_ADDRESS_ENTITIES = Object.freeze([
     country: 'UZ',
     canonicalName: 'Sebzor Street',
     parentId: 'uz:tashkent:almazar',
-    center: Object.freeze({ lat: 41.33602, lng: 69.25617 }),
+    center: Object.freeze({ lat: 41.341535, lng: 69.259785 }),
     source: 'manual',
     accuracy: 'street',
     accuracyM: 900,
