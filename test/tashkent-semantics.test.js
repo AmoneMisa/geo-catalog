@@ -340,7 +340,7 @@ test('Gulobod and Sebzor streets remain distinct from mahallas and resolved loca
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Sebzor' }), false);
 });
 
-test('Taraqqiyot mahalla owns its verified Almazar residential boundary', () => {
+test('Taraqqiyot mahalla remains distinct from its numbered local areas', () => {
   const mahalla = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Taraqqiyot' });
   assert.equal(mahalla?.id, 'uz:tashkent:mahalla:taraqqiyot');
   assert.equal(mahalla?.parentId, 'uz:tashkent:almazar');
@@ -348,7 +348,10 @@ test('Taraqqiyot mahalla owns its verified Almazar residential boundary', () => 
   assert.equal(mahalla?.boundary?.type, 'Polygon');
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Taraqqiyot' }), false);
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taraqqiyot-1' }), true);
+  for (const canonical of ['Taraqqiyot-1', 'Taraqqiyot-2', 'Taraqqiyot-3']) {
+    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), false, canonical);
+  }
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taraqqiyot-4' }), true);
 });
 
 test('C-7, Chuqursoy and Shimoliy Olmazor resolve to distinct OSM residential polygons', () => {
