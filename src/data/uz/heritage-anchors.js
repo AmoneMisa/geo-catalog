@@ -1,6 +1,6 @@
-const wikidataPoi = (citySlug, slug, canonicalName, lat, lng, wikidataId, extra = {}) => ({
+const wikidataPoi = (citySlug, slug, canonicalName, type, lat, lng, wikidataId, extra = {}) => ({
   id: `uz:${citySlug}:poi:${slug}`,
-  type: 'poi',
+  type,
   country: 'UZ',
   canonicalName,
   parentId: `uz:${citySlug}`,
@@ -12,9 +12,9 @@ const wikidataPoi = (citySlug, slug, canonicalName, lat, lng, wikidataId, extra 
   ...(extra.osm ? { osm: extra.osm } : {}),
 });
 
-const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 160, wikidataId = null) => ({
+const osmPoi = (citySlug, slug, canonicalName, type, lat, lng, osmType, osmId, accuracyM = 160, wikidataId = null) => ({
   id: `uz:${citySlug}:poi:${slug}`,
-  type: 'poi',
+  type,
   country: 'UZ',
   canonicalName,
   parentId: `uz:${citySlug}`,
@@ -27,25 +27,25 @@ const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accurac
 });
 
 export const UZ_HERITAGE_ANCHORS = Object.freeze([
-  wikidataPoi('khiva', 'itchan-kala', 'Ichan Kala', 41.37810, 60.35980, 'Q535577', { osm: { type: 'way', id: 185036984 }, accuracyM: 250 }),
-  wikidataPoi('khiva', 'kalta-minor', 'Kalta Minor', 41.37835, 60.35798, 'Q4294004', { osm: { type: 'way', id: 178606424 }, accuracyM: 90 }),
-  wikidataPoi('khiva', 'kunya-ark', 'Kunya Ark', 41.37888, 60.35822, 'Q4247358', { osm: { type: 'node', id: 1956482954 }, accuracyM: 100 }),
-  wikidataPoi('khiva', 'islam-khodja', 'Islam Khodja', 41.376697, 60.360449, 'Q4287941', { accuracyM: 140 }),
-  wikidataPoi('khiva', 'pahlavon-mahmud', 'Pahlavon Mahmud', 41.377100, 60.359500, 'Q4273777', { accuracyM: 150 }),
-  wikidataPoi('khiva', 'tosh-hovli', 'Tosh Hovli', 41.378370, 60.361328, 'Q4155900', { accuracyM: 120 }),
-  wikidataPoi('khiva', 'olloqulixon', 'Olloqulixon', 41.377502, 60.361951, 'Q4287928', { accuracyM: 140 }),
-  wikidataPoi('shakhrisabz', 'ak-saray-palace', 'Ak-Saray Palace', 39.060776, 66.829475, 'Q2828887', { accuracyM: 140 }),
-  osmPoi('shakhrisabz', 'dorus-saodat', 'Dorus Saodat', 39.04980, 66.83000, 'way', 499204351, 150, 'Q122808841'),
-  osmPoi('shakhrisabz', 'dorut-tilovat', 'Dorut Tilovat', 39.04968, 66.82756, 'way', 498978099, 140, 'Q5299057'),
-  osmPoi('shakhrisabz', 'chorsu', 'Chorsu', 39.04371, 66.82699, 'way', 68678019, 160),
-  wikidataPoi('kokand', 'khudayar-khan-palace', 'Khudoyar Khan Palace', 40.538333, 70.937500, 'Q7126242', { osm: { type: 'way', id: 174718684 }, accuracyM: 100 }),
-  wikidataPoi('kokand', 'jami-mosque', 'Jami Mosque', 40.532642, 70.949230, 'Q20536410', { accuracyM: 120 }),
-  wikidataPoi('kokand', 'norbutabiy-madrasa', 'Norbutabiy Madrasa', 40.538660, 70.952389, 'Q20536332', { accuracyM: 100 }),
-  wikidataPoi('termez', 'fayoztepa', 'Fayoztepa', 37.28622, 67.18796, 'Q25523471', { osm: { type: 'way', id: 244130562 }, accuracyM: 180 }),
-  wikidataPoi('termez', 'karatepa', 'Karatepa', 37.27884, 67.18315, 'Q4213429', { osm: { type: 'way', id: 493758365 }, accuracyM: 180 }),
-  wikidataPoi('termez', 'sultan-saodat', 'Sultan Saodat', 37.26311, 67.30940, 'Q7636738', { osm: { type: 'way', id: 448234922 }, accuracyM: 180 }),
-  osmPoi('termez', 'hakim-at-termiziy', 'Hakim at-Termiziy', 37.26587, 67.18920, 'way', 351273147, 160),
-  osmPoi('termez', 'afghanistan-friendship-bridge', 'Afghanistan Friendship Bridge', 37.22896, 67.42764, 'way', 1371795537, 220, 'Q509824'),
-  osmPoi('margilan', 'yodgorlik-silk-factory', 'Yodgorlik Silk Factory', 40.47636, 71.71783, 'node', 1232186498, 120, 'Q63203101'),
-  wikidataPoi('urgut', 'chor-chinor', 'Chor Chinor', 39.386228, 67.240276, 'Q122886576', { accuracyM: 180 }),
+  wikidataPoi('khiva', 'itchan-kala', 'Ichan Kala', 'poi.fortress', 41.37810, 60.35980, 'Q535577', { osm: { type: 'way', id: 185036984 }, accuracyM: 250 }),
+  wikidataPoi('khiva', 'kalta-minor', 'Kalta Minor', 'poi.monument', 41.37835, 60.35798, 'Q4294004', { osm: { type: 'way', id: 178606424 }, accuracyM: 90 }),
+  wikidataPoi('khiva', 'kunya-ark', 'Kunya Ark', 'poi.fortress', 41.37888, 60.35822, 'Q4247358', { osm: { type: 'node', id: 1956482954 }, accuracyM: 100 }),
+  wikidataPoi('khiva', 'islam-khodja', 'Islam Khodja', 'poi.religious_complex', 41.376697, 60.360449, 'Q4287941', { accuracyM: 140 }),
+  wikidataPoi('khiva', 'pahlavon-mahmud', 'Pahlavon Mahmud', 'poi.mausoleum', 41.377100, 60.359500, 'Q4273777', { accuracyM: 150 }),
+  wikidataPoi('khiva', 'tosh-hovli', 'Tosh Hovli', 'poi.palace', 41.378370, 60.361328, 'Q4155900', { accuracyM: 120 }),
+  wikidataPoi('khiva', 'olloqulixon', 'Olloqulixon', 'poi.madrasa', 41.377502, 60.361951, 'Q4287928', { accuracyM: 140 }),
+  wikidataPoi('shakhrisabz', 'ak-saray-palace', 'Ak-Saray Palace', 'poi.palace', 39.060776, 66.829475, 'Q2828887', { accuracyM: 140 }),
+  osmPoi('shakhrisabz', 'dorus-saodat', 'Dorus Saodat', 'poi.religious_complex', 39.04980, 66.83000, 'way', 499204351, 150, 'Q122808841'),
+  osmPoi('shakhrisabz', 'dorut-tilovat', 'Dorut Tilovat', 'poi.religious_complex', 39.04968, 66.82756, 'way', 498978099, 140, 'Q5299057'),
+  osmPoi('shakhrisabz', 'chorsu', 'Chorsu', 'poi.market', 39.04371, 66.82699, 'way', 68678019, 160),
+  wikidataPoi('kokand', 'khudayar-khan-palace', 'Khudoyar Khan Palace', 'poi.palace', 40.538333, 70.937500, 'Q7126242', { osm: { type: 'way', id: 174718684 }, accuracyM: 100 }),
+  wikidataPoi('kokand', 'jami-mosque', 'Jami Mosque', 'poi.mosque', 40.532642, 70.949230, 'Q20536410', { accuracyM: 120 }),
+  wikidataPoi('kokand', 'norbutabiy-madrasa', 'Norbutabiy Madrasa', 'poi.madrasa', 40.538660, 70.952389, 'Q20536332', { accuracyM: 100 }),
+  wikidataPoi('termez', 'fayoztepa', 'Fayoztepa', 'poi.archaeological_site', 37.28622, 67.18796, 'Q25523471', { osm: { type: 'way', id: 244130562 }, accuracyM: 180 }),
+  wikidataPoi('termez', 'karatepa', 'Karatepa', 'poi.archaeological_site', 37.27884, 67.18315, 'Q4213429', { osm: { type: 'way', id: 493758365 }, accuracyM: 180 }),
+  wikidataPoi('termez', 'sultan-saodat', 'Sultan Saodat', 'poi.religious_complex', 37.26311, 67.30940, 'Q7636738', { osm: { type: 'way', id: 448234922 }, accuracyM: 180 }),
+  osmPoi('termez', 'hakim-at-termiziy', 'Hakim at-Termiziy', 'poi.mausoleum', 37.26587, 67.18920, 'way', 351273147, 160),
+  osmPoi('termez', 'afghanistan-friendship-bridge', 'Afghanistan Friendship Bridge', 'poi.bridge', 37.22896, 67.42764, 'way', 1371795537, 220, 'Q509824'),
+  osmPoi('margilan', 'yodgorlik-silk-factory', 'Yodgorlik Silk Factory', 'poi.factory', 40.47636, 71.71783, 'node', 1232186498, 120, 'Q63203101'),
+  wikidataPoi('urgut', 'chor-chinor', 'Chor Chinor', 'poi.park', 39.386228, 67.240276, 'Q122886576', { accuracyM: 180 }),
 ]);

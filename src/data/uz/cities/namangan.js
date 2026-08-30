@@ -7,21 +7,21 @@ const accuracyByType = Object.freeze({
 });
 
 const osmSpatial = (slug, canonicalName, type, lat, lng, osmType, osmId, accuracyM = 900) => ({
-  id: `uz:namangan:${type.replace('_', '-')}:${slug}`,
+  id: `uz:namangan:${type.startsWith('poi.') ? 'poi' : type.replace('_', '-')}:${slug}`,
   type,
   country: 'UZ',
   canonicalName,
   parentId: 'uz:namangan',
   center: { lat, lng },
   source: 'osm',
-  accuracy: accuracyByType[type] || 'approximate',
+  accuracy: type.startsWith('poi.') ? 'poi' : accuracyByType[type] || 'approximate',
   accuracyM,
   osm: { type: osmType, id: osmId },
 });
 
-const wikidataPoi = (slug, canonicalName, lat, lng, wikidataId, accuracyM = 180) => ({
+const wikidataPoi = (slug, canonicalName, lat, lng, wikidataId, accuracyM = 180, type = 'poi') => ({
   id: `uz:namangan:poi:${slug}`,
-  type: 'poi',
+  type,
   country: 'UZ',
   canonicalName,
   parentId: 'uz:namangan',
@@ -41,9 +41,9 @@ export const NAMANGAN_ENTITIES = Object.freeze([
   osmSpatial('4-microdistrict', '4 microdistrict', 'microdistrict', 40.99387, 71.60421, 'way', 1503603833, 500),
   osmSpatial('5-microdistrict', '5 microdistrict', 'microdistrict', 40.99735, 71.60093, 'way', 1504295428, 500),
   osmSpatial('6-microdistrict', '6 microdistrict', 'microdistrict', 40.99712, 71.61644, 'way', 318257014, 520),
-  wikidataPoi('namangan-international-airport', 'Namangan International Airport', 40.98490, 71.55683, 'Q978313', 220),
-  osmSpatial('namangan-railway-station', 'Namangan Railway Station', 'poi', 40.99959, 71.64403, 'node', 301722995, 100),
-  osmSpatial('namangan-chorsu', 'Namangan Chorsu', 'poi', 41.00118, 71.67952, 'way', 625100490, 120),
-  wikidataPoi('valley-of-legends', 'Valley of Legends', 41.003333, 71.616944, 'Q135947258', 250),
-  osmSpatial('bobur-park', 'Bobur Park', 'poi', 40.99679, 71.67197, 'way', 399917916, 140),
+  wikidataPoi('namangan-international-airport', 'Namangan International Airport', 40.98490, 71.55683, 'Q978313', 220, 'poi.airport'),
+  osmSpatial('namangan-railway-station', 'Namangan Railway Station', 'poi.railway_station', 40.99959, 71.64403, 'node', 301722995, 100),
+  osmSpatial('namangan-chorsu', 'Namangan Chorsu', 'poi.market', 41.00118, 71.67952, 'way', 625100490, 120),
+  wikidataPoi('valley-of-legends', 'Valley of Legends', 41.003333, 71.616944, 'Q135947258', 250, 'poi.amusement_park'),
+  osmSpatial('bobur-park', 'Bobur Park', 'poi.park', 40.99679, 71.67197, 'way', 399917916, 140),
 ]);

@@ -259,6 +259,21 @@ test('Odesa administrative districts expose validated OSM boundaries', () => {
   assert.equal(getGeoEntity('ua:odesa:microdistrict:serednii-fontan')?.parentId, 'ua:odesa:district:kyivskyi');
 });
 
+test('Uzbekistan layer POIs expose semantic subtypes', () => {
+  const expected = new Map([
+    ['uz:tashkent:poi:tashkent-city-mall', 'poi.shopping_mall'],
+    ['uz:tashkent:poi:tashkent-city-park', 'poi.park'],
+    ['uz:andijan:poi:andijan-state-university', 'poi.university'],
+    ['uz:gulistan:poi:dehqon-bazaar', 'poi.market'],
+    ['uz:gulistan:poi:central-stadium', 'poi.stadium'],
+    ['uz:samarkand:poi:alisher-navoiy-park', 'poi.park'],
+  ]);
+
+  for (const [id, type] of expected) assert.equal(getGeoEntity(id)?.type, type, id);
+  assert.equal(findGeoEntities({ country: 'UZ', type: 'poi' }).filter((entity) => entity.type === 'poi').length, 0);
+  assert.ok(findGeoEntities({ country: 'UZ', type: 'poi' }).includes(getGeoEntity('uz:tashkent:poi:tashkent-city-mall')));
+});
+
 test('Stroy Gorod hardware store belongs to Paxtazor rather than Tashkent Stroygorod', () => {
   const settlement = getGeoEntity('uz:paxtazor');
   assert.equal(settlement?.type, 'settlement');
@@ -267,7 +282,7 @@ test('Stroy Gorod hardware store belongs to Paxtazor rather than Tashkent Stroyg
 
   const store = getGeoEntity('uz:paxtazor:poi:stroy-gorod');
   assert.equal(store?.parentId, settlement?.id);
-  assert.equal(store?.type, 'poi');
+  assert.equal(store?.type, 'poi.hardware_store');
   assert.deepEqual(store?.center, { lat: 40.698506, lng: 68.0290325 });
   assert.equal(store?.accuracy, 'poi');
 });

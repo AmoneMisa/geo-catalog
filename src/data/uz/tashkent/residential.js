@@ -77,4 +77,17 @@ export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
   sourcedResidential('xon-saroy', 'Xon Saroy', 41.373056, 69.315705, 'https://yandex.com/maps/10335/tashkent/geo/4859874576/', 160),
   sourcedResidential('infinity', 'Infinity', 41.3025714, 69.2889718, 'https://infinity.gh.uz/', 220),
   sourcedResidential('cambridge-residence', 'Cambridge Residence', 41.348819, 69.253236, 'https://yandex.com/maps/org/cambridge_residence/50442206495/', 130),
+  sourcedResidential('assalom-jomiy', 'Assalom Jomiy', 41.3531825, 69.254539, 'https://yandex.com/maps/org/assalom_jomiy/194588947775/', 120),
+  Object.freeze({
+    id: 'uz:tashkent:residential:olmazor-city',
+    type: 'residential_complex',
+    country: 'UZ',
+    canonicalName: 'Olmazor City',
+    parentId: 'uz:tashkent:almazar',
+    center: Object.freeze({ lat: 41.3504, lng: 69.2481 }),
+    source: 'manual',
+    accuracy: 'neighborhood',
+    accuracyM: 600,
+    sourceUrl: 'https://president.uz/oz/1873',
+  }),
 ]);

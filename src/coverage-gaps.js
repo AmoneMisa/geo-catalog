@@ -10,19 +10,20 @@ const gaps = (country, city, type, canonicals, reason) => canonicals.map((canoni
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Tashkent', 'local_area', ['Stroygorod'], 'No verified standalone spatial locality match yet.'),
+  ...gaps('UZ', 'Tashkent', 'residential_complex', ['Do‘stlar'], 'The complex and its Yunusabad-5 address are confirmed, but a reliably sourced building center or footprint is still unavailable.'),
   ...gaps('UZ', 'Tashkent', 'microdistrict', ['Manzara'], 'Official Tashkent microdistrict name, but no independently verifiable standalone OSM object or boundary was found.'),
   ...gaps('UZ', 'Tashkent', 'mahalla', [
-    'Ahmad Yugnakiy','Humoyun',"Bog'ko'cha",'Gulobod','Qalqon',"Bog'bon",'Shifokorlar','Taraqqiyot',"Chamanbog'",'Asalobod',"Sug'diyona",'Olimpiya','Sebzor','Yangi Choshtepa','Taxtapul','Ibn Sino','Traktorsozlar',
+    'Ahmad Yugnakiy','Humoyun',"Bog'ko'cha",'Gulobod','Qalqon',"Bog'bon",'Shifokorlar',"Chamanbog'",'Asalobod',"Sug'diyona",'Olimpiya','Sebzor','Yangi Choshtepa','Traktorsozlar',
   ], 'Official mahalla name from the lexicon; no independently verified spatial object or boundary is available yet.'),
   ...gaps('UZ', 'Tashkent', 'local_area', [
-    'Manzara','Takhtapul','Taxtapul','Suvsoz-1','Suvsoz-2','Suvsoz-3','Suvsoz-4','Suvsoz-5',"Bo'z-1","Bo'z-2",'Ahmad Yugnakiy','Humoyun','Feruza-2','Feruza-3','Quruvchi',"Bog'ko'cha",'Gulobod',"Beshqo'rg'on-1","Beshqo'rg'on-2","Beshqo'rg'on-3","Beshqo'rg'on-4","Qo'yliq-1","Qo'yliq-2","Qo'yliq-3","Qo'yliq-4","Qo'yliq-5","Qo'yliq-6","Qo'yliq-7",'Parkent-Riyoziy','Parkent-Siolkovskiy','Qalqon',"Bog'bon",'Akademgorodok','C-7','Minora','Guruchariq','Muxbir','Chuqursoy','Shimoliy Olmazor','Shimoliy Olmazor-1','Shimoliy Olmazor-2','Taraqqiyot-1','Taraqqiyot-2','Taraqqiyot-3','Taraqqiyot-4','Shifokorlar-1','Shifokorlar-2','Shifokorlar-3','Shifokorlar-4','Shifokorlar-5','Shifokorlar-6','Beruniy-B1','Beruniy-B3',"Chamanbog'",'Irrigator','Parkent','Markaz-12',"So'lim",'Asalobod-1','Asalobod-2','ToshGRES',"Sug'diyona",'Olimpiya','Sebzor','Ibn Sino-1','Ibn Sino-2',
+    'Manzara','Takhtapul','Taxtapul','Suvsoz-3','Suvsoz-4','Suvsoz-5',"Bo'z-1","Bo'z-2",'Humoyun','Feruza-2','Feruza-3','Quruvchi','Gulobod',"Beshqo'rg'on-1","Beshqo'rg'on-2","Beshqo'rg'on-3","Beshqo'rg'on-4","Qo'yliq-1","Qo'yliq-2","Qo'yliq-3","Qo'yliq-4","Qo'yliq-5","Qo'yliq-6","Qo'yliq-7",'Parkent-Riyoziy','Parkent-Siolkovskiy','Qalqon',"Bog'bon",'Minora','Guruchariq','Muxbir','Shimoliy Olmazor-1','Shimoliy Olmazor-2','Taraqqiyot-1','Taraqqiyot-2','Taraqqiyot-3','Taraqqiyot-4','Shifokorlar-1','Shifokorlar-2','Shifokorlar-3','Shifokorlar-4','Shifokorlar-5','Shifokorlar-6','Beruniy-B1','Beruniy-B3',"Chamanbog'",'Markaz-12',"So'lim",'Asalobod-1','Asalobod-2',"Sug'diyona",'Olimpiya','Sebzor','Ibn Sino-1','Ibn Sino-2',
   ], 'Lexicon area name still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z",'Shirin','Chilkuduk',"Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
   ...gaps('UZ', 'Samarkand', 'microdistrict', ['Sogdiana','Sartepa','Sat-Tepo','Kimyogarlar','Vokzal','Universitet','Registan','Dagbitskaya','Rudaki'], 'Lexicon microdistrict still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob','Registon','Center','University area','Dahbed','Railway Station area','Rudakiy','Gagarin area','Mirzo Ulugbek area','Spitamen','Panjakent Road','Geofizika','Sugdiyona','Super Market area','Dinamo area',"So'zangaron",'Buyuk Ipak Yoli'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'residential_complex', ['Samarkand City','Bogishamol City','Marokand Avenue','Silk Road Residence','Registan Residence'], 'Lexicon residential complex still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Samarkand', 'poi', ['Samarkand City','Youth Park','Yangi Ozbekiston Park','Siab Bazaar','University Boulevard','Alisher Navoiy Park'], 'Lexicon landmark still needs a verified spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'poi', ['Samarkand City','Youth Park','Yangi Ozbekiston Park','University Boulevard'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Namangan', 'mahalla', ['Obihayot','Porloq','Mustaqillikning 5 yilligi'], 'Official mahalla is confirmed, but no verified standalone spatial boundary/locality object is available yet.'),
   ...gaps('UZ', 'Namangan', 'local_area', ['Center','North','Chortoq area','Uychi area','Turaqorgon area','Galaba','Bobur','Navoiy','Islom Karimov','Qoqimboyshox','Afrosiyob','Boburshox','Ibrat','Nodira'], 'Lexicon local area still needs a verified standalone spatial match.'),

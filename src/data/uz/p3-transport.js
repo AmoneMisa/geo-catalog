@@ -1,6 +1,6 @@
 const station = (citySlug, slug, canonicalName, lat, lng, osmId, accuracyM = 120) => ({
   id: `uz:${citySlug}:poi:${slug}`,
-  type: 'poi',
+  type: 'poi.railway_station',
   country: 'UZ',
   canonicalName,
   parentId: `uz:${citySlug}`,

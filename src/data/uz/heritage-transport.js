@@ -1,6 +1,6 @@
 const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 110) => ({
   id: `uz:${citySlug}:poi:${slug}`,
-  type: 'poi',
+  type: 'poi.railway_station',
   country: 'UZ',
   canonicalName,
   parentId: `uz:${citySlug}`,

@@ -1,6 +1,6 @@
-const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 140, wikidataId = null) => ({
+const osmPoi = (citySlug, slug, canonicalName, type, lat, lng, osmType, osmId, accuracyM = 140, wikidataId = null) => ({
   id: `uz:${citySlug}:poi:${slug}`,
-  type: 'poi',
+  type,
   country: 'UZ',
   canonicalName,
   parentId: `uz:${citySlug}`,
@@ -13,12 +13,12 @@ const osmPoi = (citySlug, slug, canonicalName, lat, lng, osmType, osmId, accurac
 });
 
 export const UZ_SECONDARY_POI_ANCHORS = Object.freeze([
-  osmPoi('margilan', 'kumtepa-bazaar', 'Kumtepa Bazaar', 40.45504, 71.66594, 'way', 253749024, 180),
-  osmPoi('almalyk', 'metallurg-stadium', 'Metallurg Stadium', 40.84495, 69.60070, 'way', 257413698, 170, 'Q5927465'),
-  osmPoi('kokand', 'kokand-bazaar', 'Kokand Bazaar', 40.55218, 70.95907, 'way', 174506939, 190),
+  osmPoi('margilan', 'kumtepa-bazaar', 'Kumtepa Bazaar', 'poi.market', 40.45504, 71.66594, 'way', 253749024, 180),
+  osmPoi('almalyk', 'metallurg-stadium', 'Metallurg Stadium', 'poi.stadium', 40.84495, 69.60070, 'way', 257413698, 170, 'Q5927465'),
+  osmPoi('kokand', 'kokand-bazaar', 'Kokand Bazaar', 'poi.market', 40.55218, 70.95907, 'way', 174506939, 190),
   {
     id: 'uz:navoiy:poi:nmmc',
-    type: 'poi',
+    type: 'poi.company',
     country: 'UZ',
     canonicalName: 'Navoiy Mining and Metallurgical Company',
     parentId: 'uz:navoiy',

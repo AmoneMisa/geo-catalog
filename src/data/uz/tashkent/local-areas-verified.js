@@ -43,6 +43,11 @@ const boundaryArea = (slug, canonicalName, parentId, accuracyM = 650) => {
 };
 
 export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
+  osmArea('ahmad-yugnakiy', 'Ahmad Yugnakiy', 'uz:tashkent:mirzo-ulugbek', 41.3480578, 69.3863569, 'node', 1867262863, 700),
+  boundaryArea('akademgorodok', 'Akademgorodok', 'uz:tashkent:mirzo-ulugbek', 850),
+  osmArea('bogkocha', "Bog'ko'cha", 'uz:tashkent:shaykhantahur', 41.3275906, 69.2190401, 'node', 1223133760, 650),
+  boundaryArea('c-7', 'C-7', 'uz:tashkent:mirobod', 650),
+  boundaryArea('chuqursoy', 'Chuqursoy', 'uz:tashkent:almazar', 500),
   // User-supplied point reverse-geocoded to Al-Horazmiy 1 dahasi in Chilonzor Tumani.
   derivedArea('al-khorezmi-1', 'Al-Khorezmi-1', 'uz:tashkent:chilanzar', 41.259301, 69.154431, 650),
   boundaryArea('chorsu', 'Chorsu', 'uz:tashkent:shaykhantahur', 550),
@@ -64,12 +69,17 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('chimbay', 'Chimbay', 'uz:tashkent:almazar', 41.36257, 69.20025, 'node', 1866058485, 650),
   osmArea('yalangach', 'Yalangach', 'uz:tashkent:mirzo-ulugbek', 41.35013, 69.34254, 'node', 1867002807, 800),
   osmArea('feruza', 'Feruza', 'uz:tashkent:mirzo-ulugbek', 41.35561, 69.36388, 'node', 10938027477, 750),
-  osmArea('tashgres', 'TashGRES', 'uz:tashkent:yunusabad', 41.35547, 69.33673, 'node', 1866983396, 700),
+  osmArea('tashgres', 'ToshGRES', 'uz:tashkent:yunusabad', 41.35547, 69.33673, 'node', 1866983396, 700),
   osmArea('beshagach', 'Beshagach', 'uz:tashkent:chilanzar', 41.3047615, 69.2507561, 'node', 11559407267, 650),
   osmArea('beltepa', 'Beltepa', 'uz:tashkent:shaykhantahur', 41.3459531, 69.1724087, 'way', 149989887, 700),
   osmArea('medgorodok', 'Medgorodok', 'uz:tashkent:almazar', 41.35527, 69.17428, 'node', 10704411976, 700),
   osmArea('vuzgorodok', 'Vuzgorodok', 'uz:tashkent:almazar', 41.35155, 69.20564, 'node', 1866061222, 650),
   osmArea('hospitalny', 'Hospitalny', 'uz:tashkent:mirobod', 41.29375, 69.27413, 'node', 3907644432, 550),
+  osmArea('irrigator', 'Irrigator', 'uz:tashkent:mirzo-ulugbek', 41.3200798, 69.2966893, 'node', 4730061324, 650),
+  osmArea('parkent', 'Parkent', 'uz:tashkent:mirzo-ulugbek', 41.3173278, 69.3215531, 'node', 13264841185, 800),
+  boundaryArea('shimoliy-olmazor', 'Shimoliy Olmazor', 'uz:tashkent:almazar', 450),
+  osmArea('suvsoz-1', 'Suvsoz-1', 'uz:tashkent:bektemir', 41.247201, 69.3706561, 'relation', 19801804, 700),
+  osmArea('suvsoz-2', 'Suvsoz-2', 'uz:tashkent:bektemir', 41.2518266, 69.3756741, 'way', 153528330, 650),
   osmArea('movarounnahr', 'Movarounnahr', 'uz:tashkent:mirobod', 41.29999, 69.28658, 'way', 1057801683, 520),
   osmArea('nakkoshlik', 'Nakkoshlik', 'uz:tashkent:chilanzar', 41.2674213, 69.202444, 'way', 1180079691, 520),
   osmArea('alimkent', 'Alimkent', 'uz:tashkent:yashnobod', 41.29546, 69.33720, 'node', 12144738032, 520),

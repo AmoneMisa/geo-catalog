@@ -9,6 +9,10 @@ const POI_TYPES = new Set([
   'park', 'recreation_area', 'island', 'square', 'street', 'landmark', 'monument', 'fortress',
   'embankment', 'lake', 'cathedral', 'stadium', 'cultural_venue', 'exhibition_center', 'zoo',
   'shopping_mall', 'market', 'beach', 'memorial', 'university', 'botanical_garden',
+  'airport', 'railway_station', 'bus_station', 'mosque', 'museum', 'observatory', 'school',
+  'hospital', 'supermarket', 'amusement_park', 'archaeological_site', 'palace', 'mausoleum',
+  'religious_complex', 'bridge', 'factory', 'power_plant', 'company', 'bank', 'sanatorium',
+  'madrasa', 'hardware_store',
 ]);
 
 const SOURCES = new Set(['osm', 'wikidata', 'official', 'manual', 'geonames']);

@@ -1,5 +1,9 @@
 // OSM local-area boundaries from Nominatim lookup (polygon threshold 0.001).
 // Coordinates are GeoJSON [longitude, latitude] pairs.
 export const TASHKENT_LOCAL_AREA_BOUNDARIES = Object.freeze({
+  'akademgorodok': Object.freeze({ osmType: 'relation', osmId: 2408893, center: Object.freeze({ lat: 41.33808, lng: 69.3473712 }), geometry: {"type":"Polygon","coordinates":[[[69.3392921,41.3384231],[69.3499071,41.3321903],[69.3556582,41.3374983],[69.3451023,41.3439224],[69.3392921,41.3384231]]]} }),
+  'c-7': Object.freeze({ osmType: 'way', osmId: 182164644, center: Object.freeze({ lat: 41.3039907, lng: 69.2719624 }), geometry: {"type":"Polygon","coordinates":[[[69.2676143,41.3047614],[69.2705308,41.3027272],[69.2708768,41.3013879],[69.2718901,41.3016363],[69.2715551,41.300742],[69.2730754,41.2991495],[69.2762981,41.3010721],[69.274788,41.3063985],[69.2736878,41.3061614],[69.2737084,41.3068613],[69.2688499,41.3075743],[69.2676143,41.3047614]]]} }),
+  chuqursoy: Object.freeze({ osmType: 'way', osmId: 150455349, center: Object.freeze({ lat: 41.3736888, lng: 69.2433736 }), geometry: {"type":"Polygon","coordinates":[[[69.2409306,41.3738646],[69.2434631,41.3729447],[69.2428043,41.3717276],[69.2451355,41.3716572],[69.2440692,41.3724737],[69.2454796,41.3734979],[69.2418514,41.3757959],[69.2409306,41.3738646]]]} }),
   chorsu: Object.freeze({ osmType: 'way', osmId: 144057363, center: Object.freeze({ lat: 41.3194968, lng: 69.2307006 }), geometry: {"type":"Polygon","coordinates":[[[69.2272115,41.3194457],[69.2304895,41.3176575],[69.2338751,41.3205572],[69.2326221,41.3212333],[69.2272115,41.3194457]]]} }),
+  'shimoliy-olmazor': Object.freeze({ osmType: 'way', osmId: 140358603, center: Object.freeze({ lat: 41.3520771, lng: 69.2514931 }), geometry: {"type":"Polygon","coordinates":[[[69.2497534,41.3543579],[69.2513879,41.3540506],[69.2503029,41.3482844],[69.251884,41.3482038],[69.2530248,41.3550102],[69.2501479,41.3555722],[69.2497534,41.3543579]]]} }),
 });
