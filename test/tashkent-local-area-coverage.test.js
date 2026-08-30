@@ -30,6 +30,10 @@ const resolvedAreas = Object.freeze([
   ['Markaz-12', 'uz:tashkent:local-area:markaz-12', 'uz:tashkent:shaykhantahur', 'node', 4984463379],
   ["Qo'yliq-1", 'uz:tashkent:local-area:qoyliq-1', 'uz:tashkent:mirobod', 'node', 3991877003],
   ["Qo'yliq-2", 'uz:tashkent:local-area:qoyliq-2', 'uz:tashkent:mirobod', 'node', 3991877004],
+  ["Qo'yliq-3", 'uz:tashkent:local-area:qoyliq-3', 'uz:tashkent:mirobod', 'node', 3991877005],
+  ["Qo'yliq-4", 'uz:tashkent:local-area:qoyliq-4', 'uz:tashkent:mirobod', 'node', 3991877006],
+  ["Qo'yliq-5", 'uz:tashkent:local-area:qoyliq-5', 'uz:tashkent:sergeli', 'node', 3991877007],
+  ["Qo'yliq-6", 'uz:tashkent:local-area:qoyliq-6', 'uz:tashkent:sergeli', 'node', 4750071797],
   ["Qo'yliq-7", 'uz:tashkent:local-area:qoyliq-7', 'uz:tashkent:sergeli', 'node', 5637605369],
 ]);
 
