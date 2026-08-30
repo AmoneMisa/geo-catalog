@@ -61,6 +61,9 @@ const boundsIntersect = (a, b) =>
 const geometryOwnerIntersectsBounds = (owner, bounds) =>
   !bounds || (isValidBounds(owner?.bounds) && boundsIntersect(owner.bounds, bounds));
 
+const routeHasGeometry = (route) =>
+  Boolean(route.geometry) || (route.variants?.some((variant) => Boolean(variant.geometry)) ?? false);
+
 const routeIntersectsBounds = (route, bounds) => {
   if (!bounds) return true;
   if (geometryOwnerIntersectsBounds(route, bounds)) return true;
@@ -205,6 +208,28 @@ export function getTransportCoverage(filters = {}) {
     full: byCoverage.full,
     terminalsOnly: byCoverage.terminals_only,
     metadataOnly: byCoverage.metadata_only,
+  });
+}
+
+export function getTransportMapCoverage(filters = {}) {
+  const { bounds: _ignoredBounds, ...routeFilters } = filters;
+  const routes = findTransportRoutes(routeFilters);
+  const withGeometry = routes.filter(routeHasGeometry).length;
+  const refs = new Set(routes.map((route) => route.ref).filter(Boolean));
+  const variantsWithGeometry = TRANSPORT_ROUTE_VARIANTS.filter((variant) =>
+    (!routeFilters.country || variant.country === routeFilters.country) &&
+    (!routeFilters.cityId || variant.cityId === routeFilters.cityId) &&
+    (!routeFilters.mode || variant.mode === routeFilters.mode) &&
+    (!routeFilters.ref || variant.ref === routeFilters.ref) &&
+    refs.has(variant.ref) &&
+    Boolean(variant.geometry)
+  ).length;
+
+  return Object.freeze({
+    total: routes.length,
+    withGeometry,
+    withoutGeometry: routes.length - withGeometry,
+    variantsWithGeometry,
   });
 }
 
@@ -393,9 +418,15 @@ export function validateTransportCatalog({
         errors.push(`Transport route variant ${variant.id} ref does not match route ${route.id}.`);
       }
       validateRouteGeometry(variant, errors);
-      if (!Array.isArray(variant.stopIds) || variant.stopIds.length < 2) {
-        errors.push(`Transport route variant ${variant.id} needs at least 2 stops.`);
+      if (!Array.isArray(variant.stopIds)) {
+        errors.push(`Transport route variant ${variant.id} must contain a stopIds array.`);
         continue;
+      }
+      if (variant.stopIds.length === 1) {
+        errors.push(`Transport route variant ${variant.id} cannot contain exactly one stop.`);
+      }
+      if (variant.stopIds.length === 0 && !variant.geometry) {
+        errors.push(`Transport route variant ${variant.id} needs map geometry or at least 2 stops.`);
       }
       for (const stopId of variant.stopIds) {
         if (!stopIds.has(stopId)) errors.push(`Transport route variant ${variant.id} references missing stop ${stopId}.`);
