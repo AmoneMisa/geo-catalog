@@ -31,6 +31,21 @@ const stopsById = new Map(TRANSPORT_STOPS.map((stop) => [stop.id, stop]));
 const routesById = new Map(TRANSPORT_ROUTES.map((route) => [route.id, route]));
 const variantsById = new Map(TRANSPORT_ROUTE_VARIANTS.map((variant) => [variant.id, variant]));
 
+const EARTH_RADIUS_M = 6_371_000;
+const toRadians = (degrees) => (degrees * Math.PI) / 180;
+
+export function transportDistanceM(a, b) {
+  if (!isValidCoordinate(a) || !isValidCoordinate(b)) return Number.POSITIVE_INFINITY;
+  const dLat = toRadians(b.lat - a.lat);
+  const dLng = toRadians(b.lng - a.lng);
+  const lat1 = toRadians(a.lat);
+  const lat2 = toRadians(b.lat);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 2 * EARTH_RADIUS_M * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+
 export function getTransportStop(id) {
   return stopsById.get(String(id || '')) ?? null;
 }
@@ -82,6 +97,36 @@ export function getRoutesForStop(stopId, options = {}) {
   return TRANSPORT_ROUTES.filter((route) =>
     routeContainsStop(route, id) && (!requireFullSequence || route.coverage === 'full')
   );
+}
+
+export function nearestTransportStops(point, options = {}) {
+  if (!isValidCoordinate(point)) return [];
+  const {
+    country,
+    cityId,
+    mode,
+    maxDistanceM = 1500,
+    limit = Number.POSITIVE_INFINITY,
+    includeRoutes = true,
+  } = options;
+  const maxDistance = Number(maxDistanceM);
+  const maxItems = Number(limit);
+  if (!Number.isFinite(maxDistance) || maxDistance < 0) return [];
+
+  return findTransportStops({ country, cityId, mode })
+    .map((stop) => ({ stop, distanceM: transportDistanceM(point, stop.center) }))
+    .filter((item) => item.distanceM <= maxDistance)
+    .sort((a, b) => a.distanceM - b.distanceM || a.stop.id.localeCompare(b.stop.id))
+    .slice(0, Number.isFinite(maxItems) && maxItems >= 0 ? Math.floor(maxItems) : undefined)
+    .map(({ stop, distanceM }) => Object.freeze({
+      stop,
+      distanceM: Math.round(distanceM),
+      routeRefs: Object.freeze(
+        includeRoutes
+          ? [...new Set(getRoutesForStop(stop.id).map((route) => route.ref).filter(Boolean))]
+          : [],
+      ),
+    }));
 }
 
 export function getStopsForRoute(routeId) {
