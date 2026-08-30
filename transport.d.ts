@@ -95,11 +95,17 @@ export interface TransportFilters {
   country?: string;
   cityId?: string;
   mode?: TransportMode;
+  bounds?: TransportBounds;
 }
 
 export interface TransportRouteFilters extends TransportFilters {
   ref?: string;
   coverage?: TransportRouteCoverage;
+}
+
+export interface TransportRouteVariantFilters extends TransportFilters {
+  ref?: string;
+  hasGeometry?: boolean;
 }
 
 export interface TransportCoverageSummary {
@@ -115,7 +121,7 @@ export interface NearestTransportStopResult {
   routeRefs: readonly string[];
 }
 
-export interface NearestTransportStopOptions extends TransportFilters {
+export interface NearestTransportStopOptions extends Omit<TransportFilters, 'bounds'> {
   maxDistanceM?: number;
   limit?: number;
   includeRoutes?: boolean;
@@ -172,7 +178,7 @@ export function getTransportRoute(id: string): Readonly<TransportRoute> | null;
 export function getTransportRouteVariant(id: string): Readonly<TransportRouteVariant> | null;
 export function findTransportStops(filters?: TransportFilters): readonly Readonly<TransportStop>[];
 export function findTransportRoutes(filters?: TransportRouteFilters): readonly Readonly<TransportRoute>[];
-export function findTransportRouteVariants(filters?: TransportFilters & { ref?: string }): readonly Readonly<TransportRouteVariant>[];
+export function findTransportRouteVariants(filters?: TransportRouteVariantFilters): readonly Readonly<TransportRouteVariant>[];
 export function getRoutesForStop(stopId: string, options?: { requireFullSequence?: boolean }): readonly Readonly<TransportRoute>[];
 export function nearestTransportStops(point: TransportPoint, options?: NearestTransportStopOptions): readonly Readonly<NearestTransportStopResult>[];
 export function getStopsForRoute(routeId: string): readonly Readonly<TransportStop>[];
@@ -180,7 +186,8 @@ export function getRouteVariants(routeId: string): readonly Readonly<TransportRo
 export function getStopsForRouteVariant(routeId: string, variantId: string | number): readonly Readonly<TransportStop>[];
 export function getTransfersForStop(stopId: string): readonly Readonly<TransportTransfer>[];
 export function getTransportCoverage(filters?: TransportRouteFilters): Readonly<TransportCoverageSummary>;
-export function getTransportRouteGeoJSON(routeId: string): Readonly<TransportRouteGeoJSON>;
+export function getTransportRouteGeoJSON(routeId: string, options?: { bounds?: TransportBounds }): Readonly<TransportRouteGeoJSON>;
+export function getTransportRoutesGeoJSON(filters?: TransportRouteFilters): Readonly<TransportRouteGeoJSON>;
 export function getTransportStopsGeoJSON(filters?: TransportFilters): Readonly<TransportStopsGeoJSON>;
 export function validateTransportCatalog(input?: {
   stops?: readonly TransportStop[];
