@@ -12,13 +12,17 @@ import shapeRows2 from '../src/transport/generated/tashkent-bus-osm-shapes-2.js'
 import shapeRows3 from '../src/transport/generated/tashkent-bus-osm-shapes-3.js';
 
 const SOURCE_DATE = new Date().toISOString().slice(0, 10);
-const BBOX = Object.freeze({ south: 41.15, west: 69.10, north: 41.45, east: 69.50 });
-const BBOX_QUERY = `${BBOX.south},${BBOX.west},${BBOX.north},${BBOX.east}`;
-const BATCH_SIZE = 16;
+const CITY_BBOX = Object.freeze({ south: 41.15, west: 69.10, north: 41.45, east: 69.50 });
+const DISCOVERY_TILES = Object.freeze([
+  Object.freeze({ south: 41.15, west: 69.10, north: 41.30, east: 69.30 }),
+  Object.freeze({ south: 41.15, west: 69.30, north: 41.30, east: 69.50 }),
+  Object.freeze({ south: 41.30, west: 69.10, north: 41.45, east: 69.30 }),
+  Object.freeze({ south: 41.30, west: 69.30, north: 41.45, east: 69.50 }),
+]);
 const STOP_PARTS = 4;
 const VARIANT_PARTS = 3;
 const SHAPE_PARTS = 3;
-const REQUEST_TIMEOUT_MS = 35_000;
+const REQUEST_TIMEOUT_MS = 45_000;
 const OVERPASS_ENDPOINTS = Object.freeze([
   process.env.OVERPASS_URL,
   'https://overpass-api.de/api/interpreter',
@@ -35,6 +39,7 @@ const round6 = (value) => Math.round(value * 1e6) / 1e6;
 const normalizeRef = (value) => String(value ?? '').trim().toUpperCase();
 const osmKey = (type, id) => `${type}:${id}`;
 const rowKey = (row) => osmKey(row[0], row[1]);
+const bboxQuery = (bbox) => `${bbox.south},${bbox.west},${bbox.north},${bbox.east}`;
 
 const registryByNormalizedRef = new Map(
   TASHKENT_BUS_ROUTE_REFS_2026_08_18.map((ref) => [normalizeRef(ref), ref]),
@@ -47,8 +52,9 @@ const compareRefs = (a, b) => {
   return a.localeCompare(b, 'en', { numeric: true });
 };
 
-const insideBbox = ([lng, lat]) =>
-  lat >= BBOX.south && lat <= BBOX.north && lng >= BBOX.west && lng <= BBOX.east;
+const insideCityBbox = ([lng, lat]) =>
+  lat >= CITY_BBOX.south && lat <= CITY_BBOX.north &&
+  lng >= CITY_BBOX.west && lng <= CITY_BBOX.east;
 
 function memberPoint(member) {
   if (!member) return null;
@@ -97,6 +103,7 @@ function buildShape(relation) {
   let north = -Infinity;
   let totalPoints = 0;
   let insidePoints = 0;
+
   for (const segment of segments) {
     for (const [lng, lat] of segment) {
       west = Math.min(west, lng);
@@ -104,18 +111,19 @@ function buildShape(relation) {
       east = Math.max(east, lng);
       north = Math.max(north, lat);
       totalPoints += 1;
-      if (insideBbox([lng, lat])) insidePoints += 1;
+      if (insideCityBbox([lng, lat])) insidePoints += 1;
     }
   }
 
-  const minimumInside = Math.max(2, Math.min(5, Math.ceil(totalPoints * 0.1)));
+  // Reject unrelated same-number routes that only touch the broad search area.
+  const minimumInside = Math.max(3, Math.min(8, Math.ceil(totalPoints * 0.15)));
   if (insidePoints < minimumInside) return null;
+
   return { segments, bounds: [west, south, east, north] };
 }
 
 function buildCandidate(relation, stopRecords) {
-  const normalized = normalizeRef(relation.tags?.ref);
-  const ref = registryByNormalizedRef.get(normalized);
+  const ref = registryByNormalizedRef.get(normalizeRef(relation.tags?.ref));
   if (!ref) return null;
 
   const shape = buildShape(relation);
@@ -144,16 +152,14 @@ function buildCandidate(relation, stopRecords) {
   };
 }
 
-function relationQuery(refs) {
-  // Overpass QL uses POSIX-style regular expressions. Non-capturing groups (?:...)
-  // are not supported and yield HTTP 400, so use a plain capturing group.
-  const regex = `^(${refs.join('|')})$`;
-  return `[out:json][timeout:45];rel["type"="route"]["route"="bus"]["ref"~"${regex}"](${BBOX_QUERY});out body geom;`;
+function tileQuery(tile) {
+  return `[out:json][timeout:90];rel["type"="route"]["route"="bus"](${bboxQuery(tile)});out body geom;`;
 }
 
-async function fetchBatch(refs) {
-  const query = relationQuery(refs);
+async function fetchTile(tile, tileNumber) {
+  const query = tileQuery(tile);
   const failures = [];
+
   for (const endpoint of OVERPASS_ENDPOINTS) {
     for (let attempt = 1; attempt <= 2; attempt += 1) {
       try {
@@ -172,14 +178,15 @@ async function fetchBatch(refs) {
         }
         return await response.json();
       } catch (error) {
-        const message = `${endpoint} attempt ${attempt}: ${error?.message || error}`;
+        const message = `tile ${tileNumber} ${endpoint} attempt ${attempt}: ${error?.message || error}`;
         failures.push(message);
         console.warn(message);
         await sleep(900 * attempt);
       }
     }
   }
-  throw new Error(`All Overpass endpoints failed for refs ${refs.join(', ')}: ${failures.join(' | ')}`);
+
+  throw new Error(`All Overpass endpoints failed for tile ${tileNumber}: ${failures.join(' | ')}`);
 }
 
 function existingState() {
@@ -218,40 +225,57 @@ async function writeParts(prefix, rows, parts, header) {
 const state = existingState();
 const oldRelationIds = new Set(state.variants.keys());
 const oldRefs = new Set([...state.variants.values()].map((variant) => variant.ref));
-const variantCountByRef = new Map();
-for (const variant of state.variants.values()) {
-  variantCountByRef.set(variant.ref, (variantCountByRef.get(variant.ref) ?? 0) + 1);
-}
+const discoveredRelations = new Map();
+const failedTiles = [];
 
-const discoveryRefs = TASHKENT_BUS_ROUTE_REFS_2026_08_18.filter((ref) =>
-  (variantCountByRef.get(ref) ?? 0) < 2,
-);
-const failedRefs = [];
-console.log(`Scanning ${discoveryRefs.length}/${TASHKENT_BUS_ROUTE_REFS_2026_08_18.length} refs that currently have fewer than two OSM variants.`);
-
-for (let offset = 0; offset < discoveryRefs.length; offset += BATCH_SIZE) {
-  const refs = discoveryRefs.slice(offset, offset + BATCH_SIZE);
-  console.log(`Discovering refs ${offset + 1}-${Math.min(offset + refs.length, discoveryRefs.length)} / ${discoveryRefs.length}: ${refs.join(', ')}`);
+for (let index = 0; index < DISCOVERY_TILES.length; index += 1) {
+  const tileNumber = index + 1;
+  const tile = DISCOVERY_TILES[index];
+  console.log(`Discovering Tashkent bus relations in tile ${tileNumber}/${DISCOVERY_TILES.length}: ${bboxQuery(tile)}`);
 
   let payload;
   try {
-    payload = await fetchBatch(refs);
+    payload = await fetchTile(tile, tileNumber);
   } catch (error) {
     console.warn(error?.message || error);
-    failedRefs.push(...refs);
+    failedTiles.push(tileNumber);
     continue;
   }
 
   for (const relation of (payload.elements || []).filter((element) =>
     element.type === 'relation' && element.tags?.type === 'route' && element.tags?.route === 'bus'
   )) {
-    const candidate = buildCandidate(relation, state.stopRecords);
-    if (!candidate) continue;
+    if (!registryByNormalizedRef.has(normalizeRef(relation.tags?.ref))) continue;
+    discoveredRelations.set(relation.id, relation);
+  }
+
+  await sleep(300);
+}
+
+const discoveredByRef = new Map();
+for (const relation of discoveredRelations.values()) {
+  const candidate = buildCandidate(relation, state.stopRecords);
+  if (!candidate) continue;
+  const candidates = discoveredByRef.get(candidate.ref) ?? new Map();
+  candidates.set(candidate.relationId, candidate);
+  discoveredByRef.set(candidate.ref, candidates);
+}
+
+const completeSpatialScan = failedTiles.length === 0;
+for (const [ref, candidateMap] of discoveredByRef) {
+  // Only remove stale relations after all four city tiles were read successfully.
+  if (completeSpatialScan) {
+    for (const [relationId, existing] of [...state.variants]) {
+      if (existing.ref !== ref) continue;
+      state.variants.delete(relationId);
+      state.shapes.delete(relationId);
+    }
+  }
+
+  for (const candidate of candidateMap.values()) {
     state.variants.set(candidate.relationId, candidate);
     state.shapes.set(candidate.relationId, candidate.shape);
   }
-
-  await sleep(250);
 }
 
 const variants = [...state.variants.values()].sort((a, b) =>
@@ -299,11 +323,14 @@ await writeParts(
 
 const newRelationIds = new Set(variants.map((variant) => variant.relationId));
 const newRefs = new Set(variants.map((variant) => variant.ref));
-const addedRelations = [...newRelationIds].filter((id) => !oldRelationIds.has(id));
-const addedRefs = [...newRefs].filter((ref) => !oldRefs.has(ref)).sort(compareRefs);
 const topologyRefs = new Set(variants.filter((variant) => variant.stopKeys.length >= 2).map((variant) => variant.ref));
+const addedRelations = [...newRelationIds].filter((id) => !oldRelationIds.has(id));
+const removedRelations = [...oldRelationIds].filter((id) => !newRelationIds.has(id));
+const addedRefs = [...newRefs].filter((ref) => !oldRefs.has(ref)).sort(compareRefs);
 
 console.log(`OSM bus discovery complete: map geometry ${newRefs.size}/${TASHKENT_BUS_ROUTE_REFS_2026_08_18.length} refs, stop topology ${topologyRefs.size}/${TASHKENT_BUS_ROUTE_REFS_2026_08_18.length} refs, ${variants.length} variants, ${stopRows.length} unique passenger stops.`);
 console.log(`Added map refs (${addedRefs.length}): ${addedRefs.join(', ') || 'none'}`);
-console.log(`Added relations: ${addedRelations.length}.`);
-if (failedRefs.length) console.warn(`Discovery failed for ${failedRefs.length} refs without changing existing data: ${failedRefs.join(', ')}`);
+console.log(`Added relations: ${addedRelations.length}; removed relations: ${removedRelations.length}.`);
+if (failedTiles.length) {
+  console.warn(`Partial spatial scan: failed tiles ${failedTiles.join(', ')}. Existing relations were preserved and only discovered relations were added.`);
+}
