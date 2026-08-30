@@ -19,6 +19,7 @@ export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('felicita', 'Felicita', 50.029835, 36.2577, 'https://urbanplaces.su/ua_harkovskaya-oblast/harkov/card-3004293-felichita', 180),
   residential('rezidentsiia', 'Rezidentsiia', 50.02158371710696, 36.22845802887636, 'https://maps.visicom.ua/c/36.22844%2C50.02156%2C17/f/ADR3KEVMFVXAM1RVHH?lang=uk', 220),
   residential('hydropark', 'Hydropark', 50.021194, 36.291282, 'https://locator.biz/ua/kharkiv/shevchenka/327/b/55983/ru/', 700),
+  residential('ovis', 'Ovis', 50.00615692138672, 36.21923065185547, 'https://rem.ua/prodazha-kvartir-odnokomnatnye-kharkovskaya-do-40000-dollarov', 220),
   residential('ptashka', 'Ptashka', 50.013177, 36.305259, 'https://novobudovy.com/novobudovy-kharkova/ptichka', 260),
   residential('newton', 'Newton', 49.937936, 36.300112, 'https://novobudovy.com/arkhiv/zhk-10', 300),
   residential('meridian', 'Meridian', 50.032214, 36.358462, 'https://novobudovy.com/ru/all/meridian-harkov', 320),
