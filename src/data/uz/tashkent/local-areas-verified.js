@@ -102,6 +102,7 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('ibn-sino-1', 'Ibn Sino-1', 'uz:tashkent:shaykhantahur', 41.33426, 69.16822, 'way', 103249732, 700),
   osmArea('ibn-sino-2', 'Ibn Sino-2', 'uz:tashkent:shaykhantahur', 41.33847, 69.17059, 'way', 149989839, 700),
   osmArea('shifokorlar-1', 'Shifokorlar-1', 'uz:tashkent:almazar', 41.361, 69.18198, 'way', 149513658, 700),
+  osmArea('shifokorlar-4', 'Shifokorlar-4', 'uz:tashkent:almazar', 41.35963, 69.18595, 'way', 142245652, 650),
   osmArea('markaz-12', 'Markaz-12', 'uz:tashkent:shaykhantahur', 41.32974, 69.26738, 'node', 4984463379, 650),
   osmArea('qoyliq-1', "Qo'yliq-1", 'uz:tashkent:mirobod', 41.24728, 69.31556, 'node', 3991877003, 650),
   osmArea('qoyliq-2', "Qo'yliq-2", 'uz:tashkent:mirobod', 41.25094, 69.30599, 'node', 3991877004, 650),
