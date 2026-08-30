@@ -13,6 +13,7 @@ const expected = Object.freeze([
   ['Qarshi', 'Railway Station area', 38.82158, 65.77723, 1100],
   ['Qarshi', 'Airport area', 38.802311, 65.773161, 1500],
   ['Nukus', 'Airport area', 42.488333, 59.623333, 1500],
+  ['Samarkand', 'Railway Station area', 39.685888, 66.928915, 1100],
 ]);
 
 test('main-city transport listing areas use conservative existing-anchor centers', () => {
