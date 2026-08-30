@@ -73,4 +73,5 @@ export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
   approximateArea('urgench', 'airport-area', 'Airport area', 41.58490, 60.63353, 1500),
   approximateArea('qarshi', 'railway-station-area', 'Railway Station area', 38.82158, 65.77723, 1100),
   approximateArea('qarshi', 'airport-area', 'Airport area', 38.802311, 65.773161, 1500),
+  approximateArea('nukus', 'airport-area', 'Airport area', 42.488333, 59.623333, 1500),
 ]);
