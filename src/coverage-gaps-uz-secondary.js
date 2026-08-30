@@ -9,11 +9,13 @@ const normalize = (value) => String(value ?? '')
 const gaps = (city, type, canonicals, reason) => canonicals.map((canonical) => ({ country: 'UZ', city, type, canonical, reason }));
 
 export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
+  ...gaps('Samarkand', 'poi', ['Central Park'], 'Samarkand normalized park canonical still needs a verified spatial bridge match.'),
+
   ...gaps('Jizzakh', 'local_area', ['Center','Sangzor','Zilol','Hamid Olimjon','Navoiy','Airport area'], 'Jizzakh local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Jizzakh', 'poi', ['Sangzor River'], 'Regional natural feature is intentionally not parented to Jizzakh city until natural-feature hierarchy is modeled.'),
 
   ...gaps('Navoiy', 'mahalla', ['Guliston'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('Navoiy', 'microdistrict', ['8 microdistrict','11 microdistrict','12 microdistrict'], 'Navoiy numbered microdistrict still needs a verified neighbourhood/residential object.'),
+  ...gaps('Navoiy', 'microdistrict', ['8 microdistrict','11 microdistrict','12 microdistrict','17 microdistrict'], 'Navoiy numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Navoiy', 'local_area', ['Uzbekiston Massiv','Yangi Navoiy','Center','Sputnik'], 'Navoiy local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Navoiy', 'poi', ['Alisher Navoiy Park','Farhod Palace of Culture'], 'Navoiy landmark still needs a verified spatial match.'),
 
@@ -32,11 +34,18 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Margilan', 'local_area', ['Center','Old City','Kumtepa','Yodgorlik','Atlas','Railway Station area'], 'Margilan local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Almalyk', 'mahalla', ['Kamalak'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('Almalyk', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict'], 'Almalyk numbered microdistrict still needs a verified neighbourhood/residential object.'),
+  ...gaps('Almalyk', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict','5/1 microdistrict','5/2 microdistrict','5/3 microdistrict','Yubileyny microdistrict'], 'Almalyk numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Almalyk', 'local_area', ['Center','Old City','New City','Metallurg','Sports Palace area','Railway Station area'], 'Almalyk local-area alias still needs a verified standalone spatial match.'),
 
-  ...gaps('Angren', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict'], 'Angren numbered microdistrict still needs a verified neighbourhood/residential object.'),
+  ...gaps('Angren', 'microdistrict', [
+    '1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict',
+    '2 quarter','3 quarter','5 quarter','6 quarter','7 quarter','8 quarter','9 quarter','10 quarter','11 quarter','32 quarter',
+    '2/2 quarter','2/5 quarter','3/2 quarter','3/3 quarter','4/5 quarter','4/6 quarter','5/1A quarter','5/1B quarter',
+    '5/3 quarter','5/4 quarter','5/5 quarter','6/4 quarter','18/19 quarter',
+  ], 'Angren quarter/microdistrict still needs a verified neighbourhood/residential object.'),
+  ...gaps('Angren', 'mahalla', ['Geolog'], 'Angren Geolog is normalized as a mahalla and still needs a verified standalone spatial boundary/locality object.'),
   ...gaps('Angren', 'local_area', ['Center','Old Angren','New Angren','Dukent','Geolog','Railway Station area'], 'Angren local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Angren', 'street', ['Amir Temur Street','Bunyodkor Street','Ohangaron Street'], 'Angren verified street vocabulary still needs a verified street geometry or representative spatial owner.'),
 
   ...gaps('Bekabad', 'local_area', ['Center','Metallurg','Tsementnik','Vodnik','Syrdarya','Farhod','Railway Station area'], 'Bekabad local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Bekabad', 'poi', ['Farhod HPP'], 'Cross-border power infrastructure is intentionally not parented to Bekabad until infrastructure/region hierarchy is modeled.'),
