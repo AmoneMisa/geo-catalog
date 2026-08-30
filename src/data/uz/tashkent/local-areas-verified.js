@@ -88,8 +88,6 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('movarounnahr', 'Movarounnahr', 'uz:tashkent:mirobod', 41.29999, 69.28658, 'way', 1057801683, 520),
   osmArea('nakkoshlik', 'Nakkoshlik', 'uz:tashkent:chilanzar', 41.2674213, 69.202444, 'way', 1180079691, 520),
   osmArea('alimkent', 'Alimkent', 'uz:tashkent:yashnobod', 41.29546, 69.33720, 'node', 12144738032, 520),
-  // Approximate centroid from current map anchors on the three streets named as the official Minora mavzesi bounds.
-  derivedArea('minora', 'Minora', 'uz:tashkent:almazar', 41.3442847, 69.2439927, 1000),
   // Approximate center from current map anchors on Fayzibaland-2 and Guruchariq-1, the official S-22/Guruchariq mavzesi bounds.
   derivedArea('guruchariq', 'Guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304, 900),
   // Harbiylar-58a shaharchasi was officially renamed Qalqon mavzesi; retain its OSM locality owner.
