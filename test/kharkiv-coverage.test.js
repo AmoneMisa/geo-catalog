@@ -91,6 +91,7 @@ test('Kharkiv metro uses current station names and has exactly 30 stations', asy
 
 test('Kharkiv residential complexes use parser canonicals and explicit sources', () => {
   const expected = new Map([
+    ['Pavlovsky Kvartal', 'ua:kharkiv:residential:pavlovsky-kvartal'],
     ['Kliuch', 'ua:kharkiv:residential:kliuch'],
     ['Dim na Sumskii', 'ua:kharkiv:residential:dim-na-sumskii'],
     ['Myronosytska', 'ua:kharkiv:residential:myronosytska'],
@@ -107,6 +108,7 @@ test('Kharkiv residential complexes use parser canonicals and explicit sources',
     ['Kazka', 'ua:kharkiv:residential:kazka'],
     ['Makiivska', 'ua:kharkiv:residential:makiivska'],
     ['Manhattan', 'ua:kharkiv:residential:manhattan'],
+    ['River Town', 'ua:kharkiv:residential:river-town'],
   ]);
 
   for (const [canonical, id] of expected) {
@@ -143,6 +145,7 @@ test('Kharkiv landmarks resolve through the generic POI bridge', () => {
     ['Dafi', 'ua:kharkiv:poi:dafi'],
     ['French Boulevard', 'ua:kharkiv:poi:french-boulevard'],
     ['Barabashovo Market', 'ua:kharkiv:poi:barabashovo-market'],
+    ['Sumskyi Market', 'ua:kharkiv:poi:sumskyi-market'],
     ['Kharkiv-Pasazhyrskyi Station', 'ua:kharkiv:poi:kharkiv-pasazhyrskyi'],
   ]);
 
@@ -167,15 +170,19 @@ test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:dafi')?.osm, { type: 'way', id: 89761454 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.osm, { type: 'way', id: 89433884 });
   assert.equal(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.type, 'poi.market');
+  assert.equal(getGeoEntity('ua:kharkiv:poi:sumskyi-market')?.type, 'poi.market');
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:sumskyi-market')?.center, { lat: 50.011593, lng: 36.23866 });
   assert.equal(getGeoEntity('ua:kharkiv:poi:kharkiv-zoo')?.wikidataId, 'Q4496313');
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:kharkiv-zoo')?.osm, { type: 'way', id: 33651304 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:khnure')?.osm, { type: 'way', id: 105835020 });
   assert.equal(getGeoEntity('ua:kharkiv:poi:machine-builders-park')?.source, 'manual');
   assert.equal(getGeoEntity('ua:kharkiv:poi:french-boulevard')?.type, 'poi.shopping_mall');
   assert.equal(getGeoEntity('ua:kharkiv:residential:kliuch')?.accuracy, 'building');
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:pavlovsky-kvartal')?.center, { lat: 50.008292, lng: 36.218015 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:dim-na-sumskii')?.center, { lat: 50.01274, lng: 36.242743 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:myronosytska')?.center, { lat: 50.010003, lng: 36.242821 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:mlechnyi-shliakh')?.center, { lat: 50.006117, lng: 36.257562 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:makiivska')?.center, { lat: 49.953117, lng: 36.25414 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:river-town')?.center, { lat: 50.016955, lng: 36.205893 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:street:heroiv-kharkova-avenue')?.osm, { type: 'relation', id: 1295889 });
 });
