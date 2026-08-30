@@ -23,6 +23,7 @@ function isPoiType(type) {
 
 const lexiconIndex = new Map();
 const canonicalIndex = new Map();
+const entityById = new Map(GEO_ENTITIES.map((entity) => [entity.id, entity]));
 for (const entity of GEO_ENTITIES) {
   const city = entityCity(entity);
   lexiconIndex.set(geoEntityKey({
@@ -42,6 +43,12 @@ for (const entity of GEO_ENTITIES) {
   }
 }
 
+// Parser canonicals can evolve independently from OSM/source naming. Keep narrowly
+// verified spelling aliases here instead of duplicating physical geo entities.
+const lexiconAliases = new Map([
+  [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'TashGRES' }), 'uz:tashkent:local-area:tashgres'],
+]);
+
 const compatibleTypes = Object.freeze({
   local_area: new Set(['microdistrict', 'mahalla', 'suburb', 'settlement', 'poi', 'street']),
 });
@@ -51,24 +58,39 @@ function matchesCompatibleType(entityType, allowedTypes) {
   return allowedTypes.has('poi') && isPoiType(entityType);
 }
 
-export function resolveLexiconGeoEntity(input) {
+export function resolveLexiconGeoEntityExact(input) {
   if (!input?.country || !input?.canonical) return null;
   const type = input.type || 'city';
-  const direct = lexiconIndex.get(geoEntityKey({ ...input, type }));
+  const key = geoEntityKey({ ...input, type });
+  const direct = lexiconIndex.get(key);
   if (direct) return direct;
+
+  const aliasId = lexiconAliases.get(key);
+  if (aliasId) return entityById.get(aliasId) ?? null;
 
   if (type === 'city') {
     return lexiconIndex.get(geoEntityKey({ country: input.country, type, canonical: input.canonical })) ?? null;
   }
 
-  const canonicalKey = [input.country, input.city, input.canonical].map(normalize).join('|');
-  const matches = canonicalIndex.get(canonicalKey) ?? [];
-
   if (type === 'poi') {
-    const poiMatches = matches.filter((entity) => isPoiType(entity.type));
+    const canonicalKey = [input.country, input.city, input.canonical].map(normalize).join('|');
+    const poiMatches = (canonicalIndex.get(canonicalKey) ?? []).filter((entity) => isPoiType(entity.type));
     return poiMatches.length === 1 ? poiMatches[0] : null;
   }
 
+  return null;
+}
+
+export function resolveLexiconGeoEntity(input) {
+  const exact = resolveLexiconGeoEntityExact(input);
+  if (exact) return exact;
+  if (!input?.country || !input?.canonical) return null;
+
+  const type = input.type || 'city';
+  if (type === 'city' || type === 'poi') return null;
+
+  const canonicalKey = [input.country, input.city, input.canonical].map(normalize).join('|');
+  const matches = canonicalIndex.get(canonicalKey) ?? [];
   const allowedFallbackTypes = compatibleTypes[type];
   if (!allowedFallbackTypes) return null;
   const compatibleMatches = matches.filter((entity) => matchesCompatibleType(entity.type, allowedFallbackTypes));
