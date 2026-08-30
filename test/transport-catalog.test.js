@@ -68,14 +68,14 @@ test('bus coverage report separates registry metadata from terminal and full top
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
     total: 170,
     full: 0,
-    terminalsOnly: 6,
-    metadataOnly: 164,
+    terminalsOnly: 7,
+    metadataOnly: 163,
   });
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
     total: 174,
     full: 4,
-    terminalsOnly: 6,
-    metadataOnly: 164,
+    terminalsOnly: 7,
+    metadataOnly: 163,
   });
 });
 
@@ -130,11 +130,23 @@ test('routes 14 and 16 share verified railway and TTZ terminal points', () => {
   }
 });
 
+test('route 23 reuses Farhod Bazaar and Chorsu metro terminal entities', () => {
+  const route23 = getTransportRoute('uz:tashkent:route:bus:23');
+  assert.equal(route23?.coverage, 'terminals_only');
+  assert.deepEqual(route23?.terminalNames, ['Farhod Bazaar', 'Chorsu Metro']);
+  assert.deepEqual(route23?.stopIds, [
+    'uz:tashkent:stop:bus:farhod-bazaar',
+    'uz:tashkent:stop:metro:chorsu',
+  ]);
+  assert.equal(getTransportStop('uz:tashkent:stop:bus:farhod-bazaar')?.geoEntityId, 'uz:tashkent:poi:farhod-bazaar');
+  assert.equal(getTransportStop('uz:tashkent:stop:metro:chorsu')?.geoEntityId, 'uz:tashkent:metro:chorsu');
+});
+
 test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
-  assert.equal(TRANSPORT_STOPS.length, 57);
+  assert.equal(TRANSPORT_STOPS.length, 58);
 
   const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(busStops.length, 7);
+  assert.equal(busStops.length, 8);
   assert.equal(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.canonicalName, 'TTZ Bus Station');
   assert.deepEqual(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.osm, { type: 'way', id: 98599092 });
 
