@@ -1,0 +1,80 @@
+name: Apply Suvsoz-5 area sync
+
+on:
+  push:
+    branches:
+      - data/tashkent-local-areas-2026-08-30
+    paths:
+      - .github/workflows/apply-suvsoz5.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Patch Suvsoz-5
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              text = path.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one match, got {count}: {old[:120]}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          areas = Path('src/data/uz/tashkent/local-areas-verified.js')
+          replace_once(
+              areas,
+              "  derivedArea('suvsoz-4', 'Suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753, 900),",
+              "  derivedArea('suvsoz-4', 'Suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753, 900),\n  // City Council defines Suvsoz-5 wholly inside Mirishkor between Ohangaron, Husayn Boyqaro and Bektemir canal; use the current Mirishkor map center conservatively.\n  derivedArea('suvsoz-5', 'Suvsoz-5', 'uz:tashkent:bektemir', 41.255688, 69.368418, 1400),",
+          )
+
+          gaps = Path('src/coverage-gaps.js')
+          replace_once(
+              gaps,
+              "    'Manzara', 'Suvsoz-5', 'Shimoliy Olmazor-1', 'Shifokorlar-2', 'Shifokorlar-3', 'Shifokorlar-5', 'Shifokorlar-6', \"So'lim\", \"Sug'diyona\",",
+              "    'Manzara', 'Shimoliy Olmazor-1', 'Shifokorlar-2', 'Shifokorlar-3', 'Shifokorlar-5', 'Shifokorlar-6', \"So'lim\", \"Sug'diyona\",",
+          )
+
+          coverage = Path('test/tashkent-local-area-coverage.test.js')
+          replace_once(
+              coverage,
+              "  ['Suvsoz-4', 'uz:tashkent:local-area:suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753],",
+              "  ['Suvsoz-4', 'uz:tashkent:local-area:suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753],\n  ['Suvsoz-5', 'uz:tashkent:local-area:suvsoz-5', 'uz:tashkent:bektemir', 41.255688, 69.368418],",
+          )
+
+          semantics = Path('test/tashkent-semantics.test.js')
+          replace_once(
+              semantics,
+              "  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Suvsoz-5' }), true);",
+              "  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Suvsoz-5' }), false);",
+          )
+          PY
+      - run: npm install --ignore-scripts
+      - run: npm test
+      - run: npm run validate
+      - run: npm run audit:lexicon
+      - run: npm pack --dry-run
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/data/uz/tashkent/local-areas-verified.js src/coverage-gaps.js test/tashkent-local-area-coverage.test.js test/tashkent-semantics.test.js
+          if git diff --cached --quiet; then
+            echo "No Suvsoz-5 changes"
+            exit 0
+          fi
+          git commit -m 'data: resolve Suvsoz-5 approximate center'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
