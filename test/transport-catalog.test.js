@@ -68,14 +68,14 @@ test('bus coverage report separates registry metadata from terminal and full top
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
     total: 170,
     full: 0,
-    terminalsOnly: 20,
-    metadataOnly: 150,
+    terminalsOnly: 22,
+    metadataOnly: 148,
   });
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
     total: 174,
     full: 4,
-    terminalsOnly: 20,
-    metadataOnly: 150,
+    terminalsOnly: 22,
+    metadataOnly: 148,
   });
 });
 
@@ -94,6 +94,20 @@ test('routes 5 and 7 use verified locality terminal anchors', () => {
   assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:7')?.stopIds, [
     'uz:tashkent:stop:bus:yunusabad-10',
     'uz:tashkent:stop:bus:yunusabad-19',
+  ]);
+});
+
+test('routes 8 and 9T share the verified Chilanzar-25 locality anchor', () => {
+  const chilanzar25 = getTransportStop('uz:tashkent:stop:bus:chilanzar-25');
+  assert.deepEqual(chilanzar25?.osm, { type: 'node', id: 1866856603 });
+  assert.equal(chilanzar25?.accuracy, 'neighborhood');
+  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:8')?.stopIds, [
+    'uz:tashkent:stop:bus:sergeli-10',
+    'uz:tashkent:stop:bus:chilanzar-25',
+  ]);
+  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:9t')?.stopIds, [
+    'uz:tashkent:stop:bus:chilanzar-25',
+    'uz:tashkent:stop:bus:tashkent-railway-station',
   ]);
 });
 
@@ -256,10 +270,10 @@ test('Food City terminal is shared by routes 39, 93, 110 and 133', () => {
 });
 
 test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
-  assert.equal(TRANSPORT_STOPS.length, 69);
+  assert.equal(TRANSPORT_STOPS.length, 70);
 
   const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(busStops.length, 19);
+  assert.equal(busStops.length, 20);
   assert.equal(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.canonicalName, 'TTZ Bus Station');
   assert.deepEqual(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.osm, { type: 'way', id: 98599092 });
 
