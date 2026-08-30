@@ -1,0 +1,104 @@
+name: Apply second verified Tashkent local-area batch
+
+on:
+  push:
+    branches:
+      - data/tashkent-local-areas-2026-08-30
+    paths:
+      - .github/workflows/apply-tashkent-local-area-batch-2.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-tashkent-local-area-batch-2
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: data/tashkent-local-areas-2026-08-30
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Apply verified local-area batch
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              text = path.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected exactly one match, got {count}: {old[:120]}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          areas = Path('src/data/uz/tashkent/local-areas-verified.js')
+          replace_once(
+              areas,
+              "  // Approximate center from current map anchors on Fayzibaland-2 and Guruchariq-1, the official S-22/Guruchariq mavzesi bounds.\n  derivedArea('guruchariq', 'Guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304, 900),",
+              "  // Approximate center from current map anchors on Fayzibaland-2 and Guruchariq-1, the official S-22/Guruchariq mavzesi bounds.\n  derivedArea('guruchariq', 'Guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304, 900),\n  // 2025 City Council defines Minora mavzesi between Qorasaroy, Minora and Fayzibaland-1; center is the centroid of mapped boundary-street anchors.\n  derivedArea('minora', 'Minora', 'uz:tashkent:almazar', 41.34768, 69.242429, 800),\n  // 2025 City Council defines Muxbir mavzesi between Muxbir/Qoraqamish/Qoraqamish-4, Damashi canal and Qoraqamish-2/5; center is a conservative boundary-anchor centroid.\n  derivedArea('muxbir', 'Muxbir', 'uz:tashkent:almazar', 41.363531, 69.203296, 900),",
+          )
+          replace_once(
+              areas,
+              "  derivedArea('taraqqiyot-3', 'Taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708, 600),\n  osmArea('shifokorlar-1', 'Shifokorlar-1', 'uz:tashkent:almazar', 41.361, 69.18198, 'way', 149513658, 700),",
+              "  derivedArea('taraqqiyot-3', 'Taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708, 600),\n  // Official Tashkent reference confirms Taraqqiyot-4 as a distinct mavze; center uses a current mapped in-area address anchor.\n  derivedArea('taraqqiyot-4', 'Taraqqiyot-4', 'uz:tashkent:almazar', 41.352292, 69.238791, 700),\n  osmArea('shifokorlar-1', 'Shifokorlar-1', 'uz:tashkent:almazar', 41.361, 69.18198, 'way', 149513658, 700),",
+          )
+
+          gaps = Path('src/coverage-gaps.js')
+          replace_once(
+              gaps,
+              "    'Manzara','Takhtapul','Taxtapul','Suvsoz-5','Minora','Muxbir','Shimoliy Olmazor-1','Taraqqiyot-4','Shifokorlar-2','Shifokorlar-3','Shifokorlar-5','Shifokorlar-6',\"So'lim\", \"Sug'diyona\",",
+              "    'Manzara','Takhtapul','Taxtapul','Suvsoz-5','Shimoliy Olmazor-1','Shifokorlar-2','Shifokorlar-3','Shifokorlar-5','Shifokorlar-6',\"So'lim\", \"Sug'diyona\",",
+          )
+
+          coverage_test = Path('test/tashkent-local-area-coverage.test.js')
+          replace_once(
+              coverage_test,
+              "  ['Guruchariq', 'uz:tashkent:local-area:guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304],\n  ['Shimoliy Olmazor-2', 'uz:tashkent:local-area:shimoliy-olmazor-2', 'uz:tashkent:almazar', 41.351744, 69.255455],",
+              "  ['Guruchariq', 'uz:tashkent:local-area:guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304],\n  ['Minora', 'uz:tashkent:local-area:minora', 'uz:tashkent:almazar', 41.34768, 69.242429],\n  ['Muxbir', 'uz:tashkent:local-area:muxbir', 'uz:tashkent:almazar', 41.363531, 69.203296],\n  ['Shimoliy Olmazor-2', 'uz:tashkent:local-area:shimoliy-olmazor-2', 'uz:tashkent:almazar', 41.351744, 69.255455],",
+          )
+          replace_once(
+              coverage_test,
+              "  ['Taraqqiyot-3', 'uz:tashkent:local-area:taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708],\n  ['Beruniy-B1', 'uz:tashkent:local-area:beruniy-b1', 'uz:tashkent:almazar', 41.3324073, 69.2230774],",
+              "  ['Taraqqiyot-3', 'uz:tashkent:local-area:taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708],\n  ['Taraqqiyot-4', 'uz:tashkent:local-area:taraqqiyot-4', 'uz:tashkent:almazar', 41.352292, 69.238791],\n  ['Beruniy-B1', 'uz:tashkent:local-area:beruniy-b1', 'uz:tashkent:almazar', 41.3324073, 69.2230774],",
+          )
+
+          semantics = Path('test/tashkent-semantics.test.js')
+          replace_once(
+              semantics,
+              "  for (const canonical of ['Taraqqiyot-1', 'Taraqqiyot-2', 'Taraqqiyot-3']) {\n    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), false, canonical);\n  }\n  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taraqqiyot-4' }), true);",
+              "  for (const canonical of ['Taraqqiyot-1', 'Taraqqiyot-2', 'Taraqqiyot-3', 'Taraqqiyot-4']) {\n    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), false, canonical);\n    assert.notEqual(resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical })?.id, mahalla?.id, canonical);\n  }",
+          )
+          replace_once(
+              semantics,
+              "test('newly recorded same-name streets do not consume unresolved area identities', () => {",
+              "test('same-name streets remain independent from resolved area identities', () => {",
+          )
+          replace_once(
+              semantics,
+              "  for (const canonical of ['Muxbir', 'Minora']) {\n    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), true, canonical);\n  }",
+              "  for (const canonical of ['Muxbir', 'Minora']) {\n    const area = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical });\n    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), false, canonical);\n    assert.equal(area?.source, 'manual', canonical);\n    assert.equal(area?.osm, undefined, canonical);\n    assert.notEqual(area?.id, `uz:tashkent:street:${canonical.toLowerCase()}`, canonical);\n  }",
+          )
+          PY
+      - run: npm install --ignore-scripts
+      - run: npm test
+      - run: npm run validate
+      - run: npm run audit:lexicon
+      - run: npm pack --dry-run
+      - name: Commit verified batch
+        shell: bash
+        run: |
+          rm .github/workflows/apply-tashkent-local-area-batch-2.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "data: resolve three Tashkent local-area gaps"
+          git pull --rebase origin data/tashkent-local-areas-2026-08-30
+          git push origin HEAD:data/tashkent-local-areas-2026-08-30
