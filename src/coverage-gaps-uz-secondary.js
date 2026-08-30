@@ -20,7 +20,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Termez', 'local_area', ['Center','Old Termez','Northern Gate','University area','Alpomish',"Navro'z",'Qiziljar'], 'Termez local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Termez', 'poi', ['Old Termez','Amu Darya'], 'Termez landmark still needs a verified spatial match or natural-feature hierarchy.'),
 
-  ...gaps('Gulistan', 'local_area', ['Center','University area'], 'Gulistan local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Gulistan', 'local_area', ['Center'], 'Gulistan local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Chirchiq', 'microdistrict', ['5 microdistrict','6 microdistrict','7 microdistrict'], 'Chirchiq numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Chirchiq', 'local_area', ['Center','Yubileiny','Khimik','KhimGorodok','Mashinostroitel','Troitsky','Bochka','Olympic area'], 'Chirchiq local-area alias still needs a verified standalone spatial match.'),
