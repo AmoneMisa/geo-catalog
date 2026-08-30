@@ -78,7 +78,7 @@ if (tashkent.bbox) containsPoint(tashkent.center, tashkent.bbox);
 
 ## Transport catalog
 
-Public transport topology is exposed separately from `GEO_ENTITIES` through the `@whiteslove/geo-catalog/transport` subpath:
+Public transport topology is exposed separately from `GEO_ENTITIES` through:
 
 ```js
 import {
@@ -95,13 +95,13 @@ import {
 
 Routes explicitly declare topology coverage:
 
-- `full` — an ordered stop sequence is available and may be used for route traversal;
-- `terminals_only` — only verified endpoints are known, so `stopIds` must not be interpreted as a complete route sequence;
-- `metadata_only` — the route exists in the registry snapshot, but no spatial stop topology is asserted yet.
+- `full` — ordered stop sequence is available and may be used for route traversal;
+- `terminals_only` — only verified endpoints are known; do not treat `stopIds` as a full route sequence;
+- `metadata_only` — the route is present in the registry snapshot, but no spatial stop topology is asserted yet.
 
 `getRoutesForStop(stopId, { requireFullSequence: true })` excludes partial routes from A→B routing consumers.
 
-Tashkent metro stops are derived from canonical metro geo entities so their centers and provenance cannot drift independently. Bus endpoints reuse canonical geo entities whenever an exact semantic owner exists; standalone endpoints require explicit spatial provenance.
+The current Tashkent transport snapshot exposes 174 route objects total: 4 full metro routes, 17 bus routes with verified terminal topology, and 153 bus routes with registry metadata only. Tashkent metro stops are derived from the canonical metro geo entities so their centers and provenance cannot drift independently. Bus endpoints reuse canonical geo entities whenever an exact semantic owner exists; standalone endpoints require explicit spatial provenance, and approximate terminal anchors retain their real accuracy class instead of being presented as exact stop positions.
 
 ## Entity model
 
@@ -126,9 +126,17 @@ IDs are deliberately language-independent. Aliases such as `Чиланзар`, `
 
 ## Current coverage
 
-The catalog is continuously synchronized with canonical geography from `@whiteslove/parsing-lexicon`. It currently includes broad city coverage across Uzbekistan, Ukraine and Kazakhstan, detailed Tashkent administrative and semantic geography, verified metro stations, POIs, streets and other spatial anchors, plus explicit coverage-gap registries for lexicon entities that still need verified geometry.
+`0.2.x` synchronizes the canonical city layer used by the parser and establishes the first administrative layer:
 
-Public transport is maintained as a separate topology layer. For Tashkent, the current snapshot contains all 170 published city-bus route refs plus four metro routes. Fourteen bus routes currently have verified terminal topology, 156 remain metadata-only, and the four metro routes have full ordered stop topology. Bus routes are promoted only when the corresponding spatial evidence is verified.
+- Uzbekistan: all 15 canonical `UZ_CITIES`;
+- Kazakhstan: all 18 canonical `KZ_CITIES`;
+- Ukraine: all 30 canonical `UA_CITIES`;
+- Tashkent: all 12 canonical administrative districts;
+- total current catalog: 75 spatial entities.
+
+Tashkent's 12 districts include stored OSM administrative boundaries and boundary-derived representative centers. Consumers can render those polygons directly instead of approximating district extents with radius circles.
+
+The next spatial layers are Tashkent metro, microdistricts, mahallas, residential complexes and POIs, followed by detailed Uzbekistan, Ukraine and Kazakhstan city datasets. Those layers can be added without changing the public bridge/API.
 
 ## Lexicon coverage gate
 
@@ -138,9 +146,14 @@ Development CI installs the current `AmoneMisa/parsing-lexicon` and runs:
 npm run audit:lexicon
 ```
 
-The audit checks canonical parser geography against exact spatial owners and explicit coverage gaps. Compatible fallback resolution remains available to normal consumers, but it is not allowed to hide a type or parent mismatch during the coverage audit.
+The audit currently enforces complete coverage for:
 
-If parsing-lexicon introduces a canonical entity without either a matching spatial owner or an explicit tracked gap, CI fails and prints the missing canonical names. The parser package is a development-only audit dependency; `@whiteslove/geo-catalog` remains dependency-free for consumers.
+- `UZ_CITIES`;
+- `KZ_CITIES`;
+- `UA_CITIES`;
+- `TASHKENT_DISTRICTS`.
+
+If a new canonical parser city/district is added without a matching geo entity, CI fails and prints the missing canonical names. The parser package is a development-only audit dependency; `@whiteslove/geo-catalog` remains dependency-free for consumers.
 
 ## Data-quality rules
 
