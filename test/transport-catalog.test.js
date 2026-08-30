@@ -42,7 +42,7 @@ test('Tashkent metro routes preserve ordered station sequences', () => {
 
 test('route and interchange indexes support transfer-aware consumers', () => {
   const dostlik = 'uz:tashkent:stop:metro:dostlik';
-  assert.deepEqual(getRoutesForStop(dostlik).map((route) => route.ref), ["O'zbekiston"]);
+  assert.deepEqual(getRoutesForStop(dostlik).map((route) => route.ref), ["O'zbekiston", '22']);
 
   const transfers = getTransfersForStop(dostlik);
   assert.equal(transfers.length, 1);
@@ -68,14 +68,14 @@ test('bus coverage report separates registry metadata from terminal and full top
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
     total: 170,
     full: 0,
-    terminalsOnly: 7,
-    metadataOnly: 163,
+    terminalsOnly: 12,
+    metadataOnly: 158,
   });
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
     total: 174,
     full: 4,
-    terminalsOnly: 7,
-    metadataOnly: 163,
+    terminalsOnly: 12,
+    metadataOnly: 158,
   });
 });
 
@@ -130,6 +130,18 @@ test('routes 14 and 16 share verified railway and TTZ terminal points', () => {
   }
 });
 
+test('route 22 uses verified TSUM and Dostlik terminals', () => {
+  const tsum = getTransportStop('uz:tashkent:stop:bus:tashkent-tsum');
+  assert.deepEqual(tsum?.osm, { type: 'way', id: 31953937 });
+
+  const route22 = getTransportRoute('uz:tashkent:route:bus:22');
+  assert.equal(route22?.coverage, 'terminals_only');
+  assert.deepEqual(route22?.stopIds, [
+    'uz:tashkent:stop:bus:tashkent-tsum',
+    'uz:tashkent:stop:metro:dostlik',
+  ]);
+});
+
 test('route 23 reuses Farhod Bazaar and Chorsu metro terminal entities', () => {
   const route23 = getTransportRoute('uz:tashkent:route:bus:23');
   assert.equal(route23?.coverage, 'terminals_only');
@@ -142,11 +154,34 @@ test('route 23 reuses Farhod Bazaar and Chorsu metro terminal entities', () => {
   assert.equal(getTransportStop('uz:tashkent:stop:metro:chorsu')?.geoEntityId, 'uz:tashkent:metro:chorsu');
 });
 
+test('Food City terminal is shared by routes 39, 93, 110 and 133', () => {
+  const foodCity = getTransportStop('uz:tashkent:stop:bus:food-city');
+  assert.deepEqual(foodCity?.osm, { type: 'way', id: 825133525 });
+
+  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:39')?.stopIds, [
+    'uz:tashkent:stop:metro:tuzel',
+    'uz:tashkent:stop:bus:food-city',
+  ]);
+  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:93')?.stopIds, [
+    'uz:tashkent:stop:bus:food-city',
+    'uz:tashkent:stop:bus:yunusabad-9',
+  ]);
+  assert.equal(getTransportStop('uz:tashkent:stop:bus:yunusabad-9')?.geoEntityId, 'uz:tashkent:microdistrict:yunusabad-9');
+  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:110')?.stopIds, [
+    'uz:tashkent:stop:bus:food-city',
+    'uz:tashkent:stop:bus:ttz-bus-station',
+  ]);
+  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:133')?.stopIds, [
+    'uz:tashkent:stop:metro:chinor',
+    'uz:tashkent:stop:bus:food-city',
+  ]);
+});
+
 test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
-  assert.equal(TRANSPORT_STOPS.length, 58);
+  assert.equal(TRANSPORT_STOPS.length, 61);
 
   const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(busStops.length, 8);
+  assert.equal(busStops.length, 11);
   assert.equal(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.canonicalName, 'TTZ Bus Station');
   assert.deepEqual(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.osm, { type: 'way', id: 98599092 });
 
