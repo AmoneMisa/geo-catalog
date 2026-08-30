@@ -3,13 +3,19 @@ import {
   TASHKENT_METRO_STOPS,
   TASHKENT_METRO_TRANSFERS,
 } from './tashkent-metro.js';
+import {
+  TASHKENT_BUS_ROUTES,
+  TASHKENT_BUS_STOPS,
+} from './tashkent-bus.js';
 
 export const TRANSPORT_STOPS = Object.freeze([
   ...TASHKENT_METRO_STOPS,
+  ...TASHKENT_BUS_STOPS,
 ]);
 
 export const TRANSPORT_ROUTES = Object.freeze([
   ...TASHKENT_METRO_ROUTES,
+  ...TASHKENT_BUS_ROUTES,
 ]);
 
 export const TRANSPORT_TRANSFERS = Object.freeze([
@@ -37,18 +43,22 @@ export function findTransportStops(filters = {}) {
 }
 
 export function findTransportRoutes(filters = {}) {
-  const { country, cityId, mode, ref } = filters;
+  const { country, cityId, mode, ref, coverage } = filters;
   return TRANSPORT_ROUTES.filter((route) =>
     (!country || route.country === country) &&
     (!cityId || route.cityId === cityId) &&
     (!mode || route.mode === mode) &&
-    (!ref || route.ref === ref)
+    (!ref || route.ref === ref) &&
+    (!coverage || route.coverage === coverage)
   );
 }
 
-export function getRoutesForStop(stopId) {
+export function getRoutesForStop(stopId, options = {}) {
   const id = String(stopId || '');
-  return TRANSPORT_ROUTES.filter((route) => route.stopIds.includes(id));
+  const { requireFullSequence = false } = options;
+  return TRANSPORT_ROUTES.filter((route) =>
+    route.stopIds.includes(id) && (!requireFullSequence || route.coverage === 'full')
+  );
 }
 
 export function getStopsForRoute(routeId) {
@@ -86,9 +96,18 @@ export function validateTransportCatalog({
     else if (routeIds.has(route.id)) errors.push(`Duplicate transport route id: ${route.id}`);
     else routeIds.add(route.id);
 
-    if (!Array.isArray(route?.stopIds) || route.stopIds.length < 2) {
-      errors.push(`Transport route ${route?.id || '<unknown>'} must contain at least two stops.`);
+    if (!['full', 'terminals_only', 'metadata_only'].includes(route?.coverage)) {
+      errors.push(`Transport route ${route?.id || '<unknown>'} has invalid coverage.`);
+    }
+
+    if (!Array.isArray(route?.stopIds)) {
+      errors.push(`Transport route ${route?.id || '<unknown>'} must contain a stopIds array.`);
       continue;
+    }
+
+    const minimumStops = route.coverage === 'metadata_only' ? 0 : 2;
+    if (route.stopIds.length < minimumStops) {
+      errors.push(`Transport route ${route.id} needs at least ${minimumStops} stops for ${route.coverage} coverage.`);
     }
 
     for (const stopId of route.stopIds) {
