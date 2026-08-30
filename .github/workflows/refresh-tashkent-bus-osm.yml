@@ -12,9 +12,14 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: tashkent-bus-osm-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,4 +41,5 @@ jobs:
             exit 0
           fi
           git commit -m "data: refresh Tashkent bus OSM topology"
+          git pull --rebase origin data/tashkent-local-areas-2026-08-30
           git push origin HEAD:data/tashkent-local-areas-2026-08-30
