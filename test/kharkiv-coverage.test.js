@@ -51,6 +51,7 @@ test('Kharkiv listing areas based on stations and anchors reuse physical owners'
     ['Haharina', 'ua:kharkiv:metro:levada'],
     ['Metalist', 'ua:kharkiv:poi:metalist'],
     ['Karavan', 'ua:kharkiv:poi:karavan'],
+    ['Barabashovo', 'ua:kharkiv:poi:barabashovo-market'],
   ]);
 
   for (const [canonical, id] of expected) {
@@ -116,12 +117,19 @@ test('Kharkiv landmarks resolve through the generic POI bridge', () => {
   const expected = new Map([
     ['Shevchenko Garden', 'ua:kharkiv:poi:shevchenko-garden'],
     ['Central Park', 'ua:kharkiv:poi:central-park'],
+    ['Pokrovskyi Square', 'ua:kharkiv:poi:pokrovskyi-square'],
     ['Mirror Stream', 'ua:kharkiv:poi:mirror-stream'],
+    ['Pokrovskyi Monastery', 'ua:kharkiv:poi:pokrovskyi-monastery'],
     ['Historical Museum', 'ua:kharkiv:poi:historical-museum'],
+    ['Kharkiv Zoo', 'ua:kharkiv:poi:kharkiv-zoo'],
+    ['KhAI', 'ua:kharkiv:poi:khai'],
+    ['KhPI', 'ua:kharkiv:poi:khpi'],
+    ['KhNURE', 'ua:kharkiv:poi:khnure'],
     ['Metalist', 'ua:kharkiv:poi:metalist'],
     ['Nikolsky', 'ua:kharkiv:poi:nikolsky'],
     ['Ave Plaza', 'ua:kharkiv:poi:ave-plaza'],
     ['Dafi', 'ua:kharkiv:poi:dafi'],
+    ['Barabashovo Market', 'ua:kharkiv:poi:barabashovo-market'],
     ['Kharkiv-Pasazhyrskyi Station', 'ua:kharkiv:poi:kharkiv-pasazhyrskyi'],
   ]);
 
@@ -138,6 +146,11 @@ test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:524-mikroraion')?.center, { lat: 50.02668, lng: 36.34518 });
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:skhidnyi')?.source, 'geonames');
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:dafi')?.osm, { type: 'way', id: 89761454 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.osm, { type: 'way', id: 89433884 });
+  assert.equal(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.type, 'poi.market');
+  assert.equal(getGeoEntity('ua:kharkiv:poi:kharkiv-zoo')?.wikidataId, 'Q4496313');
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:kharkiv-zoo')?.osm, { type: 'way', id: 33651304 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:khnure')?.osm, { type: 'way', id: 105835020 });
   assert.equal(getGeoEntity('ua:kharkiv:residential:kliuch')?.accuracy, 'building');
   assert.deepEqual(getGeoEntity('ua:kharkiv:street:heroiv-kharkova-avenue')?.osm, { type: 'relation', id: 1295889 });
 });
