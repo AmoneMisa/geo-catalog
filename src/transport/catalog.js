@@ -34,6 +34,39 @@ const variantsById = new Map(TRANSPORT_ROUTE_VARIANTS.map((variant) => [variant.
 const EARTH_RADIUS_M = 6_371_000;
 const toRadians = (degrees) => (degrees * Math.PI) / 180;
 
+function isValidCoordinate(center) {
+  return center &&
+    Number.isFinite(center.lat) &&
+    Number.isFinite(center.lng) &&
+    center.lat >= -90 && center.lat <= 90 &&
+    center.lng >= -180 && center.lng <= 180;
+}
+
+function isValidBounds(bounds) {
+  if (!bounds) return false;
+  const { west, south, east, north } = bounds;
+  return [west, south, east, north].every(Number.isFinite) &&
+    west >= -180 && east <= 180 && south >= -90 && north <= 90 &&
+    west <= east && south <= north;
+}
+
+const pointInsideBounds = (point, bounds) =>
+  point.lng >= bounds.west && point.lng <= bounds.east &&
+  point.lat >= bounds.south && point.lat <= bounds.north;
+
+const boundsIntersect = (a, b) =>
+  a.west <= b.east && a.east >= b.west &&
+  a.south <= b.north && a.north >= b.south;
+
+const geometryOwnerIntersectsBounds = (owner, bounds) =>
+  !bounds || (isValidBounds(owner?.bounds) && boundsIntersect(owner.bounds, bounds));
+
+const routeIntersectsBounds = (route, bounds) => {
+  if (!bounds) return true;
+  if (geometryOwnerIntersectsBounds(route, bounds)) return true;
+  return route.variants?.some((variant) => geometryOwnerIntersectsBounds(variant, bounds)) ?? false;
+};
+
 export function transportDistanceM(a, b) {
   if (!isValidCoordinate(a) || !isValidCoordinate(b)) return Number.POSITIVE_INFINITY;
   const dLat = toRadians(b.lat - a.lat);
@@ -59,32 +92,39 @@ export function getTransportRouteVariant(id) {
 }
 
 export function findTransportStops(filters = {}) {
-  const { country, cityId, mode } = filters;
+  const { country, cityId, mode, bounds } = filters;
+  if (bounds != null && !isValidBounds(bounds)) return [];
   return TRANSPORT_STOPS.filter((stop) =>
     (!country || stop.country === country) &&
     (!cityId || stop.cityId === cityId) &&
-    (!mode || stop.mode === mode)
+    (!mode || stop.mode === mode) &&
+    (!bounds || pointInsideBounds(stop.center, bounds))
   );
 }
 
 export function findTransportRoutes(filters = {}) {
-  const { country, cityId, mode, ref, coverage } = filters;
+  const { country, cityId, mode, ref, coverage, bounds } = filters;
+  if (bounds != null && !isValidBounds(bounds)) return [];
   return TRANSPORT_ROUTES.filter((route) =>
     (!country || route.country === country) &&
     (!cityId || route.cityId === cityId) &&
     (!mode || route.mode === mode) &&
     (!ref || route.ref === ref) &&
-    (!coverage || route.coverage === coverage)
+    (!coverage || route.coverage === coverage) &&
+    routeIntersectsBounds(route, bounds)
   );
 }
 
 export function findTransportRouteVariants(filters = {}) {
-  const { country, cityId, mode, ref } = filters;
+  const { country, cityId, mode, ref, bounds, hasGeometry } = filters;
+  if (bounds != null && !isValidBounds(bounds)) return [];
   return TRANSPORT_ROUTE_VARIANTS.filter((variant) =>
     (!country || variant.country === country) &&
     (!cityId || variant.cityId === cityId) &&
     (!mode || variant.mode === mode) &&
-    (!ref || variant.ref === ref)
+    (!ref || variant.ref === ref) &&
+    (hasGeometry == null || Boolean(variant.geometry) === Boolean(hasGeometry)) &&
+    geometryOwnerIntersectsBounds(variant, bounds)
   );
 }
 
@@ -194,16 +234,44 @@ const routeGeometryFeature = (route, variant = null) => {
   });
 };
 
-export function getTransportRouteGeoJSON(routeId) {
+export function getTransportRouteGeoJSON(routeId, options = {}) {
   const route = getTransportRoute(routeId);
   if (!route) return emptyFeatureCollection();
+  const { bounds } = options;
+  if (bounds != null && !isValidBounds(bounds)) return emptyFeatureCollection();
 
   const features = [];
-  const routeFeature = routeGeometryFeature(route);
-  if (routeFeature) features.push(routeFeature);
+  if (geometryOwnerIntersectsBounds(route, bounds)) {
+    const routeFeature = routeGeometryFeature(route);
+    if (routeFeature) features.push(routeFeature);
+  }
   for (const variant of route.variants ?? []) {
+    if (!geometryOwnerIntersectsBounds(variant, bounds)) continue;
     const feature = routeGeometryFeature(route, variant);
     if (feature) features.push(feature);
+  }
+
+  return Object.freeze({
+    type: 'FeatureCollection',
+    features: Object.freeze(features),
+  });
+}
+
+export function getTransportRoutesGeoJSON(filters = {}) {
+  const { bounds } = filters;
+  if (bounds != null && !isValidBounds(bounds)) return emptyFeatureCollection();
+
+  const features = [];
+  for (const route of findTransportRoutes(filters)) {
+    if (geometryOwnerIntersectsBounds(route, bounds)) {
+      const routeFeature = routeGeometryFeature(route);
+      if (routeFeature) features.push(routeFeature);
+    }
+    for (const variant of route.variants ?? []) {
+      if (!geometryOwnerIntersectsBounds(variant, bounds)) continue;
+      const feature = routeGeometryFeature(route, variant);
+      if (feature) features.push(feature);
+    }
   }
 
   return Object.freeze({
@@ -234,13 +302,6 @@ export function getTransportStopsGeoJSON(filters = {}) {
   });
 }
 
-const isValidCoordinate = (center) =>
-  center &&
-  Number.isFinite(center.lat) &&
-  Number.isFinite(center.lng) &&
-  center.lat >= -90 && center.lat <= 90 &&
-  center.lng >= -180 && center.lng <= 180;
-
 const isValidLngLat = (position) =>
   Array.isArray(position) &&
   position.length >= 2 &&
@@ -267,11 +328,8 @@ function validateRouteGeometry(owner, errors) {
     }
   }
 
-  if (owner.bounds) {
-    const { west, south, east, north } = owner.bounds;
-    if (![west, south, east, north].every(Number.isFinite) || west < -180 || east > 180 || south < -90 || north > 90 || west > east || south > north) {
-      errors.push(`Transport geometry owner ${owner.id} has invalid bounds.`);
-    }
+  if (owner.bounds && !isValidBounds(owner.bounds)) {
+    errors.push(`Transport geometry owner ${owner.id} has invalid bounds.`);
   }
 }
 
