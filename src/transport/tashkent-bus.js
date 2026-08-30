@@ -52,6 +52,14 @@ export const TASHKENT_BUS_STOPS = Object.freeze([
     accuracy: 'neighborhood',
     accuracyM: 650,
   }),
+  stop('feruza', 'Feruza', 41.35561, 69.36388, 'node', 10938027477, {
+    accuracy: 'neighborhood',
+    accuracyM: 700,
+  }),
+  stop('yunusabad-10', 'Yunusabad-10', 41.38072, 69.28385, 'node', 1866983397, {
+    accuracy: 'neighborhood',
+    accuracyM: 600,
+  }),
   stopFromGeo('yunusabad-17', 'Yunusabad-17', 'uz:tashkent:microdistrict:yunusabad-17'),
   stopFromGeo('yunusabad-19', 'Yunusabad-19', 'uz:tashkent:microdistrict:yunusabad-19'),
   stopFromGeo('yunusabad-9', 'Yunusabad-9', 'uz:tashkent:microdistrict:yunusabad-9'),
@@ -100,9 +108,17 @@ const terminalRoute = (ref, sourceUpdatedAt, terminalNames, stopIds) => Object.f
 });
 
 const enrichedRoutes = new Map([
+  ['5', terminalRoute('5', '2026-08-18', ['Feruza', 'Chorsu'], [
+    'uz:tashkent:stop:bus:feruza',
+    'uz:tashkent:stop:metro:chorsu',
+  ])],
   ['6', terminalRoute('6', '2026-08-08', ['Yunusabad-17', 'Yunusabad-6'], [
     'uz:tashkent:stop:bus:yunusabad-17',
     'uz:tashkent:stop:bus:yunusabad-6',
+  ])],
+  ['7', terminalRoute('7', '2026-08-18', ['Yunusabad-10', 'Yunusabad-19'], [
+    'uz:tashkent:stop:bus:yunusabad-10',
+    'uz:tashkent:stop:bus:yunusabad-19',
   ])],
   ['12', terminalRoute('12', '2026-08-08', ['Kuyluk Bazaar', 'Tashkent International Airport'], [
     'uz:tashkent:stop:bus:kuyluk-bazaar',
