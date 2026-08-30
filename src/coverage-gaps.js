@@ -11,7 +11,7 @@ const gaps = (country, city, type, canonicals, reason) => canonicals.map((canoni
 export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Tashkent', 'microdistrict', ['Manzara'], 'Official Tashkent microdistrict name, but no independently verifiable standalone OSM object or boundary was found.'),
   ...gaps('UZ', 'Tashkent', 'mahalla', [
-    'Ahmad Yugnakiy', 'Humoyun', "Bog'ko'cha", 'Gulobod', 'Qalqon', "Bog'bon", 'Shifokorlar', "Chamanbog'", 'Asalobod', "Sug'diyona", 'Olimpiya', 'Sebzor', 'Yangi Choshtepa', 'Traktorsozlar',
+    'Ahmad Yugnakiy', 'Humoyun', "Bog'ko'cha", 'Gulobod', 'Qalqon', "Bog'bon", 'Shifokorlar', "Chamanbog'", 'Asalobod', 'Olimpiya', 'Sebzor', 'Yangi Choshtepa', 'Traktorsozlar',
   ], 'Official mahalla name from the lexicon; no independently verified spatial object or boundary is available yet.'),
   ...gaps('UZ', 'Tashkent', 'local_area', [
     'Suvsoz-5', 'Shimoliy Olmazor-1', 'Shifokorlar-2', 'Shifokorlar-3', 'Shifokorlar-5', 'Shifokorlar-6', "So'lim", "Sug'diyona",
