@@ -168,12 +168,112 @@ export function getTransportCoverage(filters = {}) {
   });
 }
 
+const emptyFeatureCollection = () => Object.freeze({
+  type: 'FeatureCollection',
+  features: Object.freeze([]),
+});
+
+const routeGeometryFeature = (route, variant = null) => {
+  const owner = variant ?? route;
+  if (!owner.geometry) return null;
+  return Object.freeze({
+    type: 'Feature',
+    id: owner.id,
+    geometry: owner.geometry,
+    properties: Object.freeze({
+      id: owner.id,
+      routeId: route.id,
+      mode: route.mode,
+      ref: route.ref ?? null,
+      canonicalName: owner.canonicalName,
+      variantIndex: variant?.variantIndex ?? null,
+      from: variant?.from ?? null,
+      to: variant?.to ?? null,
+      osmRelationId: owner.osm?.type === 'relation' ? owner.osm.id : null,
+    }),
+  });
+};
+
+export function getTransportRouteGeoJSON(routeId) {
+  const route = getTransportRoute(routeId);
+  if (!route) return emptyFeatureCollection();
+
+  const features = [];
+  const routeFeature = routeGeometryFeature(route);
+  if (routeFeature) features.push(routeFeature);
+  for (const variant of route.variants ?? []) {
+    const feature = routeGeometryFeature(route, variant);
+    if (feature) features.push(feature);
+  }
+
+  return Object.freeze({
+    type: 'FeatureCollection',
+    features: Object.freeze(features),
+  });
+}
+
+export function getTransportStopsGeoJSON(filters = {}) {
+  return Object.freeze({
+    type: 'FeatureCollection',
+    features: Object.freeze(findTransportStops(filters).map((stop) => Object.freeze({
+      type: 'Feature',
+      id: stop.id,
+      geometry: Object.freeze({
+        type: 'Point',
+        coordinates: Object.freeze([stop.center.lng, stop.center.lat]),
+      }),
+      properties: Object.freeze({
+        id: stop.id,
+        canonicalName: stop.canonicalName,
+        mode: stop.mode,
+        geoEntityId: stop.geoEntityId ?? null,
+        osmType: stop.osm?.type ?? null,
+        osmId: stop.osm?.id ?? null,
+      }),
+    }))),
+  });
+}
+
 const isValidCoordinate = (center) =>
   center &&
   Number.isFinite(center.lat) &&
   Number.isFinite(center.lng) &&
   center.lat >= -90 && center.lat <= 90 &&
   center.lng >= -180 && center.lng <= 180;
+
+const isValidLngLat = (position) =>
+  Array.isArray(position) &&
+  position.length >= 2 &&
+  Number.isFinite(position[0]) &&
+  Number.isFinite(position[1]) &&
+  position[0] >= -180 && position[0] <= 180 &&
+  position[1] >= -90 && position[1] <= 90;
+
+function validateRouteGeometry(owner, errors) {
+  if (!owner?.geometry && !owner?.bounds) return;
+  if (!owner?.geometry) {
+    errors.push(`Transport geometry owner ${owner?.id || '<unknown>'} has bounds without geometry.`);
+    return;
+  }
+  if (owner.geometry.type !== 'MultiLineString' || !Array.isArray(owner.geometry.coordinates) || !owner.geometry.coordinates.length) {
+    errors.push(`Transport geometry owner ${owner?.id || '<unknown>'} must contain a non-empty MultiLineString.`);
+    return;
+  }
+
+  for (const segment of owner.geometry.coordinates) {
+    if (!Array.isArray(segment) || segment.length < 2 || segment.some((position) => !isValidLngLat(position))) {
+      errors.push(`Transport geometry owner ${owner.id} contains an invalid line segment.`);
+      break;
+    }
+  }
+
+  if (owner.bounds) {
+    const { west, south, east, north } = owner.bounds;
+    if (![west, south, east, north].every(Number.isFinite) || west < -180 || east > 180 || south < -90 || north > 90 || west > east || south > north) {
+      errors.push(`Transport geometry owner ${owner.id} has invalid bounds.`);
+    }
+  }
+}
 
 export function validateTransportCatalog({
   stops = TRANSPORT_STOPS,
@@ -204,6 +304,8 @@ export function validateTransportCatalog({
       errors.push(`Transport route ${route?.id || '<unknown>'} has invalid coverage.`);
     }
 
+    validateRouteGeometry(route, errors);
+
     if (!Array.isArray(route?.stopIds)) {
       errors.push(`Transport route ${route?.id || '<unknown>'} must contain a stopIds array.`);
       continue;
@@ -232,6 +334,7 @@ export function validateTransportCatalog({
       if (variant.ref !== route.ref) {
         errors.push(`Transport route variant ${variant.id} ref does not match route ${route.id}.`);
       }
+      validateRouteGeometry(variant, errors);
       if (!Array.isArray(variant.stopIds) || variant.stopIds.length < 2) {
         errors.push(`Transport route variant ${variant.id} needs at least 2 stops.`);
         continue;
