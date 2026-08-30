@@ -58,4 +58,15 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     osm: { type: 'way', id: 167449168 },
     wikidataId: 'Q12821481',
   },
+  {
+    id: 'uz:shakhrisabz:local-area:old-city',
+    type: 'local_area',
+    country: 'UZ',
+    canonicalName: 'Old City',
+    parentId: 'uz:shakhrisabz',
+    center: { lat: 39.05, lng: 66.83333 },
+    source: 'official',
+    accuracy: 'approximate',
+    accuracyM: 1200,
+  },
 ]);
