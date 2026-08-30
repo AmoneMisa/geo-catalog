@@ -128,6 +128,7 @@ test('Kharkiv landmarks resolve through the generic POI bridge', () => {
     ['Zelenyi Hai', 'ua:kharkiv:poi:zelenyi-hai'],
     ['Karpivskyi Garden', 'ua:kharkiv:poi:karpivskyi-garden'],
     ['Pokrovskyi Square', 'ua:kharkiv:poi:pokrovskyi-square'],
+    ['Derzhprom', 'ua:kharkiv:poi:derzhprom'],
     ['Mirror Stream', 'ua:kharkiv:poi:mirror-stream'],
     ['Pokrovskyi Monastery', 'ua:kharkiv:poi:pokrovskyi-monastery'],
     ['Historical Museum', 'ua:kharkiv:poi:historical-museum'],
@@ -159,6 +160,7 @@ test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:524-mikroraion')?.center, { lat: 50.02668, lng: 36.34518 });
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:skhidnyi')?.source, 'geonames');
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:sarzhyn-yar')?.osm, { type: 'way', id: 33770366 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:derzhprom')?.osm, { type: 'node', id: 1985548330 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:dafi')?.osm, { type: 'way', id: 89761454 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.osm, { type: 'way', id: 89433884 });
   assert.equal(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.type, 'poi.market');
