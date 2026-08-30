@@ -26,9 +26,9 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Chirchiq', 'local_area', ['Center','Yubileiny','Khimik','KhimGorodok','Mashinostroitel','Troitsky','Bochka','Olympic area'], 'Chirchiq local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Chirchiq', 'poi', ['Chirchiq River'], 'Regional natural feature is intentionally not parented to Chirchiq city until natural-feature hierarchy is modeled.'),
 
-  ...gaps('Kokand', 'local_area', ['Center','Old City','Khudoyar Khan area','Orda','Chorsu','Dangara Road'], 'Kokand local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Kokand', 'local_area', ['Center','Old City','Orda','Chorsu','Dangara Road'], 'Kokand local-area alias still needs a verified standalone spatial match.'),
 
-  ...gaps('Margilan', 'local_area', ['Center','Old City','Kumtepa','Yodgorlik','Atlas'], 'Margilan local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Margilan', 'local_area', ['Center','Old City','Atlas'], 'Margilan local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Almalyk', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict'], 'Almalyk numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Almalyk', 'local_area', ['Center','Old City','New City','Metallurg','Sports Palace area','Railway Station area'], 'Almalyk local-area alias still needs a verified standalone spatial match.'),
@@ -39,7 +39,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Bekabad', 'local_area', ['Center','Metallurg','Tsementnik','Vodnik','Syrdarya','Farhod'], 'Bekabad local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Bekabad', 'poi', ['Farhod HPP'], 'Cross-border power infrastructure is intentionally not parented to Bekabad until infrastructure/region hierarchy is modeled.'),
 
-  ...gaps('Shakhrisabz', 'local_area', ['Center','Old City','Oqsaroy','Amir Temur','Kitob direction','Railway Station area'], 'Shakhrisabz local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Shakhrisabz', 'local_area', ['Center','Old City','Amir Temur','Kitob direction','Railway Station area'], 'Shakhrisabz local-area alias still needs a verified standalone spatial match.'),
 
   ...gaps('Khiva', 'local_area', ['Old City','New City'], 'Khiva local-area alias still needs a verified standalone spatial match.'),
 ].map(Object.freeze));
