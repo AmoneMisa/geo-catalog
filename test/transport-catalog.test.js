@@ -64,28 +64,42 @@ test('Tashkent bus snapshot contains all 170 route refs known after route 79 lau
   assert.equal(getTransportRoute('uz:tashkent:route:bus:4'), null);
 });
 
-test('bus coverage report separates registry metadata from routable topology', () => {
+test('bus coverage report separates registry metadata from terminal and full topology', () => {
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
     total: 170,
     full: 0,
-    terminalsOnly: 1,
-    metadataOnly: 169,
+    terminalsOnly: 2,
+    metadataOnly: 168,
   });
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
     total: 174,
     full: 4,
-    terminalsOnly: 1,
-    metadataOnly: 169,
+    terminalsOnly: 2,
+    metadataOnly: 168,
   });
 });
 
+test('route 6 reuses verified Yunusabad geo entities as terminal points', () => {
+  const route6 = getTransportRoute('uz:tashkent:route:bus:6');
+  assert.equal(route6?.coverage, 'terminals_only');
+  assert.equal(route6?.sourceUpdatedAt, '2026-08-08');
+  assert.deepEqual(route6?.terminalNames, ['Yunusabad-17', 'Yunusabad-6']);
+
+  const stops = getStopsForRoute(route6.id);
+  assert.deepEqual(stops.map((stop) => stop.geoEntityId), [
+    'uz:tashkent:microdistrict:yunusabad-17',
+    'uz:tashkent:microdistrict:yunusabad-6',
+  ]);
+  assert.deepEqual(stops.map((stop) => stop.osm?.id), [1866983401, 1867002805]);
+});
+
 test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
-  assert.equal(TRANSPORT_STOPS.length, 51);
+  assert.equal(TRANSPORT_STOPS.length, 53);
 
   const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(busStops.length, 1);
-  assert.equal(busStops[0].canonicalName, 'TTZ Bus Station');
-  assert.deepEqual(busStops[0].osm, { type: 'way', id: 98599092 });
+  assert.equal(busStops.length, 3);
+  assert.equal(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.canonicalName, 'TTZ Bus Station');
+  assert.deepEqual(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.osm, { type: 'way', id: 98599092 });
 
   const route79 = getTransportRoute('uz:tashkent:route:bus:79');
   assert.equal(route79?.coverage, 'terminals_only');
