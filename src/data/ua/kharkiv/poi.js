@@ -43,6 +43,7 @@ export const UA_KHARKIV_POI_ENTITIES = Object.freeze([
   }),
   osmPoi('pokrovskyi-square', 'Pokrovskyi Square', 'park', 49.99117, 36.22881, 'way', 1361688576, 140),
   osmPoi('strilka', 'Strilka', 'square', 49.98681, 36.22595, 'way', 33780052, 160),
+  osmPoi('derzhprom', 'Derzhprom', 'landmark', 50.00740, 36.22587, 'node', 1985548330, 180),
   osmPoi('mirror-stream', 'Mirror Stream', 'landmark', 49.99867, 36.23445, 'way', 1347563546, 80),
   osmPoi('annunciation-cathedral', 'Annunciation Cathedral', 'cathedral', 49.99056, 36.22400, 'way', 1341861572, 100),
   osmPoi('pokrovskyi-monastery', 'Pokrovskyi Monastery', 'religious_complex', 49.99206, 36.22911, 'way', 34896283, 150),
