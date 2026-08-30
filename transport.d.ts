@@ -91,11 +91,24 @@ export interface TransportCoverageSummary {
   metadataOnly: number;
 }
 
+export interface NearestTransportStopResult {
+  stop: Readonly<TransportStop>;
+  distanceM: number;
+  routeRefs: readonly string[];
+}
+
+export interface NearestTransportStopOptions extends TransportFilters {
+  maxDistanceM?: number;
+  limit?: number;
+  includeRoutes?: boolean;
+}
+
 export const TRANSPORT_STOPS: readonly Readonly<TransportStop>[];
 export const TRANSPORT_ROUTES: readonly Readonly<TransportRoute>[];
 export const TRANSPORT_ROUTE_VARIANTS: readonly Readonly<TransportRouteVariant>[];
 export const TRANSPORT_TRANSFERS: readonly Readonly<TransportTransfer>[];
 
+export function transportDistanceM(a: TransportPoint, b: TransportPoint): number;
 export function getTransportStop(id: string): Readonly<TransportStop> | null;
 export function getTransportRoute(id: string): Readonly<TransportRoute> | null;
 export function getTransportRouteVariant(id: string): Readonly<TransportRouteVariant> | null;
@@ -103,6 +116,7 @@ export function findTransportStops(filters?: TransportFilters): readonly Readonl
 export function findTransportRoutes(filters?: TransportRouteFilters): readonly Readonly<TransportRoute>[];
 export function findTransportRouteVariants(filters?: TransportFilters & { ref?: string }): readonly Readonly<TransportRouteVariant>[];
 export function getRoutesForStop(stopId: string, options?: { requireFullSequence?: boolean }): readonly Readonly<TransportRoute>[];
+export function nearestTransportStops(point: TransportPoint, options?: NearestTransportStopOptions): readonly Readonly<NearestTransportStopResult>[];
 export function getStopsForRoute(routeId: string): readonly Readonly<TransportStop>[];
 export function getRouteVariants(routeId: string): readonly Readonly<TransportRouteVariant>[];
 export function getStopsForRouteVariant(routeId: string, variantId: string | number): readonly Readonly<TransportStop>[];
