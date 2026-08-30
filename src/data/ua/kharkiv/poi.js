@@ -60,6 +60,10 @@ export const UA_KHARKIV_POI_ENTITIES = Object.freeze([
     sourceUrl: 'https://novobudovy.com/ru/novobudovy/torgovo-rozvazhalnij-centr-francuzkij-bulvar-m-harkiv',
   }),
   osmPoi('barabashovo-market', 'Barabashovo Market', 'market', 50.00428, 36.30141, 'way', 89433884, 350),
+  poi('sumskyi-market', 'Sumskyi Market', 'market', 50.011593, 36.23866, 180, {
+    source: 'manual',
+    sourceUrl: 'https://novobudovy.com/uk/torhovi-tsentry-kharkova/tc-sumskij-rinok-m-harkiv-vul',
+  }),
   osmPoi('kharkiv-pasazhyrskyi', 'Kharkiv-Pasazhyrskyi Station', 'railway_station', 49.98924, 36.20443, 'way', 255940475, 140),
   poi('kharkiv-zoo', 'Kharkiv Zoo', 'zoo', 50.002778, 36.225, 250, {
     source: 'wikidata',
