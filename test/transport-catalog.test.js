@@ -12,7 +12,7 @@ import {
   getTransportRoute,
   getTransportStop,
   validateTransportCatalog,
-} from '../src/index.js';
+} from '../src/transport/catalog.js';
 
 test('transport catalog passes invariants', () => {
   assert.deepEqual(validateTransportCatalog(), { valid: true, errors: [] });
