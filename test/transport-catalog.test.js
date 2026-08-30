@@ -68,14 +68,14 @@ test('bus coverage report separates registry metadata from terminal and full top
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
     total: 170,
     full: 0,
-    terminalsOnly: 4,
-    metadataOnly: 166,
+    terminalsOnly: 6,
+    metadataOnly: 164,
   });
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
     total: 174,
     full: 4,
-    terminalsOnly: 4,
-    metadataOnly: 166,
+    terminalsOnly: 6,
+    metadataOnly: 164,
   });
 });
 
@@ -91,6 +91,28 @@ test('route 6 reuses verified Yunusabad geo entities as terminal points', () => 
     'uz:tashkent:microdistrict:yunusabad-6',
   ]);
   assert.deepEqual(stops.map((stop) => stop.osm?.id), [1866983401, 1867002805]);
+});
+
+test('routes 12 and 67 share verified Tashkent airport terminal', () => {
+  const airport = getTransportStop('uz:tashkent:stop:bus:tashkent-international-airport');
+  assert.deepEqual(airport?.osm, { type: 'relation', id: 12345328 });
+  assert.equal(airport?.wikidataId, 'Q860952');
+
+  const route12 = getTransportRoute('uz:tashkent:route:bus:12');
+  assert.equal(route12?.coverage, 'terminals_only');
+  assert.deepEqual(route12?.stopIds, [
+    'uz:tashkent:stop:bus:kuyluk-bazaar',
+    'uz:tashkent:stop:bus:tashkent-international-airport',
+  ]);
+  assert.equal(getTransportStop('uz:tashkent:stop:bus:kuyluk-bazaar')?.geoEntityId, 'uz:tashkent:poi:kuyluk-bazaar');
+
+  const route67 = getTransportRoute('uz:tashkent:route:bus:67');
+  assert.equal(route67?.coverage, 'terminals_only');
+  assert.deepEqual(route67?.stopIds, [
+    'uz:tashkent:stop:bus:yunusabad-19',
+    'uz:tashkent:stop:bus:tashkent-international-airport',
+  ]);
+  assert.equal(getTransportStop('uz:tashkent:stop:bus:yunusabad-19')?.geoEntityId, 'uz:tashkent:microdistrict:yunusabad-19');
 });
 
 test('routes 14 and 16 share verified railway and TTZ terminal points', () => {
@@ -109,10 +131,10 @@ test('routes 14 and 16 share verified railway and TTZ terminal points', () => {
 });
 
 test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
-  assert.equal(TRANSPORT_STOPS.length, 54);
+  assert.equal(TRANSPORT_STOPS.length, 57);
 
   const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(busStops.length, 4);
+  assert.equal(busStops.length, 7);
   assert.equal(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.canonicalName, 'TTZ Bus Station');
   assert.deepEqual(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.osm, { type: 'way', id: 98599092 });
 
