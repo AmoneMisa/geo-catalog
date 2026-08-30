@@ -61,6 +61,7 @@ export const TASHKENT_BUS_STOPS = Object.freeze([
   stopFromGeo('farhod-bazaar', 'Farhod Bazaar', 'uz:tashkent:poi:farhod-bazaar'),
   stopFromGeo('geofizika', 'Geofizika', 'uz:tashkent:local-area:geofizika'),
   stopFromGeo('medgorodok', 'Medgorodok', 'uz:tashkent:local-area:medgorodok'),
+  stopFromGeo('aviasozlar', 'Aviasozlar', 'uz:tashkent:microdistrict:aviasozlar'),
 ]);
 
 export const TASHKENT_BUS_ROUTE_REFS_2026_08_18 = Object.freeze([
@@ -142,6 +143,10 @@ const enrichedRoutes = new Map([
   ['40', terminalRoute('40', '2026-08-18', ['Sergeli-12', 'Tashkent Railway Station'], [
     'uz:tashkent:stop:bus:sergeli-12',
     'uz:tashkent:stop:bus:tashkent-railway-station',
+  ])],
+  ['44', terminalRoute('44', '2026-08-18', ['Aviasozlar', 'Chorsu'], [
+    'uz:tashkent:stop:bus:aviasozlar',
+    'uz:tashkent:stop:metro:chorsu',
   ])],
   ['45', terminalRoute('45', '2026-08-18', ['Kushbegi', 'Kuyluk Bazaar'], [
     'uz:tashkent:stop:bus:kushbegi',
