@@ -8,6 +8,7 @@ const OVERPASS_URLS = (process.env.OVERPASS_URLS || [
   'https://overpass.kumi.systems/api/interpreter',
   'https://overpass.nchc.org.tw/api/interpreter',
 ].join(',')).split(',').map((value) => value.trim()).filter(Boolean);
+const OSM_API_URL = process.env.OSM_API_URL || 'https://api.openstreetmap.org/api/0.6';
 const SOURCE_DATE = new Date().toISOString().slice(0, 10);
 const BATCH_SIZE = 6;
 const OUTPUT_PARTS = 3;
@@ -80,6 +81,43 @@ async function fetchFromEndpoint(endpoint, ids, attempt) {
   }
 }
 
+async function fetchRelationFromOsmApi(relationId) {
+  const response = await fetch(`${OSM_API_URL}/relation/${relationId}/full.json`, {
+    headers: {
+      accept: 'application/json',
+      'user-agent': '@whiteslove/geo-catalog transport refresh',
+    },
+  });
+  if (!response.ok) throw new Error(`OSM API ${response.status}`);
+
+  const payload = await response.json();
+  const elements = payload.elements || [];
+  const relation = elements.find((element) => element.type === 'relation' && element.id === relationId);
+  if (!relation) throw new Error('relation missing from OSM full response');
+
+  const nodes = new Map(
+    elements
+      .filter((element) => element.type === 'node' && Number.isFinite(element.lat) && Number.isFinite(element.lon))
+      .map((node) => [node.id, { lat: node.lat, lon: node.lon }]),
+  );
+  const ways = new Map(
+    elements
+      .filter((element) => element.type === 'way')
+      .map((way) => [way.id, way]),
+  );
+
+  return {
+    ...relation,
+    members: (relation.members || []).map((member) => {
+      if (member.type !== 'way') return member;
+      const way = ways.get(member.ref);
+      if (!way?.nodes?.length) return member;
+      const geometry = way.nodes.map((nodeId) => nodes.get(nodeId)).filter(Boolean);
+      return { ...member, geometry };
+    }),
+  };
+}
+
 async function fetchRelations(ids) {
   const failures = [];
   for (const endpoint of OVERPASS_URLS) {
@@ -93,7 +131,23 @@ async function fetchRelations(ids) {
       }
     }
   }
-  throw new Error(`All Overpass endpoints failed for relations ${ids.join(', ')}: ${failures.join(' | ')}`);
+
+  console.warn(`Overpass exhausted for ${ids.join(', ')}; falling back to OSM API /full.json.`);
+  const relations = [];
+  for (const id of ids) {
+    try {
+      relations.push(await fetchRelationFromOsmApi(id));
+    } catch (error) {
+      failures.push(`OSM API relation ${id}: ${error.message}`);
+      console.warn(`OSM API relation ${id}: ${error.message}`);
+    }
+    await sleep(250);
+  }
+
+  if (!relations.length) {
+    throw new Error(`All spatial sources failed for relations ${ids.join(', ')}: ${failures.join(' | ')}`);
+  }
+  return relations;
 }
 
 const shapes = [];
@@ -114,7 +168,7 @@ const chunkSize = Math.ceil(shapes.length / OUTPUT_PARTS);
 for (let part = 0; part < OUTPUT_PARTS; part += 1) {
   const chunk = shapes.slice(part * chunkSize, (part + 1) * chunkSize);
   const path = new URL(`../src/transport/generated/tashkent-bus-osm-shapes-${part + 1}.js`, import.meta.url);
-  const content = `// Generated from OSM Overpass ${SOURCE_DATE}; ODbL.\n// Rows: [relationId, multiLineCoordinates, [west,south,east,north]]\nexport default Object.freeze(${JSON.stringify(chunk)});\n`;
+  const content = `// Generated from OpenStreetMap ${SOURCE_DATE}; ODbL.\n// Rows: [relationId, multiLineCoordinates, [west,south,east,north]]\nexport default Object.freeze(${JSON.stringify(chunk)});\n`;
   await writeFile(path, content, 'utf8');
 }
 
