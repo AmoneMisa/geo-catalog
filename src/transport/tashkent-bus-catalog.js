@@ -23,11 +23,21 @@ export const TASHKENT_BUS_ROUTES = Object.freeze(REGISTRY_ROUTES.map((route) => 
   const variants = variantsByRef.get(route.ref);
   if (!variants?.length) return route;
 
+  const topologyVariants = variants.filter((variant) => variant.stopIds.length >= 2);
+  const hasTopology = topologyVariants.length > 0;
+  const hasGeometry = variants.some((variant) => variant.geometry);
+
   return Object.freeze({
     ...route,
-    coverage: 'full',
-    topologySource: 'osm',
-    topologyUpdatedAt: '2026-08-30',
+    ...(hasTopology ? {
+      coverage: 'full',
+      topologySource: 'osm',
+      topologyUpdatedAt: '2026-08-30',
+    } : {}),
+    ...(hasGeometry ? {
+      mapGeometrySource: 'osm',
+      mapGeometryUpdatedAt: '2026-08-30',
+    } : {}),
     variants: Object.freeze([...variants]),
   });
 }));
