@@ -15,7 +15,8 @@
     "./spatial": { "types": "./index.d.ts", "import": "./src/spatial.js" },
     "./validate": { "types": "./index.d.ts", "import": "./src/validate.js" },
     "./lexicon-bridge": { "types": "./index.d.ts", "import": "./src/lexicon-bridge.js" },
-    "./lookup-key": { "types": "./index.d.ts", "import": "./src/lookup-key.js" }
+    "./lookup-key": { "types": "./index.d.ts", "import": "./src/lookup-key.js" },
+    "./transport": { "types": "./index.d.ts", "import": "./src/transport/catalog.js" }
   },
   "files": ["src", "index.d.ts", "README.md", "LICENSE"],
   "sideEffects": false,
