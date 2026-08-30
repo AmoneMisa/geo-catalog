@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      # Generated OSM snapshots are reviewed through data branches; never write them straight to the protected branch.
       - name: Refuse protected branches
         shell: bash
         run: |
