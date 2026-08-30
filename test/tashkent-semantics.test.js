@@ -29,13 +29,12 @@ test('Tashkent major streets and Bobur Park resolve to verified OSM owners', () 
   for (const [canonical, id] of [
     ['Assalom Jomiy', 'uz:tashkent:residential:assalom-jomiy'],
     ['Olmazor City', 'uz:tashkent:residential:olmazor-city'],
+    ['Do‘stlar', 'uz:tashkent:residential:dostlar'],
   ]) {
     const input = { country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical };
     assert.equal(resolveLexiconGeoEntity(input)?.id, id);
     assert.equal(isGeoCoverageGap(input), false);
   }
-
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical: 'Do‘stlar' }), true);
 });
 
 test('Tashkent 0.3 spatial identities use semantic types and district parents', () => {
