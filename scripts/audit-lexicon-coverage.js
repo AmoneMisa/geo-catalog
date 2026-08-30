@@ -114,13 +114,27 @@ const groups = [
 const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUaVinnytsiaCoverageGap(input) || isUaMykolaivCoverageGap(input) || isUaCherkasyCoverageGap(input) || isUaPoltavaCoverageGap(input) || isUaChernihivCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input);
 const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UA_VINNYTSIA_COVERAGE_GAPS, ...UA_MYKOLAIV_COVERAGE_GAPS, ...UA_CHERKASY_COVERAGE_GAPS, ...UA_POLTAVA_COVERAGE_GAPS, ...UA_CHERNIHIV_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS];
 
+function resolutionMatchesRequestedType(input, entity = resolveLexiconGeoEntity(input)) {
+  if (!entity) return false;
+  const requestedType = input.type || 'city';
+  if (requestedType === 'poi') return entity.type === 'poi' || entity.type?.startsWith('poi.');
+  return entity.type === requestedType;
+}
+
 let unaccounted = 0;
 for (const [label, items, toInput] of groups) {
-  const resolved = items.filter((item) => resolveLexiconGeoEntity(toInput(item)));
-  const gaps = items.filter((item) => !resolveLexiconGeoEntity(toInput(item)) && isTrackedGap(toInput(item)));
-  const missing = items.filter((item) => !resolveLexiconGeoEntity(toInput(item)) && !isTrackedGap(toInput(item)));
+  const classified = items.map((item) => {
+    const input = toInput(item);
+    const entity = resolveLexiconGeoEntity(input);
+    const trackedGap = isTrackedGap(input);
+    const exactType = resolutionMatchesRequestedType(input, entity);
+    return { item, input, entity, trackedGap, exactType };
+  });
+  const resolved = classified.filter(({ entity, trackedGap, exactType }) => entity && (!trackedGap || exactType));
+  const gaps = classified.filter(({ trackedGap, exactType }) => trackedGap && !exactType);
+  const missing = classified.filter(({ entity, trackedGap }) => !entity && !trackedGap);
   console.log(`${label}: ${resolved.length}/${items.length} spatial, ${gaps.length} tracked gaps`);
-  for (const item of missing) console.log(`  unaccounted: ${toInput(item).canonical}`);
+  for (const { input } of missing) console.log(`  unaccounted: ${input.canonical}`);
   unaccounted += missing.length;
 }
 
@@ -129,6 +143,7 @@ function auditTashkentParent(input, parentCanonical, label) {
   if (!parentCanonical) return;
   const entity = resolveLexiconGeoEntity(input);
   if (!entity) return;
+  if (isTrackedGap(input) && !resolutionMatchesRequestedType(input, entity)) return;
   const parent = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: parentCanonical });
   if (!parent) {
     console.log(`  parent unresolved: ${label} -> ${parentCanonical}`);
@@ -157,7 +172,7 @@ for (const { item, type } of expandedCityEntries('Tashkent', tashkentParentKeys)
   );
 }
 
-const staleGaps = allGaps.filter((gap) => resolveLexiconGeoEntity(gap));
+const staleGaps = allGaps.filter((gap) => resolutionMatchesRequestedType(gap));
 for (const gap of staleGaps) console.log(`stale gap: ${gap.city || gap.country} / ${gap.canonical}`);
 
 if (unaccounted > 0 || staleGaps.length > 0 || parentMismatches > 0) {
