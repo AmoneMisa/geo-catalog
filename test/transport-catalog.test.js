@@ -14,8 +14,10 @@ import {
   getTransfersForStop,
   getTransportCoverage,
   getTransportRoute,
+  getTransportRouteGeoJSON,
   getTransportRouteVariant,
   getTransportStop,
+  getTransportStopsGeoJSON,
   validateTransportCatalog,
 } from '../src/transport/catalog.js';
 
@@ -63,6 +65,19 @@ test('OSM snapshot promotes 60 bus refs to full directional topology', () => {
   assert.equal(TRANSPORT_ROUTE_VARIANTS.length, 117);
 });
 
+test('all 117 OSM bus variants include real road geometry and map bounds', () => {
+  assert.equal(TRANSPORT_ROUTE_VARIANTS.length, 117);
+  for (const variant of TRANSPORT_ROUTE_VARIANTS) {
+    assert.equal(variant.geometry?.type, 'MultiLineString', variant.id);
+    assert.ok(variant.geometry.coordinates.length > 0, variant.id);
+    assert.ok(variant.geometry.coordinates.every((segment) => segment.length >= 2), variant.id);
+    assert.equal(variant.geometrySource, 'osm', variant.id);
+    assert.equal(variant.geometryUpdatedAt, '2026-08-30', variant.id);
+    assert.ok(variant.bounds.west <= variant.bounds.east, variant.id);
+    assert.ok(variant.bounds.south <= variant.bounds.north, variant.id);
+  }
+});
+
 test('OSM snapshot adds 1227 unique bus platform/stop spatial objects', () => {
   assert.equal(TRANSPORT_STOPS.length, 1297);
   assert.equal(findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' }).length, 1247);
@@ -86,12 +101,31 @@ test('route 1 exposes two ordered OSM directional variants', () => {
   assert.deepEqual(variants.map((variant) => variant.stopIds.length), [32, 31]);
   assert.equal(variants[0].from, 'Mirzo Ulugbek sanoat zonasi');
   assert.equal(variants[0].to, 'Toshkent MUM');
+  assert.equal(variants[0].geometry?.type, 'MultiLineString');
+  assert.ok(variants[0].geometry.coordinates.length > 20);
+  assert.ok(variants[0].bounds.west < variants[0].bounds.east);
+  assert.ok(variants[0].bounds.south < variants[0].bounds.north);
 
   const firstVariantStops = getStopsForRouteVariant(route.id, 1866064);
   assert.equal(firstVariantStops.length, 32);
   assert.equal(firstVariantStops[0].canonicalName, 'Массив Хумаюн');
   assert.equal(firstVariantStops.at(-1).canonicalName, 'ЦУМ "Ташкент"');
   assert.equal(getTransportRouteVariant(variants[0].id)?.osm?.id, 1866064);
+});
+
+test('map API exposes bus route shapes and stop points as GeoJSON', () => {
+  const routeGeoJSON = getTransportRouteGeoJSON('uz:tashkent:route:bus:1');
+  assert.equal(routeGeoJSON.type, 'FeatureCollection');
+  assert.equal(routeGeoJSON.features.length, 2);
+  assert.deepEqual(routeGeoJSON.features.map((feature) => feature.properties.osmRelationId), [1866064, 11625088]);
+  assert.ok(routeGeoJSON.features.every((feature) => feature.geometry.type === 'MultiLineString'));
+
+  const busStops = getTransportStopsGeoJSON({ country: 'UZ', cityId: 'uz:tashkent', mode: 'bus' });
+  assert.equal(busStops.type, 'FeatureCollection');
+  assert.equal(busStops.features.length, 1247);
+  const humoyun = busStops.features.find((feature) => feature.id === 'uz:tashkent:stop:bus:osm:node:13308770769');
+  assert.deepEqual(humoyun?.geometry, { type: 'Point', coordinates: [69.3857, 41.341248] });
+  assert.equal(humoyun?.properties.mode, 'bus');
 });
 
 test('route 7 keeps only current Tashkent municipal variants', () => {
@@ -122,6 +156,7 @@ test('single valid OSM direction can still provide full ordered topology', () =>
   assert.equal(route84?.coverage, 'full');
   assert.equal(getRouteVariants(route84.id).length, 1);
   assert.equal(getRouteVariants(route84.id)[0].stopIds.length, 4);
+  assert.equal(getRouteVariants(route84.id)[0].geometry?.type, 'MultiLineString');
 
   const route16 = getTransportRoute('uz:tashkent:route:bus:16');
   assert.equal(route16?.coverage, 'full');
@@ -146,7 +181,7 @@ test('manual terminal anchors remain available after OSM topology promotion', ()
   ]);
 });
 
-test('validator rejects out-of-range coordinates and missing variant stops', () => {
+test('validator rejects out-of-range coordinates, invalid geometry and missing variant stops', () => {
   const invalidStop = {
     id: 'test:bad-stop', type: 'stop', mode: 'bus', country: 'UZ', cityId: 'uz:tashkent',
     canonicalName: 'Bad', center: { lat: 100, lng: 200 },
@@ -156,11 +191,16 @@ test('validator rejects out-of-range coordinates and missing variant stops', () 
     canonicalName: 'Bad route', ref: 'X', coverage: 'full', stopIds: [],
     variants: [{
       id: 'test:bad-variant', type: 'route_variant', mode: 'bus', country: 'UZ', cityId: 'uz:tashkent',
-      canonicalName: 'Bad variant', ref: 'X', stopIds: ['test:bad-stop', 'test:missing'],
+      canonicalName: 'Bad variant', ref: 'X',
+      geometry: { type: 'MultiLineString', coordinates: [[[200, 100], [201, 101]]] },
+      bounds: { west: 200, south: 100, east: 201, north: 101 },
+      stopIds: ['test:bad-stop', 'test:missing'],
     }],
   };
   const result = validateTransportCatalog({ stops: [invalidStop], routes: [invalidRoute], transfers: [] });
   assert.equal(result.valid, false);
   assert.ok(result.errors.some((error) => error.includes('invalid center')));
+  assert.ok(result.errors.some((error) => error.includes('invalid line segment')));
+  assert.ok(result.errors.some((error) => error.includes('invalid bounds')));
   assert.ok(result.errors.some((error) => error.includes('test:missing')));
 });
