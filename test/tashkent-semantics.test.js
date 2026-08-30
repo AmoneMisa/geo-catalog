@@ -309,7 +309,11 @@ test('Ibn Sino mahalla owns its verified Shaykhantahur boundary', () => {
   assert.equal(mahalla?.boundary?.type, 'Polygon');
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Ibn Sino' }), false);
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Ibn Sino-1' }), true);
+  const ibnSino1 = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Ibn Sino-1' });
+  assert.equal(ibnSino1?.id, 'uz:tashkent:local-area:ibn-sino-1');
+  assert.deepEqual(ibnSino1?.osm, { type: 'way', id: 103249732 });
+  assert.notEqual(ibnSino1?.osm?.id, mahalla?.osm?.id);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Ibn Sino-1' }), false);
 });
 
 test('Akademgorodok owns its academy-campus polygon in Mirzo Ulugbek', () => {
