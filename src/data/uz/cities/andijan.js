@@ -29,6 +29,7 @@ export const ANDIJAN_ENTITIES = Object.freeze([
   osmPoi('andijan-railway-station', 'Andijan Railway Station', 40.76296, 72.35057, 'node', 296078271, 100),
   osmPoi('andijan-state-university', 'Andijan State University', 40.78948, 72.37338, 'way', 224649709, 140),
   officialPoi('bobur-park', 'Bobur Park', 40.722000, 72.439111, 280),
+  officialPoi('bobur-square', 'Bobur Square', 40.761746, 72.351894, 160),
   osmPoi('central-farmers-market', 'Central Farmers Market', 40.78644, 72.34473, 'way', 124697493, 180),
   osmPoi('yangi-bozor', 'Yangi Bozor', 40.75734, 72.35341, 'way', 124437606, 180),
 ]);
