@@ -134,6 +134,8 @@ test('Kharkiv landmarks resolve through the generic POI bridge', () => {
 
 test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:520-microdistrict')?.osm, { type: 'node', id: 12215617088 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:524-mikroraion')?.osm, { type: 'node', id: 12196622369 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:524-mikroraion')?.center, { lat: 50.02668, lng: 36.34518 });
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:skhidnyi')?.source, 'geonames');
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:dafi')?.osm, { type: 'way', id: 89761454 });
   assert.equal(getGeoEntity('ua:kharkiv:residential:kliuch')?.accuracy, 'building');
