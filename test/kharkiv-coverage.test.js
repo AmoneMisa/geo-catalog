@@ -103,6 +103,7 @@ test('Kharkiv residential complexes use parser canonicals and explicit sources',
     ['Vorobiovi Hory Family', 'ua:kharkiv:residential:vorobiovi-hory-family'],
     ['Oasis', 'ua:kharkiv:residential:oasis'],
     ['Kazka', 'ua:kharkiv:residential:kazka'],
+    ['Makiivska', 'ua:kharkiv:residential:makiivska'],
     ['Manhattan', 'ua:kharkiv:residential:manhattan'],
   ]);
 
@@ -167,5 +168,6 @@ test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:dim-na-sumskii')?.center, { lat: 50.01274, lng: 36.242743 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:myronosytska')?.center, { lat: 50.010003, lng: 36.242821 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:mlechnyi-shliakh')?.center, { lat: 50.006117, lng: 36.257562 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:makiivska')?.center, { lat: 49.953117, lng: 36.25414 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:street:heroiv-kharkova-avenue')?.osm, { type: 'relation', id: 1295889 });
 });
