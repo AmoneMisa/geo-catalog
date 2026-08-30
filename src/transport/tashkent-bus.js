@@ -40,6 +40,7 @@ export const TASHKENT_BUS_STOPS = Object.freeze([
   stop('ttz-bus-station', 'TTZ Bus Station', 41.36823, 69.39480, 'way', 98599092, { accuracyM: 220 }),
   stopFromGeo('yunusabad-17', 'Yunusabad-17', 'uz:tashkent:microdistrict:yunusabad-17'),
   stopFromGeo('yunusabad-6', 'Yunusabad-6', 'uz:tashkent:microdistrict:yunusabad-6'),
+  stopFromGeo('tashkent-railway-station', 'Tashkent Railway Station', 'uz:tashkent:poi:tashkent-north-railway-station'),
 ]);
 
 export const TASHKENT_BUS_ROUTE_REFS_2026_08_18 = Object.freeze([
@@ -81,6 +82,14 @@ const enrichedRoutes = new Map([
   ['6', terminalRoute('6', '2026-08-08', ['Yunusabad-17', 'Yunusabad-6'], [
     'uz:tashkent:stop:bus:yunusabad-17',
     'uz:tashkent:stop:bus:yunusabad-6',
+  ])],
+  ['14', terminalRoute('14', '2026-08-08', ['Tashkent Railway Station', 'TTZ Bus Station'], [
+    'uz:tashkent:stop:bus:tashkent-railway-station',
+    'uz:tashkent:stop:bus:ttz-bus-station',
+  ])],
+  ['16', terminalRoute('16', '2026-08-08', ['Tashkent Railway Station', 'TTZ Bus Station'], [
+    'uz:tashkent:stop:bus:tashkent-railway-station',
+    'uz:tashkent:stop:bus:ttz-bus-station',
   ])],
   ['79', terminalRoute('79', '2026-08-18', ['Beruniy Metro', 'TTZ Bus Station'], [
     'uz:tashkent:stop:metro:beruniy',
