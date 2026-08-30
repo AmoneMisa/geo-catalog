@@ -9,7 +9,7 @@ const stop = (slug, canonicalName, lat, lng, osmType, osmId, extra = {}) => Obje
   canonicalName,
   center: Object.freeze({ lat, lng }),
   source: 'osm',
-  accuracy: 'poi',
+  accuracy: extra.accuracy ?? 'poi',
   accuracyM: extra.accuracyM ?? 180,
   osm: Object.freeze({ type: osmType, id: osmId }),
   ...(extra.geoEntityId ? { geoEntityId: extra.geoEntityId } : {}),
@@ -46,6 +46,12 @@ export const TASHKENT_BUS_STOPS = Object.freeze([
   }),
   stop('tashkent-tsum', 'TSUM Tashkent', 41.30825, 69.26919, 'way', 31953937, { accuracyM: 140 }),
   stop('food-city', 'Food City Bazaar', 41.20492, 69.32138, 'way', 825133525, { accuracyM: 280 }),
+  stop('sergeli-10', 'Sergeli-10', 41.20700, 69.19145, 'node', 13351981091, { accuracyM: 80 }),
+  stop('sergeli-12', 'Sergeli-12', 41.19255, 69.21845, 'node', 4529852891, { accuracyM: 80 }),
+  stop('kushbegi', 'Kushbegi', 41.26753, 69.24163, 'node', 1865344349, {
+    accuracy: 'neighborhood',
+    accuracyM: 650,
+  }),
   stopFromGeo('yunusabad-17', 'Yunusabad-17', 'uz:tashkent:microdistrict:yunusabad-17'),
   stopFromGeo('yunusabad-19', 'Yunusabad-19', 'uz:tashkent:microdistrict:yunusabad-19'),
   stopFromGeo('yunusabad-9', 'Yunusabad-9', 'uz:tashkent:microdistrict:yunusabad-9'),
@@ -125,9 +131,21 @@ const enrichedRoutes = new Map([
     'uz:tashkent:stop:metro:chilonzor',
     'uz:tashkent:stop:bus:medgorodok',
   ])],
+  ['38', terminalRoute('38', '2026-08-18', ['Sergeli-10', 'Bodomzor Metro'], [
+    'uz:tashkent:stop:bus:sergeli-10',
+    'uz:tashkent:stop:metro:bodomzor',
+  ])],
   ['39', terminalRoute('39', '2026-08-18', ['Tuzel Metro', 'Food City Bazaar'], [
     'uz:tashkent:stop:metro:tuzel',
     'uz:tashkent:stop:bus:food-city',
+  ])],
+  ['40', terminalRoute('40', '2026-08-18', ['Sergeli-12', 'Tashkent Railway Station'], [
+    'uz:tashkent:stop:bus:sergeli-12',
+    'uz:tashkent:stop:bus:tashkent-railway-station',
+  ])],
+  ['45', terminalRoute('45', '2026-08-18', ['Kushbegi', 'Kuyluk Bazaar'], [
+    'uz:tashkent:stop:bus:kushbegi',
+    'uz:tashkent:stop:bus:kuyluk-bazaar',
   ])],
   ['67', terminalRoute('67', '2026-08-08', ['Yunusabad-19', 'Tashkent International Airport'], [
     'uz:tashkent:stop:bus:yunusabad-19',
