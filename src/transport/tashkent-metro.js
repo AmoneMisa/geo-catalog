@@ -26,7 +26,8 @@ const route = (slug, canonicalName, ref, stationSlugs) => Object.freeze({
   cityId: 'uz:tashkent',
   canonicalName,
   ref,
-  source: 'official',
+  source: 'manual',
+  sourceUpdatedAt: '2026-01-03',
   stopIds: Object.freeze(stationSlugs.map((slug) => `uz:tashkent:stop:metro:${slug}`)),
 });
 
@@ -55,7 +56,7 @@ const transfer = (a, b) => Object.freeze({
     `uz:tashkent:stop:metro:${a}`,
     `uz:tashkent:stop:metro:${b}`,
   ]),
-  source: 'official',
+  source: 'manual',
 });
 
 export const TASHKENT_METRO_TRANSFERS = Object.freeze([
