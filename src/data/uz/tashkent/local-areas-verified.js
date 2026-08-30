@@ -93,6 +93,8 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   derivedArea('suvsoz-3', 'Suvsoz-3', 'uz:tashkent:bektemir', 41.244307, 69.36724, 1100),
   // Representative center from multiple current Suvsoz-4 mavzesi address anchors; no standalone OSM owner is asserted.
   derivedArea('suvsoz-4', 'Suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753, 900),
+  // City Council defines Suvsoz-5 inside Mirishkor between Ohangaron, Husayn Boyqaro and Bektemir canal; representative center averages independent mapped boundary-road and mahalla anchors.
+  derivedArea('suvsoz-5', 'Suvsoz-5', 'uz:tashkent:bektemir', 41.258983, 69.372314, 1200),
   osmArea('movarounnahr', 'Movarounnahr', 'uz:tashkent:mirobod', 41.29999, 69.28658, 'way', 1057801683, 520),
   osmArea('nakkoshlik', 'Nakkoshlik', 'uz:tashkent:chilanzar', 41.2674213, 69.202444, 'way', 1180079691, 520),
   osmArea('alimkent', 'Alimkent', 'uz:tashkent:yashnobod', 41.29546, 69.33720, 'node', 12144738032, 520),
