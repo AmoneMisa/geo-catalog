@@ -36,7 +36,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
   ...gaps('Angren', 'microdistrict', ['1 microdistrict','2 microdistrict','3 microdistrict','4 microdistrict','5 microdistrict'], 'Angren numbered microdistrict still needs a verified neighbourhood/residential object.'),
   ...gaps('Angren', 'local_area', ['Center','Old Angren','New Angren'], 'Angren local-area alias still needs a verified standalone spatial match.'),
 
-  ...gaps('Bekabad', 'local_area', ['Center','Metallurg','Tsementnik','Vodnik','Syrdarya','Farhod','Railway Station area'], 'Bekabad local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Bekabad', 'local_area', ['Center','Metallurg','Tsementnik','Vodnik','Syrdarya','Farhod'], 'Bekabad local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Bekabad', 'poi', ['Farhod HPP'], 'Cross-border power infrastructure is intentionally not parented to Bekabad until infrastructure/region hierarchy is modeled.'),
 
   ...gaps('Shakhrisabz', 'local_area', ['Center','Old City','Oqsaroy','Amir Temur','Kitob direction','Railway Station area'], 'Shakhrisabz local-area alias still needs a verified standalone spatial match.'),
