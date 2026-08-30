@@ -83,4 +83,9 @@ export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
   approximateArea('samarkand', 'university-area', 'University area', 39.64445, 66.96182, 900),
   approximateArea('gulistan', 'university-area', 'University area', 40.50611, 68.78324, 900),
   approximateArea('termez', 'university-area', 'University area', 37.23307, 67.28675, 900),
+
+  approximateArea('kokand', 'khudoyar-khan-area', 'Khudoyar Khan area', 40.538333, 70.937500, 900),
+  approximateArea('margilan', 'kumtepa', 'Kumtepa', 40.45504, 71.66594, 1100),
+  approximateArea('margilan', 'yodgorlik', 'Yodgorlik', 40.47636, 71.71783, 900),
+  approximateArea('shakhrisabz', 'oqsaroy', 'Oqsaroy', 39.060776, 66.829475, 900),
 ]);
