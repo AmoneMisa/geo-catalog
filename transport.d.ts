@@ -31,6 +31,7 @@ export interface TransportRoute {
   canonicalName: string;
   ref?: string;
   source?: TransportSource;
+  sourceUrl?: string;
   sourceUpdatedAt?: string;
   validFrom?: string;
   validTo?: string;
