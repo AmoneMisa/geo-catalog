@@ -4,7 +4,16 @@ export type TransportAccuracy = 'country' | 'region' | 'city' | 'district' | 'ne
 export type TransportRouteCoverage = 'full' | 'terminals_only' | 'metadata_only';
 
 export interface TransportPoint { lat: number; lng: number }
+export interface TransportBounds { west: number; south: number; east: number; north: number }
 export interface TransportOsmRef { type: 'node' | 'way' | 'relation'; id: number }
+export interface TransportMultiLineGeometry {
+  type: 'MultiLineString';
+  coordinates: readonly (readonly (readonly [number, number])[])[];
+}
+export interface TransportPointGeometry {
+  type: 'Point';
+  coordinates: readonly [number, number];
+}
 
 export interface TransportStop {
   id: string;
@@ -39,6 +48,10 @@ export interface TransportRouteVariant {
   source?: TransportSource;
   sourceUpdatedAt?: string;
   osm?: TransportOsmRef;
+  geometry?: TransportMultiLineGeometry;
+  bounds?: TransportBounds;
+  geometrySource?: TransportSource;
+  geometryUpdatedAt?: string;
   stopIds: readonly string[];
 }
 
@@ -59,6 +72,11 @@ export interface TransportRoute {
   validTo?: string;
   coverage: TransportRouteCoverage;
   terminalNames?: readonly string[];
+  geometry?: TransportMultiLineGeometry;
+  bounds?: TransportBounds;
+  geometrySource?: TransportSource;
+  geometryUpdatedAt?: string;
+  osm?: TransportOsmRef;
   stopIds: readonly string[];
   variants?: readonly Readonly<TransportRouteVariant>[];
 }
@@ -103,6 +121,46 @@ export interface NearestTransportStopOptions extends TransportFilters {
   includeRoutes?: boolean;
 }
 
+export interface TransportRouteGeoJSONProperties {
+  id: string;
+  routeId: string;
+  mode: Exclude<TransportMode, 'walk'>;
+  ref: string | null;
+  canonicalName: string;
+  variantIndex: number | null;
+  from: string | null;
+  to: string | null;
+  osmRelationId: number | null;
+}
+
+export interface TransportStopGeoJSONProperties {
+  id: string;
+  canonicalName: string;
+  mode: Exclude<TransportMode, 'walk'>;
+  geoEntityId: string | null;
+  osmType: TransportOsmRef['type'] | null;
+  osmId: number | null;
+}
+
+export interface TransportGeoJSONFeature<G, P> {
+  type: 'Feature';
+  id: string;
+  geometry: G;
+  properties: P;
+}
+
+export interface TransportGeoJSONFeatureCollection<F> {
+  type: 'FeatureCollection';
+  features: readonly F[];
+}
+
+export type TransportRouteGeoJSON = TransportGeoJSONFeatureCollection<
+  TransportGeoJSONFeature<TransportMultiLineGeometry, TransportRouteGeoJSONProperties>
+>;
+export type TransportStopsGeoJSON = TransportGeoJSONFeatureCollection<
+  TransportGeoJSONFeature<TransportPointGeometry, TransportStopGeoJSONProperties>
+>;
+
 export const TRANSPORT_STOPS: readonly Readonly<TransportStop>[];
 export const TRANSPORT_ROUTES: readonly Readonly<TransportRoute>[];
 export const TRANSPORT_ROUTE_VARIANTS: readonly Readonly<TransportRouteVariant>[];
@@ -122,6 +180,8 @@ export function getRouteVariants(routeId: string): readonly Readonly<TransportRo
 export function getStopsForRouteVariant(routeId: string, variantId: string | number): readonly Readonly<TransportStop>[];
 export function getTransfersForStop(stopId: string): readonly Readonly<TransportTransfer>[];
 export function getTransportCoverage(filters?: TransportRouteFilters): Readonly<TransportCoverageSummary>;
+export function getTransportRouteGeoJSON(routeId: string): Readonly<TransportRouteGeoJSON>;
+export function getTransportStopsGeoJSON(filters?: TransportFilters): Readonly<TransportStopsGeoJSON>;
 export function validateTransportCatalog(input?: {
   stops?: readonly TransportStop[];
   routes?: readonly TransportRoute[];
