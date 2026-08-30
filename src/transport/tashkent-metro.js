@@ -28,6 +28,7 @@ const route = (slug, canonicalName, ref, stationSlugs) => Object.freeze({
   ref,
   source: 'manual',
   sourceUpdatedAt: '2026-01-03',
+  coverage: 'full',
   stopIds: Object.freeze(stationSlugs.map((slug) => `uz:tashkent:stop:metro:${slug}`)),
 });
 
