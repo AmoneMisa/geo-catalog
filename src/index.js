@@ -21,16 +21,3 @@ export {
   nearestMetroToAddress,
 } from './poi-resolvers.js';
 export { buildGeoLookupKey } from './lookup-key.js';
-export {
-  TRANSPORT_STOPS,
-  TRANSPORT_ROUTES,
-  TRANSPORT_TRANSFERS,
-  getTransportStop,
-  getTransportRoute,
-  findTransportStops,
-  findTransportRoutes,
-  getRoutesForStop,
-  getStopsForRoute,
-  getTransfersForStop,
-  validateTransportCatalog,
-} from './transport/catalog.js';
