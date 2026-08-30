@@ -282,7 +282,7 @@ test('Rakatboshi area and street remain distinct Yakkasaray entities', () => {
   assert.equal(street?.osm, undefined);
 });
 
-test('Manzara residential complex does not consume unresolved area identities', () => {
+test('Manzara residential complex remains distinct from the resolved local area and unresolved microdistrict', () => {
   const complex = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical: 'Manzara' });
   assert.equal(complex?.id, 'uz:tashkent:residential:manzara');
   assert.equal(complex?.parentId, 'uz:tashkent:yunusabad');
@@ -290,7 +290,7 @@ test('Manzara residential complex does not consume unresolved area identities', 
   assert.equal(complex?.accuracy, 'building');
 
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'Manzara' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Manzara' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Manzara' }), false);
 });
 
 test('Taxtapul mahalla and Almazar area remain separate identities', () => {
