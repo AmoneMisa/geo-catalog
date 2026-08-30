@@ -16,7 +16,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
     'Ahmad Yugnakiy','Humoyun',"Bog'ko'cha",'Gulobod','Qalqon',"Bog'bon",'Shifokorlar',"Chamanbog'",'Asalobod',"Sug'diyona",'Olimpiya','Sebzor','Yangi Choshtepa','Traktorsozlar',
   ], 'Official mahalla name from the lexicon; no independently verified spatial object or boundary is available yet.'),
   ...gaps('UZ', 'Tashkent', 'local_area', [
-    'Manzara','Takhtapul','Taxtapul','Suvsoz-3','Suvsoz-4','Suvsoz-5','Parkent-Siolkovskiy','Minora','Muxbir','Shimoliy Olmazor-1','Shimoliy Olmazor-2','Taraqqiyot-4','Shifokorlar-2','Shifokorlar-3','Shifokorlar-5','Shifokorlar-6','Beruniy-B3',"So'lim", "Sug'diyona",
+    'Manzara','Takhtapul','Taxtapul','Suvsoz-3','Suvsoz-4','Suvsoz-5','Minora','Muxbir','Shimoliy Olmazor-1','Shimoliy Olmazor-2','Taraqqiyot-4','Shifokorlar-2','Shifokorlar-3','Shifokorlar-5','Shifokorlar-6',"So'lim", "Sug'diyona",
   ], 'Lexicon area name still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z",'Shirin','Chilkuduk',"Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),

@@ -82,6 +82,8 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('irrigator', 'Irrigator', 'uz:tashkent:mirzo-ulugbek', 41.3200798, 69.2966893, 'node', 4730061324, 650),
   osmArea('parkent', 'Parkent', 'uz:tashkent:mirzo-ulugbek', 41.3173278, 69.3215531, 'node', 13264841185, 800),
   osmArea('parkent-riyoziy', 'Parkent-Riyoziy', 'uz:tashkent:yashnobod', 41.31217, 69.32614, 'node', 1867099585, 650),
+  // Official Parkent-Siolkovskiy mavzesi in Do'stobod; center from the current house-2/Oltintepa address cluster.
+  derivedArea('parkent-siolkovskiy', 'Parkent-Siolkovskiy', 'uz:tashkent:yashnobod', 41.312243, 69.331072, 650),
   boundaryArea('shimoliy-olmazor', 'Shimoliy Olmazor', 'uz:tashkent:almazar', 450),
   osmArea('suvsoz-1', 'Suvsoz-1', 'uz:tashkent:bektemir', 41.247201, 69.3706561, 'relation', 19801804, 700),
   osmArea('suvsoz-2', 'Suvsoz-2', 'uz:tashkent:bektemir', 41.2518266, 69.3756741, 'way', 153528330, 650),
@@ -117,6 +119,8 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('shifokorlar-4', 'Shifokorlar-4', 'uz:tashkent:almazar', 41.35963, 69.18595, 'way', 142245652, 650),
   // Representative center derived from a dense set of Beruniy-B1 building coordinates in Chustiy mahalla.
   derivedArea('beruniy-b1', 'Beruniy-B1', 'uz:tashkent:almazar', 41.3324073, 69.2230774, 750),
+  // Official Beruniy-B3 dahasi in Quyosh mahalla matches the OSM Beruniy-3 neighbourhood locality.
+  osmArea('beruniy-b3', 'Beruniy-B3', 'uz:tashkent:almazar', 41.33791, 69.21631, 'node', 1866097646, 700),
   osmArea('markaz-12', 'Markaz-12', 'uz:tashkent:shaykhantahur', 41.32974, 69.26738, 'node', 4984463379, 650),
   osmArea('qoyliq-1', "Qo'yliq-1", 'uz:tashkent:mirobod', 41.24728, 69.31556, 'node', 3991877003, 650),
   osmArea('qoyliq-2', "Qo'yliq-2", 'uz:tashkent:mirobod', 41.25094, 69.30599, 'node', 3991877004, 650),
