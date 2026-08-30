@@ -145,7 +145,9 @@ function buildCandidate(relation, stopRecords) {
 }
 
 function relationQuery(refs) {
-  const regex = `^(?:${refs.join('|')})$`;
+  // Overpass QL uses POSIX-style regular expressions. Non-capturing groups (?:...)
+  // are not supported and yield HTTP 400, so use a plain capturing group.
+  const regex = `^(${refs.join('|')})$`;
   return `[out:json][timeout:45];rel["type"="route"]["route"="bus"]["ref"~"${regex}"](${BBOX_QUERY});out body geom;`;
 }
 
