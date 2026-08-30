@@ -11,9 +11,8 @@ const gaps = (city, type, canonicals, reason) => canonicals.map((canonical) => (
 export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Denov', 'local_area', ['Center','Old Market','New Market','Chaganiyon'], 'Denov local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Asaka', 'local_area', ['Center','Auto Plant area','Old City'], 'Asaka local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Asaka', 'poi', ['Dehqon Bazaar'], 'Asaka landmark still needs a verified spatial match.'),
   ...gaps('Kogon', 'local_area', ['Center','Railway Workers','Bukhara direction'], 'Kogon local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Kattakurgan', 'local_area', ['Center','Old City','Bazaar'], 'Kattakurgan local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Kattakurgan', 'local_area', ['Center','Old City'], 'Kattakurgan local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Kattakurgan', 'poi', ['Kattakurgan Reservoir'], 'Regional reservoir is intentionally not parented to Kattakurgan city until region/natural-feature hierarchy is modeled.'),
   ...gaps('Urgut', 'local_area', ['Center','Navoiy','Samarkand direction'], 'Urgut local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Yangiyol', 'local_area', ['Center','Samarkand Highway','Tashkent direction'], 'Yangiyol local-area alias still needs a verified standalone spatial match.'),
@@ -34,7 +33,7 @@ export const UZ_TAIL_COVERAGE_GAPS = Object.freeze([
   ...gaps('Muynak', 'poi', ['Aral Sea','Aralkum'], 'Regional natural feature is intentionally not parented to Muynak until natural-feature/region hierarchy is modeled.'),
   ...gaps('Beruniy', 'local_area', ['Center','Turtkul Road'], 'Beruniy local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Turtkul', 'local_area', ['Center','Bazaar'], 'Turtkul local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Shahrixon', 'local_area', ['Center','Market','Andijan direction'], 'Shahrixon local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('Shahrixon', 'local_area', ['Center','Andijan direction'], 'Shahrixon local-area alias still needs a verified standalone spatial match.'),
   ...gaps('Xonobod', 'poi', ['Andijan Reservoir'], 'Regional reservoir is intentionally not parented to Xonobod city until region/natural-feature hierarchy is modeled.'),
 ].map(Object.freeze));
 
