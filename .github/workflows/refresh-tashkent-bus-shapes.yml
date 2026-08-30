@@ -2,12 +2,6 @@ name: Refresh Tashkent bus shapes
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - data/tashkent-local-areas-2026-08-30
-    paths:
-      - scripts/refresh-tashkent-bus-shapes.js
-      - .github/workflows/refresh-tashkent-bus-shapes.yml
 
 permissions:
   contents: write
@@ -17,11 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: data/tashkent-local-areas-2026-08-30
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Refuse direct default-branch writes
+        run: |
+          if [ "$GITHUB_REF_NAME" = "master" ] || [ "$GITHUB_REF_NAME" = "main" ]; then
+            echo "Run this refresh workflow from a feature/data branch, not the default branch."
+            exit 1
+          fi
       - name: Generate current OSM shapes
         run: node ./scripts/refresh-tashkent-bus-shapes.js
       - name: Commit generated shapes
@@ -34,4 +32,4 @@ jobs:
             exit 0
           fi
           git commit -m "data: refresh Tashkent bus route shapes"
-          git push origin HEAD:data/tashkent-local-areas-2026-08-30
+          git push origin "HEAD:$GITHUB_REF_NAME"
