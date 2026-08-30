@@ -44,10 +44,11 @@ for (const entity of GEO_ENTITIES) {
 }
 
 // Parser canonicals can evolve independently from OSM/source naming. Keep narrowly
-// verified spelling aliases here instead of duplicating physical geo entities.
+// verified spelling/semantic aliases here instead of duplicating physical geo entities.
 const lexiconAliases = new Map([
   [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'TashGRES' }), 'uz:tashkent:local-area:tashgres'],
   [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Takhtapul' }), 'uz:tashkent:local-area:taxtapul'],
+  [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Stroygorod' }), 'uz:tashkent:poi:stroygorod-market'],
 ]);
 
 const compatibleTypes = Object.freeze({
