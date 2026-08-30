@@ -101,7 +101,7 @@ Routes explicitly declare topology coverage:
 
 `getRoutesForStop(stopId, { requireFullSequence: true })` excludes partial routes from A→B routing consumers.
 
-The current Tashkent transport snapshot exposes 174 route objects total: 4 full metro routes, 20 bus routes with verified terminal topology, and 150 bus routes with registry metadata only. Tashkent metro stops are derived from the canonical metro geo entities so their centers and provenance cannot drift independently. Bus endpoints reuse canonical geo entities whenever an exact semantic owner exists; standalone endpoints require explicit spatial provenance. A route endpoint may intentionally be a verified locality anchor rather than a platform/stop position, in which case its `accuracy`/`accuracyM` records that lower precision explicitly.
+The current Tashkent transport snapshot exposes 174 route objects total: 4 full metro routes, 22 bus routes with verified terminal topology, and 148 bus routes with registry metadata only. Tashkent metro stops are derived from the canonical metro geo entities so their centers and provenance cannot drift independently. Bus endpoints reuse canonical geo entities whenever an exact semantic owner exists; standalone endpoints require explicit spatial provenance. A route endpoint may intentionally be a verified locality anchor rather than a platform/stop position, in which case its `accuracy`/`accuracyM` records that lower precision explicitly.
 
 ## Entity model
 
