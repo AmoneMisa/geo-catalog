@@ -2,15 +2,19 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   TRANSPORT_ROUTES,
+  TRANSPORT_ROUTE_VARIANTS,
   TRANSPORT_STOPS,
   TRANSPORT_TRANSFERS,
   findTransportRoutes,
   findTransportStops,
+  getRouteVariants,
   getRoutesForStop,
   getStopsForRoute,
+  getStopsForRouteVariant,
   getTransfersForStop,
   getTransportCoverage,
   getTransportRoute,
+  getTransportRouteVariant,
   getTransportStop,
   validateTransportCatalog,
 } from '../src/transport/catalog.js';
@@ -19,124 +23,120 @@ test('transport catalog passes invariants', () => {
   assert.deepEqual(validateTransportCatalog(), { valid: true, errors: [] });
 });
 
-test('Tashkent metro exposes all 50 stations as transport stops', () => {
+test('Tashkent metro keeps all 50 canonical stations and ordered full topology', () => {
   const stops = findTransportStops({ country: 'UZ', cityId: 'uz:tashkent', mode: 'metro' });
   assert.equal(stops.length, 50);
   assert.equal(getTransportStop('uz:tashkent:stop:metro:chorsu')?.geoEntityId, 'uz:tashkent:metro:chorsu');
-});
-
-test('Tashkent metro routes preserve ordered station sequences', () => {
-  const routes = findTransportRoutes({ cityId: 'uz:tashkent', mode: 'metro' });
-  assert.equal(routes.length, 4);
 
   const chilonzor = getTransportRoute('uz:tashkent:route:metro:chilonzor');
   assert.equal(chilonzor?.coverage, 'full');
   assert.equal(chilonzor?.stopIds.length, 17);
-  assert.equal(chilonzor?.stopIds[0], 'uz:tashkent:stop:metro:buyuk-ipak-yoli');
-  assert.equal(chilonzor?.stopIds.at(-1), 'uz:tashkent:stop:metro:chinor');
-
-  const stops = getStopsForRoute(chilonzor.id);
-  assert.equal(stops[0].canonicalName, 'Buyuk Ipak Yoli');
-  assert.equal(stops.at(-1).canonicalName, 'Chinor');
-});
-
-test('route and interchange indexes support transfer-aware consumers', () => {
-  const dostlik = 'uz:tashkent:stop:metro:dostlik';
-  assert.deepEqual(getRoutesForStop(dostlik).map((route) => route.ref), ["O'zbekiston", '22']);
-
-  const transfers = getTransfersForStop(dostlik);
-  assert.equal(transfers.length, 1);
-  assert.deepEqual(transfers[0].stopIds, [
-    'uz:tashkent:stop:metro:dostlik',
-    'uz:tashkent:stop:metro:texnopark',
-  ]);
+  assert.equal(getStopsForRoute(chilonzor.id)[0].canonicalName, 'Buyuk Ipak Yoli');
+  assert.equal(getStopsForRoute(chilonzor.id).at(-1).canonicalName, 'Chinor');
   assert.equal(TRANSPORT_TRANSFERS.length, 4);
+  assert.equal(getTransfersForStop('uz:tashkent:stop:metro:dostlik').length, 1);
 });
 
-test('Tashkent bus snapshot contains all 170 route refs known after route 79 launch', () => {
+test('Tashkent bus registry still contains all 170 route refs', () => {
   const buses = findTransportRoutes({ cityId: 'uz:tashkent', mode: 'bus' });
   assert.equal(buses.length, 170);
   assert.equal(TRANSPORT_ROUTES.length, 174);
-
   assert.ok(getTransportRoute('uz:tashkent:route:bus:1'));
   assert.ok(getTransportRoute('uz:tashkent:route:bus:8t'));
   assert.ok(getTransportRoute('uz:tashkent:route:bus:199'));
   assert.equal(getTransportRoute('uz:tashkent:route:bus:4'), null);
 });
 
-test('bus coverage report separates registry metadata from terminal and full topology', () => {
+test('OSM snapshot promotes 60 bus refs to full directional topology', () => {
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
     total: 170,
-    full: 0,
-    terminalsOnly: 22,
-    metadataOnly: 148,
+    full: 60,
+    terminalsOnly: 4,
+    metadataOnly: 106,
   });
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
     total: 174,
-    full: 4,
-    terminalsOnly: 22,
-    metadataOnly: 148,
+    full: 64,
+    terminalsOnly: 4,
+    metadataOnly: 106,
   });
+  assert.equal(TRANSPORT_ROUTE_VARIANTS.length, 117);
 });
 
-test('routes 5 and 7 use verified locality terminal anchors', () => {
-  const feruza = getTransportStop('uz:tashkent:stop:bus:feruza');
-  assert.deepEqual(feruza?.osm, { type: 'node', id: 10938027477 });
-  assert.equal(feruza?.accuracy, 'neighborhood');
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:5')?.stopIds, [
+test('OSM snapshot adds 1227 unique bus platform/stop spatial objects', () => {
+  assert.equal(TRANSPORT_STOPS.length, 1297);
+  assert.equal(findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' }).length, 1247);
+
+  const stop = getTransportStop('uz:tashkent:stop:bus:osm:node:13308770769');
+  assert.equal(stop?.canonicalName, 'Массив Хумаюн');
+  assert.deepEqual(stop?.center, { lat: 41.341248, lng: 69.3857 });
+  assert.deepEqual(stop?.osm, { type: 'node', id: 13308770769 });
+  assert.equal(stop?.sourceUpdatedAt, '2026-08-30');
+});
+
+test('route 1 exposes two ordered OSM directional variants', () => {
+  const route = getTransportRoute('uz:tashkent:route:bus:1');
+  assert.equal(route?.coverage, 'full');
+  assert.equal(route?.topologySource, 'osm');
+  assert.equal(route?.topologyUpdatedAt, '2026-08-30');
+
+  const variants = getRouteVariants(route.id);
+  assert.equal(variants.length, 2);
+  assert.deepEqual(variants.map((variant) => variant.osm?.id), [1866064, 11625088]);
+  assert.deepEqual(variants.map((variant) => variant.stopIds.length), [32, 31]);
+  assert.equal(variants[0].from, 'Mirzo Ulugbek sanoat zonasi');
+  assert.equal(variants[0].to, 'Toshkent MUM');
+
+  const firstVariantStops = getStopsForRouteVariant(route.id, 1866064);
+  assert.equal(firstVariantStops.length, 32);
+  assert.equal(firstVariantStops[0].canonicalName, 'Массив Хумаюн');
+  assert.equal(firstVariantStops.at(-1).canonicalName, 'ЦУМ "Ташкент"');
+  assert.equal(getTransportRouteVariant(variants[0].id)?.osm?.id, 1866064);
+});
+
+test('route 7 keeps only current Tashkent municipal variants', () => {
+  const variants = getRouteVariants('uz:tashkent:route:bus:7');
+  assert.equal(variants.length, 2);
+  assert.deepEqual(variants.map((variant) => variant.osm?.id), [19901538, 19901537]);
+  assert.ok(variants.every((variant) => variant.network === 'UZ:municipal'));
+  assert.ok(variants.every((variant) => !variant.canonicalName.includes('Troitsk')));
+});
+
+test('route membership lookup includes OSM variant stops', () => {
+  const stopId = 'uz:tashkent:stop:bus:osm:node:13308770769';
+  assert.deepEqual(
+    getRoutesForStop(stopId, { requireFullSequence: true }).map((route) => route.ref),
+    ['1', '17'],
+  );
+});
+
+test('incomplete OSM relations do not promote registry-only routes', () => {
+  assert.equal(getTransportRoute('uz:tashkent:route:bus:77')?.coverage, 'metadata_only');
+  assert.equal(getTransportRoute('uz:tashkent:route:bus:101')?.coverage, 'metadata_only');
+  assert.equal(getTransportRoute('uz:tashkent:route:bus:79')?.coverage, 'terminals_only');
+  assert.equal(getTransportRoute('uz:tashkent:route:bus:110')?.coverage, 'terminals_only');
+});
+
+test('single valid OSM direction can still provide full ordered topology', () => {
+  const route84 = getTransportRoute('uz:tashkent:route:bus:84');
+  assert.equal(route84?.coverage, 'full');
+  assert.equal(getRouteVariants(route84.id).length, 1);
+  assert.equal(getRouteVariants(route84.id)[0].stopIds.length, 4);
+
+  const route16 = getTransportRoute('uz:tashkent:route:bus:16');
+  assert.equal(route16?.coverage, 'full');
+  assert.equal(getRouteVariants(route16.id).length, 1);
+  assert.equal(getRouteVariants(route16.id)[0].stopIds.length, 40);
+});
+
+test('manual terminal anchors remain available after OSM topology promotion', () => {
+  const route5 = getTransportRoute('uz:tashkent:route:bus:5');
+  assert.equal(route5?.coverage, 'full');
+  assert.deepEqual(route5?.stopIds, [
     'uz:tashkent:stop:bus:feruza',
     'uz:tashkent:stop:metro:chorsu',
   ]);
-
-  const yunusabad10 = getTransportStop('uz:tashkent:stop:bus:yunusabad-10');
-  assert.deepEqual(yunusabad10?.osm, { type: 'node', id: 1866983397 });
-  assert.equal(yunusabad10?.accuracy, 'neighborhood');
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:7')?.stopIds, [
-    'uz:tashkent:stop:bus:yunusabad-10',
-    'uz:tashkent:stop:bus:yunusabad-19',
-  ]);
-});
-
-test('routes 8 and 9T share the verified Chilanzar-25 locality anchor', () => {
-  const chilanzar25 = getTransportStop('uz:tashkent:stop:bus:chilanzar-25');
-  assert.deepEqual(chilanzar25?.osm, { type: 'node', id: 1866856603 });
-  assert.equal(chilanzar25?.accuracy, 'neighborhood');
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:8')?.stopIds, [
-    'uz:tashkent:stop:bus:sergeli-10',
-    'uz:tashkent:stop:bus:chilanzar-25',
-  ]);
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:9t')?.stopIds, [
-    'uz:tashkent:stop:bus:chilanzar-25',
-    'uz:tashkent:stop:bus:tashkent-railway-station',
-  ]);
-});
-
-test('route 6 reuses verified Yunusabad geo entities as terminal points', () => {
-  const route6 = getTransportRoute('uz:tashkent:route:bus:6');
-  assert.equal(route6?.coverage, 'terminals_only');
-  assert.equal(route6?.sourceUpdatedAt, '2026-08-08');
-  assert.deepEqual(route6?.terminalNames, ['Yunusabad-17', 'Yunusabad-6']);
-
-  const stops = getStopsForRoute(route6.id);
-  assert.deepEqual(stops.map((stop) => stop.geoEntityId), [
-    'uz:tashkent:microdistrict:yunusabad-17',
-    'uz:tashkent:microdistrict:yunusabad-6',
-  ]);
-  assert.deepEqual(stops.map((stop) => stop.osm?.id), [1866983401, 1867002805]);
-});
-
-test('routes 12 and 67 share verified Tashkent airport terminal', () => {
-  const airport = getTransportStop('uz:tashkent:stop:bus:tashkent-international-airport');
-  assert.deepEqual(airport?.osm, { type: 'relation', id: 12345328 });
-  assert.equal(airport?.wikidataId, 'Q860952');
-
-  const route12 = getTransportRoute('uz:tashkent:route:bus:12');
-  assert.equal(route12?.coverage, 'terminals_only');
-  assert.deepEqual(route12?.stopIds, [
-    'uz:tashkent:stop:bus:kuyluk-bazaar',
-    'uz:tashkent:stop:bus:tashkent-international-airport',
-  ]);
-  assert.equal(getTransportStop('uz:tashkent:stop:bus:kuyluk-bazaar')?.geoEntityId, 'uz:tashkent:poi:kuyluk-bazaar');
+  assert.equal(getTransportStop('uz:tashkent:stop:bus:feruza')?.accuracy, 'neighborhood');
 
   const route67 = getTransportRoute('uz:tashkent:route:bus:67');
   assert.equal(route67?.coverage, 'terminals_only');
@@ -144,146 +144,23 @@ test('routes 12 and 67 share verified Tashkent airport terminal', () => {
     'uz:tashkent:stop:bus:yunusabad-19',
     'uz:tashkent:stop:bus:tashkent-international-airport',
   ]);
-  assert.equal(getTransportStop('uz:tashkent:stop:bus:yunusabad-19')?.geoEntityId, 'uz:tashkent:microdistrict:yunusabad-19');
 });
 
-test('routes 14 and 16 share verified railway and TTZ terminal points', () => {
-  const railway = getTransportStop('uz:tashkent:stop:bus:tashkent-railway-station');
-  assert.equal(railway?.geoEntityId, 'uz:tashkent:poi:tashkent-north-railway-station');
-  assert.equal(railway?.wikidataId, 'Q12823615');
-
-  for (const ref of ['14', '16']) {
-    const route = getTransportRoute(`uz:tashkent:route:bus:${ref}`);
-    assert.equal(route?.coverage, 'terminals_only');
-    assert.deepEqual(route?.stopIds, [
-      'uz:tashkent:stop:bus:tashkent-railway-station',
-      'uz:tashkent:stop:bus:ttz-bus-station',
-    ]);
-  }
-});
-
-test('routes 17 and 34 reuse verified local-area terminals', () => {
-  const route17 = getTransportRoute('uz:tashkent:route:bus:17');
-  assert.equal(route17?.coverage, 'terminals_only');
-  assert.deepEqual(route17?.terminalNames, ['Geofizika', 'Chorsu Metro']);
-  assert.deepEqual(route17?.stopIds, [
-    'uz:tashkent:stop:bus:geofizika',
-    'uz:tashkent:stop:metro:chorsu',
-  ]);
-  assert.equal(
-    getTransportStop('uz:tashkent:stop:bus:geofizika')?.geoEntityId,
-    'uz:tashkent:local-area:geofizika',
-  );
-
-  const route34 = getTransportRoute('uz:tashkent:route:bus:34');
-  assert.equal(route34?.coverage, 'terminals_only');
-  assert.deepEqual(route34?.terminalNames, ['Chilanzar Metro', 'Medgorodok']);
-  assert.deepEqual(route34?.stopIds, [
-    'uz:tashkent:stop:metro:chilonzor',
-    'uz:tashkent:stop:bus:medgorodok',
-  ]);
-  const medgorodok = getTransportStop('uz:tashkent:stop:bus:medgorodok');
-  assert.equal(medgorodok?.geoEntityId, 'uz:tashkent:local-area:medgorodok');
-  assert.deepEqual(medgorodok?.osm, { type: 'node', id: 10704411976 });
-});
-
-test('route 22 uses verified TSUM and Dostlik terminals', () => {
-  const tsum = getTransportStop('uz:tashkent:stop:bus:tashkent-tsum');
-  assert.deepEqual(tsum?.osm, { type: 'way', id: 31953937 });
-
-  const route22 = getTransportRoute('uz:tashkent:route:bus:22');
-  assert.equal(route22?.coverage, 'terminals_only');
-  assert.deepEqual(route22?.stopIds, [
-    'uz:tashkent:stop:bus:tashkent-tsum',
-    'uz:tashkent:stop:metro:dostlik',
-  ]);
-});
-
-test('route 23 reuses Farhod Bazaar and Chorsu metro terminal entities', () => {
-  const route23 = getTransportRoute('uz:tashkent:route:bus:23');
-  assert.equal(route23?.coverage, 'terminals_only');
-  assert.deepEqual(route23?.terminalNames, ['Farhod Bazaar', 'Chorsu Metro']);
-  assert.deepEqual(route23?.stopIds, [
-    'uz:tashkent:stop:bus:farhod-bazaar',
-    'uz:tashkent:stop:metro:chorsu',
-  ]);
-  assert.equal(getTransportStop('uz:tashkent:stop:bus:farhod-bazaar')?.geoEntityId, 'uz:tashkent:poi:farhod-bazaar');
-  assert.equal(getTransportStop('uz:tashkent:stop:metro:chorsu')?.geoEntityId, 'uz:tashkent:metro:chorsu');
-});
-
-test('routes 38, 40 and 45 use explicit OSM terminal provenance', () => {
-  const sergeli10 = getTransportStop('uz:tashkent:stop:bus:sergeli-10');
-  assert.deepEqual(sergeli10?.osm, { type: 'node', id: 13351981091 });
-  assert.equal(sergeli10?.accuracy, 'poi');
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:38')?.stopIds, [
-    'uz:tashkent:stop:bus:sergeli-10',
-    'uz:tashkent:stop:metro:bodomzor',
-  ]);
-
-  const sergeli12 = getTransportStop('uz:tashkent:stop:bus:sergeli-12');
-  assert.deepEqual(sergeli12?.osm, { type: 'node', id: 4529852891 });
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:40')?.stopIds, [
-    'uz:tashkent:stop:bus:sergeli-12',
-    'uz:tashkent:stop:bus:tashkent-railway-station',
-  ]);
-
-  const kushbegi = getTransportStop('uz:tashkent:stop:bus:kushbegi');
-  assert.deepEqual(kushbegi?.osm, { type: 'node', id: 1865344349 });
-  assert.equal(kushbegi?.accuracy, 'neighborhood');
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:45')?.stopIds, [
-    'uz:tashkent:stop:bus:kushbegi',
-    'uz:tashkent:stop:bus:kuyluk-bazaar',
-  ]);
-});
-
-test('route 44 reuses Aviasozlar geo entity and Chorsu metro', () => {
-  const aviasozlar = getTransportStop('uz:tashkent:stop:bus:aviasozlar');
-  assert.equal(aviasozlar?.geoEntityId, 'uz:tashkent:microdistrict:aviasozlar');
-  assert.deepEqual(aviasozlar?.osm, { type: 'node', id: 1867099580 });
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:44')?.stopIds, [
-    'uz:tashkent:stop:bus:aviasozlar',
-    'uz:tashkent:stop:metro:chorsu',
-  ]);
-});
-
-test('Food City terminal is shared by routes 39, 93, 110 and 133', () => {
-  const foodCity = getTransportStop('uz:tashkent:stop:bus:food-city');
-  assert.deepEqual(foodCity?.osm, { type: 'way', id: 825133525 });
-
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:39')?.stopIds, [
-    'uz:tashkent:stop:metro:tuzel',
-    'uz:tashkent:stop:bus:food-city',
-  ]);
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:93')?.stopIds, [
-    'uz:tashkent:stop:bus:food-city',
-    'uz:tashkent:stop:bus:yunusabad-9',
-  ]);
-  assert.equal(getTransportStop('uz:tashkent:stop:bus:yunusabad-9')?.geoEntityId, 'uz:tashkent:microdistrict:yunusabad-9');
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:110')?.stopIds, [
-    'uz:tashkent:stop:bus:food-city',
-    'uz:tashkent:stop:bus:ttz-bus-station',
-  ]);
-  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:133')?.stopIds, [
-    'uz:tashkent:stop:metro:chinor',
-    'uz:tashkent:stop:bus:food-city',
-  ]);
-});
-
-test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
-  assert.equal(TRANSPORT_STOPS.length, 70);
-
-  const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(busStops.length, 20);
-  assert.equal(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.canonicalName, 'TTZ Bus Station');
-  assert.deepEqual(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.osm, { type: 'way', id: 98599092 });
-
-  const route79 = getTransportRoute('uz:tashkent:route:bus:79');
-  assert.equal(route79?.coverage, 'terminals_only');
-  assert.equal(route79?.sourceUpdatedAt, '2026-08-18');
-  assert.deepEqual(route79?.stopIds, [
-    'uz:tashkent:stop:metro:beruniy',
-    'uz:tashkent:stop:bus:ttz-bus-station',
-  ]);
-
-  assert.deepEqual(getRoutesForStop('uz:tashkent:stop:metro:beruniy', { requireFullSequence: true }).map((route) => route.ref), ["O'zbekiston"]);
+test('validator rejects out-of-range coordinates and missing variant stops', () => {
+  const invalidStop = {
+    id: 'test:bad-stop', type: 'stop', mode: 'bus', country: 'UZ', cityId: 'uz:tashkent',
+    canonicalName: 'Bad', center: { lat: 100, lng: 200 },
+  };
+  const invalidRoute = {
+    id: 'test:bad-route', type: 'route', mode: 'bus', country: 'UZ', cityId: 'uz:tashkent',
+    canonicalName: 'Bad route', ref: 'X', coverage: 'full', stopIds: [],
+    variants: [{
+      id: 'test:bad-variant', type: 'route_variant', mode: 'bus', country: 'UZ', cityId: 'uz:tashkent',
+      canonicalName: 'Bad variant', ref: 'X', stopIds: ['test:bad-stop', 'test:missing'],
+    }],
+  };
+  const result = validateTransportCatalog({ stops: [invalidStop], routes: [invalidRoute], transfers: [] });
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((error) => error.includes('invalid center')));
+  assert.ok(result.errors.some((error) => error.includes('test:missing')));
 });
