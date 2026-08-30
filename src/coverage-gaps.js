@@ -29,7 +29,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Namangan', 'poi', ['Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Andijan', 'mahalla', ["Bo'ston",'Obod','Temur Malik',"Qoraqo'rg'on","Ma'rifat",'Mustaqillikning 21 yilligi','Birlashgan',"Taxtako'prik"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('UZ', 'Andijan', 'local_area', ['Center','Old City','New City','Bobur','Navoiy','Mashinasozlar','North','South-West','University area'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Andijan', 'local_area', ['Center','Old City','New City','Bobur','Navoiy','Mashinasozlar','North','South-West'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Andijan', 'poi', ['Bobur Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Fergana', 'mahalla', ["Ma'rifat"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
@@ -49,7 +49,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Nukus', 'poi', ['Berdakh Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Urgench', 'mahalla', ['Mustaqillik','Feruz',"Ma'rifat","Yuqori bog'",'Al Xorazmiy','Besh mergan','Shodlik','Gulshan','Gulzor','Navbahor','Avesto','Ashxobod'], 'Official Urgench mahalla; verified standalone OSM neighbourhood/residential geometry still pending.'),
-  ...gaps('UZ', 'Urgench', 'local_area', ['Center','Olimpiya','University area','Al-Xorazmiy area','Navoiy','Gurlan Road','Khiva Road'], 'Urgench local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Urgench', 'local_area', ['Center','Olimpiya','Al-Xorazmiy area','Navoiy','Gurlan Road','Khiva Road'], 'Urgench local-area alias still needs a verified standalone spatial match.'),
 ].map(Object.freeze));
 
 const gapKeys = new Set(GEO_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));
