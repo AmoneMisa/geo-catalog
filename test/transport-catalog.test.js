@@ -68,14 +68,14 @@ test('bus coverage report separates registry metadata from terminal and full top
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
     total: 170,
     full: 0,
-    terminalsOnly: 12,
-    metadataOnly: 158,
+    terminalsOnly: 14,
+    metadataOnly: 156,
   });
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
     total: 174,
     full: 4,
-    terminalsOnly: 12,
-    metadataOnly: 158,
+    terminalsOnly: 14,
+    metadataOnly: 156,
   });
 });
 
@@ -130,6 +130,31 @@ test('routes 14 and 16 share verified railway and TTZ terminal points', () => {
   }
 });
 
+test('routes 17 and 34 reuse verified local-area terminals', () => {
+  const route17 = getTransportRoute('uz:tashkent:route:bus:17');
+  assert.equal(route17?.coverage, 'terminals_only');
+  assert.deepEqual(route17?.terminalNames, ['Geofizika', 'Chorsu Metro']);
+  assert.deepEqual(route17?.stopIds, [
+    'uz:tashkent:stop:bus:geofizika',
+    'uz:tashkent:stop:metro:chorsu',
+  ]);
+  assert.equal(
+    getTransportStop('uz:tashkent:stop:bus:geofizika')?.geoEntityId,
+    'uz:tashkent:local-area:geofizika',
+  );
+
+  const route34 = getTransportRoute('uz:tashkent:route:bus:34');
+  assert.equal(route34?.coverage, 'terminals_only');
+  assert.deepEqual(route34?.terminalNames, ['Chilanzar Metro', 'Medgorodok']);
+  assert.deepEqual(route34?.stopIds, [
+    'uz:tashkent:stop:metro:chilonzor',
+    'uz:tashkent:stop:bus:medgorodok',
+  ]);
+  const medgorodok = getTransportStop('uz:tashkent:stop:bus:medgorodok');
+  assert.equal(medgorodok?.geoEntityId, 'uz:tashkent:local-area:medgorodok');
+  assert.deepEqual(medgorodok?.osm, { type: 'node', id: 10704411976 });
+});
+
 test('route 22 uses verified TSUM and Dostlik terminals', () => {
   const tsum = getTransportStop('uz:tashkent:stop:bus:tashkent-tsum');
   assert.deepEqual(tsum?.osm, { type: 'way', id: 31953937 });
@@ -178,10 +203,10 @@ test('Food City terminal is shared by routes 39, 93, 110 and 133', () => {
 });
 
 test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
-  assert.equal(TRANSPORT_STOPS.length, 61);
+  assert.equal(TRANSPORT_STOPS.length, 63);
 
   const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(busStops.length, 11);
+  assert.equal(busStops.length, 13);
   assert.equal(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.canonicalName, 'TTZ Bus Station');
   assert.deepEqual(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.osm, { type: 'way', id: 98599092 });
 
