@@ -1,0 +1,27 @@
+const residential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 220) => Object.freeze({
+  id: `ua:kharkiv:residential:${slug}`,
+  type: 'residential_complex',
+  country: 'UA',
+  canonicalName,
+  parentId: 'ua:kharkiv',
+  center: Object.freeze({ lat, lng }),
+  source: 'manual',
+  accuracy: 'building',
+  accuracyM,
+  sourceUrl,
+});
+
+export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
+  residential('kliuch', 'Kliuch', 50.02418648001117, 36.2250847521086, 'https://novobudovy.com/novobudovy-kharkova/harkov-kljuch', 180),
+  residential('ptashka', 'Ptashka', 50.013177, 36.305259, 'https://novobudovy.com/novobudovy-kharkova/ptichka', 260),
+  residential('newton', 'Newton', 49.937936, 36.300112, 'https://novobudovy.com/arkhiv/zhk-10', 300),
+  residential('meridian', 'Meridian', 50.032214, 36.358462, 'https://novobudovy.com/ru/all/meridian-harkov', 320),
+  residential('mira', 'Mira', 49.945378, 36.392274, 'https://novobudovy.com/ru/novobudovy-kharkova/novostroy-mira', 300),
+  residential('nimeckyi-proekt', 'Nimeckyi Proekt', 50.001411, 36.218294, 'https://novobudovy.com/ru/arkhiv/obereg-harkov', 220),
+  residential('levada-2', 'Levada 2', 49.980281, 36.240509, 'https://novobudovy.com/novobudovy-kharkova/zhk-levada-m-harkiv', 300),
+  residential('vorobiovi-hory', 'Vorobiovi Hory', 50.014026, 36.312008, 'https://novobudovy.com/ru/novobudovy-kharkova/zhk-m-harkiv-vul-cherivecka-timurivciv', 200),
+  residential('vorobiovi-hory-family', 'Vorobiovi Hory Family', 50.017387, 36.204117, 'https://novobudovy.com/ru/novobudovy-kharkova/vorobjovi-gori-family', 200),
+  residential('oasis', 'Oasis', 50.013473, 36.197124, 'https://novobudovy.com/ru/novobudovy-kharkova/oazis', 180),
+  residential('kazka', 'Kazka', 49.979540, 36.171967, 'https://novobudovy.com/ru/novobudovy-kharkova/skazka', 420),
+  residential('manhattan', 'Manhattan', 49.991039, 36.263272, 'https://novobudovy.com/ru/novobudovy-kharkova/moskovskij-harkov', 220),
+]);
