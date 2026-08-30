@@ -13,11 +13,14 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 220) 
 
 export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('kliuch', 'Kliuch', 50.02418648001117, 36.2250847521086, 'https://novobudovy.com/novobudovy-kharkova/harkov-kljuch', 180),
+  residential('dim-na-sumskii', 'Dim na Sumskii', 50.012740, 36.242743, 'https://novobudovy.com/ru/novobudovy-kharkova/novobudova-m-harkiv-vul-suhumska-copy', 180),
+  residential('myronosytska', 'Myronosytska', 50.010003, 36.242821, 'https://novobudovy.com/ru/arkhiv/mironosickaya-74', 160),
   residential('ptashka', 'Ptashka', 50.013177, 36.305259, 'https://novobudovy.com/novobudovy-kharkova/ptichka', 260),
   residential('newton', 'Newton', 49.937936, 36.300112, 'https://novobudovy.com/arkhiv/zhk-10', 300),
   residential('meridian', 'Meridian', 50.032214, 36.358462, 'https://novobudovy.com/ru/all/meridian-harkov', 320),
   residential('mira', 'Mira', 49.945378, 36.392274, 'https://novobudovy.com/ru/novobudovy-kharkova/novostroy-mira', 300),
   residential('nimeckyi-proekt', 'Nimeckyi Proekt', 50.001411, 36.218294, 'https://novobudovy.com/ru/arkhiv/obereg-harkov', 220),
+  residential('mlechnyi-shliakh', 'Mlechnyi Shliakh', 50.006117, 36.257562, 'https://novobudovy.com/ru/novobudovy/zhk-mlechnyj-put-m-harkiv', 160),
   residential('levada-2', 'Levada 2', 49.980281, 36.240509, 'https://novobudovy.com/novobudovy-kharkova/zhk-levada-m-harkiv', 300),
   residential('vorobiovi-hory', 'Vorobiovi Hory', 50.014026, 36.312008, 'https://novobudovy.com/ru/novobudovy-kharkova/zhk-m-harkiv-vul-cherivecka-timurivciv', 200),
   residential('vorobiovi-hory-family', 'Vorobiovi Hory Family', 50.017387, 36.204117, 'https://novobudovy.com/ru/novobudovy-kharkova/vorobjovi-gori-family', 200),
