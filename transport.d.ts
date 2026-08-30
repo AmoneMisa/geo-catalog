@@ -1,6 +1,7 @@
 export type TransportMode = 'metro' | 'bus' | 'tram' | 'trolleybus' | 'minibus' | 'rail' | 'walk';
 export type TransportSource = 'osm' | 'wikidata' | 'official' | 'manual' | 'geonames' | string;
 export type TransportAccuracy = 'country' | 'region' | 'city' | 'district' | 'neighborhood' | 'street' | 'building' | 'poi' | 'entrance' | 'approximate';
+export type TransportRouteCoverage = 'full' | 'terminals_only' | 'metadata_only';
 
 export interface TransportPoint { lat: number; lng: number }
 export interface TransportOsmRef { type: 'node' | 'way' | 'relation'; id: number }
@@ -33,6 +34,8 @@ export interface TransportRoute {
   sourceUpdatedAt?: string;
   validFrom?: string;
   validTo?: string;
+  coverage: TransportRouteCoverage;
+  terminalNames?: readonly string[];
   stopIds: readonly string[];
 }
 
@@ -54,6 +57,7 @@ export interface TransportFilters {
 
 export interface TransportRouteFilters extends TransportFilters {
   ref?: string;
+  coverage?: TransportRouteCoverage;
 }
 
 export const TRANSPORT_STOPS: readonly Readonly<TransportStop>[];
@@ -64,7 +68,7 @@ export function getTransportStop(id: string): Readonly<TransportStop> | null;
 export function getTransportRoute(id: string): Readonly<TransportRoute> | null;
 export function findTransportStops(filters?: TransportFilters): readonly Readonly<TransportStop>[];
 export function findTransportRoutes(filters?: TransportRouteFilters): readonly Readonly<TransportRoute>[];
-export function getRoutesForStop(stopId: string): readonly Readonly<TransportRoute>[];
+export function getRoutesForStop(stopId: string, options?: { requireFullSequence?: boolean }): readonly Readonly<TransportRoute>[];
 export function getStopsForRoute(routeId: string): readonly Readonly<TransportStop>[];
 export function getTransfersForStop(stopId: string): readonly Readonly<TransportTransfer>[];
 export function validateTransportCatalog(input?: {
