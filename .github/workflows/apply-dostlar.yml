@@ -1,0 +1,115 @@
+name: Apply verified Dostlar residential anchor
+
+on:
+  push:
+    branches:
+      - data/tashkent-local-areas-2026-08-30
+    paths:
+      - .github/workflows/apply-dostlar.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Patch Dostlar
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              text = path.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one match, got {count}: {old[:120]}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          residential = Path('src/data/uz/tashkent/residential.js')
+          marker = """  Object.freeze({
+    id: 'uz:tashkent:residential:manzara',
+    type: 'residential_complex',
+    country: 'UZ',
+    canonicalName: 'Manzara',
+    parentId: 'uz:tashkent:yunusabad',
+    center: Object.freeze({ lat: 41.356109, lng: 69.314573 }),
+    source: 'manual',
+    accuracy: 'building',
+    accuracyM: 80,
+  }),"""
+          replacement = marker + """
+  Object.freeze({
+    id: 'uz:tashkent:residential:dostlar',
+    type: 'residential_complex',
+    country: 'UZ',
+    canonicalName: 'Do‘stlar',
+    parentId: 'uz:tashkent:yunusabad',
+    center: Object.freeze({ lat: 41.3245125, lng: 69.2773594 }),
+    source: 'manual',
+    accuracy: 'building',
+    accuracyM: 80,
+    sourceUrl: 'https://www.waze.com/live-map/directions/uz/tashkent/tashkent/dostlar-turar-joy-majmuasi?to=place.ChIJe9QIsZiLrjgRGS42c7sFVzw',
+  }),"""
+          replace_once(residential, marker, replacement)
+
+          gaps = Path('src/coverage-gaps.js')
+          replace_once(
+              gaps,
+              "  ...gaps('UZ', 'Tashkent', 'residential_complex', ['Do‘stlar'], 'The complex and its Yunusabad-5 address are confirmed, but a reliably sourced building center or footprint is still unavailable.')\n".replace(")\n", "),\n"),
+              '',
+          )
+
+          tests = Path('test/tashkent-semantics.test.js')
+          old = """  for (const [canonical, id] of [
+    ['Assalom Jomiy', 'uz:tashkent:residential:assalom-jomiy'],
+    ['Olmazor City', 'uz:tashkent:residential:olmazor-city'],
+  ]) {
+    const input = { country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical };
+    assert.equal(resolveLexiconGeoEntity(input)?.id, id);
+    assert.equal(isGeoCoverageGap(input), false);
+  }
+
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical: 'Do‘stlar' }), true);"""
+          new = """  for (const [canonical, id] of [
+    ['Assalom Jomiy', 'uz:tashkent:residential:assalom-jomiy'],
+    ['Olmazor City', 'uz:tashkent:residential:olmazor-city'],
+    ['Do‘stlar', 'uz:tashkent:residential:dostlar'],
+  ]) {
+    const input = { country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical };
+    assert.equal(resolveLexiconGeoEntity(input)?.id, id);
+    assert.equal(isGeoCoverageGap(input), false);
+  }
+
+  const dostlar = getGeoEntity('uz:tashkent:residential:dostlar');
+  assert.equal(dostlar?.parentId, 'uz:tashkent:yunusabad');
+  assert.deepEqual(dostlar?.center, { lat: 41.3245125, lng: 69.2773594 });
+  assert.equal(dostlar?.source, 'manual');
+  assert.equal(dostlar?.accuracy, 'building');
+  assert.equal(dostlar?.osm, undefined);"""
+          replace_once(tests, old, new)
+          PY
+      - run: npm install --ignore-scripts
+      - run: npm test
+      - run: npm run validate
+      - run: npm run audit:lexicon
+      - run: npm pack --dry-run
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/data/uz/tashkent/residential.js src/coverage-gaps.js test/tashkent-semantics.test.js
+          if git diff --cached --quiet; then
+            echo "No Dostlar changes"
+            exit 0
+          fi
+          git commit -m 'data: resolve Dostlar residential complex'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
