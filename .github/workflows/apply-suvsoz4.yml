@@ -1,0 +1,68 @@
+name: Apply Suvsoz-4 area sync
+
+on:
+  push:
+    branches:
+      - data/tashkent-local-areas-2026-08-30
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Patch Suvsoz-4
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              text = path.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one match, got {count}: {old[:100]}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          areas = Path('src/data/uz/tashkent/local-areas-verified.js')
+          replace_once(
+              areas,
+              "  osmArea('suvsoz-2', 'Suvsoz-2', 'uz:tashkent:bektemir', 41.2518266, 69.3756741, 'way', 153528330, 650),",
+              "  osmArea('suvsoz-2', 'Suvsoz-2', 'uz:tashkent:bektemir', 41.2518266, 69.3756741, 'way', 153528330, 650),\n  // Representative center from multiple current Suvsoz-4 mavzesi address anchors; no standalone OSM owner is asserted.\n  derivedArea('suvsoz-4', 'Suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753, 900),",
+          )
+
+          gaps = Path('src/coverage-gaps.js')
+          replace_once(
+              gaps,
+              "    'Manzara','Takhtapul','Taxtapul','Suvsoz-3','Suvsoz-4','Suvsoz-5','Minora','Muxbir','Shimoliy Olmazor-1','Shimoliy Olmazor-2','Taraqqiyot-4','Shifokorlar-2','Shifokorlar-3','Shifokorlar-5','Shifokorlar-6',\"So'lim\", \"Sug'diyona\",",
+              "    'Manzara','Takhtapul','Taxtapul','Suvsoz-3','Suvsoz-5','Minora','Muxbir','Shimoliy Olmazor-1','Shimoliy Olmazor-2','Taraqqiyot-4','Shifokorlar-2','Shifokorlar-3','Shifokorlar-5','Shifokorlar-6',\"So'lim\", \"Sug'diyona\",",
+          )
+
+          tests = Path('test/tashkent-local-area-coverage.test.js')
+          replace_once(
+              tests,
+              "  ['Guruchariq', 'uz:tashkent:local-area:guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304],",
+              "  ['Guruchariq', 'uz:tashkent:local-area:guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304],\n  ['Suvsoz-4', 'uz:tashkent:local-area:suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753],",
+          )
+          PY
+      - run: npm install --ignore-scripts
+      - run: npm test
+      - run: npm run validate
+      - run: npm run audit:lexicon
+      - run: npm pack --dry-run
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/data/uz/tashkent/local-areas-verified.js src/coverage-gaps.js test/tashkent-local-area-coverage.test.js
+          git commit -m 'data: resolve Suvsoz-4 approximate center'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
