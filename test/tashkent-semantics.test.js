@@ -321,7 +321,7 @@ test('Akademgorodok owns its academy-campus polygon in Mirzo Ulugbek', () => {
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Akademgorodok' }), false);
 });
 
-test('Gulobod and Sebzor streets do not consume their unresolved mahallas or areas', () => {
+test('Gulobod and Sebzor streets remain distinct from mahallas and resolved local areas', () => {
   const gulobod = getGeoEntity('uz:tashkent:street:gulobod');
   assert.equal(gulobod?.parentId, 'uz:tashkent:shaykhantahur');
   assert.deepEqual(gulobod?.osm, { type: 'way', id: 641077612 });
@@ -332,8 +332,8 @@ test('Gulobod and Sebzor streets do not consume their unresolved mahallas or are
 
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Gulobod' }), true);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Sebzor' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Gulobod' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Sebzor' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Gulobod' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Sebzor' }), false);
 });
 
 test('Taraqqiyot mahalla owns its verified Almazar residential boundary', () => {
@@ -403,7 +403,7 @@ test('verified dahasi points resolve only their local-area identities', () => {
 
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Ahmad Yugnakiy' }), true);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Olimpiya' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Olimpiya' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Olimpiya' }), false);
 });
 
 test('ToshGRES uses the lexicon canonical on its existing OSM owner', () => {
