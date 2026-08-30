@@ -145,6 +145,8 @@ test('Kharkiv landmarks resolve through the generic POI bridge', () => {
     ['Dafi', 'ua:kharkiv:poi:dafi'],
     ['French Boulevard', 'ua:kharkiv:poi:french-boulevard'],
     ['Barabashovo Market', 'ua:kharkiv:poi:barabashovo-market'],
+    ['Horse Market', 'ua:kharkiv:poi:horse-market'],
+    ['Central Market', 'ua:kharkiv:poi:central-market'],
     ['Sumskyi Market', 'ua:kharkiv:poi:sumskyi-market'],
     ['Kharkiv-Pasazhyrskyi Station', 'ua:kharkiv:poi:kharkiv-pasazhyrskyi'],
   ]);
@@ -170,6 +172,10 @@ test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:dafi')?.osm, { type: 'way', id: 89761454 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.osm, { type: 'way', id: 89433884 });
   assert.equal(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.type, 'poi.market');
+  assert.equal(getGeoEntity('ua:kharkiv:poi:horse-market')?.type, 'poi.market');
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:horse-market')?.center, { lat: 49.9860832659406, lng: 36.2629331468434 });
+  assert.equal(getGeoEntity('ua:kharkiv:poi:central-market')?.type, 'poi.market');
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:central-market')?.center, { lat: 49.9933, lng: 36.2197 });
   assert.equal(getGeoEntity('ua:kharkiv:poi:sumskyi-market')?.type, 'poi.market');
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:sumskyi-market')?.center, { lat: 50.011593, lng: 36.23866 });
   assert.equal(getGeoEntity('ua:kharkiv:poi:kharkiv-zoo')?.wikidataId, 'Q4496313');
