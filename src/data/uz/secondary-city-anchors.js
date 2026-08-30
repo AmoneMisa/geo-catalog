@@ -67,13 +67,16 @@ export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
 
   approximateArea('andijan', 'railway-station-area', 'Railway Station area', 40.76296, 72.35057, 1100),
   approximateArea('andijan', 'airport-area', 'Airport area', 40.72710, 72.29600, 1500),
+  approximateArea('andijan', 'university-area', 'University area', 40.78948, 72.37338, 900),
   approximateArea('fergana', 'railway-station-area', 'Railway Station area', 40.39511, 71.75479, 1100),
   approximateArea('fergana', 'airport-area', 'Airport area', 40.35880, 71.74500, 1500),
   approximateArea('urgench', 'railway-station-area', 'Railway Station area', 41.53650, 60.63215, 1100),
   approximateArea('urgench', 'airport-area', 'Airport area', 41.58490, 60.63353, 1500),
+  approximateArea('urgench', 'university-area', 'University area', 41.55635, 60.60703, 900),
   approximateArea('qarshi', 'railway-station-area', 'Railway Station area', 38.82158, 65.77723, 1100),
   approximateArea('qarshi', 'airport-area', 'Airport area', 38.802311, 65.773161, 1500),
   approximateArea('nukus', 'airport-area', 'Airport area', 42.488333, 59.623333, 1500),
   approximateArea('nukus', 'railway-station-area', 'Railway Station area', 42.43778, 59.64271, 1100),
   approximateArea('samarkand', 'railway-station-area', 'Railway Station area', 39.685888, 66.928915, 1100),
+  approximateArea('gulistan', 'university-area', 'University area', 40.50611, 68.78324, 900),
 ]);
