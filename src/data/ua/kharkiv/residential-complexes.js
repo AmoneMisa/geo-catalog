@@ -26,5 +26,6 @@ export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('vorobiovi-hory-family', 'Vorobiovi Hory Family', 50.017387, 36.204117, 'https://novobudovy.com/ru/novobudovy-kharkova/vorobjovi-gori-family', 200),
   residential('oasis', 'Oasis', 50.013473, 36.197124, 'https://novobudovy.com/ru/novobudovy-kharkova/oazis', 180),
   residential('kazka', 'Kazka', 49.979540, 36.171967, 'https://novobudovy.com/ru/novobudovy-kharkova/skazka', 420),
+  residential('makiivska', 'Makiivska', 49.953117, 36.254140, 'https://novobudovy.com/ru/arkhiv/novostroy-makeevskaya', 220),
   residential('manhattan', 'Manhattan', 49.991039, 36.263272, 'https://novobudovy.com/ru/novobudovy-kharkova/moskovskij-harkov', 220),
 ]);
