@@ -97,6 +97,7 @@ test('Kharkiv residential complexes use parser canonicals and explicit sources',
     ['Myronosytska', 'ua:kharkiv:residential:myronosytska'],
     ['Felicita', 'ua:kharkiv:residential:felicita'],
     ['Rezidentsiia', 'ua:kharkiv:residential:rezidentsiia'],
+    ['Hydropark', 'ua:kharkiv:residential:hydropark'],
     ['Ptashka', 'ua:kharkiv:residential:ptashka'],
     ['Newton', 'ua:kharkiv:residential:newton'],
     ['Meridian', 'ua:kharkiv:residential:meridian'],
@@ -191,6 +192,8 @@ test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:myronosytska')?.center, { lat: 50.010003, lng: 36.242821 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:felicita')?.center, { lat: 50.029835, lng: 36.2577 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:rezidentsiia')?.center, { lat: 50.02158371710696, lng: 36.22845802887636 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:hydropark')?.center, { lat: 50.021194, lng: 36.291282 });
+  assert.equal(getGeoEntity('ua:kharkiv:residential:hydropark')?.accuracyM, 700);
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:mlechnyi-shliakh')?.center, { lat: 50.006117, lng: 36.257562 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:makiivska')?.center, { lat: 49.953117, lng: 36.25414 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:residential:river-town')?.center, { lat: 50.016955, lng: 36.205893 });
