@@ -9,7 +9,6 @@ const normalize = (value) => String(value ?? '')
 const gaps = (country, city, type, canonicals, reason) => canonicals.map((canonical) => ({ country, city, type, canonical, reason }));
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
-  ...gaps('UZ', 'Tashkent', 'local_area', ['Stroygorod'], 'No verified standalone spatial locality match yet.'),
   ...gaps('UZ', 'Tashkent', 'residential_complex', ['Do‘stlar'], 'The complex and its Yunusabad-5 address are confirmed, but a reliably sourced building center or footprint is still unavailable.'),
   ...gaps('UZ', 'Tashkent', 'microdistrict', ['Manzara'], 'Official Tashkent microdistrict name, but no independently verifiable standalone OSM object or boundary was found.'),
   ...gaps('UZ', 'Tashkent', 'mahalla', [
