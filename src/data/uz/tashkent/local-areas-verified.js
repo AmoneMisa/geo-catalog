@@ -85,8 +85,12 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   // Official Parkent-Siolkovskiy mavzesi in Do'stobod; center from the current house-2/Oltintepa address cluster.
   derivedArea('parkent-siolkovskiy', 'Parkent-Siolkovskiy', 'uz:tashkent:yashnobod', 41.312243, 69.331072, 650),
   boundaryArea('shimoliy-olmazor', 'Shimoliy Olmazor', 'uz:tashkent:almazar', 450),
+  // Official Miskin-MFY addresses identify Shimoliy Olmazor-2 as a standalone mavze; center from the current residential cluster.
+  derivedArea('shimoliy-olmazor-2', 'Shimoliy Olmazor-2', 'uz:tashkent:almazar', 41.351744, 69.255455, 800),
   osmArea('suvsoz-1', 'Suvsoz-1', 'uz:tashkent:bektemir', 41.247201, 69.3706561, 'relation', 19801804, 700),
   osmArea('suvsoz-2', 'Suvsoz-2', 'uz:tashkent:bektemir', 41.2518266, 69.3756741, 'way', 153528330, 650),
+  // City Council defines Suvsoz-3 between Rohat, Yettisuv, Choyxona and Bandixon; center is an approximate centroid of verified boundary-adjacent anchors.
+  derivedArea('suvsoz-3', 'Suvsoz-3', 'uz:tashkent:bektemir', 41.244307, 69.36724, 1100),
   // Representative center from multiple current Suvsoz-4 mavzesi address anchors; no standalone OSM owner is asserted.
   derivedArea('suvsoz-4', 'Suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753, 900),
   osmArea('movarounnahr', 'Movarounnahr', 'uz:tashkent:mirobod', 41.29999, 69.28658, 'way', 1057801683, 520),

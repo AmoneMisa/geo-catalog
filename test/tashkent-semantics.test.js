@@ -389,7 +389,8 @@ test('Suvsoz-1 and Suvsoz-2 resolve to distinct Bektemir residential areas', () 
     assert.equal(isGeoCoverageGap(input), false, canonical);
   }
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Suvsoz-3' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Suvsoz-3' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Suvsoz-5' }), true);
 });
 
 test('verified dahasi points resolve only their local-area identities', () => {
