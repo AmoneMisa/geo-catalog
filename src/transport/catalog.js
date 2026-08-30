@@ -6,7 +6,8 @@ import {
 import {
   TASHKENT_BUS_ROUTES,
   TASHKENT_BUS_STOPS,
-} from './tashkent-bus.js';
+  TASHKENT_BUS_ROUTE_VARIANTS,
+} from './tashkent-bus-catalog.js';
 
 export const TRANSPORT_STOPS = Object.freeze([
   ...TASHKENT_METRO_STOPS,
@@ -18,12 +19,17 @@ export const TRANSPORT_ROUTES = Object.freeze([
   ...TASHKENT_BUS_ROUTES,
 ]);
 
+export const TRANSPORT_ROUTE_VARIANTS = Object.freeze([
+  ...TASHKENT_BUS_ROUTE_VARIANTS,
+]);
+
 export const TRANSPORT_TRANSFERS = Object.freeze([
   ...TASHKENT_METRO_TRANSFERS,
 ]);
 
 const stopsById = new Map(TRANSPORT_STOPS.map((stop) => [stop.id, stop]));
 const routesById = new Map(TRANSPORT_ROUTES.map((route) => [route.id, route]));
+const variantsById = new Map(TRANSPORT_ROUTE_VARIANTS.map((variant) => [variant.id, variant]));
 
 export function getTransportStop(id) {
   return stopsById.get(String(id || '')) ?? null;
@@ -31,6 +37,10 @@ export function getTransportStop(id) {
 
 export function getTransportRoute(id) {
   return routesById.get(String(id || '')) ?? null;
+}
+
+export function getTransportRouteVariant(id) {
+  return variantsById.get(String(id || '')) ?? null;
 }
 
 export function findTransportStops(filters = {}) {
@@ -53,11 +63,24 @@ export function findTransportRoutes(filters = {}) {
   );
 }
 
+export function findTransportRouteVariants(filters = {}) {
+  const { country, cityId, mode, ref } = filters;
+  return TRANSPORT_ROUTE_VARIANTS.filter((variant) =>
+    (!country || variant.country === country) &&
+    (!cityId || variant.cityId === cityId) &&
+    (!mode || variant.mode === mode) &&
+    (!ref || variant.ref === ref)
+  );
+}
+
+const routeContainsStop = (route, stopId) =>
+  route.stopIds.includes(stopId) || route.variants?.some((variant) => variant.stopIds.includes(stopId));
+
 export function getRoutesForStop(stopId, options = {}) {
   const id = String(stopId || '');
   const { requireFullSequence = false } = options;
   return TRANSPORT_ROUTES.filter((route) =>
-    route.stopIds.includes(id) && (!requireFullSequence || route.coverage === 'full')
+    routeContainsStop(route, id) && (!requireFullSequence || route.coverage === 'full')
   );
 }
 
@@ -65,6 +88,22 @@ export function getStopsForRoute(routeId) {
   const route = getTransportRoute(routeId);
   if (!route) return [];
   return route.stopIds.map((id) => stopsById.get(id)).filter(Boolean);
+}
+
+export function getRouteVariants(routeId) {
+  return getTransportRoute(routeId)?.variants ?? [];
+}
+
+export function getStopsForRouteVariant(routeId, variantId) {
+  const route = getTransportRoute(routeId);
+  if (!route?.variants?.length) return [];
+  const id = String(variantId || '');
+  const numericId = Number(variantId);
+  const variant = route.variants.find((candidate) =>
+    candidate.id === id || (Number.isFinite(numericId) && candidate.osm?.id === numericId)
+  );
+  if (!variant) return [];
+  return variant.stopIds.map((stopId) => stopsById.get(stopId)).filter(Boolean);
 }
 
 export function getTransfersForStop(stopId) {
@@ -84,6 +123,13 @@ export function getTransportCoverage(filters = {}) {
   });
 }
 
+const isValidCoordinate = (center) =>
+  center &&
+  Number.isFinite(center.lat) &&
+  Number.isFinite(center.lng) &&
+  center.lat >= -90 && center.lat <= 90 &&
+  center.lng >= -180 && center.lng <= 180;
+
 export function validateTransportCatalog({
   stops = TRANSPORT_STOPS,
   routes = TRANSPORT_ROUTES,
@@ -92,13 +138,14 @@ export function validateTransportCatalog({
   const errors = [];
   const stopIds = new Set();
   const routeIds = new Set();
+  const variantIds = new Set();
 
   for (const stop of stops) {
     if (!stop?.id) errors.push('Transport stop is missing id.');
     else if (stopIds.has(stop.id)) errors.push(`Duplicate transport stop id: ${stop.id}`);
     else stopIds.add(stop.id);
 
-    if (!stop?.center || !Number.isFinite(stop.center.lat) || !Number.isFinite(stop.center.lng)) {
+    if (!isValidCoordinate(stop?.center)) {
       errors.push(`Transport stop ${stop?.id || '<unknown>'} has invalid center.`);
     }
   }
@@ -117,13 +164,36 @@ export function validateTransportCatalog({
       continue;
     }
 
-    const minimumStops = route.coverage === 'metadata_only' ? 0 : 2;
+    const variants = Array.isArray(route.variants) ? route.variants : [];
+    const hasFullVariant = variants.some((variant) => Array.isArray(variant.stopIds) && variant.stopIds.length >= 2);
+    const minimumStops = route.coverage === 'metadata_only' || (route.coverage === 'full' && hasFullVariant) ? 0 : 2;
     if (route.stopIds.length < minimumStops) {
       errors.push(`Transport route ${route.id} needs at least ${minimumStops} stops for ${route.coverage} coverage.`);
     }
 
     for (const stopId of route.stopIds) {
       if (!stopIds.has(stopId)) errors.push(`Transport route ${route.id} references missing stop ${stopId}.`);
+    }
+
+    if (route.coverage === 'full' && route.stopIds.length < 2 && !hasFullVariant) {
+      errors.push(`Transport route ${route.id} has full coverage without a full stop sequence or route variant.`);
+    }
+
+    for (const variant of variants) {
+      if (!variant?.id) errors.push(`Transport route ${route.id} has a variant without id.`);
+      else if (variantIds.has(variant.id)) errors.push(`Duplicate transport route variant id: ${variant.id}`);
+      else variantIds.add(variant.id);
+
+      if (variant.ref !== route.ref) {
+        errors.push(`Transport route variant ${variant.id} ref does not match route ${route.id}.`);
+      }
+      if (!Array.isArray(variant.stopIds) || variant.stopIds.length < 2) {
+        errors.push(`Transport route variant ${variant.id} needs at least 2 stops.`);
+        continue;
+      }
+      for (const stopId of variant.stopIds) {
+        if (!stopIds.has(stopId)) errors.push(`Transport route variant ${variant.id} references missing stop ${stopId}.`);
+      }
     }
   }
 
