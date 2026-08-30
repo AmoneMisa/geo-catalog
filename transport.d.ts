@@ -68,6 +68,8 @@ export interface TransportRoute {
   sourceUpdatedAt?: string;
   topologySource?: TransportSource;
   topologyUpdatedAt?: string;
+  mapGeometrySource?: TransportSource;
+  mapGeometryUpdatedAt?: string;
   validFrom?: string;
   validTo?: string;
   coverage: TransportRouteCoverage;
@@ -113,6 +115,13 @@ export interface TransportCoverageSummary {
   full: number;
   terminalsOnly: number;
   metadataOnly: number;
+}
+
+export interface TransportMapCoverageSummary {
+  total: number;
+  withGeometry: number;
+  withoutGeometry: number;
+  variantsWithGeometry: number;
 }
 
 export interface NearestTransportStopResult {
@@ -186,6 +195,7 @@ export function getRouteVariants(routeId: string): readonly Readonly<TransportRo
 export function getStopsForRouteVariant(routeId: string, variantId: string | number): readonly Readonly<TransportStop>[];
 export function getTransfersForStop(stopId: string): readonly Readonly<TransportTransfer>[];
 export function getTransportCoverage(filters?: TransportRouteFilters): Readonly<TransportCoverageSummary>;
+export function getTransportMapCoverage(filters?: TransportRouteFilters): Readonly<TransportMapCoverageSummary>;
 export function getTransportRouteGeoJSON(routeId: string, options?: { bounds?: TransportBounds }): Readonly<TransportRouteGeoJSON>;
 export function getTransportRoutesGeoJSON(filters?: TransportRouteFilters): Readonly<TransportRouteGeoJSON>;
 export function getTransportStopsGeoJSON(filters?: TransportFilters): Readonly<TransportStopsGeoJSON>;
