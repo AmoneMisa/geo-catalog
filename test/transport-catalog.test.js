@@ -14,6 +14,7 @@ import {
   getStopsForRouteVariant,
   getTransfersForStop,
   getTransportCoverage,
+  getTransportMapCoverage,
   getTransportRoute,
   getTransportRouteGeoJSON,
   getTransportRoutesGeoJSON,
@@ -51,11 +52,19 @@ test('Tashkent bus registry still contains all 170 route refs', () => {
   assert.equal(getTransportRoute('uz:tashkent:route:bus:4'), null);
 });
 
-test('OSM topology refresh never regresses the established bus map baseline', () => {
-  const coverage = getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(coverage.total, 170);
-  assert.ok(coverage.full >= 60);
-  assert.equal(coverage.full + coverage.terminalsOnly + coverage.metadataOnly, coverage.total);
+test('topology coverage and map geometry coverage are independent', () => {
+  const topology = getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' });
+  const map = getTransportMapCoverage({ cityId: 'uz:tashkent', mode: 'bus' });
+
+  assert.equal(topology.total, 170);
+  assert.ok(topology.full >= 60);
+  assert.equal(topology.full + topology.terminalsOnly + topology.metadataOnly, topology.total);
+
+  assert.equal(map.total, 170);
+  assert.ok(map.withGeometry >= 60);
+  assert.ok(map.withGeometry >= topology.full);
+  assert.equal(map.withGeometry + map.withoutGeometry, map.total);
+  assert.equal(map.variantsWithGeometry, TRANSPORT_ROUTE_VARIANTS.length);
   assert.ok(TRANSPORT_ROUTE_VARIANTS.length >= 117);
 });
 
@@ -69,6 +78,7 @@ test('every OSM bus variant includes real road geometry and map bounds', () => {
     assert.equal(variant.geometryUpdatedAt, '2026-08-30', variant.id);
     assert.ok(variant.bounds.west <= variant.bounds.east, variant.id);
     assert.ok(variant.bounds.south <= variant.bounds.north, variant.id);
+    assert.notEqual(variant.stopIds.length, 1, variant.id);
   }
 });
 
@@ -89,6 +99,7 @@ test('route 1 keeps its verified OSM directions and geometry', () => {
   assert.equal(route?.coverage, 'full');
   assert.equal(route?.topologySource, 'osm');
   assert.equal(route?.topologyUpdatedAt, '2026-08-30');
+  assert.equal(route?.mapGeometrySource, 'osm');
 
   const variants = getRouteVariants(route.id);
   const relationIds = variants.map((variant) => variant.osm?.id).sort((a, b) => a - b);
@@ -167,12 +178,12 @@ test('route membership lookup includes OSM variant stops', () => {
   assert.ok(refs.includes('17'));
 });
 
-test('a single valid OSM direction can provide full topology while refresh may discover more', () => {
+test('known topology routes may also gain shape-only variants without losing full coverage', () => {
   for (const routeId of ['uz:tashkent:route:bus:84', 'uz:tashkent:route:bus:16']) {
     const route = getTransportRoute(routeId);
     assert.equal(route?.coverage, 'full');
     assert.ok(getRouteVariants(route.id).length >= 1);
-    assert.ok(getRouteVariants(route.id).every((variant) => variant.stopIds.length >= 2));
+    assert.ok(getRouteVariants(route.id).some((variant) => variant.stopIds.length >= 2));
     assert.ok(getRouteVariants(route.id).every((variant) => variant.geometry?.type === 'MultiLineString'));
   }
 });
@@ -192,6 +203,21 @@ test('manual terminal anchors remain available after OSM topology promotion', ()
     'uz:tashkent:stop:bus:yunusabad-19',
     'uz:tashkent:stop:bus:tashkent-international-airport',
   ]);
+});
+
+test('validator accepts map-only route variants without pretending they have stop topology', () => {
+  const mapOnlyRoute = {
+    id: 'test:map-route', type: 'route', mode: 'bus', country: 'UZ', cityId: 'uz:tashkent',
+    canonicalName: 'Map route', ref: 'M', coverage: 'metadata_only', stopIds: [],
+    variants: [{
+      id: 'test:map-variant', type: 'route_variant', mode: 'bus', country: 'UZ', cityId: 'uz:tashkent',
+      canonicalName: 'Map variant', ref: 'M',
+      geometry: { type: 'MultiLineString', coordinates: [[[69.2, 41.2], [69.3, 41.3]]] },
+      bounds: { west: 69.2, south: 41.2, east: 69.3, north: 41.3 },
+      stopIds: [],
+    }],
+  };
+  assert.deepEqual(validateTransportCatalog({ stops: [], routes: [mapOnlyRoute], transfers: [] }), { valid: true, errors: [] });
 });
 
 test('validator rejects out-of-range coordinates, invalid geometry and missing variant stops', () => {
