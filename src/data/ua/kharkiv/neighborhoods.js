@@ -26,7 +26,6 @@ export const UA_KHARKIV_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict('rohan', 'Рогань', 49.902255, 36.431106, 900, 'https://www.openstreetmap.org/node/268180182'),
   microdistrict('zhykhar', 'Жихор', 49.912532, 36.219353, 900, 'https://www.openstreetmap.org/node/13895879706'),
   microdistrict('osnova', 'Основа', 49.935868, 36.239203, 900, 'https://www.openstreetmap.org/node/395003980'),
-  microdistrict('barabashovo', 'Барабашово', 50.004278, 36.307550, 700, 'https://www.openstreetmap.org/way/89433884'),
   microdistrict('zaliutyne', 'Залютине', 49.967102, 36.161982, 900, 'https://www.openstreetmap.org/node/1799464842'),
   microdistrict('levada', 'Левада', 49.980914, 36.243114, 700, 'https://www.openstreetmap.org/node/267309844'),
   microdistrict('pomerky', 'Померки', 50.064614, 36.231430, 1200, 'https://www.openstreetmap.org/relation/11595307'),
