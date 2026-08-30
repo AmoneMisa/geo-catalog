@@ -1,6 +1,9 @@
-import type { GeoAccuracy, GeoPoint, GeoSource, OsmRef } from './index.d.ts';
-
 export type TransportMode = 'metro' | 'bus' | 'tram' | 'trolleybus' | 'minibus' | 'rail' | 'walk';
+export type TransportSource = 'osm' | 'wikidata' | 'official' | 'manual' | 'geonames' | string;
+export type TransportAccuracy = 'country' | 'region' | 'city' | 'district' | 'neighborhood' | 'street' | 'building' | 'poi' | 'entrance' | 'approximate';
+
+export interface TransportPoint { lat: number; lng: number }
+export interface TransportOsmRef { type: 'node' | 'way' | 'relation'; id: number }
 
 export interface TransportStop {
   id: string;
@@ -9,12 +12,12 @@ export interface TransportStop {
   country: string;
   cityId: string;
   canonicalName: string;
-  center: GeoPoint;
+  center: TransportPoint;
   geoEntityId?: string;
-  source?: GeoSource | string;
-  accuracy?: GeoAccuracy;
+  source?: TransportSource;
+  accuracy?: TransportAccuracy;
   accuracyM?: number;
-  osm?: OsmRef;
+  osm?: TransportOsmRef;
   wikidataId?: string;
 }
 
@@ -26,7 +29,7 @@ export interface TransportRoute {
   cityId: string;
   canonicalName: string;
   ref?: string;
-  source?: GeoSource | string;
+  source?: TransportSource;
   sourceUpdatedAt?: string;
   validFrom?: string;
   validTo?: string;
@@ -39,7 +42,7 @@ export interface TransportTransfer {
   mode: 'walk';
   country: string;
   cityId: string;
-  source?: GeoSource | string;
+  source?: TransportSource;
   stopIds: readonly [string, string];
 }
 
