@@ -58,4 +58,9 @@ export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
   approximateArea('kogon', 'railway-station-area', 'Railway Station area', 39.72483, 64.57633, 1000),
   approximateArea('kattakurgan', 'railway-station-area', 'Railway Station area', 39.90249, 66.24589, 1100),
   approximateArea('yangiyol', 'railway-station-area', 'Railway Station area', 41.11678, 69.06075, 1000),
+  approximateArea('yangiyer', 'railway-station-area', 'Railway Station area', 40.29627, 68.82489, 1100),
+  approximateArea('margilan', 'railway-station-area', 'Railway Station area', 40.44258, 71.72309, 1100),
+  approximateArea('kokand', 'railway-station-area', 'Railway Station area', 40.51901, 70.92847, 1100),
+  approximateArea('kungrad', 'railway-station-area', 'Railway Station area', 43.04077, 58.84135, 1100),
+  approximateArea('turtkul', 'railway-station-area', 'Railway Station area', 41.57057, 61.03238, 1100),
 ]);
