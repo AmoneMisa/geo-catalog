@@ -12,6 +12,8 @@ const stop = (slug, canonicalName, lat, lng, osmType, osmId, extra = {}) => Obje
   osm: Object.freeze({ type: osmType, id: osmId }),
 });
 
+const TASHKENT_BUS_REGISTRY_SOURCE = 'https://tashtrans.uz/avtobusnye-marshruty-tashkenta/';
+
 export const TASHKENT_BUS_STOPS = Object.freeze([
   stop('ttz-bus-station', 'TTZ Bus Station', 41.36823, 69.39480, 'way', 98599092, { accuracyM: 220 }),
 ]);
@@ -32,6 +34,7 @@ const metadataRoute = (ref) => Object.freeze({
   canonicalName: `Route ${ref}`,
   ref,
   source: 'manual',
+  sourceUrl: TASHKENT_BUS_REGISTRY_SOURCE,
   sourceUpdatedAt: '2026-08-18',
   coverage: 'metadata_only',
   stopIds: Object.freeze([]),
@@ -46,6 +49,7 @@ const route79 = Object.freeze({
   canonicalName: 'Route 79',
   ref: '79',
   source: 'manual',
+  sourceUrl: TASHKENT_BUS_REGISTRY_SOURCE,
   sourceUpdatedAt: '2026-08-18',
   coverage: 'terminals_only',
   terminalNames: Object.freeze(['Beruniy Metro', 'TTZ Bus Station']),
