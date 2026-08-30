@@ -3,21 +3,21 @@ import assert from 'node:assert/strict';
 import { GEO_ENTITIES } from '../src/catalog.js';
 import { isGeoCoverageGap } from '../src/coverage-gaps.js';
 
-const obsoletePoiGaps = Object.freeze([
+const transitionPoiGaps = Object.freeze([
   'Samarkand City',
   'Siab Bazaar',
   'University Boulevard',
   'Alisher Navoiy Park',
 ]);
 
-test('obsolete Samarkand POI canonicals are not retained as spatial gaps', () => {
-  for (const canonical of obsoletePoiGaps) {
+test('pre-merge Samarkand canonicals remain transition gaps until parsing-lexicon#74 reaches master', () => {
+  for (const canonical of transitionPoiGaps) {
     assert.equal(isGeoCoverageGap({
       country: 'UZ',
       city: 'Samarkand',
       type: 'poi',
       canonical,
-    }), false, canonical);
+    }), true, canonical);
   }
 });
 
