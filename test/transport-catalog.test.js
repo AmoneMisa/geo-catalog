@@ -68,14 +68,14 @@ test('bus coverage report separates registry metadata from terminal and full top
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' }), {
     total: 170,
     full: 0,
-    terminalsOnly: 17,
-    metadataOnly: 153,
+    terminalsOnly: 18,
+    metadataOnly: 152,
   });
   assert.deepEqual(getTransportCoverage({ cityId: 'uz:tashkent' }), {
     total: 174,
     full: 4,
-    terminalsOnly: 17,
-    metadataOnly: 153,
+    terminalsOnly: 18,
+    metadataOnly: 152,
   });
 });
 
@@ -204,6 +204,16 @@ test('routes 38, 40 and 45 use explicit OSM terminal provenance', () => {
   ]);
 });
 
+test('route 44 reuses Aviasozlar geo entity and Chorsu metro', () => {
+  const aviasozlar = getTransportStop('uz:tashkent:stop:bus:aviasozlar');
+  assert.equal(aviasozlar?.geoEntityId, 'uz:tashkent:microdistrict:aviasozlar');
+  assert.deepEqual(aviasozlar?.osm, { type: 'node', id: 1867099580 });
+  assert.deepEqual(getTransportRoute('uz:tashkent:route:bus:44')?.stopIds, [
+    'uz:tashkent:stop:bus:aviasozlar',
+    'uz:tashkent:stop:metro:chorsu',
+  ]);
+});
+
 test('Food City terminal is shared by routes 39, 93, 110 and 133', () => {
   const foodCity = getTransportStop('uz:tashkent:stop:bus:food-city');
   assert.deepEqual(foodCity?.osm, { type: 'way', id: 825133525 });
@@ -228,10 +238,10 @@ test('Food City terminal is shared by routes 39, 93, 110 and 133', () => {
 });
 
 test('route 79 distinguishes terminal-only coverage from navigable topology', () => {
-  assert.equal(TRANSPORT_STOPS.length, 66);
+  assert.equal(TRANSPORT_STOPS.length, 67);
 
   const busStops = findTransportStops({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(busStops.length, 16);
+  assert.equal(busStops.length, 17);
   assert.equal(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.canonicalName, 'TTZ Bus Station');
   assert.deepEqual(getTransportStop('uz:tashkent:stop:bus:ttz-bus-station')?.osm, { type: 'way', id: 98599092 });
 
