@@ -33,11 +33,11 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Andijan', 'poi', ['Bobur Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Fergana', 'mahalla', ["Ma'rifat"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('UZ', 'Fergana', 'local_area', ['Qirguli','Neftchi','Center','Mustaqillik','Al-Fargoniy','Margilon Road','Navoiy'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Fergana', 'local_area', ['Qirguli','Neftchi','Center','Mustaqillik','Margilon Road','Navoiy'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Fergana', 'poi', ['Independence Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Bukhara', 'mahalla', ['M. Narshaxiy','S. Raximov nomli 17-MFY'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('UZ', 'Bukhara', 'local_area', ['Old City','Center','Gijduvon Road','Gazli Road','Railway Station area','Bukhara-1','Bukhara-2','University area','Namozgoh','Sharq','Mohi Xosa'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Bukhara', 'local_area', ['Old City','Center','Gijduvon Road','Gazli Road','Railway Station area','Bukhara-1','Bukhara-2','University area','Namozgoh','Sharq'], 'Lexicon local area still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Qarshi', 'mahalla', ['Navo','Gungon','Buyuk Turon'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('UZ', 'Qarshi', 'local_area', ['Center','Old City','Geolog','Sharq','Paxtazor','Qat','Xonobod','Jayxun'], 'Lexicon local area still needs a verified standalone spatial match.'),
@@ -49,7 +49,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Nukus', 'poi', ['Berdakh Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Urgench', 'mahalla', ['Mustaqillik','Feruz',"Ma'rifat","Yuqori bog'",'Al Xorazmiy','Besh mergan','Shodlik','Gulshan','Gulzor','Navbahor','Avesto','Ashxobod'], 'Official Urgench mahalla; verified standalone OSM neighbourhood/residential geometry still pending.'),
-  ...gaps('UZ', 'Urgench', 'local_area', ['Center','Olimpiya','Al-Xorazmiy area','Navoiy','Gurlan Road','Khiva Road'], 'Urgench local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Urgench', 'local_area', ['Center','Olimpiya','Navoiy','Gurlan Road','Khiva Road'], 'Urgench local-area alias still needs a verified standalone spatial match.'),
 ].map(Object.freeze));
 
 const gapKeys = new Set(GEO_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));
