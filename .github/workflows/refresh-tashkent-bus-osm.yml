@@ -1,0 +1,39 @@
+name: Refresh Tashkent bus OSM topology
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - data/tashkent-local-areas-2026-08-30
+    paths:
+      - scripts/refresh-tashkent-bus-osm.js
+      - .github/workflows/refresh-tashkent-bus-osm.yml
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: data/tashkent-local-areas-2026-08-30
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Discover current OSM bus topology
+        run: node ./scripts/refresh-tashkent-bus-osm.js
+      - name: Commit generated topology
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/transport/generated/tashkent-bus-osm-stops-*.js
+          git add src/transport/generated/tashkent-bus-osm-variants-*.js
+          git add src/transport/generated/tashkent-bus-osm-shapes-*.js
+          if git diff --cached --quiet; then
+            echo "No bus OSM topology changes"
+            exit 0
+          fi
+          git commit -m "data: refresh Tashkent bus OSM topology"
+          git push origin HEAD:data/tashkent-local-areas-2026-08-30
