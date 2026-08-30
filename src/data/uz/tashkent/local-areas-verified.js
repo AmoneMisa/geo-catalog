@@ -87,6 +87,8 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   boundaryArea('shimoliy-olmazor', 'Shimoliy Olmazor', 'uz:tashkent:almazar', 450),
   osmArea('suvsoz-1', 'Suvsoz-1', 'uz:tashkent:bektemir', 41.247201, 69.3706561, 'relation', 19801804, 700),
   osmArea('suvsoz-2', 'Suvsoz-2', 'uz:tashkent:bektemir', 41.2518266, 69.3756741, 'way', 153528330, 650),
+  // Representative center from multiple current Suvsoz-4 mavzesi address anchors; no standalone OSM owner is asserted.
+  derivedArea('suvsoz-4', 'Suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753, 900),
   osmArea('movarounnahr', 'Movarounnahr', 'uz:tashkent:mirobod', 41.29999, 69.28658, 'way', 1057801683, 520),
   osmArea('nakkoshlik', 'Nakkoshlik', 'uz:tashkent:chilanzar', 41.2674213, 69.202444, 'way', 1180079691, 520),
   osmArea('alimkent', 'Alimkent', 'uz:tashkent:yashnobod', 41.29546, 69.33720, 'node', 12144738032, 520),

@@ -44,6 +44,7 @@ const resolvedAreas = Object.freeze([
 const derivedAreas = Object.freeze([
   ['Humoyun', 'uz:tashkent:local-area:humoyun', 'uz:tashkent:mirzo-ulugbek', 41.34339, 69.388945],
   ['Guruchariq', 'uz:tashkent:local-area:guruchariq', 'uz:tashkent:almazar', 41.3471392, 69.2398304],
+  ['Suvsoz-4', 'uz:tashkent:local-area:suvsoz-4', 'uz:tashkent:bektemir', 41.253458, 69.376753],
   ['Parkent-Siolkovskiy', 'uz:tashkent:local-area:parkent-siolkovskiy', 'uz:tashkent:yashnobod', 41.312243, 69.331072],
   ['Taraqqiyot-1', 'uz:tashkent:local-area:taraqqiyot-1', 'uz:tashkent:almazar', 41.354837, 69.241154],
   ['Taraqqiyot-2', 'uz:tashkent:local-area:taraqqiyot-2', 'uz:tashkent:almazar', 41.352779, 69.241154],
