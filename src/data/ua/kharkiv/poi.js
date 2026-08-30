@@ -27,7 +27,20 @@ const osmPoi = (slug, canonicalName, poiType, lat, lng, osmType, osmId, accuracy
 export const UA_KHARKIV_POI_ENTITIES = Object.freeze([
   osmPoi('shevchenko-garden', 'Shevchenko Garden', 'park', 50.00126, 36.23061, 'way', 346335614, 180),
   osmPoi('central-park', 'Central Park', 'park', 50.02043, 36.24625, 'way', 33770412, 260),
+  osmPoi('sarzhyn-yar', 'Sarzhyn Yar', 'park', 50.02891, 36.23599, 'way', 33770366, 300),
   osmPoi('molodizhnyi-park', 'Molodizhnyi Park', 'park', 50.00881, 36.25014, 'way', 33743095, 180),
+  poi('machine-builders-park', 'Machine Builders Park', 'park', 49.96913799558902, 36.29369997301611, 350, {
+    source: 'manual',
+    sourceUrl: 'https://maps.visicom.ua/c/36.29369%2C49.96914%2C17/f/POIIX4EN8M?lang=uk',
+  }),
+  poi('zelenyi-hai', 'Zelenyi Hai', 'park', 49.9411737692331, 36.39280211516017, 350, {
+    source: 'manual',
+    sourceUrl: 'https://maps.visicom.ua/c/36.39280211516017%2C49.9411737692331%2C17/f/POI1MQ9UPTJ?lang=uk',
+  }),
+  poi('karpivskyi-garden', 'Karpivskyi Garden', 'park', 49.977734839868766, 36.204844015002706, 250, {
+    source: 'manual',
+    sourceUrl: 'https://maps.visicom.ua/i/POI2KWIF5EJ',
+  }),
   osmPoi('pokrovskyi-square', 'Pokrovskyi Square', 'park', 49.99117, 36.22881, 'way', 1361688576, 140),
   osmPoi('strilka', 'Strilka', 'square', 49.98681, 36.22595, 'way', 33780052, 160),
   osmPoi('mirror-stream', 'Mirror Stream', 'landmark', 49.99867, 36.23445, 'way', 1347563546, 80),
@@ -41,6 +54,10 @@ export const UA_KHARKIV_POI_ENTITIES = Object.freeze([
   osmPoi('nikolsky', 'Nikolsky', 'shopping_mall', 49.99159, 36.23518, 'way', 151347688, 120),
   osmPoi('ave-plaza', 'Ave Plaza', 'shopping_mall', 49.99441, 36.23296, 'way', 147521133, 100),
   osmPoi('dafi', 'Dafi', 'shopping_mall', 50.02760, 36.33080, 'way', 89761454, 140),
+  poi('french-boulevard', 'French Boulevard', 'shopping_mall', 49.990229, 36.289943, 180, {
+    source: 'manual',
+    sourceUrl: 'https://novobudovy.com/ru/novobudovy/torgovo-rozvazhalnij-centr-francuzkij-bulvar-m-harkiv',
+  }),
   osmPoi('barabashovo-market', 'Barabashovo Market', 'market', 50.00428, 36.30141, 'way', 89433884, 350),
   osmPoi('kharkiv-pasazhyrskyi', 'Kharkiv-Pasazhyrskyi Station', 'railway_station', 49.98924, 36.20443, 'way', 255940475, 140),
   poi('kharkiv-zoo', 'Kharkiv Zoo', 'zoo', 50.002778, 36.225, 250, {
