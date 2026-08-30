@@ -12,8 +12,9 @@ const LINES = Object.freeze([
 
 const round6 = (value) => Math.round(value * 1e6) / 1e6;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const NON_ROUTE_ROLES = new Set(['platform', 'stop', 'platform_entry_only', 'platform_exit_only']);
 
-async function fetchRelation(relationId) {
+async function fetchFullRelation(relationId) {
   const response = await fetch(`${OSM_API_URL}/relation/${relationId}/full.json`, {
     headers: {
       accept: 'application/json',
@@ -21,8 +22,10 @@ async function fetchRelation(relationId) {
     },
   });
   if (!response.ok) throw new Error(`OSM API ${response.status} for relation ${relationId}`);
+  return response.json();
+}
 
-  const payload = await response.json();
+function extractWaySegments(payload, relationId) {
   const elements = payload.elements || [];
   const relation = elements.find((element) => element.type === 'relation' && element.id === relationId);
   if (!relation) throw new Error(`Relation ${relationId} missing from OSM full response.`);
@@ -36,15 +39,37 @@ async function fetchRelation(relationId) {
 
   const segments = [];
   for (const member of relation.members || []) {
-    if (member.type !== 'way') continue;
-    if (['platform', 'stop', 'platform_entry_only', 'platform_exit_only'].includes(member.role)) continue;
+    if (member.type !== 'way' || NON_ROUTE_ROLES.has(member.role)) continue;
     const way = ways.get(member.ref);
     if (!way?.nodes?.length) continue;
     const coordinates = way.nodes.map((nodeId) => nodes.get(nodeId)).filter(Boolean);
     if (coordinates.length >= 2) segments.push(coordinates);
   }
 
-  if (!segments.length) throw new Error(`Relation ${relationId} contains no drawable way geometry.`);
+  const childRelationIds = (relation.members || [])
+    .filter((member) => member.type === 'relation' && !NON_ROUTE_ROLES.has(member.role))
+    .map((member) => member.ref);
+
+  return { relation, segments, childRelationIds };
+}
+
+async function fetchLineGeometry(routeMasterId) {
+  const payload = await fetchFullRelation(routeMasterId);
+  const direct = extractWaySegments(payload, routeMasterId);
+  const segments = [...direct.segments];
+  const childIds = [...new Set(direct.childRelationIds)];
+
+  if (!segments.length && childIds.length) {
+    console.log(`Relation ${routeMasterId} is a route master with ${childIds.length} child relation(s).`);
+    for (const childId of childIds) {
+      const childPayload = await fetchFullRelation(childId);
+      const child = extractWaySegments(childPayload, childId);
+      segments.push(...child.segments);
+      await sleep(250);
+    }
+  }
+
+  if (!segments.length) throw new Error(`Relation ${routeMasterId} contains no drawable route geometry.`);
 
   let west = Infinity;
   let south = Infinity;
@@ -59,18 +84,18 @@ async function fetchRelation(relationId) {
     }
   }
 
-  return [relationId, segments, [west, south, east, north]];
+  return [routeMasterId, segments, [west, south, east, north]];
 }
 
 const rows = [];
 for (const [slug, relationId] of LINES) {
   console.log(`Fetching ${slug} metro relation ${relationId}`);
-  const [, segments, bounds] = await fetchRelation(relationId);
+  const [, segments, bounds] = await fetchLineGeometry(relationId);
   rows.push([slug, relationId, segments, bounds]);
   await sleep(350);
 }
 
 const path = new URL('../src/transport/generated/tashkent-metro-osm-shapes.js', import.meta.url);
-const content = `// Generated from OpenStreetMap ${SOURCE_DATE}; ODbL.\n// Rows: [lineSlug, relationId, multiLineCoordinates, [west,south,east,north]]\nexport default Object.freeze(${JSON.stringify(rows)});\n`;
+const content = `// Generated from OpenStreetMap ${SOURCE_DATE}; ODbL.\n// Rows: [lineSlug, routeMasterRelationId, multiLineCoordinates, [west,south,east,north]]\nexport default Object.freeze(${JSON.stringify(rows)});\n`;
 await writeFile(path, content, 'utf8');
 console.log(`Generated ${rows.length} Tashkent metro line shapes.`);
