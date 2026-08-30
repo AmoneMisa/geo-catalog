@@ -74,6 +74,18 @@ export const TASHKENT_POI_ENTITIES = Object.freeze([
   sourcedPoi('farhod-bazaar', 'Farhod Bazaar', 41.285950, 69.190732, 'https://yandex.com/maps/10335/tashkent/house/YkAYdw5gTkYFQFprfX55dHVmZA%3D%3D/', 160, 'poi.market'),
   sourcedPoi('sergeli-car-bazaar', 'Sergeli Car Bazaar', 41.229909, 69.216971, 'https://yandex.com/maps/org/avtomobilny_rynok/166523932658/', 180, 'poi.market'),
   Object.freeze({
+    id: 'uz:tashkent:poi:stroygorod-market',
+    type: 'poi.market',
+    country: 'UZ',
+    canonicalName: 'Stroygorod Market',
+    parentId: 'uz:tashkent:uchtepa',
+    center: Object.freeze({ lat: 41.28792, lng: 69.15118 }),
+    source: 'osm',
+    accuracy: 'poi',
+    accuracyM: 180,
+    osm: Object.freeze({ type: 'way', id: 136439078 }),
+  }),
+  Object.freeze({
     id: 'uz:tashkent:poi:bobur-park',
     type: 'poi.park',
     country: 'UZ',
