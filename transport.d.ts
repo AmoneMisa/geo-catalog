@@ -60,6 +60,13 @@ export interface TransportRouteFilters extends TransportFilters {
   coverage?: TransportRouteCoverage;
 }
 
+export interface TransportCoverageSummary {
+  total: number;
+  full: number;
+  terminalsOnly: number;
+  metadataOnly: number;
+}
+
 export const TRANSPORT_STOPS: readonly Readonly<TransportStop>[];
 export const TRANSPORT_ROUTES: readonly Readonly<TransportRoute>[];
 export const TRANSPORT_TRANSFERS: readonly Readonly<TransportTransfer>[];
@@ -71,6 +78,7 @@ export function findTransportRoutes(filters?: TransportRouteFilters): readonly R
 export function getRoutesForStop(stopId: string, options?: { requireFullSequence?: boolean }): readonly Readonly<TransportRoute>[];
 export function getStopsForRoute(routeId: string): readonly Readonly<TransportStop>[];
 export function getTransfersForStop(stopId: string): readonly Readonly<TransportTransfer>[];
+export function getTransportCoverage(filters?: TransportRouteFilters): Readonly<TransportCoverageSummary>;
 export function validateTransportCatalog(input?: {
   stops?: readonly TransportStop[];
   routes?: readonly TransportRoute[];
