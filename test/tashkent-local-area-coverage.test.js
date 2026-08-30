@@ -38,6 +38,13 @@ const resolvedAreas = Object.freeze([
   ["Qo'yliq-7", 'uz:tashkent:local-area:qoyliq-7', 'uz:tashkent:sergeli', 'node', 5637605369],
 ]);
 
+const derivedAreas = Object.freeze([
+  ['Humoyun', 'uz:tashkent:local-area:humoyun', 'uz:tashkent:mirzo-ulugbek', 41.34339, 69.388945],
+  ['Taraqqiyot-1', 'uz:tashkent:local-area:taraqqiyot-1', 'uz:tashkent:almazar', 41.354837, 69.241154],
+  ['Taraqqiyot-2', 'uz:tashkent:local-area:taraqqiyot-2', 'uz:tashkent:almazar', 41.352779, 69.241154],
+  ['Taraqqiyot-3', 'uz:tashkent:local-area:taraqqiyot-3', 'uz:tashkent:almazar', 41.354884, 69.239708],
+]);
+
 test('verified Tashkent local areas resolve to their exact OSM owners', () => {
   for (const [canonical, id, parentId, osmType, osmId] of resolvedAreas) {
     const input = { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical };
@@ -51,8 +58,24 @@ test('verified Tashkent local areas resolve to their exact OSM owners', () => {
   }
 });
 
+test('verified approximate Tashkent local-area centers remain explicitly non-OSM', () => {
+  for (const [canonical, id, parentId, lat, lng] of derivedAreas) {
+    const input = { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical };
+    const entity = resolveLexiconGeoEntity(input);
+
+    assert.equal(entity?.id, id, canonical);
+    assert.equal(entity?.parentId, parentId, canonical);
+    assert.equal(entity?.source, 'manual', canonical);
+    assert.equal(entity?.accuracy, 'approximate', canonical);
+    assert.equal(entity?.osm, undefined, canonical);
+    assert.ok(Math.abs(entity.center.lat - lat) < 1e-9, canonical);
+    assert.ok(Math.abs(entity.center.lng - lng) < 1e-9, canonical);
+    assert.equal(isGeoCoverageGap(input), false, canonical);
+  }
+});
+
 test('same-name Tashkent mahallas remain independent spatial identities', () => {
-  for (const canonical of ['Gulobod', "Chamanbog'", 'Olimpiya', 'Sebzor', 'Asalobod']) {
+  for (const canonical of ['Humoyun', 'Gulobod', "Chamanbog'", 'Olimpiya', 'Sebzor', 'Asalobod']) {
     assert.equal(
       isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical }),
       true,
