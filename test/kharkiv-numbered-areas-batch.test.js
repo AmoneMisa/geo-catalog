@@ -8,15 +8,18 @@ const expected = new Map([
   ['531 microdistrict', ['ua:kharkiv:microdistrict:531-microdistrict', { lat: 50.02402, lng: 36.358125 }]],
   ['533 microdistrict', ['ua:kharkiv:microdistrict:533-microdistrict', { lat: 50.020768, lng: 36.369651 }]],
   ['535A', ['ua:kharkiv:microdistrict:535a', { lat: 50.00639, lng: 36.35028 }]],
+  ['601 microdistrict', ['ua:kharkiv:microdistrict:601-microdistrict', { lat: 49.993708, lng: 36.355008 }]],
   ['602 microdistrict', ['ua:kharkiv:microdistrict:602-microdistrict', { lat: 49.995156, lng: 36.360102 }]],
   ['603 microdistrict', ['ua:kharkiv:microdistrict:603-microdistrict', { lat: 49.9998, lng: 36.346295 }]],
   ['604 microdistrict', ['ua:kharkiv:microdistrict:604-microdistrict', { lat: 49.992747, lng: 36.345315 }]],
   ['605 microdistrict', ['ua:kharkiv:microdistrict:605-microdistrict', { lat: 50.003992, lng: 36.337249 }]],
   ['607 microdistrict', ['ua:kharkiv:microdistrict:607-microdistrict', { lat: 50.016404, lng: 36.350418 }]],
   ['608 microdistrict', ['ua:kharkiv:microdistrict:608-microdistrict', { lat: 50.0148, lng: 36.3375 }]],
+  ['615 microdistrict', ['ua:kharkiv:microdistrict:615-microdistrict', { lat: 50.006916, lng: 36.326505 }]],
   ['616 microdistrict', ['ua:kharkiv:microdistrict:616-microdistrict', { lat: 50.000049, lng: 36.327987 }]],
   ['625 microdistrict', ['ua:kharkiv:microdistrict:625-microdistrict', { lat: 49.986944, lng: 36.355 }]],
   ['626 microdistrict', ['ua:kharkiv:microdistrict:626-microdistrict', { lat: 49.9825, lng: 36.360833 }]],
+  ['656 microdistrict', ['ua:kharkiv:microdistrict:656-microdistrict', { lat: 49.995908, lng: 36.323145 }]],
 ]);
 
 test('Kharkiv numbered areas resolve to explicit manual spatial anchors', () => {
@@ -34,6 +37,19 @@ test('manual numbered anchors retain their source families', () => {
   assert.match(getGeoEntity('ua:kharkiv:microdistrict:616-microdistrict')?.sourceUrl ?? '', /yandex\.com\/maps/);
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:625-microdistrict')?.sourceUrl, 'https://wikimapia.org/12748817/ru/');
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:626-microdistrict')?.sourceUrl, 'https://wikimapia.org/7387022/ru/');
+  assert.match(getGeoEntity('ua:kharkiv:microdistrict:601-microdistrict')?.sourceUrl ?? '', /locator\.in\.ua/);
+  assert.match(getGeoEntity('ua:kharkiv:microdistrict:615-microdistrict')?.sourceUrl ?? '', /locator\.in\.ua/);
+  assert.match(getGeoEntity('ua:kharkiv:microdistrict:656-microdistrict')?.sourceUrl ?? '', /locator\.in\.ua/);
+});
+
+test('representative infrastructure anchors keep deliberately wide accuracy', () => {
+  for (const id of [
+    'ua:kharkiv:microdistrict:601-microdistrict',
+    'ua:kharkiv:microdistrict:615-microdistrict',
+    'ua:kharkiv:microdistrict:656-microdistrict',
+  ]) {
+    assert.equal(getGeoEntity(id)?.accuracyM, 900);
+  }
 });
 
 test('approximate Kharkiv anchors keep deliberately wider accuracy', () => {
