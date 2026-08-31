@@ -25,7 +25,7 @@ const withoutGeometry = routes.filter((route) => !hasGeometry(route));
 const uniqueRefs = new Set(routes.map((route) => route.ref));
 
 const failures = [];
-if (routes.length !== 170) failures.push(`expected 170 routes, got ${routes.length}`);
+if (routes.length !== 171) failures.push(`expected 171 routes, got ${routes.length}`);
 if (uniqueRefs.size !== routes.length) failures.push(`expected unique route refs, got ${uniqueRefs.size}/${routes.length}`);
 if (topology.total !== routes.length) failures.push(`topology total ${topology.total} != route total ${routes.length}`);
 if (topology.full + topology.terminalsOnly + topology.metadataOnly !== routes.length) {
@@ -35,7 +35,9 @@ if (map.total !== routes.length) failures.push(`map total ${map.total} != route 
 if (map.withGeometry + map.withoutGeometry !== routes.length) {
   failures.push('map geometry buckets do not partition all routes');
 }
-if (map.variantsWithGeometry !== TRANSPORT_ROUTE_VARIANTS.filter((variant) => Boolean(variant.geometry)).length) {
+if (map.variantsWithGeometry !== TRANSPORT_ROUTE_VARIANTS.filter((variant) =>
+  variant.mode === 'bus' && Boolean(variant.geometry)
+).length) {
   failures.push('map variant geometry count is inconsistent');
 }
 if (full.filter(hasGeometry).length + terminalGeometry.length + shapeOnly.length !== map.withGeometry) {
@@ -46,7 +48,7 @@ console.log('Tashkent bus coverage audit');
 console.log(`  routes: ${routes.length}`);
 console.log(`  topology: full=${full.length}, terminals_only=${terminalsOnly.length}, metadata_only=${metadataOnly.length}`);
 console.log(`  map: with_geometry=${map.withGeometry}, without_geometry=${map.withoutGeometry}, shape_only=${shapeOnly.length}, terminal_geometry=${terminalGeometry.length}`);
-console.log(`  OSM variants with geometry: ${map.variantsWithGeometry}`);
+console.log(`  directional variants with geometry: ${map.variantsWithGeometry}`);
 console.log(`  terminals_only refs: ${refs(terminalsOnly).join(', ') || '(none)'}`);
 console.log(`  metadata_only refs: ${refs(metadataOnly).join(', ') || '(none)'}`);
 console.log(`  shape_only refs: ${refs(shapeOnly).join(', ') || '(none)'}`);

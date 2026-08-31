@@ -44,13 +44,14 @@ test('Tashkent metro keeps all 50 canonical stations and ordered full topology',
   assert.equal(getTransfersForStop('uz:tashkent:stop:metro:dostlik').length, 1);
 });
 
-test('Tashkent bus registry still contains all 170 route refs', () => {
+test('Tashkent bus registry contains all 171 route refs including Express', () => {
   const buses = findTransportRoutes({ cityId: 'uz:tashkent', mode: 'bus' });
-  assert.equal(buses.length, 170);
-  assert.equal(TRANSPORT_ROUTES.length, 174);
+  assert.equal(buses.length, 171);
+  assert.equal(TRANSPORT_ROUTES.length, 237);
   assert.ok(getTransportRoute('uz:tashkent:route:bus:1'));
   assert.ok(getTransportRoute('uz:tashkent:route:bus:8t'));
   assert.ok(getTransportRoute('uz:tashkent:route:bus:199'));
+  assert.ok(getTransportRoute('uz:tashkent:route:bus:express'));
   assert.equal(getTransportRoute('uz:tashkent:route:bus:4'), null);
 });
 
@@ -58,26 +59,29 @@ test('topology coverage and map geometry coverage are independent', () => {
   const topology = getTransportCoverage({ cityId: 'uz:tashkent', mode: 'bus' });
   const map = getTransportMapCoverage({ cityId: 'uz:tashkent', mode: 'bus' });
 
-  assert.equal(topology.total, 170);
+  assert.equal(topology.total, 171);
   assert.ok(topology.full >= 60);
   assert.equal(topology.full + topology.terminalsOnly + topology.metadataOnly, topology.total);
 
-  assert.equal(map.total, 170);
+  assert.equal(map.total, 171);
   assert.ok(map.withGeometry >= 60);
   assert.ok(map.withGeometry >= topology.full);
   assert.equal(map.withGeometry + map.withoutGeometry, map.total);
-  assert.equal(map.variantsWithGeometry, TRANSPORT_ROUTE_VARIANTS.length);
+  assert.equal(
+    map.variantsWithGeometry,
+    TRANSPORT_ROUTE_VARIANTS.filter((variant) => variant.mode === 'bus').length,
+  );
   assert.ok(TRANSPORT_ROUTE_VARIANTS.length >= 117);
 });
 
-test('every OSM bus variant includes real road geometry and map bounds', () => {
+test('every road-transport variant includes real road geometry and map bounds', () => {
   assert.match(OSM_BUS_SNAPSHOT_DATE ?? '', /^\d{4}-\d{2}-\d{2}$/);
   assert.ok(TRANSPORT_ROUTE_VARIANTS.length >= 117);
   for (const variant of TRANSPORT_ROUTE_VARIANTS) {
     assert.equal(variant.geometry?.type, 'MultiLineString', variant.id);
     assert.ok(variant.geometry.coordinates.length > 0, variant.id);
     assert.ok(variant.geometry.coordinates.every((segment) => segment.length >= 2), variant.id);
-    assert.equal(variant.geometrySource, 'osm', variant.id);
+    assert.ok(['osm', 'official', 'easyway'].includes(variant.geometrySource), variant.id);
     assert.equal(variant.sourceUpdatedAt, OSM_BUS_SNAPSHOT_DATE, variant.id);
     assert.equal(variant.geometryUpdatedAt, OSM_BUS_SNAPSHOT_DATE, variant.id);
     assert.ok(variant.bounds.west <= variant.bounds.east, variant.id);
@@ -210,29 +214,70 @@ test('manual terminal anchors remain available after OSM topology promotion', ()
   ]);
 });
 
-test('shape-only routes retain verified terminal anchors without pretending to have stop topology', () => {
+test('official route payloads promote former terminal and metadata gaps to full topology', () => {
   const expected = new Map([
-    ['77', [
-      'uz:tashkent:stop:bus:osm:way:404179339',
-      'uz:tashkent:stop:bus:osm:node:13324929838',
-    ]],
-    ['121', [
-      'uz:tashkent:stop:bus:osm:node:4445666601',
-      'uz:tashkent:stop:bus:osm:node:2423100603',
-    ]],
-    ['140', [
-      'uz:tashkent:stop:bus:osm:node:1342203160',
-      'uz:tashkent:stop:bus:osm:node:13328825932',
-    ]],
+    ['8T', 2], ['61', 2], ['62', 2], ['63', 2], ['64', 2], ['65', 2], ['66', 2],
+    ['67', 2], ['68', 2], ['69', 2], ['70', 2], ['77', 2], ['110', 2], ['121', 2],
+    ['71', 2], ['72', 2], ['73', 2], ['74', 2], ['75', 2], ['76', 2], ['78', 2],
+    ['80', 2], ['81', 2], ['82', 2], ['83', 2], ['85', 2], ['86', 2], ['87', 2],
+    ['88', 2], ['89', 2], ['91', 2], ['94', 2], ['95', 2], ['96', 2], ['97', 2],
+    ['98', 2], ['99', 2], ['100', 2], ['101', 2], ['103', 2], ['104', 2], ['105', 2],
+    ['106', 2], ['109', 2], ['112', 2], ['113', 2], ['114', 2], ['115', 2],
+    ['116', 2], ['117', 2], ['118', 2], ['119', 2], ['120', 2], ['122', 2],
+    ['123', 2], ['124', 2], ['125', 2], ['126', 2], ['129', 2], ['130', 2],
+    ['131', 2], ['134', 2], ['135', 2], ['136', 2], ['138', 2], ['139', 2],
+    ['141', 2], ['142', 2], ['145', 2], ['146', 2], ['147', 2], ['148', 2],
+    ['149', 2], ['150', 2], ['151', 2], ['152', 2], ['153', 2], ['169', 2],
+    ['181', 2], ['183', 2], ['184', 2], ['185', 2], ['188', 2], ['190', 2],
+    ['196', 2], ['198', 2], ['199', 2], ['133', 2], ['140', 2],
+    ['Express', 2],
   ]);
 
-  for (const [ref, stopIds] of expected) {
-    const route = getTransportRoute(`uz:tashkent:route:bus:${ref}`);
-    assert.equal(route?.coverage, 'terminals_only', ref);
-    assert.deepEqual(route?.stopIds, stopIds, ref);
-    assert.ok(route?.variants?.some((variant) => variant.geometry?.type === 'MultiLineString'), ref);
-    assert.ok(route?.variants?.every((variant) => variant.stopIds.length === 0), ref);
+  for (const [ref, directionCount] of expected) {
+    const route = getTransportRoute(`uz:tashkent:route:bus:${ref.toLowerCase()}`);
+    const official = route?.variants?.filter((variant) => variant.source === 'official') ?? [];
+    assert.equal(route?.coverage, 'full', ref);
+    assert.equal(official.length, directionCount, ref);
+    assert.ok(official.every((variant) => variant.stopIds.length >= 2), ref);
+    assert.ok(official.every((variant) => variant.geometry?.type === 'MultiLineString'), ref);
+    assert.ok(official.every((variant) => variant.bounds.west < variant.bounds.east), ref);
   }
+
+  const route101 = getTransportRoute('uz:tashkent:route:bus:101');
+  const route101Official = route101.variants.filter((variant) => variant.source === 'official');
+  assert.deepEqual(route101Official.map(({ from, to }) => [from, to]), [
+    ['ст. м. Буюк Ипак Йули', 'Махалля Дархан'],
+    ['Махалля Дархан', 'ст. м. Буюк Ипак Йули'],
+  ]);
+  assert.deepEqual(route101Official.map((variant) => variant.stopIds.length), [42, 46]);
+
+  const express = getTransportRoute('uz:tashkent:route:bus:express');
+  const expressOfficial = express.variants.filter((variant) => variant.source === 'official');
+  assert.deepEqual(expressOfficial.map(({ from, to }) => [from, to]), [
+    ['Чиланзар вещевой рынок', 'Рынок "Уч Кахрамон"'],
+    ['Рынок "Уч Кахрамон"', 'Чиланзар вещевой рынок'],
+  ]);
+  assert.deepEqual(expressOfficial.map((variant) => variant.stopIds.length), [10, 10]);
+});
+
+test('Tashkent marshrutka catalog exposes all EasyWay routes as full minibus topology', () => {
+  const routes = findTransportRoutes({ cityId: 'uz:tashkent', mode: 'minibus' });
+  const variants = findTransportRouteVariants({ cityId: 'uz:tashkent', mode: 'minibus' });
+  assert.equal(routes.length, 62);
+  assert.equal(variants.length, 124);
+  assert.ok(routes.every((route) => route.coverage === 'full' && route.variants.length === 2));
+  assert.ok(variants.every((variant) =>
+    variant.source === 'easyway' &&
+    variant.stopIds.length >= 2 &&
+    variant.geometry?.type === 'MultiLineString'
+  ));
+
+  const route1m = getTransportRoute('uz:tashkent:route:minibus:1m');
+  assert.equal(route1m?.canonicalName, 'Marshrutka 1m');
+  assert.deepEqual(route1m?.variants.map(({ from, to }) => [from, to]), [
+    ['Массив Корасув, Квартал 6', 'Прокуратура Мирзо-Улугбекского района'],
+    ['Прокуратура Мирзо-Улугбекского района', 'Массив Корасув, Квартал 6'],
+  ]);
 });
 
 test('validator accepts map-only route variants without pretending they have stop topology', () => {

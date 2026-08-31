@@ -80,8 +80,8 @@ const report = Object.freeze({
   routes: rows,
 });
 
-if (routes.length !== 170) {
-  throw new Error(`Expected 170 Tashkent bus route refs, got ${routes.length}`);
+if (routes.length !== 171) {
+  throw new Error(`Expected 171 Tashkent bus route refs, got ${routes.length}`);
 }
 
 await mkdir(outputDir, { recursive: true });

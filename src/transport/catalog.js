@@ -8,19 +8,27 @@ import {
   TASHKENT_BUS_STOPS,
   TASHKENT_BUS_ROUTE_VARIANTS,
 } from './tashkent-bus-catalog.js';
+import {
+  TASHKENT_MINIBUS_ROUTES,
+  TASHKENT_MINIBUS_ROUTE_VARIANTS,
+  TASHKENT_MINIBUS_STOPS,
+} from './tashkent-minibus.js';
 
 export const TRANSPORT_STOPS = Object.freeze([
   ...TASHKENT_METRO_STOPS,
   ...TASHKENT_BUS_STOPS,
+  ...TASHKENT_MINIBUS_STOPS,
 ]);
 
 export const TRANSPORT_ROUTES = Object.freeze([
   ...TASHKENT_METRO_ROUTES,
   ...TASHKENT_BUS_ROUTES,
+  ...TASHKENT_MINIBUS_ROUTES,
 ]);
 
 export const TRANSPORT_ROUTE_VARIANTS = Object.freeze([
   ...TASHKENT_BUS_ROUTE_VARIANTS,
+  ...TASHKENT_MINIBUS_ROUTE_VARIANTS,
 ]);
 
 export const TRANSPORT_TRANSFERS = Object.freeze([
