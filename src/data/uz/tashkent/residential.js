@@ -24,12 +24,12 @@ const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 100
   osm: { type: 'way', id: osmWayId },
 });
 
-const sourcedResidential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 150) => ({
+const sourcedResidential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 150, parentId = 'uz:tashkent') => ({
   id: `uz:tashkent:residential:${slug}`,
   type: 'residential_complex',
   country: 'UZ',
   canonicalName,
-  parentId: 'uz:tashkent',
+  parentId,
   center: { lat, lng },
   source: 'manual',
   accuracy: 'building',
@@ -90,6 +90,15 @@ export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
   sourcedResidential('infinity', 'Infinity', 41.3025714, 69.2889718, 'https://infinity.gh.uz/', 220),
   sourcedResidential('cambridge-residence', 'Cambridge Residence', 41.348819, 69.253236, 'https://yandex.com/maps/org/cambridge_residence/50442206495/', 130),
   sourcedResidential('assalom-jomiy', 'Assalom Jomiy', 41.3531825, 69.254539, 'https://yandex.com/maps/org/assalom_jomiy/194588947775/', 120),
+  sourcedResidential(
+    'silk-road-residence',
+    'Silk Road Residence',
+    41.336160,
+    69.323377,
+    'https://yandex.com/maps/org/silk_road_residence_residential_complex/78912263418/',
+    180,
+    'uz:tashkent:mirzo-ulugbek',
+  ),
   Object.freeze({
     id: 'uz:tashkent:residential:olmazor-city',
     type: 'residential_complex',
