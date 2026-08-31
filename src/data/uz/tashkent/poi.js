@@ -24,6 +24,18 @@ const sourcedPoi = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 120, t
   sourceUrl,
 });
 
+const catalogPoi = (slug, canonicalName, lat, lng, accuracyM = 100, type = 'poi') => ({
+  id: `uz:tashkent:poi:${slug}`,
+  type,
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:tashkent',
+  center: { lat, lng },
+  source: 'manual',
+  accuracy: 'poi',
+  accuracyM,
+});
+
 export const TASHKENT_POI_ENTITIES = Object.freeze([
   wikidataPoi('chorsu-bazaar', 'Chorsu Bazaar', 41.3266667, 69.2350000, 'Q13409233', 120, 'poi.market'),
   wikidataPoi('amir-timur-square', 'Amir Timur Square', 41.3113889, 69.2797194, 'Q4421686', 100, 'poi.square'),
@@ -93,6 +105,13 @@ export const TASHKENT_POI_ENTITIES = Object.freeze([
   sourcedPoi('pathological-anatomy-center', 'Republican Pathological Anatomy Center', 41.357650, 69.171780, 'https://mapcarta.com/N12879788714', 220, 'poi.hospital'),
   sourcedPoi('nephrology-transplantation-center', 'Republic Specialized Nephrology and Transplantation Centre', 41.361080, 69.298170, 'https://mapcarta.com/N6369863385', 220, 'poi.hospital'),
   sourcedPoi('thoracic-surgery-center', 'Republican Thoracic Surgery Center Vakhidov', 41.273270, 69.210860, 'https://mapcarta.com/W102381397', 180, 'poi.hospital'),
+  catalogPoi('akfa-medline', 'AKFA Medline', 41.3428743, 69.2088482, 80, 'poi.hospital'),
+  catalogPoi('shifo-nur', 'Shifo Nur', 41.3640086, 69.2751261, 90),
+  catalogPoi('nano-medical-clinic', 'Nano Medical Clinic', 41.3480919, 69.2149290, 90),
+  catalogPoi('medas-medical-center', 'Medas Medical Center', 41.3539572, 69.2871740, 80),
+  catalogPoi('prof-med-clinic', 'Prof Med Clinic', 41.3539309, 69.2876548, 80),
+  catalogPoi('dr-akshay-kumar-eye-clinic', 'Dr. Akshay Kumar Eye Clinic', 41.3216087, 69.2156061, 100),
+  catalogPoi('shox-international-hospital', 'Shox International Hospital', 41.2693158, 69.2631867, 80, 'poi.hospital'),
   sourcedPoi('tashkent-international-school', 'Tashkent International School', 41.270370, 69.294470, 'https://mapcarta.com/W98666999', 180, 'poi.school'),
   sourcedPoi('wiut-academic-lyceum', 'Academic Lyceum under WIUT', 41.306210, 69.282640, 'https://mapcarta.com/W250214079', 180, 'poi.school'),
   sourcedPoi('tma-academic-lyceum', 'Academic Lyceum under TMA', 41.356730, 69.174010, 'https://mapcarta.com/W490653327', 180, 'poi.school'),
