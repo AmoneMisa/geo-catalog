@@ -34,6 +34,10 @@ export const SAMARKAND_AREA_ENTITIES = Object.freeze([
   spatial('sogdiana', 'Sogdiana', 'mahalla', 39.647951, 66.960270, 'node', 11985323303, 700),
   spatial('bogishamol', 'Bogishamol', 'local_area', 39.667063, 66.931975, 'way', 167293777, 900),
   mappedSpatial('navroz', "Navro'z", 'mahalla', 39.639237, 66.852219, 1000, 'https://yandex.uz/maps/10334/samarkand/geo/6106237055/'),
+  // Official city geography lists Farhod as a shaharcha within Samarkand; Yandex
+  // exposes a standalone settlement geo-object. Keep the owner broad enough for
+  // settlement-level use and do not reuse it as a center for its child mahallas.
+  mappedSpatial('farhod', 'Farhod', 'settlement', 39.694333, 67.060835, 1600, 'https://yandex.uz/maps/geo/farhod_shaharchasi/1508545242/'),
   // Official city statistics and 2GIS identify Chilquduq as a standalone MFY.
   // Yandex maps Samarqand Street inside that MFY; use its mapped center only as
   // a broad neighborhood anchor, not as a claimed cadastral centroid.
