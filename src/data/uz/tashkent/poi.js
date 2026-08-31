@@ -24,7 +24,7 @@ const sourcedPoi = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 120, t
   sourceUrl,
 });
 
-const catalogPoi = (slug, canonicalName, lat, lng, accuracyM = 100, type = 'poi') => ({
+const catalogPoi = (slug, canonicalName, lat, lng, accuracyM = 100, type = 'poi.clinic') => ({
   id: `uz:tashkent:poi:${slug}`,
   type,
   country: 'UZ',
