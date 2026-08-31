@@ -32,4 +32,7 @@ export const SAMARKAND_STREET_ENTITIES = Object.freeze([
   mappedStreet('mirzo-ulugbek', 'Mirzo Ulugbek Street', 39.658188, 66.946641, 1800, 'https://yandex.uz/maps/10334/samarkand/geo/6496706807/'),
   mappedStreet('buyuk-ipak-yuli', 'Buyuk Ipak Yuli Street', 39.656008, 66.922809, 1800, 'https://yandex.uz/maps/10334/samarkand/geo/buyuk_ipak_yo_li_ko_chasi/1522494980/'),
   mappedStreet('panjakent', 'Panjakent Street', 39.640695, 67.008104, 3000, 'https://yandex.uz/maps/10334/samarkand/geo/1522495026/'),
+  mappedStreet('siyob', 'Siyob Street', 39.653133, 66.945752, 2200, 'https://yandex.com/maps/10334/samarkand/geo/1533156560/'),
+  mappedStreet('chopon-ota', "Cho'pon-Ota Street", 39.676454, 67.009146, 2600, 'https://yandex.uz/maps/10334/samarkand/geo/4782986663/'),
+  mappedStreet('vohid-abdullayev', 'Academician Vohid Abdullayev Street', 39.670748, 66.981541, 2200, 'https://yandex.com/maps/10334/samarkand/geo/1522495014/'),
 ]);
