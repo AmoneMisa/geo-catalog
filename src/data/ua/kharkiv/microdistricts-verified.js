@@ -61,10 +61,6 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
   }),
   wikimapiaMicrodistrict('607-microdistrict', '607 microdistrict', 50.016404, 36.350418, 650),
   wikimapiaMicrodistrict('608-microdistrict', '608 microdistrict', 50.0148, 36.3375, 900),
-  microdistrict('614-microdistrict', '614 microdistrict', 50.000000, 36.330000, 1200, {
-    source: 'manual',
-    sourceUrl: 'https://www.connect.net.ua/ru/internet-provider-la/kharkov/614-y-mikrorayon/',
-  }),
   microdistrict('615-microdistrict', '615 microdistrict', 50.006916, 36.326505, 900, {
     source: 'manual',
     sourceUrl: 'https://adresy.locator.in.ua/kharkiv/hvardijciv-shyroninciv/41a-43v/b/117005/ru/',
