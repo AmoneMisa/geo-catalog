@@ -65,7 +65,8 @@ test('Kyiv Latin parser canonicals bind to existing Ukrainian neighborhood owner
 
 test('Samarkand legacy spellings and listing buckets reuse verified physical owners', () => {
   const expected = [
-    ['mahalla', 'Sartepa', 'uz:samarkand:mahalla:sattepo'],
+    ['mahalla', 'Sattepo', 'uz:samarkand:mahalla:sattepo'],
+    ['local_area', 'Sattepo', 'uz:samarkand:mahalla:sattepo'],
     ['microdistrict', 'Sartepa', 'uz:samarkand:mahalla:sattepo'],
     ['microdistrict', 'Sat-Tepo', 'uz:samarkand:mahalla:sattepo'],
     ['microdistrict', 'Sogdiana', 'uz:samarkand:mahalla:sogdiana'],
