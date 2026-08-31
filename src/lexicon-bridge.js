@@ -209,6 +209,7 @@ const lexiconAliases = new Map([
   alias('UZ', 'Samarkand', 'local_area', 'Panjakent Road', 'uz:samarkand:street:panjakent'),
   alias('UZ', 'Samarkand', 'local_area', "So'zangaron", 'uz:samarkand:street:sozangaron'),
   alias('UZ', 'Samarkand', 'local_area', 'Buyuk Ipak Yoli', 'uz:samarkand:street:buyuk-ipak-yuli'),
+  alias('UZ', 'Samarkand', 'local_area', 'Dinamo area', 'uz:samarkand:poi:dinamo-stadium'),
 ]);
 
 const compatibleTypes = Object.freeze({
