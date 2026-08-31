@@ -11,6 +11,19 @@ const mahalla = (slug, canonicalName, parentId, lat, lng, osmType, osmId, accura
   osm: { type: osmType, id: osmId },
 });
 
+const manualMahalla = (slug, canonicalName, parentId, lat, lng, accuracyM, sourceUrl) => ({
+  id: `uz:tashkent:mahalla:${slug}`,
+  type: 'mahalla',
+  country: 'UZ',
+  canonicalName,
+  parentId,
+  center: { lat, lng },
+  source: 'manual',
+  accuracy: 'approximate',
+  accuracyM,
+  ...(sourceUrl ? { sourceUrl } : {}),
+});
+
 const IBN_SINO_MAHALLA_BOUNDARY = {
   type: 'Polygon',
   coordinates: [[
@@ -54,6 +67,14 @@ export const TASHKENT_MAHALLA_ENTITIES = Object.freeze([
     accuracyM: 1400,
     sourceUrl: 'https://opendata-back.tashkent.uz/upload/data/file/%D0%9F%D0%A4-29_5-%D0%B8%D0%BB%D0%BE%D0%B2%D0%B0%D1%81%D0%B8_%D1%82%D0%B0%D0%B9%D1%91%D1%80_%D0%BE%D1%85%D0%B8%D1%80%D0%B3%D0%B8_27.03.pdf',
   }),
+  // Current address maps expose these as standalone mahalla fuqarolar yig'ini geo objects. Keep them manual/approximate so same-name mavze/local-area OSM objects retain separate ownership.
+  manualMahalla('ahmad-yugnakiy', 'Ahmad Yugnakiy', 'uz:tashkent:mirzo-ulugbek', 41.348643, 69.384426, 850, 'https://yandex.uz/maps/10335/tashkent/geo/1947233521/'),
+  manualMahalla('traktorsozlar', 'Traktorsozlar', 'uz:tashkent:mirzo-ulugbek', 41.356488, 69.389268, 1000, 'https://yandex.uz/maps/10335/tashkent/geo/traktorsozlar_mahalla_fuqarolar_yig_ini/1947296221/'),
+  manualMahalla('yangi-choshtepa', 'Yangi Choshtepa', 'uz:tashkent:yangihayot', 41.23134, 69.192322, 900, 'https://yandex.uz/maps/10335/tashkent/geo/4051602778/'),
+  manualMahalla('olimpiya', 'Olimpiya', 'uz:tashkent:almazar', 41.362553, 69.196256, 800, 'https://yandex.uz/maps/10335/tashkent/geo/1946086741/'),
+  manualMahalla('gulobod', 'Gulobod', 'uz:tashkent:shaykhantahur', 41.327208, 69.22538, 800, 'https://yandex.uz/maps/10335/tashkent/geo/gulobod_mahalla_fuqarolar_yig_ini/1944750071/'),
+  manualMahalla('sebzor', 'Sebzor', 'uz:tashkent:almazar', 41.333979, 69.248781, 800, 'https://yandex.uz/maps/10335/tashkent/geo/1945849471/'),
+  manualMahalla('qalqon', 'Qalqon', 'uz:tashkent:yashnobod', 41.280806, 69.371535, 800, 'https://yandex.uz/maps/10335/tashkent/geo/6108686495/'),
   mahalla('taxtapul', 'Taxtapul', 'uz:tashkent:shaykhantahur', 41.339682, 69.2642825, 'node', 9687947537, 650),
   mahalla('khastimam', 'Khastimam', 'uz:tashkent:almazar', 41.33303, 69.24287, 'way', 1137236407, 420),
   mahalla('yangi-tashkent', 'Yangi Tashkent', 'uz:tashkent:almazar', 41.36743, 69.22415, 'node', 1866058486, 520),
