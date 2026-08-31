@@ -80,6 +80,7 @@ test('Samarkand legacy spellings and listing buckets reuse verified physical own
     ['mahalla', "Navro'z", 'uz:samarkand:mahalla:navroz'],
     ['mahalla', 'Chilquduq', 'uz:samarkand:mahalla:chilquduq'],
     ['mahalla', 'Chilkuduk', 'uz:samarkand:mahalla:chilquduq'],
+    ['settlement', 'Farhod', 'uz:samarkand:settlement:farhod'],
     ['local_area', 'Sattepo', 'uz:samarkand:mahalla:sattepo'],
     ['microdistrict', 'Sartepa', 'uz:samarkand:mahalla:sattepo'],
     ['microdistrict', 'Sat-Tepo', 'uz:samarkand:mahalla:sattepo'],
