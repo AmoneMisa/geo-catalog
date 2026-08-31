@@ -4,6 +4,8 @@ import { UA_KHARKIV_COVERAGE_GAPS, isUaKharkivCoverageGap } from '../src/coverag
 import { resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
 
 const expected = Object.freeze([
+  ['microdistrict', '536 microdistrict'],
+  ['microdistrict', '537 microdistrict'],
   ['microdistrict', '614 microdistrict'],
   ['poi', 'Feldman Ecopark'],
   ['poi', 'Rost'],
@@ -21,6 +23,7 @@ test('Kharkiv unresolved spatial canonicals are explicit and unresolved', () => 
 
 test('resolved Kharkiv canonicals are not coverage gaps', () => {
   for (const [type, canonical] of [
+    ['microdistrict', '535A'],
     ['microdistrict', '627 microdistrict'],
     ['microdistrict', 'Horizont'],
     ['residential_complex', 'Newton 2'],
