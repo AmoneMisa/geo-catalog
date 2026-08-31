@@ -11,6 +11,19 @@ const spatial = (slug, canonicalName, type, lat, lng, osmType, osmId, accuracyM 
   osm: { type: osmType, id: osmId },
 });
 
+const mappedSpatial = (slug, canonicalName, type, lat, lng, accuracyM, sourceUrl) => ({
+  id: `uz:samarkand:${type.replace('_', '-')}:${slug}`,
+  type,
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:samarkand',
+  center: { lat, lng },
+  source: 'manual',
+  accuracy: 'neighborhood',
+  accuracyM,
+  sourceUrl,
+});
+
 export const SAMARKAND_AREA_ENTITIES = Object.freeze([
   // Preserve the mapped/source canonical Sattepo on the physical owner.
   // Sartepa and Sat-Tepo listing spellings resolve to this stable owner in the bridge.
@@ -20,4 +33,5 @@ export const SAMARKAND_AREA_ENTITIES = Object.freeze([
   spatial('qorasuv', 'Qorasuv', 'local_area', 39.71842, 66.93132, 'way', 742858620, 650),
   spatial('sogdiana', 'Sogdiana', 'mahalla', 39.647951, 66.960270, 'node', 11985323303, 700),
   spatial('bogishamol', 'Bogishamol', 'local_area', 39.667063, 66.931975, 'way', 167293777, 900),
+  mappedSpatial('navroz', "Navro'z", 'mahalla', 39.639237, 66.852219, 1000, 'https://yandex.uz/maps/10334/samarkand/geo/6106237055/'),
 ]);
