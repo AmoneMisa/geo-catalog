@@ -23,7 +23,7 @@ const osmMicrodistrict = (slug, canonicalName, lat, lng, osmId, accuracyM = 700)
   },
 );
 
-const wikimapiaMicrodistrict = (slug, canonicalName, lat, lng, accuracyM = 650) => microdistrict(
+const wikimapiaMicrodistrict = (slug, canonicalName, lat, lng, accuracyM = 650, objectId = null) => microdistrict(
   slug,
   canonicalName,
   lat,
@@ -31,7 +31,9 @@ const wikimapiaMicrodistrict = (slug, canonicalName, lat, lng, accuracyM = 650) 
   accuracyM,
   {
     source: 'manual',
-    sourceUrl: `https://wikimapia.org/#lang=ru&lat=${lat}&lon=${lng}&z=16&m=w`,
+    sourceUrl: objectId
+      ? `https://wikimapia.org/${objectId}/ru/`
+      : `https://wikimapia.org/#lang=ru&lat=${lat}&lon=${lng}&z=16&m=w`,
   },
 );
 
@@ -55,6 +57,8 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
     source: 'manual',
     sourceUrl: 'https://yandex.com/maps/147/kharkiv/geo/616_y_mikroraion/1508584597/',
   }),
+  wikimapiaMicrodistrict('625-microdistrict', '625 microdistrict', 49.986944, 36.355000, 650, 12748817),
+  wikimapiaMicrodistrict('626-microdistrict', '626 microdistrict', 49.982500, 36.360833, 650, 7387022),
   osmMicrodistrict('moskalevka', 'Moskalevka', 49.97553, 36.22016, 1985548337, 900),
   osmMicrodistrict('nova-bavariia', 'Nova Bavariia', 49.95126, 36.16692, 1377395019, 1100),
   osmMicrodistrict('odeska', 'Odeska', 49.94715, 36.26228, 12246218822, 1000),
