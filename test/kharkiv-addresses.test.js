@@ -8,6 +8,8 @@ const expected = new Map([
   ['ua:kharkiv:address:hvardiitsiv-shyronintsiv-22-1', ['ua:kharkiv:street:hvardiitsiv-shyronintsiv', { lat: 50.00373, lng: 36.332136 }]],
   ['ua:kharkiv:address:yuvileinyi-40a', ['ua:kharkiv:street:yuvileinyi-avenue', { lat: 49.995908, lng: 36.323145 }]],
   ['ua:kharkiv:address:yuvileinyi-82a', ['ua:kharkiv:street:yuvileinyi-avenue', { lat: 49.993708, lng: 36.355008 }]],
+  ['ua:kharkiv:address:valentynivska-46', ['ua:kharkiv:street:valentynivska', { lat: 50.00669686008972, lng: 36.35850174266664 }]],
+  ['ua:kharkiv:address:sobornosti-ukrainy-259', ['ua:kharkiv:street:sobornosti-ukrainy', { lat: 50.0330555556, lng: 36.3641666667 }]],
 ]);
 
 test('Kharkiv verified addresses are building-level children of canonical streets', () => {
@@ -28,4 +30,11 @@ test('Newton 2 and its exact building address share one physical anchor', () => 
     getGeoEntity('ua:kharkiv:address:lva-landau-2b-1')?.center,
     getGeoEntity('ua:kharkiv:residential:newton-2')?.center,
   );
+});
+
+test('536 and 537 research addresses stay address entities rather than fake locality centers', () => {
+  assert.equal(getGeoEntity('ua:kharkiv:address:valentynivska-46')?.type, 'address');
+  assert.equal(getGeoEntity('ua:kharkiv:address:sobornosti-ukrainy-259')?.type, 'address');
+  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:536-microdistrict'), null);
+  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:537-microdistrict'), null);
 });
