@@ -132,6 +132,8 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   // Official Tashkent reference confirms Taraqqiyot-4 as a distinct mavze; center uses a current mapped in-area address anchor.
   derivedArea('taraqqiyot-4', 'Taraqqiyot-4', 'uz:tashkent:almazar', 41.352292, 69.238791, 700),
   osmArea('shifokorlar-1', 'Shifokorlar-1', 'uz:tashkent:almazar', 41.361, 69.18198, 'way', 149513658, 700),
+  // Current registry/address data ties Shifokorlar-2 mavzesi to the modern Shifokorlar-2 street cluster; center averages the mapped 1B/6 addresses and the standalone Shifokorlar Shaharchasi map object, without asserting an OSM owner for the numbered mavze.
+  derivedArea('shifokorlar-2', 'Shifokorlar-2', 'uz:tashkent:almazar', 41.362796, 69.182929, 900),
   // Official Tashkent toponymic reference places Shifokorlar-3 in Jiydali; use the independently mapped Jiydali residential-area center without claiming a Shifokorlar-3 OSM owner.
   derivedArea('shifokorlar-3', 'Shifokorlar-3', 'uz:tashkent:almazar', 41.36649, 69.18595, 1000),
   osmArea('shifokorlar-4', 'Shifokorlar-4', 'uz:tashkent:almazar', 41.35963, 69.18595, 'way', 142245652, 650),
