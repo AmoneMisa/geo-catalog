@@ -8,7 +8,7 @@ import {
   validateGeoCatalog,
 } from '../src/index.js';
 
-test('Tashkent major streets and Bobur Park resolve to verified OSM owners', () => {
+test('Tashkent major streets and legacy Bobur Park canonical resolve to verified physical owners', () => {
   const expected = new Map([
     ['Amir Temur Avenue', ['uz:tashkent:street:amir-temur-avenue', 22813507]],
     ['Buyuk Ipak Yoli Street', ['uz:tashkent:street:buyuk-ipak-yoli', 22795505]],
@@ -22,8 +22,9 @@ test('Tashkent major streets and Bobur Park resolve to verified OSM owners', () 
   }
 
   const parkInput = { country: 'UZ', city: 'Tashkent', type: 'poi', canonical: 'Bobur Park' };
-  assert.equal(resolveLexiconGeoEntity(parkInput)?.id, 'uz:tashkent:poi:bobur-park');
-  assert.equal(getGeoEntity('uz:tashkent:poi:bobur-park')?.osm?.id, 1472538448);
+  assert.equal(resolveLexiconGeoEntity(parkInput)?.id, 'uz:tashkent:poi:friendship-park');
+  assert.equal(getGeoEntity('uz:tashkent:poi:friendship-park')?.canonicalName, 'Friendship Park');
+  assert.equal(getGeoEntity('uz:tashkent:poi:bobur-park'), null);
   assert.equal(isGeoCoverageGap(parkInput), false);
 
   for (const [canonical, id] of [
