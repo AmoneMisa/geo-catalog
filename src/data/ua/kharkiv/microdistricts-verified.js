@@ -55,6 +55,10 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
   wikimapiaMicrodistrict('604-microdistrict', '604 microdistrict', 49.992747, 36.345315, 700),
   wikimapiaMicrodistrict('605-microdistrict', '605 microdistrict', 50.003992, 36.337249, 700),
   osmMicrodistrict('606-microdistrict', '606 microdistrict', 50.01369, 36.35884, 12196622366, 500),
+  microdistrict('606a', '606A', 50.013434, 36.364499, 900, {
+    source: 'manual',
+    sourceUrl: 'https://urbanplaces.su/ua_harkovskaya-oblast/harkov/card-3003402-svetlyachok',
+  }),
   wikimapiaMicrodistrict('607-microdistrict', '607 microdistrict', 50.016404, 36.350418, 650),
   wikimapiaMicrodistrict('608-microdistrict', '608 microdistrict', 50.0148, 36.3375, 900),
   microdistrict('615-microdistrict', '615 microdistrict', 50.006916, 36.326505, 900, {
@@ -64,6 +68,10 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
   microdistrict('616-microdistrict', '616 microdistrict', 50.000049, 36.327987, 650, {
     source: 'manual',
     sourceUrl: 'https://yandex.com/maps/147/kharkiv/geo/616_y_mikroraion/1508584597/',
+  }),
+  microdistrict('624-microdistrict', '624 microdistrict', 49.984227, 36.349499, 900, {
+    source: 'manual',
+    sourceUrl: 'https://urbanplaces.su/ua_harkovskaya-oblast/harkov/card-2985570-shestakovskaya',
   }),
   wikimapiaMicrodistrict('625-microdistrict', '625 microdistrict', 49.986944, 36.355000, 650, 12748817),
   wikimapiaMicrodistrict('626-microdistrict', '626 microdistrict', 49.982500, 36.360833, 650, 7387022),
