@@ -14,7 +14,7 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 220) 
 export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('pavlovsky-kvartal', 'Pavlovsky Kvartal', 50.008292, 36.218015, 'https://urbanplaces.su/ua_harkovskaya-oblast/harkov/card-3004219-pavlovskij-kvartal', 260),
   residential('kliuch', 'Kliuch', 50.02418648001117, 36.2250847521086, 'https://novobudovy.com/novobudovy-kharkova/harkov-kljuch', 180),
-  residential('dim-na-sumskii', 'Dim na Sumskii', 50.012740, 36.242743, 'https://novobudovy.com/ru/novobudovy-kharkova/novostroy-mira', 180),
+  residential('dim-na-sumskii', 'Dim na Sumskii', 50.012740, 36.242743, 'https://novobudovy.com/ru/novobudovy-kharkova/novobudova-m-harkiv-vul-suhumska-copy', 180),
   residential('myronosytska', 'Myronosytska', 50.010003, 36.242821, 'https://novobudovy.com/ru/arkhiv/mironosickaya-74', 160),
   residential('felicita', 'Felicita', 50.029835, 36.2577, 'https://urbanplaces.su/ua_harkovskaya-oblast/harkov/card-3004293-felichita', 180),
   residential('rezidentsiia', 'Rezidentsiia', 50.02158371710696, 36.22845802887636, 'https://maps.visicom.ua/c/36.22844%2C50.02156%2C17/f/ADR3KEVMFVXAM1RVHH?lang=uk', 220),
