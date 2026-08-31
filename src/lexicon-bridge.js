@@ -185,15 +185,19 @@ const lexiconAliases = new Map([
   alias('UA', 'Kyiv', 'microdistrict', 'Bilychi', 'ua:kyiv:microdistrict:bilychi'),
   alias('UA', 'Kyiv', 'microdistrict', 'Novobilychi', 'ua:kyiv:microdistrict:novobilychi'),
 
-  // Samarkand listing compatibility includes both legacy spellings and the
-  // official 2026 correction Sattepo -> Sartepa. They all refer to the same
-  // verified physical mahalla owner; the geo ID stays stable.
-  alias('UZ', 'Samarkand', 'mahalla', 'Sartepa', 'uz:samarkand:mahalla:sattepo'),
+  // Samarkand legacy spellings and listing-area buckets reuse verified physical
+  // mahalla, station, square and boulevard owners instead of duplicate geometry.
   alias('UZ', 'Samarkand', 'microdistrict', 'Sartepa', 'uz:samarkand:mahalla:sattepo'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Sat-Tepo', 'uz:samarkand:mahalla:sattepo'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Sogdiana', 'uz:samarkand:mahalla:sogdiana'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Kimyogarlar', 'uz:samarkand:settlement:kimyogarlar'),
+  alias('UZ', 'Samarkand', 'microdistrict', 'Vokzal', 'uz:samarkand:poi:samarkand-railway-station'),
+  alias('UZ', 'Samarkand', 'microdistrict', 'Universitet', 'uz:samarkand:street:university-boulevard'),
+  alias('UZ', 'Samarkand', 'microdistrict', 'Registan', 'uz:samarkand:poi:registan-square'),
   alias('UZ', 'Samarkand', 'local_area', 'Sugdiyona', 'uz:samarkand:mahalla:sogdiana'),
+  alias('UZ', 'Samarkand', 'local_area', 'Registon', 'uz:samarkand:poi:registan-square'),
+  alias('UZ', 'Samarkand', 'local_area', 'University area', 'uz:samarkand:street:university-boulevard'),
+  alias('UZ', 'Samarkand', 'local_area', 'Railway Station area', 'uz:samarkand:poi:samarkand-railway-station'),
 ]);
 
 const compatibleTypes = Object.freeze({
