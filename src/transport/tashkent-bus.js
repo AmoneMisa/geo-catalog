@@ -184,6 +184,10 @@ const enrichedRoutes = new Map([
     'uz:tashkent:stop:bus:yunusabad-19',
     'uz:tashkent:stop:bus:tashkent-international-airport',
   ])],
+  ['77', terminalRoute('77', '2026-08-18', ['Chilanzar-25', 'Domestic Lines Airport'], [
+    'uz:tashkent:stop:bus:osm:way:404179339',
+    'uz:tashkent:stop:bus:osm:node:13324929838',
+  ])],
   ['79', terminalRoute('79', '2026-08-18', ['Beruniy Metro', 'TTZ Bus Station'], [
     'uz:tashkent:stop:metro:beruniy',
     'uz:tashkent:stop:bus:ttz-bus-station',
@@ -196,9 +200,17 @@ const enrichedRoutes = new Map([
     'uz:tashkent:stop:bus:food-city',
     'uz:tashkent:stop:bus:ttz-bus-station',
   ])],
+  ['121', terminalRoute('121', '2026-08-18', ['Yunusabad-9', 'Chinni Market'], [
+    'uz:tashkent:stop:bus:osm:node:4445666601',
+    'uz:tashkent:stop:bus:osm:node:2423100603',
+  ])],
   ['133', terminalRoute('133', '2026-08-18', ['Chinor Metro', 'Food City Bazaar'], [
     'uz:tashkent:stop:metro:chinor',
     'uz:tashkent:stop:bus:food-city',
+  ])],
+  ['140', terminalRoute('140', '2026-08-18', ['Yunusabad-12', 'Institute of Culture'], [
+    'uz:tashkent:stop:bus:osm:node:1342203160',
+    'uz:tashkent:stop:bus:osm:node:13328825932',
   ])],
 ]);
 
