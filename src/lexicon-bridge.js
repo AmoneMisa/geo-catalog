@@ -186,7 +186,7 @@ const lexiconAliases = new Map([
   alias('UA', 'Kyiv', 'microdistrict', 'Novobilychi', 'ua:kyiv:microdistrict:novobilychi'),
 
   // Samarkand legacy spellings and listing-area buckets reuse verified physical
-  // mahalla, station, square and boulevard owners instead of duplicate geometry.
+  // mahalla, station, square, boulevard and street owners instead of duplicate geometry.
   alias('UZ', 'Samarkand', 'microdistrict', 'Sartepa', 'uz:samarkand:mahalla:sattepo'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Sat-Tepo', 'uz:samarkand:mahalla:sattepo'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Sogdiana', 'uz:samarkand:mahalla:sogdiana'),
@@ -194,10 +194,20 @@ const lexiconAliases = new Map([
   alias('UZ', 'Samarkand', 'microdistrict', 'Vokzal', 'uz:samarkand:poi:samarkand-railway-station'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Universitet', 'uz:samarkand:street:university-boulevard'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Registan', 'uz:samarkand:poi:registan-square'),
+  alias('UZ', 'Samarkand', 'microdistrict', 'Dagbitskaya', 'uz:samarkand:street:dahbed'),
+  alias('UZ', 'Samarkand', 'microdistrict', 'Rudaki', 'uz:samarkand:street:rudakiy'),
   alias('UZ', 'Samarkand', 'local_area', 'Sugdiyona', 'uz:samarkand:mahalla:sogdiana'),
   alias('UZ', 'Samarkand', 'local_area', 'Registon', 'uz:samarkand:poi:registan-square'),
   alias('UZ', 'Samarkand', 'local_area', 'University area', 'uz:samarkand:street:university-boulevard'),
   alias('UZ', 'Samarkand', 'local_area', 'Railway Station area', 'uz:samarkand:poi:samarkand-railway-station'),
+  alias('UZ', 'Samarkand', 'local_area', 'Dahbed', 'uz:samarkand:street:dahbed'),
+  alias('UZ', 'Samarkand', 'local_area', 'Rudakiy', 'uz:samarkand:street:rudakiy'),
+  alias('UZ', 'Samarkand', 'local_area', 'Gagarin area', 'uz:samarkand:street:gagarin'),
+  alias('UZ', 'Samarkand', 'local_area', 'Mirzo Ulugbek area', 'uz:samarkand:street:mirzo-ulugbek'),
+  alias('UZ', 'Samarkand', 'local_area', 'Spitamen', 'uz:samarkand:street:spitamen'),
+  alias('UZ', 'Samarkand', 'local_area', 'Panjakent Road', 'uz:samarkand:street:panjakent'),
+  alias('UZ', 'Samarkand', 'local_area', "So'zangaron", 'uz:samarkand:street:sozangaron'),
+  alias('UZ', 'Samarkand', 'local_area', 'Buyuk Ipak Yoli', 'uz:samarkand:street:buyuk-ipak-yuli'),
 ]);
 
 const compatibleTypes = Object.freeze({
