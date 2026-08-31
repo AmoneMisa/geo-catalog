@@ -7,7 +7,6 @@ const expected = Object.freeze([
   ['microdistrict', '536 microdistrict'],
   ['microdistrict', '537 microdistrict'],
   ['microdistrict', '614 microdistrict'],
-  ['microdistrict', 'Kulynychi'],
   ['poi', 'Feldman Ecopark'],
   ['poi', 'Rost'],
   ['poi', 'Klass'],
@@ -22,11 +21,10 @@ test('Kharkiv unresolved spatial canonicals are explicit and unresolved', () => 
   }
 });
 
-test('Kulynychi stays unresolved until settlement ownership can be represented safely', () => {
-  const gap = UA_KHARKIV_COVERAGE_GAPS.find((entry) => entry.canonical === 'Kulynychi');
-  assert.ok(gap);
-  assert.equal(gap.type, 'microdistrict');
-  assert.match(gap.reason, /settlement semantics/u);
+test('Kulynychi reuses the existing verified Kharkiv physical owner', () => {
+  const input = { country: 'UA', city: 'Kharkiv', type: 'microdistrict', canonical: 'Kulynychi' };
+  assert.equal(isUaKharkivCoverageGap(input), false);
+  assert.equal(resolveLexiconGeoEntityExact(input)?.id, 'ua:kharkiv:microdistrict:kulynychi');
 });
 
 test('resolved Kharkiv canonicals are not coverage gaps', () => {
@@ -34,6 +32,7 @@ test('resolved Kharkiv canonicals are not coverage gaps', () => {
     ['microdistrict', '535A'],
     ['microdistrict', '627 microdistrict'],
     ['microdistrict', 'Horizont'],
+    ['microdistrict', 'Kulynychi'],
     ['residential_complex', 'Newton 2'],
   ]) {
     assert.equal(isUaKharkivCoverageGap({ country: 'UA', city: 'Kharkiv', type, canonical }), false);
