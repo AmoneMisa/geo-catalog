@@ -8,6 +8,12 @@ const expected = new Map([
   ['531 microdistrict', ['ua:kharkiv:microdistrict:531-microdistrict', { lat: 50.02402, lng: 36.358125 }]],
   ['533 microdistrict', ['ua:kharkiv:microdistrict:533-microdistrict', { lat: 50.020768, lng: 36.369651 }]],
   ['535A', ['ua:kharkiv:microdistrict:535a', { lat: 50.00639, lng: 36.35028 }]],
+  ['602 microdistrict', ['ua:kharkiv:microdistrict:602-microdistrict', { lat: 49.995156, lng: 36.360102 }]],
+  ['603 microdistrict', ['ua:kharkiv:microdistrict:603-microdistrict', { lat: 49.9998, lng: 36.346295 }]],
+  ['604 microdistrict', ['ua:kharkiv:microdistrict:604-microdistrict', { lat: 49.992747, lng: 36.345315 }]],
+  ['605 microdistrict', ['ua:kharkiv:microdistrict:605-microdistrict', { lat: 50.003992, lng: 36.337249 }]],
+  ['607 microdistrict', ['ua:kharkiv:microdistrict:607-microdistrict', { lat: 50.016404, lng: 36.350418 }]],
+  ['608 microdistrict', ['ua:kharkiv:microdistrict:608-microdistrict', { lat: 50.0148, lng: 36.3375 }]],
 ]);
 
 test('Kharkiv numbered areas resolve to explicit manual spatial anchors', () => {
@@ -20,6 +26,7 @@ test('Kharkiv numbered areas resolve to explicit manual spatial anchors', () => 
   }
 });
 
-test('approximate 535A anchor keeps deliberately wider accuracy', () => {
+test('approximate Kharkiv anchors keep deliberately wider accuracy', () => {
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:535a')?.accuracyM, 850);
+  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:608-microdistrict')?.accuracyM, 900);
 });
