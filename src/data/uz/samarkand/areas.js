@@ -12,9 +12,9 @@ const spatial = (slug, canonicalName, type, lat, lng, osmType, osmId, accuracyM 
 });
 
 export const SAMARKAND_AREA_ENTITIES = Object.freeze([
-  // The city spelling was officially corrected from Sattepo to Sartepa in 2026.
-  // Keep the stable geo ID/OSM owner; lexical legacy spellings remain aliases.
-  spatial('sattepo', 'Sartepa', 'mahalla', 39.63738, 66.91821, 'node', 3379303517, 800),
+  // Preserve the mapped/source canonical Sattepo on the physical owner.
+  // Sartepa and Sat-Tepo listing spellings resolve to this stable owner in the bridge.
+  spatial('sattepo', 'Sattepo', 'mahalla', 39.63738, 66.91821, 'node', 3379303517, 800),
   spatial('motrid', 'Motrid', 'local_area', 39.68059, 66.96502, 'node', 2406821821, 900),
   spatial('kimyogarlar', 'Kimyogarlar', 'settlement', 39.67138, 66.84918, 'node', 10728273615, 1200),
   spatial('qorasuv', 'Qorasuv', 'local_area', 39.71842, 66.93132, 'way', 742858620, 650),
