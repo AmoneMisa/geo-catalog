@@ -86,6 +86,7 @@ const lexiconAliases = new Map([
   alias('UA', 'Kharkiv', 'microdistrict', 'Horizont', 'ua:kharkiv:microdistrict:obrii'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Zhykhar', 'ua:kharkiv:microdistrict:zhykhar'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Zhukovskoho', 'ua:kharkiv:microdistrict:zhukovskoho'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Kulynychi', 'ua:kharkiv:microdistrict:kulynychi'),
 
   alias('UA', 'Kharkiv', 'microdistrict', 'Botanical Garden', 'ua:kharkiv:metro:botanichnyi-sad'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Derzhprom', 'ua:kharkiv:metro:derzhprom'),
@@ -108,9 +109,12 @@ const lexiconAliases = new Map([
   alias('UA', 'Kharkiv', 'residential_complex', 'Rohatynskyi Kvartal', 'ua:kharkiv:residential:rohatynskyi'),
 
   // Odesa listing canonicals whose verified physical owner uses a broader
-  // locality type. Keep the parser semantics while reusing the same anchor.
+  // locality type or a stable broader neighborhood. Keep the parser semantics
+  // while reusing the same anchor.
   alias('UA', 'Odesa', 'microdistrict', 'Kotivskoho', 'ua:odesa:local-area:kotovskoho'),
   alias('UA', 'Odesa', 'microdistrict', 'Malyi Fontan', 'ua:odesa:local-area:malyi-fontan'),
+  alias('UA', 'Odesa', 'microdistrict', 'Zastava-1', 'ua:odesa:microdistrict:zastava'),
+  alias('UA', 'Odesa', 'microdistrict', 'Zastava-2', 'ua:odesa:microdistrict:zastava'),
 
   // Kyiv's lexicon intentionally uses stable Latin canonicals while the geo
   // records preserve Ukrainian source names. These aliases bind the two layers
@@ -181,8 +185,12 @@ const lexiconAliases = new Map([
   alias('UA', 'Kyiv', 'microdistrict', 'Bilychi', 'ua:kyiv:microdistrict:bilychi'),
   alias('UA', 'Kyiv', 'microdistrict', 'Novobilychi', 'ua:kyiv:microdistrict:novobilychi'),
 
-  // Samarkand keeps legacy listing types in parsing-lexicon. Reuse the verified
-  // physical mahalla/settlement owners instead of creating duplicate geometry.
+  // Samarkand listing compatibility includes both legacy spellings and the
+  // official 2026 correction Sattepo -> Sartepa. They all refer to the same
+  // verified physical mahalla owner; the geo ID stays stable.
+  alias('UZ', 'Samarkand', 'mahalla', 'Sartepa', 'uz:samarkand:mahalla:sattepo'),
+  alias('UZ', 'Samarkand', 'microdistrict', 'Sartepa', 'uz:samarkand:mahalla:sattepo'),
+  alias('UZ', 'Samarkand', 'microdistrict', 'Sat-Tepo', 'uz:samarkand:mahalla:sattepo'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Sogdiana', 'uz:samarkand:mahalla:sogdiana'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Kimyogarlar', 'uz:samarkand:settlement:kimyogarlar'),
   alias('UZ', 'Samarkand', 'local_area', 'Sugdiyona', 'uz:samarkand:mahalla:sogdiana'),
