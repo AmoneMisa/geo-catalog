@@ -40,4 +40,34 @@ export const UA_KHARKIV_STREET_ENTITIES = Object.freeze([
     wikidataId: 'Q4224156',
     sourceUrl: 'https://commons.wikimedia.org/wiki/Category:Klochkivska_Street,_Kharkiv',
   }),
+  street('hvardiitsiv-shyronintsiv', 'Hvardiitsiv-Shyronintsiv Street', 50.013056, 36.346944, 3600, {
+    osm: Object.freeze({ type: 'relation', id: 1324398 }),
+    wikidataId: 'Q20074979',
+    sourceUrl: 'https://www.wikidata.org/wiki/Q20074979',
+  }),
+  street('yuvileinyi-avenue', 'Yuvileinyi Avenue', 49.996528, 36.334506, 3200, {
+    osm: Object.freeze({ type: 'relation', id: 1544670 }),
+    wikidataId: 'Q20091992',
+    sourceUrl: 'https://www.wikidata.org/wiki/Q20091992',
+  }),
+  street('traktorobudivnykiv-avenue', 'Traktorobudivnykiv Avenue', 50.000000, 36.340833, 4700, {
+    osm: Object.freeze({ type: 'relation', id: 1386634 }),
+    wikidataId: 'Q95985900',
+    sourceUrl: 'https://www.wikidata.org/wiki/Q95985900',
+  }),
+  street('lva-landau-avenue', 'Lva Landau Avenue', 49.939167, 36.294444, 5000, {
+    osm: Object.freeze({ type: 'relation', id: 1570082 }),
+    wikidataId: 'Q4381037',
+    sourceUrl: 'https://www.wikidata.org/wiki/Q4381037',
+  }),
+  street('aerokosmichnyi-avenue', 'Aerokosmichnyi Avenue', 49.926405, 36.272535, 6500, {
+    osm: Object.freeze({ type: 'relation', id: 1703731 }),
+    wikidataId: 'Q4381105',
+    sourceUrl: 'https://www.wikidata.org/wiki/Q4381105',
+    bbox: Object.freeze({ south: 49.868320, west: 36.245120, north: 49.984490, east: 36.299950 }),
+  }),
+  street('amosova', 'Amosova Street', 49.982357, 36.348972, 2800, {
+    source: 'manual',
+    sourceUrl: 'https://tv.yandex.com/maps/147/kharkiv/house/vulytsia_amosova_26a/Z08YdQNoQEIFQFpjfXV5c39mYg%3D%3D/',
+  }),
 ]);
