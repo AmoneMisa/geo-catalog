@@ -21,7 +21,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob', 'Center', 'Geofizika', 'Super Market area', 'Dinamo area'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'residential_complex', ['Bogishamol City', 'Marokand Avenue', 'Registan Residence'], 'Lexicon residential complex still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'residential_complex', ['Silk Road Residence'], 'Compatibility gap for parsing-lexicon 0.5.3: this legacy seed entry is misclassified under Samarkand. The canonical project is in Tashkent and is corrected in parsing-lexicon 0.5.6; remove this gap when geo-catalog upgrades that dependency.'),
-  ...gaps('UZ', 'Samarkand', 'poi', ['Youth Park', 'Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'poi', ['Youth Park'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Namangan', 'mahalla', ['Obihayot', 'Porloq', 'Mustaqillikning 5 yilligi'], 'Official mahalla is confirmed, but no verified standalone spatial boundary/locality object is available yet.'),
   ...gaps('UZ', 'Namangan', 'local_area', ['Center', 'North', 'Chortoq area', 'Uychi area', 'Turaqorgon area', 'Galaba', 'Bobur', 'Navoiy', 'Islom Karimov', 'Qoqimboyshox', 'Afrosiyob', 'Boburshox', 'Ibrat', 'Nodira'], 'Lexicon local area still needs a verified standalone spatial match.'),
