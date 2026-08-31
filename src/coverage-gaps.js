@@ -18,7 +18,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ], 'Lexicon area name remains unresolved until a standalone owner or defensible map center can be verified; a same-name street, stop, mahalla, or isolated building address is not sufficient.'),
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ['Shirin', "Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
-  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob', 'Center', 'Geofizika', 'Super Market area', 'Dinamo area'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob', 'Center', 'Geofizika', 'Super Market area'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'residential_complex', ['Bogishamol City', 'Marokand Avenue', 'Registan Residence'], 'Lexicon residential complex still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'residential_complex', ['Silk Road Residence'], 'Compatibility gap for parsing-lexicon 0.5.3: this legacy seed entry is misclassified under Samarkand. The canonical project is in Tashkent and is corrected in parsing-lexicon 0.5.6; remove this gap when geo-catalog upgrades that dependency.'),
   ...gaps('UZ', 'Samarkand', 'poi', ['Youth Park'], 'Lexicon landmark still needs a verified spatial match.'),
