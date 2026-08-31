@@ -19,7 +19,8 @@ const refs = (items) => items.map((route) => route.ref).sort((a, b) =>
 const full = routes.filter((route) => route.coverage === 'full');
 const terminalsOnly = routes.filter((route) => route.coverage === 'terminals_only');
 const metadataOnly = routes.filter((route) => route.coverage === 'metadata_only');
-const geometryOnly = routes.filter((route) => route.coverage !== 'full' && hasGeometry(route));
+const shapeOnly = metadataOnly.filter(hasGeometry);
+const terminalGeometry = terminalsOnly.filter(hasGeometry);
 const withoutGeometry = routes.filter((route) => !hasGeometry(route));
 const uniqueRefs = new Set(routes.map((route) => route.ref));
 
@@ -37,15 +38,19 @@ if (map.withGeometry + map.withoutGeometry !== routes.length) {
 if (map.variantsWithGeometry !== TRANSPORT_ROUTE_VARIANTS.filter((variant) => Boolean(variant.geometry)).length) {
   failures.push('map variant geometry count is inconsistent');
 }
+if (full.filter(hasGeometry).length + terminalGeometry.length + shapeOnly.length !== map.withGeometry) {
+  failures.push('route geometry buckets do not partition routes with geometry');
+}
 
 console.log('Tashkent bus coverage audit');
 console.log(`  routes: ${routes.length}`);
 console.log(`  topology: full=${full.length}, terminals_only=${terminalsOnly.length}, metadata_only=${metadataOnly.length}`);
-console.log(`  map: with_geometry=${map.withGeometry}, without_geometry=${map.withoutGeometry}, geometry_only=${geometryOnly.length}`);
+console.log(`  map: with_geometry=${map.withGeometry}, without_geometry=${map.withoutGeometry}, shape_only=${shapeOnly.length}, terminal_geometry=${terminalGeometry.length}`);
 console.log(`  OSM variants with geometry: ${map.variantsWithGeometry}`);
 console.log(`  terminals_only refs: ${refs(terminalsOnly).join(', ') || '(none)'}`);
 console.log(`  metadata_only refs: ${refs(metadataOnly).join(', ') || '(none)'}`);
-console.log(`  geometry_only refs: ${refs(geometryOnly).join(', ') || '(none)'}`);
+console.log(`  shape_only refs: ${refs(shapeOnly).join(', ') || '(none)'}`);
+console.log(`  terminal_geometry refs: ${refs(terminalGeometry).join(', ') || '(none)'}`);
 console.log(`  without_geometry refs: ${refs(withoutGeometry).join(', ') || '(none)'}`);
 
 if (failures.length) {
