@@ -102,6 +102,7 @@ test('Samarkand legacy spellings and listing buckets reuse verified physical own
     ['local_area', 'Panjakent Road', 'uz:samarkand:street:panjakent'],
     ['local_area', "So'zangaron", 'uz:samarkand:street:sozangaron'],
     ['local_area', 'Buyuk Ipak Yoli', 'uz:samarkand:street:buyuk-ipak-yuli'],
+    ['local_area', 'Dinamo area', 'uz:samarkand:poi:dinamo-stadium'],
     ['residential_complex', 'Samarkand City', 'uz:samarkand:residential:samarkand-city'],
     ['poi', 'Yangi Ozbekiston Park', 'uz:samarkand:poi:yangi-ozbekiston-park'],
   ];
