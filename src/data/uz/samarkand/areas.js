@@ -34,4 +34,8 @@ export const SAMARKAND_AREA_ENTITIES = Object.freeze([
   spatial('sogdiana', 'Sogdiana', 'mahalla', 39.647951, 66.960270, 'node', 11985323303, 700),
   spatial('bogishamol', 'Bogishamol', 'local_area', 39.667063, 66.931975, 'way', 167293777, 900),
   mappedSpatial('navroz', "Navro'z", 'mahalla', 39.639237, 66.852219, 1000, 'https://yandex.uz/maps/10334/samarkand/geo/6106237055/'),
+  // Official city statistics and 2GIS identify Chilquduq as a standalone MFY.
+  // Yandex maps Samarqand Street inside that MFY; use its mapped center only as
+  // a broad neighborhood anchor, not as a claimed cadastral centroid.
+  mappedSpatial('chilquduq', 'Chilquduq', 'mahalla', 39.635549, 66.889913, 1800, 'https://yandex.com/maps/105810/samarqand-province/geo/4606273793/'),
 ]);
