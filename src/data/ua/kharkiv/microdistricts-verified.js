@@ -49,6 +49,8 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
   wikimapiaMicrodistrict('604-microdistrict', '604 microdistrict', 49.992747, 36.345315, 700),
   wikimapiaMicrodistrict('605-microdistrict', '605 microdistrict', 50.003992, 36.337249, 700),
   osmMicrodistrict('606-microdistrict', '606 microdistrict', 50.01369, 36.35884, 12196622366, 500),
+  wikimapiaMicrodistrict('607-microdistrict', '607 microdistrict', 50.016404, 36.350418, 650),
+  wikimapiaMicrodistrict('608-microdistrict', '608 microdistrict', 50.0148, 36.3375, 900),
   osmMicrodistrict('moskalevka', 'Moskalevka', 49.97553, 36.22016, 1985548337, 900),
   osmMicrodistrict('nova-bavariia', 'Nova Bavariia', 49.95126, 36.16692, 1377395019, 1100),
   osmMicrodistrict('odeska', 'Odeska', 49.94715, 36.26228, 12246218822, 1000),
