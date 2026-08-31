@@ -18,10 +18,10 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ], 'Lexicon area name remains unresolved until a standalone owner or defensible map center can be verified; a same-name street, stop, mahalla, or isolated building address is not sufficient.'),
 
   ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z", 'Shirin', 'Chilkuduk', "Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
-  ...gaps('UZ', 'Samarkand', 'microdistrict', ['Vokzal', 'Universitet', 'Registan', 'Dagbitskaya', 'Rudaki'], 'Lexicon microdistrict still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob', 'Registon', 'Center', 'University area', 'Dahbed', 'Railway Station area', 'Rudakiy', 'Gagarin area', 'Mirzo Ulugbek area', 'Spitamen', 'Panjakent Road', 'Geofizika', 'Super Market area', 'Dinamo area', "So'zangaron", 'Buyuk Ipak Yoli'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'microdistrict', ['Dagbitskaya', 'Rudaki'], 'Lexicon microdistrict still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob', 'Center', 'Dahbed', 'Rudakiy', 'Gagarin area', 'Mirzo Ulugbek area', 'Spitamen', 'Panjakent Road', 'Geofizika', 'Super Market area', 'Dinamo area', "So'zangaron", 'Buyuk Ipak Yoli'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'residential_complex', ['Samarkand City', 'Bogishamol City', 'Marokand Avenue', 'Silk Road Residence', 'Registan Residence'], 'Lexicon residential complex still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Samarkand', 'poi', ['Samarkand City', 'Youth Park', 'Yangi Ozbekiston Park', 'University Boulevard'], 'Lexicon landmark still needs a verified spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'poi', ['Youth Park', 'Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Namangan', 'mahalla', ['Obihayot', 'Porloq', 'Mustaqillikning 5 yilligi'], 'Official mahalla is confirmed, but no verified standalone spatial boundary/locality object is available yet.'),
   ...gaps('UZ', 'Namangan', 'local_area', ['Center', 'North', 'Chortoq area', 'Uychi area', 'Turaqorgon area', 'Galaba', 'Bobur', 'Navoiy', 'Islom Karimov', 'Qoqimboyshox', 'Afrosiyob', 'Boburshox', 'Ibrat', 'Nodira'], 'Lexicon local area still needs a verified standalone spatial match.'),
