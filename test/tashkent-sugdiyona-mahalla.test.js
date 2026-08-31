@@ -21,13 +21,21 @@ test("Sug'diyona mahalla has an approximate Sergeli spatial center", () => {
   assert.equal(isGeoCoverageGap(input), false);
 });
 
-test("Sug'diyona local area remains an explicit gap despite the same-name mahalla fallback", () => {
+test("Sug'diyona mavze resolves independently from the same-name mahalla", () => {
   const input = { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Sug'diyona" };
-  const fallback = resolveLexiconGeoEntity(input);
+  const area = resolveLexiconGeoEntity(input);
+  const mahalla = getGeoEntity('uz:tashkent:mahalla:sugdiyona');
 
-  assert.equal(isGeoCoverageGap(input), true);
-  assert.equal(fallback?.id, 'uz:tashkent:mahalla:sugdiyona');
-  assert.equal(fallback?.type, 'mahalla');
-  assert.ok(getGeoEntity('uz:tashkent:mahalla:sugdiyona'));
-  assert.equal(getGeoEntity('uz:tashkent:local-area:sugdiyona'), null);
+  assert.equal(area?.id, 'uz:tashkent:local-area:sugdiyona');
+  assert.equal(area?.type, 'local_area');
+  assert.equal(area?.parentId, 'uz:tashkent:sergeli');
+  assert.deepEqual(area?.center, { lat: 41.223284, lng: 69.235013 });
+  assert.equal(area?.source, 'manual');
+  assert.equal(area?.accuracy, 'approximate');
+  assert.ok(area?.accuracyM >= 1400);
+  assert.equal(area?.osm, undefined);
+  assert.equal(area?.boundary, undefined);
+  assert.equal(isGeoCoverageGap(input), false);
+  assert.ok(mahalla);
+  assert.notEqual(area?.id, mahalla?.id);
 });
