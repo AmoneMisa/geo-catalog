@@ -28,7 +28,7 @@
     "prepack": "npm test && npm run validate"
   },
   "devDependencies": {
-    "@whiteslove/parsing-lexicon": "^0.5.2"
+    "@whiteslove/parsing-lexicon": "0.5.2"
   },
   "keywords": ["geography", "geospatial", "coordinates", "openstreetmap", "osm", "cities", "districts", "transit", "poi", "parsing-lexicon"],
   "license": "MIT"
