@@ -49,9 +49,9 @@ const alias = (country, city, type, canonical, id) => [
 ];
 
 // Parser canonicals can evolve independently from OSM/source naming. Keep narrowly
-// verified aliases here instead of duplicating physical geo entities. Kharkiv also
-// has listing-area canonicals based on metro stations and major POIs; those resolve
-// to the existing physical owner rather than creating fake microdistrict geometry.
+// verified aliases here instead of duplicating physical geo entities. Listing-area
+// canonicals may also resolve to an existing metro/POI/locality owner when that is
+// the physical subject users actually mean.
 const lexiconAliases = new Map([
   alias('UZ', 'Tashkent', 'local_area', 'TashGRES', 'uz:tashkent:local-area:tashgres'),
   alias('UZ', 'Tashkent', 'local_area', 'Takhtapul', 'uz:tashkent:local-area:taxtapul'),
@@ -85,6 +85,7 @@ const lexiconAliases = new Map([
   alias('UA', 'Kharkiv', 'microdistrict', 'Rohan', 'ua:kharkiv:microdistrict:rohan'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Horizont', 'ua:kharkiv:microdistrict:obrii'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Zhykhar', 'ua:kharkiv:microdistrict:zhykhar'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Zhukovskoho', 'ua:kharkiv:microdistrict:zhukovskoho'),
 
   alias('UA', 'Kharkiv', 'microdistrict', 'Botanical Garden', 'ua:kharkiv:metro:botanichnyi-sad'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Derzhprom', 'ua:kharkiv:metro:derzhprom'),
@@ -105,6 +106,86 @@ const lexiconAliases = new Map([
   // multi-building ЖК “Rohatynskyi”. Reuse that physical owner rather than
   // inventing duplicate residential geometry.
   alias('UA', 'Kharkiv', 'residential_complex', 'Rohatynskyi Kvartal', 'ua:kharkiv:residential:rohatynskyi'),
+
+  // Odesa listing canonicals whose verified physical owner uses a broader
+  // locality type. Keep the parser semantics while reusing the same anchor.
+  alias('UA', 'Odesa', 'microdistrict', 'Kotivskoho', 'ua:odesa:local-area:kotovskoho'),
+  alias('UA', 'Odesa', 'microdistrict', 'Malyi Fontan', 'ua:odesa:local-area:malyi-fontan'),
+
+  // Kyiv's lexicon intentionally uses stable Latin canonicals while the geo
+  // records preserve Ukrainian source names. These aliases bind the two layers
+  // without duplicating any physical neighborhood.
+  alias('UA', 'Kyiv', 'microdistrict', 'Podil', 'ua:kyiv:microdistrict:podil'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Pechersk', 'ua:kyiv:microdistrict:pechersk'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Lipky', 'ua:kyiv:microdistrict:lypky'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Zvirynets', 'ua:kyiv:microdistrict:zvirynets'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Chorna Hora', 'ua:kyiv:microdistrict:chorna-hora'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Busove Pole', 'ua:kyiv:microdistrict:busove-pole'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Nova Zabudova', 'ua:kyiv:microdistrict:nova-zabudova'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Saperne Pole', 'ua:kyiv:microdistrict:saperne-pole'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Center', 'ua:kyiv:microdistrict:staryi-kyiv'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Lukianivka', 'ua:kyiv:microdistrict:lukianivka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Tatarka', 'ua:kyiv:microdistrict:tatarka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Syrets', 'ua:kyiv:microdistrict:syrets'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Nyvky', 'ua:kyiv:microdistrict:nyvky'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Shuliavka', 'ua:kyiv:microdistrict:shuliavka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Solomianka', 'ua:kyiv:microdistrict:solomianka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Chokolivka', 'ua:kyiv:microdistrict:chokolivka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Vidradnyi', 'ua:kyiv:microdistrict:vidradnyi'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Karavaievi Dachi', 'ua:kyiv:microdistrict:karavaievi-dachi'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Zhuliany', 'ua:kyiv:microdistrict:zhuliany'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Sovky', 'ua:kyiv:microdistrict:sovky'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Oleksandrivska Slobidka', 'ua:kyiv:microdistrict:oleksandrivska-slobidka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Protasiv Yar', 'ua:kyiv:microdistrict:protasiv-yar'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Holosiiv', 'ua:kyiv:microdistrict:holosiiv'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Demiivka', 'ua:kyiv:microdistrict:demiivka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Teremky', 'ua:kyiv:microdistrict:teremky'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Teremky-1', 'ua:kyiv:microdistrict:teremky-1'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Teremky-2', 'ua:kyiv:microdistrict:teremky-2'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Feofaniia', 'ua:kyiv:microdistrict:feofaniia'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Korchuvate', 'ua:kyiv:microdistrict:korchuvate'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Mysholovka', 'ua:kyiv:microdistrict:mysholovka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Vydubychi', 'ua:kyiv:microdistrict:vydubychi'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Bahrynova Hora', 'ua:kyiv:microdistrict:bahrynova-hora'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Obolon', 'ua:kyiv:microdistrict:obolon'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Minskyi Masyv', 'ua:kyiv:microdistrict:minskyi-masyv'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Priorka', 'ua:kyiv:microdistrict:priorka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Kurenivka', 'ua:kyiv:microdistrict:kurenivka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Vynohradar', 'ua:kyiv:microdistrict:vynohradar'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Vitriani Hory', 'ua:kyiv:microdistrict:vitriani-hory'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Pushcha-Vodytsia', 'ua:kyiv:microdistrict:pushcha-vodytsia'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Troyeshchyna', 'ua:kyiv:microdistrict:troieshchyna'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Lisovyi Masyv', 'ua:kyiv:microdistrict:lisovyi-masyv'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Bykivnia', 'ua:kyiv:microdistrict:bykivnia'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Voskresenka', 'ua:kyiv:microdistrict:voskresenka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Raiduzhnyi', 'ua:kyiv:microdistrict:raiduzhnyi'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Mykilska Slobidka', 'ua:kyiv:microdistrict:mykilska-slobidka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Rusanivka', 'ua:kyiv:microdistrict:rusanivka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Berezniaky', 'ua:kyiv:microdistrict:berezniaky'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Sotsmisto', 'ua:kyiv:microdistrict:sotsmisto'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Darnytsia', 'ua:kyiv:microdistrict:darnytsia'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Nova Darnytsia', 'ua:kyiv:microdistrict:nova-darnytsia'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Stara Darnytsia', 'ua:kyiv:microdistrict:stara-darnytsia'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Kharkivskyi', 'ua:kyiv:microdistrict:kharkivskyi-masyv'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Pozniaky', 'ua:kyiv:microdistrict:pozniaky'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Osokorky', 'ua:kyiv:microdistrict:osokorky'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Bortnychi', 'ua:kyiv:microdistrict:bortnychi'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Chervonyi Khutir', 'ua:kyiv:microdistrict:chervonyi-khutir'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Rembaza', 'ua:kyiv:microdistrict:rembaza'),
+  alias('UA', 'Kyiv', 'microdistrict', 'DVRZ', 'ua:kyiv:microdistrict:dvrz'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Sviatoshyn', 'ua:kyiv:microdistrict:sviatoshyn'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Borshchahivka', 'ua:kyiv:microdistrict:borshchahivka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Pivdenna Borshchahivka', 'ua:kyiv:microdistrict:pivdenna-borshchahivka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Mykilska Borshchahivka', 'ua:kyiv:microdistrict:mykilska-borshchahivka'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Akademmistechko', 'ua:kyiv:microdistrict:akademmistechko'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Bilychi', 'ua:kyiv:microdistrict:bilychi'),
+  alias('UA', 'Kyiv', 'microdistrict', 'Novobilychi', 'ua:kyiv:microdistrict:novobilychi'),
+
+  // Samarkand keeps legacy listing types in parsing-lexicon. Reuse the verified
+  // physical mahalla/settlement owners instead of creating duplicate geometry.
+  alias('UZ', 'Samarkand', 'microdistrict', 'Sogdiana', 'uz:samarkand:mahalla:sogdiana'),
+  alias('UZ', 'Samarkand', 'microdistrict', 'Kimyogarlar', 'uz:samarkand:settlement:kimyogarlar'),
+  alias('UZ', 'Samarkand', 'local_area', 'Sugdiyona', 'uz:samarkand:mahalla:sogdiana'),
 ]);
 
 const compatibleTypes = Object.freeze({
