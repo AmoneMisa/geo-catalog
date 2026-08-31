@@ -24,6 +24,8 @@ import {
   validateTransportCatalog,
 } from '../src/transport/catalog.js';
 
+const OSM_BUS_SNAPSHOT_DATE = TRANSPORT_ROUTE_VARIANTS[0]?.sourceUpdatedAt;
+
 test('transport catalog passes invariants', () => {
   assert.deepEqual(validateTransportCatalog(), { valid: true, errors: [] });
 });
@@ -69,13 +71,15 @@ test('topology coverage and map geometry coverage are independent', () => {
 });
 
 test('every OSM bus variant includes real road geometry and map bounds', () => {
+  assert.match(OSM_BUS_SNAPSHOT_DATE ?? '', /^\d{4}-\d{2}-\d{2}$/);
   assert.ok(TRANSPORT_ROUTE_VARIANTS.length >= 117);
   for (const variant of TRANSPORT_ROUTE_VARIANTS) {
     assert.equal(variant.geometry?.type, 'MultiLineString', variant.id);
     assert.ok(variant.geometry.coordinates.length > 0, variant.id);
     assert.ok(variant.geometry.coordinates.every((segment) => segment.length >= 2), variant.id);
     assert.equal(variant.geometrySource, 'osm', variant.id);
-    assert.equal(variant.geometryUpdatedAt, '2026-08-30', variant.id);
+    assert.equal(variant.sourceUpdatedAt, OSM_BUS_SNAPSHOT_DATE, variant.id);
+    assert.equal(variant.geometryUpdatedAt, OSM_BUS_SNAPSHOT_DATE, variant.id);
     assert.ok(variant.bounds.west <= variant.bounds.east, variant.id);
     assert.ok(variant.bounds.south <= variant.bounds.north, variant.id);
     assert.notEqual(variant.stopIds.length, 1, variant.id);
@@ -91,15 +95,16 @@ test('OSM snapshot keeps at least the established bus passenger-stop baseline', 
   assert.equal(stop?.canonicalName, 'Массив Хумаюн');
   assert.deepEqual(stop?.center, { lat: 41.341248, lng: 69.3857 });
   assert.deepEqual(stop?.osm, { type: 'node', id: 13308770769 });
-  assert.equal(stop?.sourceUpdatedAt, '2026-08-30');
+  assert.equal(stop?.sourceUpdatedAt, OSM_BUS_SNAPSHOT_DATE);
 });
 
 test('route 1 keeps its verified OSM directions and geometry', () => {
   const route = getTransportRoute('uz:tashkent:route:bus:1');
   assert.equal(route?.coverage, 'full');
   assert.equal(route?.topologySource, 'osm');
-  assert.equal(route?.topologyUpdatedAt, '2026-08-30');
+  assert.equal(route?.topologyUpdatedAt, OSM_BUS_SNAPSHOT_DATE);
   assert.equal(route?.mapGeometrySource, 'osm');
+  assert.equal(route?.mapGeometryUpdatedAt, OSM_BUS_SNAPSHOT_DATE);
 
   const variants = getRouteVariants(route.id);
   const relationIds = variants.map((variant) => variant.osm?.id).sort((a, b) => a - b);
@@ -203,6 +208,31 @@ test('manual terminal anchors remain available after OSM topology promotion', ()
     'uz:tashkent:stop:bus:yunusabad-19',
     'uz:tashkent:stop:bus:tashkent-international-airport',
   ]);
+});
+
+test('shape-only routes retain verified terminal anchors without pretending to have stop topology', () => {
+  const expected = new Map([
+    ['77', [
+      'uz:tashkent:stop:bus:osm:way:404179339',
+      'uz:tashkent:stop:bus:osm:node:13324929838',
+    ]],
+    ['121', [
+      'uz:tashkent:stop:bus:osm:node:4445666601',
+      'uz:tashkent:stop:bus:osm:node:2423100603',
+    ]],
+    ['140', [
+      'uz:tashkent:stop:bus:osm:node:1342203160',
+      'uz:tashkent:stop:bus:osm:node:13328825932',
+    ]],
+  ]);
+
+  for (const [ref, stopIds] of expected) {
+    const route = getTransportRoute(`uz:tashkent:route:bus:${ref}`);
+    assert.equal(route?.coverage, 'terminals_only', ref);
+    assert.deepEqual(route?.stopIds, stopIds, ref);
+    assert.ok(route?.variants?.some((variant) => variant.geometry?.type === 'MultiLineString'), ref);
+    assert.ok(route?.variants?.every((variant) => variant.stopIds.length === 0), ref);
+  }
 });
 
 test('validator accepts map-only route variants without pretending they have stop topology', () => {
