@@ -15,6 +15,8 @@ const expected = new Map([
   ['607 microdistrict', ['ua:kharkiv:microdistrict:607-microdistrict', { lat: 50.016404, lng: 36.350418 }]],
   ['608 microdistrict', ['ua:kharkiv:microdistrict:608-microdistrict', { lat: 50.0148, lng: 36.3375 }]],
   ['616 microdistrict', ['ua:kharkiv:microdistrict:616-microdistrict', { lat: 50.000049, lng: 36.327987 }]],
+  ['625 microdistrict', ['ua:kharkiv:microdistrict:625-microdistrict', { lat: 49.986944, lng: 36.355 }]],
+  ['626 microdistrict', ['ua:kharkiv:microdistrict:626-microdistrict', { lat: 49.9825, lng: 36.360833 }]],
 ]);
 
 test('Kharkiv numbered areas resolve to explicit manual spatial anchors', () => {
@@ -30,6 +32,8 @@ test('Kharkiv numbered areas resolve to explicit manual spatial anchors', () => 
 test('manual numbered anchors retain their source families', () => {
   assert.match(getGeoEntity('ua:kharkiv:microdistrict:521-microdistrict')?.sourceUrl ?? '', /wikimapia\.org/);
   assert.match(getGeoEntity('ua:kharkiv:microdistrict:616-microdistrict')?.sourceUrl ?? '', /yandex\.com\/maps/);
+  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:625-microdistrict')?.sourceUrl, 'https://wikimapia.org/12748817/ru/');
+  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:626-microdistrict')?.sourceUrl, 'https://wikimapia.org/7387022/ru/');
 });
 
 test('approximate Kharkiv anchors keep deliberately wider accuracy', () => {
