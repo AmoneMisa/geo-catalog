@@ -70,4 +70,14 @@ export const UA_KHARKIV_STREET_ENTITIES = Object.freeze([
     source: 'manual',
     sourceUrl: 'https://tv.yandex.com/maps/147/kharkiv/house/vulytsia_amosova_26a/Z08YdQNoQEIFQFpjfXV5c39mYg%3D%3D/',
   }),
+  street('valentynivska', 'Valentynivska Street', 50.022250, 36.318028, 4100, {
+    osm: Object.freeze({ type: 'relation', id: 2045337 }),
+    wikidataId: 'Q97306304',
+    sourceUrl: 'https://www.wikidata.org/wiki/Q97306304',
+  }),
+  street('sobornosti-ukrainy', 'Sobornosti Ukrainy Street', 50.03373904037319, 36.3589230525349, 1700, {
+    source: 'manual',
+    sourceUrl: 'https://maps.visicom.ua/c/36.35777%2C50.03417%2C14/f/STR3KEVMFVHQ?lang=uk',
+    bbox: Object.freeze({ south: 50.031605747785, west: 36.34591904048198, north: 50.03674003079843, east: 36.36962288588404 }),
+  }),
 ]);
