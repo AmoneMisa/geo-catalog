@@ -14,7 +14,7 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 220) 
 export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('pavlovsky-kvartal', 'Pavlovsky Kvartal', 50.008292, 36.218015, 'https://urbanplaces.su/ua_harkovskaya-oblast/harkov/card-3004219-pavlovskij-kvartal', 260),
   residential('kliuch', 'Kliuch', 50.02418648001117, 36.2250847521086, 'https://novobudovy.com/novobudovy-kharkova/harkov-kljuch', 180),
-  residential('dim-na-sumskii', 'Dim na Sumskii', 50.012740, 36.242743, 'https://novobudovy.com/ru/novobudovy-kharkova/novobudova-m-harkiv-vul-suhumska-copy', 180),
+  residential('dim-na-sumskii', 'Dim na Sumskii', 50.012740, 36.242743, 'https://novobudovy.com/ru/novobudovy-kharkova/novostroy-mira', 180),
   residential('myronosytska', 'Myronosytska', 50.010003, 36.242821, 'https://novobudovy.com/ru/arkhiv/mironosickaya-74', 160),
   residential('felicita', 'Felicita', 50.029835, 36.2577, 'https://urbanplaces.su/ua_harkovskaya-oblast/harkov/card-3004293-felichita', 180),
   residential('rezidentsiia', 'Rezidentsiia', 50.02158371710696, 36.22845802887636, 'https://maps.visicom.ua/c/36.22844%2C50.02156%2C17/f/ADR3KEVMFVXAM1RVHH?lang=uk', 220),
@@ -38,6 +38,7 @@ export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('oasis', 'Oasis', 50.013473, 36.197124, 'https://novobudovy.com/ru/novobudovy-kharkova/oazis', 180),
   residential('kazka', 'Kazka', 49.979540, 36.171967, 'https://novobudovy.com/ru/novobudovy-kharkova/skazka', 420),
   residential('saltivskyi', 'Saltivskyi', 49.989758, 36.361977, 'https://novobudovy.com/ru/novobudovy-kharkova/zhk-m-harkiv-saltovske-shose', 500),
+  residential('raiduzhnyi', 'Raiduzhnyi', 49.96418197971342, 36.30897133284614, 'https://maps.visicom.ua/c/36.30797%2C49.96443%2C17/f/ADR3KEVMFV49TX6DN2?lang=uk', 900),
   residential('makiivska', 'Makiivska', 49.953117, 36.254140, 'https://novobudovy.com/ru/arkhiv/novostroy-makeevskaya', 220),
   residential('manhattan', 'Manhattan', 49.991039, 36.263272, 'https://novobudovy.com/ru/novobudovy-kharkova/moskovskij-harkov', 220),
   residential('river-town', 'River Town', 50.016955, 36.205893, 'https://novobudovy.com/novobudovy-kharkova/zhk-naberezhnij-kvartal-m-harkiv-vul-vesela', 220),
