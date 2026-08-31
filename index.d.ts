@@ -141,6 +141,7 @@ export function isGeoCoverageGap(input: LexiconGeoEntityInput): boolean;
 export function isValidCoordinate(point: GeoPoint | null | undefined): boolean;
 export function containsPoint(point: GeoPoint, bbox: GeoBBox): boolean;
 export function distanceKm(a: GeoPoint, b: GeoPoint): number;
+export function convexHullPositions(positions: readonly GeoPosition[]): GeoPosition[];
 export function nearestGeoEntity(point: GeoPoint, entities: readonly GeoEntity[], filters?: Pick<GeoEntityFilters, 'country' | 'type'>): { entity: GeoEntity; distanceKm: number } | null;
 export function validateGeoCatalog(entities: readonly GeoEntity[]): { valid: boolean; errors: string[] };
 export function geoEntityKey(input: LexiconGeoEntityInput): string;
