@@ -49,6 +49,7 @@ const lexiconAliases = new Map([
   [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'TashGRES' }), 'uz:tashkent:local-area:tashgres'],
   [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Takhtapul' }), 'uz:tashkent:local-area:taxtapul'],
   [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Stroygorod' }), 'uz:tashkent:poi:stroygorod-market'],
+  [geoEntityKey({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Yangi Choshtepa' }), 'uz:tashkent:microdistrict:yangi-choshtepa'],
 ]);
 
 const compatibleTypes = Object.freeze({
