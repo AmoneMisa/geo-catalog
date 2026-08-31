@@ -95,6 +95,12 @@ const lexiconAliases = new Map([
   alias('UA', 'Kharkiv', 'microdistrict', 'Industrialna', 'ua:kharkiv:metro:industrialna'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Metalist', 'ua:kharkiv:poi:metalist'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Karavan', 'ua:kharkiv:poi:karavan'),
+
+  // The lexicon historically exposed “Rohatynskyi Kvartal” as a separate
+  // residential canonical, but current project sources identify only one
+  // multi-building ЖК “Rohatynskyi”. Reuse that physical owner rather than
+  // inventing duplicate residential geometry.
+  alias('UA', 'Kharkiv', 'residential_complex', 'Rohatynskyi Kvartal', 'ua:kharkiv:residential:rohatynskyi'),
 ]);
 
 const compatibleTypes = Object.freeze({
