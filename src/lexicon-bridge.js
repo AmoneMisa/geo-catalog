@@ -115,6 +115,8 @@ const lexiconAliases = new Map([
   alias('UA', 'Odesa', 'microdistrict', 'Malyi Fontan', 'ua:odesa:local-area:malyi-fontan'),
   alias('UA', 'Odesa', 'microdistrict', 'Zastava-1', 'ua:odesa:microdistrict:zastava'),
   alias('UA', 'Odesa', 'microdistrict', 'Zastava-2', 'ua:odesa:microdistrict:zastava'),
+  alias('UA', 'Odesa', 'microdistrict', 'Center', 'ua:odesa:local-area:historical-center'),
+  alias('UA', 'Odesa', 'microdistrict', 'Zolotyi Bereh', 'ua:odesa:local-area:zolotyi-bereh'),
 
   // Kyiv's lexicon intentionally uses stable Latin canonicals while the geo
   // records preserve Ukrainian source names. These aliases bind the two layers
