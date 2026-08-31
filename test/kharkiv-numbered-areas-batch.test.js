@@ -7,7 +7,7 @@ const expected = new Map([
   ['522 microdistrict', ['ua:kharkiv:microdistrict:522-microdistrict', { lat: 50.022417, lng: 36.3269 }]],
   ['531 microdistrict', ['ua:kharkiv:microdistrict:531-microdistrict', { lat: 50.02402, lng: 36.358125 }]],
   ['533 microdistrict', ['ua:kharkiv:microdistrict:533-microdistrict', { lat: 50.020768, lng: 36.369651 }]],
-  ['535A', ['ua:kharkiv:microdistrict:535a', { lat: 50.00639, lng: 36.35028 }]],
+  ['535A', ['ua:kharkiv:microdistrict:535a', { lat: 50.006539, lng: 36.350041 }]],
   ['601 microdistrict', ['ua:kharkiv:microdistrict:601-microdistrict', { lat: 49.993708, lng: 36.355008 }]],
   ['602 microdistrict', ['ua:kharkiv:microdistrict:602-microdistrict', { lat: 49.995156, lng: 36.360102 }]],
   ['603 microdistrict', ['ua:kharkiv:microdistrict:603-microdistrict', { lat: 49.9998, lng: 36.346295 }]],
@@ -37,6 +37,7 @@ test('Kharkiv numbered areas resolve to explicit manual spatial anchors', () => 
 
 test('manual numbered anchors retain their source families', () => {
   assert.match(getGeoEntity('ua:kharkiv:microdistrict:521-microdistrict')?.sourceUrl ?? '', /wikimapia\.org/);
+  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:535a')?.sourceUrl, 'https://yandex.com/maps/147/kharkiv/geo/535_y_mikroraion/1508584520/');
   assert.match(getGeoEntity('ua:kharkiv:microdistrict:616-microdistrict')?.sourceUrl ?? '', /yandex\.com\/maps/);
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:625-microdistrict')?.sourceUrl, 'https://wikimapia.org/12748817/ru/');
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:626-microdistrict')?.sourceUrl, 'https://wikimapia.org/7387022/ru/');
@@ -61,7 +62,11 @@ test('representative member and infrastructure anchors keep deliberately wide ac
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:627-microdistrict')?.accuracyM, 1000);
 });
 
-test('approximate Kharkiv anchors keep deliberately wider accuracy', () => {
-  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:535a')?.accuracyM, 850);
+test('direct 535 locality and approximate 608 anchors keep honest accuracy', () => {
+  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:535a')?.accuracyM, 650);
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:608-microdistrict')?.accuracyM, 900);
+});
+
+test('535 normalization does not create a second physical geo owner', () => {
+  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:535-microdistrict'), null);
 });
