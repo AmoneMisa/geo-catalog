@@ -2,6 +2,12 @@ name: Refresh Tashkent bus OSM topology
 
 on:
   workflow_dispatch:
+  push:
+    branches-ignore: [master, main]
+    paths:
+      - '.github/workflows/refresh-tashkent-bus-osm.yml'
+      - 'scripts/refresh-tashkent-bus-osm.js'
+      - 'scripts/refresh-tashkent-bus-shapes.js'
 
 permissions:
   contents: write
