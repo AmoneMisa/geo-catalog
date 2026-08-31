@@ -45,7 +45,10 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
   wikimapiaMicrodistrict('522-microdistrict', '522 microdistrict', 50.022417, 36.326900, 650),
   wikimapiaMicrodistrict('531-microdistrict', '531 microdistrict', 50.024020, 36.358125, 650),
   wikimapiaMicrodistrict('533-microdistrict', '533 microdistrict', 50.020768, 36.369651, 650),
-  wikimapiaMicrodistrict('535a', '535A', 50.00639, 36.35028, 850),
+  microdistrict('535a', '535A', 50.006539, 36.350041, 650, {
+    source: 'manual',
+    sourceUrl: 'https://yandex.com/maps/147/kharkiv/geo/535_y_mikroraion/1508584520/',
+  }),
   microdistrict('601-microdistrict', '601 microdistrict', 49.993708, 36.355008, 900, {
     source: 'manual',
     sourceUrl: 'https://adresy.locator.in.ua/kharkiv/yuvilejnyj/82a/b/108830/en/',
