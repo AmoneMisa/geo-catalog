@@ -8,6 +8,7 @@ const streets = new Map([
   ['Traktorobudivnykiv Avenue', ['ua:kharkiv:street:traktorobudivnykiv-avenue', 1386634]],
   ['Lva Landau Avenue', ['ua:kharkiv:street:lva-landau-avenue', 1570082]],
   ['Aerokosmichnyi Avenue', ['ua:kharkiv:street:aerokosmichnyi-avenue', 1703731]],
+  ['Valentynivska Street', ['ua:kharkiv:street:valentynivska', 2045337]],
 ]);
 
 test('Kharkiv expanded street canonicals resolve to their physical owners', () => {
@@ -31,4 +32,17 @@ test('Aerokosmichnyi uses the current owner while retaining a broad route extent
   const entity = getGeoEntity('ua:kharkiv:street:aerokosmichnyi-avenue');
   assert.equal(entity?.wikidataId, 'Q4381105');
   assert.deepEqual(entity?.bbox, { south: 49.86832, west: 36.24512, north: 49.98449, east: 36.29995 });
+});
+
+test('Sobornosti Ukrainy uses current naming and verified route extent', () => {
+  const entity = resolveLexiconGeoEntity({ country: 'UA', city: 'Kharkiv', type: 'street', canonical: 'Sobornosti Ukrainy Street' });
+  assert.equal(entity?.id, 'ua:kharkiv:street:sobornosti-ukrainy');
+  assert.equal(entity?.source, 'manual');
+  assert.deepEqual(entity?.center, { lat: 50.03373904037319, lng: 36.3589230525349 });
+  assert.deepEqual(entity?.bbox, {
+    south: 50.031605747785,
+    west: 36.34591904048198,
+    north: 50.03674003079843,
+    east: 36.36962288588404,
+  });
 });
