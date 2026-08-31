@@ -1,5 +1,7 @@
 import { UZ_ENTITIES } from './data/uz/index.js';
 import { KZ_ENTITIES } from './data/kz/index.js';
+import { KG_ENTITIES } from './data/kg/index.js';
+import { RO_ENTITIES } from './data/ro/index.js';
 import { UA_ENTITIES } from './data/ua/index.js';
 import { LEARNED_ADDRESS_ENTITIES } from './data/learned-addresses.js';
 import { validateGeoCatalog } from './validate.js';
@@ -7,6 +9,8 @@ import { validateGeoCatalog } from './validate.js';
 const entities = [
   ...UZ_ENTITIES,
   ...KZ_ENTITIES,
+  ...KG_ENTITIES,
+  ...RO_ENTITIES,
   ...UA_ENTITIES,
   ...LEARNED_ADDRESS_ENTITIES,
 ];
