@@ -42,11 +42,26 @@ const byLookupKey = new Map(
     .filter((entity) => entity.lookupKey)
     .map((entity) => [entity.lookupKey, entity]),
 );
+const childrenByParent = new Map();
+for (const entity of GEO_ENTITIES) {
+  if (!entity.parentId) continue;
+  const siblings = childrenByParent.get(entity.parentId);
+  if (siblings) siblings.push(entity);
+  else childrenByParent.set(entity.parentId, [entity]);
+}
+for (const [parentId, children] of childrenByParent) {
+  childrenByParent.set(parentId, Object.freeze(children));
+}
 
 function matchesType(entityType, requestedType) {
   if (!requestedType) return true;
   if (entityType === requestedType) return true;
   return requestedType === 'poi' && typeof entityType === 'string' && entityType.startsWith('poi.');
+}
+
+function matchesFilters(entity, filters) {
+  const { country, type } = filters;
+  return (!country || entity.country === country) && matchesType(entity.type, type);
 }
 
 export function getGeoEntity(id) {
@@ -62,14 +77,37 @@ export function hasGeoEntity(id) {
 }
 
 export function findGeoEntities(filters = {}) {
-  const { country, type, parentId } = filters;
+  const { parentId } = filters;
   return GEO_ENTITIES.filter((entity) =>
-    (!country || entity.country === country) &&
-    matchesType(entity.type, type) &&
+    matchesFilters(entity, filters) &&
     (parentId === undefined || entity.parentId === parentId)
   );
 }
 
-export function getGeoChildren(parentId) {
-  return findGeoEntities({ parentId });
+export function getGeoChildren(parentId, filters = {}) {
+  const children = childrenByParent.get(String(parentId || '')) ?? [];
+  if (!filters.country && !filters.type) return children;
+  return children.filter((entity) => matchesFilters(entity, filters));
+}
+
+export function getGeoDescendants(parentId, filters = {}) {
+  const rootId = String(parentId || '');
+  if (!rootId) return [];
+
+  const descendants = [];
+  const queue = [...(childrenByParent.get(rootId) ?? [])];
+  const seen = new Set([rootId]);
+
+  for (let index = 0; index < queue.length; index += 1) {
+    const entity = queue[index];
+    if (!entity || seen.has(entity.id)) continue;
+    seen.add(entity.id);
+
+    if (matchesFilters(entity, filters)) descendants.push(entity);
+
+    const children = childrenByParent.get(entity.id);
+    if (children) queue.push(...children);
+  }
+
+  return descendants;
 }
