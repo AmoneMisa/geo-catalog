@@ -57,4 +57,22 @@ export const UA_KHARKIV_ADDRESS_ENTITIES = Object.freeze([
     'https://adresy.locator.in.ua/kharkiv/yuvilejnyj/82a/b/108830/en/',
     50,
   ),
+  address(
+    'valentynivska-46',
+    '46 Valentynivska Street',
+    'ua:kharkiv:street:valentynivska',
+    50.00669686008972,
+    36.35850174266664,
+    'https://maps.visicom.ua/c/36.35833%2C50.0061%2C17/f/ADR3KEVMFV935C6SEJ?lang=uk',
+    45,
+  ),
+  address(
+    'sobornosti-ukrainy-259',
+    '259 Sobornosti Ukrainy Street',
+    'ua:kharkiv:street:sobornosti-ukrainy',
+    50.0330555556,
+    36.3641666667,
+    'https://wikimapia.org/17279265/ru/',
+    45,
+  ),
 ]);
