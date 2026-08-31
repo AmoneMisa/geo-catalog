@@ -14,6 +14,8 @@ for (const variant of TASHKENT_BUS_OSM_ROUTE_VARIANTS) {
   variantsByRef.set(variant.ref, variants);
 }
 
+const latestDate = (values) => values.filter(Boolean).sort().at(-1);
+
 export const TASHKENT_BUS_STOPS = Object.freeze([
   ...REGISTRY_STOPS,
   ...TASHKENT_BUS_OSM_STOPS,
@@ -25,18 +27,19 @@ export const TASHKENT_BUS_ROUTES = Object.freeze(REGISTRY_ROUTES.map((route) => 
 
   const topologyVariants = variants.filter((variant) => variant.stopIds.length >= 2);
   const hasTopology = topologyVariants.length > 0;
-  const hasGeometry = variants.some((variant) => variant.geometry);
+  const geometryVariants = variants.filter((variant) => variant.geometry);
+  const hasGeometry = geometryVariants.length > 0;
 
   return Object.freeze({
     ...route,
     ...(hasTopology ? {
       coverage: 'full',
       topologySource: 'osm',
-      topologyUpdatedAt: '2026-08-30',
+      topologyUpdatedAt: latestDate(topologyVariants.map((variant) => variant.sourceUpdatedAt)),
     } : {}),
     ...(hasGeometry ? {
       mapGeometrySource: 'osm',
-      mapGeometryUpdatedAt: '2026-08-30',
+      mapGeometryUpdatedAt: latestDate(geometryVariants.map((variant) => variant.geometryUpdatedAt)),
     } : {}),
     variants: Object.freeze([...variants]),
   });
