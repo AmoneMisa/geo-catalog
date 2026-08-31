@@ -74,10 +74,20 @@ test('Samarkand legacy spellings and listing buckets reuse verified physical own
     ['microdistrict', 'Vokzal', 'uz:samarkand:poi:samarkand-railway-station'],
     ['microdistrict', 'Universitet', 'uz:samarkand:street:university-boulevard'],
     ['microdistrict', 'Registan', 'uz:samarkand:poi:registan-square'],
+    ['microdistrict', 'Dagbitskaya', 'uz:samarkand:street:dahbed'],
+    ['microdistrict', 'Rudaki', 'uz:samarkand:street:rudakiy'],
     ['local_area', 'Sugdiyona', 'uz:samarkand:mahalla:sogdiana'],
     ['local_area', 'Registon', 'uz:samarkand:poi:registan-square'],
     ['local_area', 'University area', 'uz:samarkand:street:university-boulevard'],
     ['local_area', 'Railway Station area', 'uz:samarkand:poi:samarkand-railway-station'],
+    ['local_area', 'Dahbed', 'uz:samarkand:street:dahbed'],
+    ['local_area', 'Rudakiy', 'uz:samarkand:street:rudakiy'],
+    ['local_area', 'Gagarin area', 'uz:samarkand:street:gagarin'],
+    ['local_area', 'Mirzo Ulugbek area', 'uz:samarkand:street:mirzo-ulugbek'],
+    ['local_area', 'Spitamen', 'uz:samarkand:street:spitamen'],
+    ['local_area', 'Panjakent Road', 'uz:samarkand:street:panjakent'],
+    ['local_area', "So'zangaron", 'uz:samarkand:street:sozangaron'],
+    ['local_area', 'Buyuk Ipak Yoli', 'uz:samarkand:street:buyuk-ipak-yuli'],
   ];
 
   for (const [type, canonical, id] of expected) {
