@@ -28,6 +28,11 @@ export const UA_KHARKIV_POI_ENTITIES = Object.freeze([
   osmPoi('shevchenko-garden', 'Shevchenko Garden', 'park', 50.00126, 36.23061, 'way', 346335614, 180),
   osmPoi('central-park', 'Central Park', 'park', 50.02043, 36.24625, 'way', 33770412, 260),
   osmPoi('sarzhyn-yar', 'Sarzhyn Yar', 'park', 50.02891, 36.23599, 'way', 33770366, 300),
+  poi('lisopark', 'Lisopark', 'park', 50.040833333333, 36.2575, 3000, {
+    source: 'wikidata',
+    wikidataId: 'Q4496321',
+    sourceUrl: 'https://www.wikidata.org/wiki/Q4496321',
+  }),
   osmPoi('molodizhnyi-park', 'Molodizhnyi Park', 'park', 50.00881, 36.25014, 'way', 33743095, 180),
   poi('machine-builders-park', 'Machine Builders Park', 'park', 49.96913799558902, 36.29369997301611, 350, {
     source: 'manual',
