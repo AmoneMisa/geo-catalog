@@ -15,7 +15,7 @@ test('Tashkent verified shopping centers have spatial owners', () => {
     ['vega-centre', 'Vega Centre'],
     ['poytaxt-mall', 'Poytaxt Mall'],
     ['depo-mall', 'Depo Mall'],
-    ['chimgan-shopping-center', 'Chimgan Shopping Center'],
+    ['chimgan', 'Chimgan'],
     ['high-town-mall', 'High Town Mall'],
     ['atlas-chilanzar', 'Atlas Chilanzar'],
     ['atlas-yunusobod', 'Atlas Yunusobod'],
@@ -24,6 +24,9 @@ test('Tashkent verified shopping centers have spatial owners', () => {
     ['yunusabad-gallery', 'Yunusabad Gallery'],
     ['alfraganus-mall', 'Alfraganus Mall'],
     ['seoul-mun-mall', 'Seoul Mun Mall'],
+    ['golden-life', 'Golden Life'],
+    ['chigatoy-mall', "Chig'atoy Mall"],
+    ['scopus-mall', 'Scopus Mall'],
     ['ecobozor', 'Ecobozor'],
   ]);
 
@@ -34,6 +37,13 @@ test('Tashkent verified shopping centers have spatial owners', () => {
     assert.ok(Number.isFinite(mall?.center?.lat), canonicalName);
     assert.ok(Number.isFinite(mall?.center?.lng), canonicalName);
   }
+});
+
+test('Sampi remains a market instead of a fabricated shopping-mall owner', () => {
+  const sampi = entity('sampi-bazaar');
+  assert.equal(sampi?.canonicalName, 'Sampi Bazaar');
+  assert.equal(sampi?.type, 'poi.market');
+  assert.deepEqual(sampi?.center, { lat: 41.355236, lng: 69.333878 });
 });
 
 test('Tashkent verified park canonicals have spatial owners', () => {
