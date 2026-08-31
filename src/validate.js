@@ -10,7 +10,7 @@ const POI_TYPES = new Set([
   'embankment', 'lake', 'cathedral', 'stadium', 'cultural_venue', 'exhibition_center', 'zoo',
   'shopping_mall', 'market', 'beach', 'memorial', 'university', 'botanical_garden',
   'airport', 'railway_station', 'bus_station', 'mosque', 'museum', 'observatory', 'school',
-  'hospital', 'supermarket', 'amusement_park', 'archaeological_site', 'palace', 'mausoleum',
+  'hospital', 'clinic', 'supermarket', 'amusement_park', 'archaeological_site', 'palace', 'mausoleum',
   'religious_complex', 'bridge', 'factory', 'power_plant', 'company', 'bank', 'sanatorium',
   'madrasa', 'hardware_store',
 ]);
