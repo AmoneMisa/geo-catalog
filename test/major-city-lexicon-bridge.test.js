@@ -63,6 +63,17 @@ test('Kyiv Latin parser canonicals bind to existing Ukrainian neighborhood owner
   }
 });
 
+test('Tashkent Silk Road Residence has a dedicated physical owner', () => {
+  assert.equal(
+    geoId('UZ', 'Tashkent', 'residential_complex', 'Silk Road Residence'),
+    'uz:tashkent:residential:silk-road-residence',
+  );
+  assert.equal(
+    isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical: 'Silk Road Residence' }),
+    false,
+  );
+});
+
 test('Samarkand legacy spellings and listing buckets reuse verified physical owners', () => {
   const expected = [
     ['mahalla', 'Sattepo', 'uz:samarkand:mahalla:sattepo'],
