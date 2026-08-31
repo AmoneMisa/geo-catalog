@@ -113,6 +113,8 @@ const lexiconAliases = new Map([
   // while reusing the same anchor.
   alias('UA', 'Odesa', 'microdistrict', 'Kotivskoho', 'ua:odesa:local-area:kotovskoho'),
   alias('UA', 'Odesa', 'microdistrict', 'Malyi Fontan', 'ua:odesa:local-area:malyi-fontan'),
+  alias('UA', 'Odesa', 'microdistrict', 'Vuzivskyi', 'ua:odesa:microdistrict:vuzivskyi'),
+  alias('UA', 'Odesa', 'microdistrict', 'Chubaivka', 'ua:odesa:microdistrict:chubaivka'),
   alias('UA', 'Odesa', 'microdistrict', 'Zastava-1', 'ua:odesa:microdistrict:zastava'),
   alias('UA', 'Odesa', 'microdistrict', 'Zastava-2', 'ua:odesa:microdistrict:zastava'),
   alias('UA', 'Odesa', 'microdistrict', 'Center', 'ua:odesa:local-area:historical-center'),
