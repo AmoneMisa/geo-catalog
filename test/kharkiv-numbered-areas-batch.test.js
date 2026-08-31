@@ -22,6 +22,7 @@ const expected = new Map([
   ['624 microdistrict', ['ua:kharkiv:microdistrict:624-microdistrict', { lat: 49.984227, lng: 36.349499 }]],
   ['625 microdistrict', ['ua:kharkiv:microdistrict:625-microdistrict', { lat: 49.986944, lng: 36.355 }]],
   ['626 microdistrict', ['ua:kharkiv:microdistrict:626-microdistrict', { lat: 49.9825, lng: 36.360833 }]],
+  ['627 microdistrict', ['ua:kharkiv:microdistrict:627-microdistrict', { lat: 49.98232, lng: 36.3501 }]],
   ['656 microdistrict', ['ua:kharkiv:microdistrict:656-microdistrict', { lat: 49.995908, lng: 36.323145 }]],
 ]);
 
@@ -41,6 +42,7 @@ test('manual numbered anchors retain their source families', () => {
   assert.match(getGeoEntity('ua:kharkiv:microdistrict:616-microdistrict')?.sourceUrl ?? '', /yandex\.com\/maps/);
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:625-microdistrict')?.sourceUrl, 'https://wikimapia.org/12748817/ru/');
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:626-microdistrict')?.sourceUrl, 'https://wikimapia.org/7387022/ru/');
+  assert.match(getGeoEntity('ua:kharkiv:microdistrict:627-microdistrict')?.sourceUrl ?? '', /streetmaps\.ru/);
   assert.match(getGeoEntity('ua:kharkiv:microdistrict:601-microdistrict')?.sourceUrl ?? '', /locator\.in\.ua/);
   assert.match(getGeoEntity('ua:kharkiv:microdistrict:615-microdistrict')?.sourceUrl ?? '', /locator\.in\.ua/);
   assert.match(getGeoEntity('ua:kharkiv:microdistrict:656-microdistrict')?.sourceUrl ?? '', /locator\.in\.ua/);
@@ -58,6 +60,7 @@ test('representative member and infrastructure anchors keep deliberately wide ac
   ]) {
     assert.equal(getGeoEntity(id)?.accuracyM, 900);
   }
+  assert.equal(getGeoEntity('ua:kharkiv:microdistrict:627-microdistrict')?.accuracyM, 1000);
 });
 
 test('approximate Kharkiv anchors keep deliberately wider accuracy', () => {
