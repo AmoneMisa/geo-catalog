@@ -103,10 +103,18 @@ test('Manzara local area does not consume the unresolved microdistrict identity'
 });
 
 test('same-name Tashkent mahallas remain independent spatial identities', () => {
-  for (const canonical of ['Humoyun', 'Gulobod', 'Qalqon', "Bog'bon", "Chamanbog'", 'Olimpiya', 'Sebzor', 'Asalobod']) {
+  for (const canonical of ['Humoyun', "Bog'bon", "Chamanbog'", 'Asalobod']) {
     assert.equal(
       isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical }),
       true,
+      canonical,
+    );
+  }
+
+  for (const canonical of ['Gulobod', 'Qalqon', 'Olimpiya', 'Sebzor']) {
+    assert.equal(
+      isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical }),
+      false,
       canonical,
     );
   }
