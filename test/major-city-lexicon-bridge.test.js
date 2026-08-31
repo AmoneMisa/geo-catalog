@@ -22,31 +22,21 @@ test('Kharkiv listing canonicals reuse verified physical owners', () => {
   );
 });
 
-test('Odesa listing canonicals reuse broader verified locality owners', () => {
-  assert.equal(
-    geoId('UA', 'Odesa', 'microdistrict', 'Kotivskoho'),
-    'ua:odesa:local-area:kotovskoho',
-  );
-  assert.equal(
-    geoId('UA', 'Odesa', 'microdistrict', 'Malyi Fontan'),
-    'ua:odesa:local-area:malyi-fontan',
-  );
-  assert.equal(
-    geoId('UA', 'Odesa', 'microdistrict', 'Zastava-1'),
-    'ua:odesa:microdistrict:zastava',
-  );
-  assert.equal(
-    geoId('UA', 'Odesa', 'microdistrict', 'Zastava-2'),
-    'ua:odesa:microdistrict:zastava',
-  );
+test('Odesa listing canonicals reuse verified physical locality owners', () => {
+  const expected = new Map([
+    ['Kotivskoho', 'ua:odesa:local-area:kotovskoho'],
+    ['Malyi Fontan', 'ua:odesa:local-area:malyi-fontan'],
+    ['Zastava-1', 'ua:odesa:microdistrict:zastava'],
+    ['Zastava-2', 'ua:odesa:microdistrict:zastava'],
+    ['Center', 'ua:odesa:local-area:historical-center'],
+    ['Zolotyi Bereh', 'ua:odesa:local-area:zolotyi-bereh'],
+  ]);
 
-  for (const canonical of ['Center', 'Zolotyi Bereh']) {
-    assert.equal(isUaOdesaCoverageGap({ country: 'UA', city: 'Odesa', type: 'microdistrict', canonical }), true, canonical);
-  }
-  for (const canonical of ['Zastava-1', 'Zastava-2']) {
+  for (const [canonical, id] of expected) {
+    assert.equal(geoId('UA', 'Odesa', 'microdistrict', canonical), id, canonical);
     assert.equal(isUaOdesaCoverageGap({ country: 'UA', city: 'Odesa', type: 'microdistrict', canonical }), false, canonical);
   }
-  assert.equal(UA_ODESA_COVERAGE_GAPS.length, 2);
+  assert.equal(UA_ODESA_COVERAGE_GAPS.length, 0);
 });
 
 test('Kyiv Latin parser canonicals bind to existing Ukrainian neighborhood owners', () => {
