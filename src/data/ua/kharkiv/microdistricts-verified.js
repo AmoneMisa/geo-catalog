@@ -79,6 +79,10 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
   }),
   wikimapiaMicrodistrict('625-microdistrict', '625 microdistrict', 49.986944, 36.355000, 650, 12748817),
   wikimapiaMicrodistrict('626-microdistrict', '626 microdistrict', 49.982500, 36.360833, 650, 7387022),
+  microdistrict('627-microdistrict', '627 microdistrict', 49.982320, 36.350100, 1000, {
+    source: 'manual',
+    sourceUrl: 'https://harkiv.streetmaps.ru/school/shkola-73-w252690943',
+  }),
   microdistrict('656-microdistrict', '656 microdistrict', 49.995908, 36.323145, 900, {
     source: 'manual',
     sourceUrl: 'https://adresy.locator.in.ua/kharkiv/yuvilejnyj/40a/b/98934/ru/',
