@@ -108,6 +108,8 @@ export const TASHKENT_VERIFIED_AREA_ENTITIES = Object.freeze([
   osmArea('qalqon', 'Qalqon', 'uz:tashkent:yashnobod', 41.28172, 69.3708, 'node', 12173937446, 650),
   // Normuhammedov mavzesi was officially renamed Bog'bon mavzesi; use the matching residential landuse owner.
   osmArea('bogbon', "Bog'bon", 'uz:tashkent:yashnobod', 41.27947, 69.37667, 'way', 557224880, 650),
+  // Official Tashkent reference defines the 2023 So'lim mavzesi inside O'qchi-Olmazor; use the current Obod Makon/O'qchi-Olmazor administrative cluster as a conservative representative center without asserting OSM ownership.
+  derivedArea('solim', "So'lim", 'uz:tashkent:yashnobod', 41.2932, 69.3088, 1500),
   osmArea('gulobod', 'Gulobod', 'uz:tashkent:shaykhantahur', 41.32507, 69.22454, 'way', 144061796, 650),
   osmArea('sebzor', 'Sebzor', 'uz:tashkent:almazar', 41.3348, 69.24967, 'way', 32593826, 650),
   osmArea('olimpiya', 'Olimpiya', 'uz:tashkent:almazar', 41.3628, 69.19735, 'way', 1146998118, 650),
