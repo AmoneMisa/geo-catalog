@@ -26,6 +26,27 @@ The canonical spatial shape is:
 
 The public canonical registry is `GEO_ENTITIES` from `src/catalog.js`.
 
+## City coverage priority
+
+When adding a new city or materially expanding an existing city, **administrative districts are the first required city-local layer**.
+
+Before spending coverage effort on microdistricts, neighborhoods, local areas, mahallas, residential complexes, POIs, malls, parks, streets, transit anchors, or other secondary entities:
+
+1. determine whether the city currently has official administrative districts or equivalent first-level municipal divisions;
+2. verify the current district names and status from authoritative municipal, legal, planning, or other defensible sources;
+3. add every verified current district as a `district` entity with a defensible `center` and realistic `accuracyM`;
+4. add an official boundary or defensible `bbox` when available, but do not fabricate geometry merely to satisfy coverage;
+5. align the district canonicals with `AmoneMisa/parsing-lexicon`, including historical/renamed district forms there as aliases rather than duplicate spatial entities;
+6. only after the district layer is verified and represented should normal city enrichment proceed to microdistricts/neighborhoods, residential complexes, POIs, streets, transport, and other finer-grained coverage.
+
+A city must not be treated as substantially or fully populated merely because it has many microdistricts, POIs, residential complexes, or landmarks while its current administrative districts are missing.
+
+If a city has no current administrative district division, verify that fact explicitly and document the absence through the relevant data/test context rather than inventing districts. Informal areas called “район” in listings are not substitutes for administrative districts.
+
+For city expansion tasks, the default coverage order is therefore:
+
+`city -> administrative districts -> microdistricts/neighborhoods/local areas -> residential complexes -> POIs/parks/malls -> streets/transport/other enrichment`
+
 ## This package owns coordinates
 
 This package is the canonical owner of geographic coordinates and spatial metadata.
@@ -250,17 +271,18 @@ For architecture changes, add regression assertions that protect architectural i
 Before making a change, inspect the current `master` and answer these questions internally:
 
 1. Which existing country/city/subject module owns this physical entity?
-2. Does this entity already exist under another canonical name, alias, or nearby type?
-3. Does the same or a confusingly similar canonical/alias name exist in another city, and have I verified the correct parent city?
-4. Is the candidate a real physical entity, or only a parsing phrase/listing convention?
-5. Is `center` independently defensible, and is `accuracyM` realistic for the object's footprint?
-6. Does the attached OSM/Wikidata/GeoNames metadata identify the same physical object?
-7. Am I duplicating lexical aliases that belong in `AmoneMisa/parsing-lexicon`?
-8. Am I adding a second aggregation path, public API, helper, or registry unnecessarily?
-9. Can this be implemented in an existing semantic file instead of creating a batch/temporary file?
-10. Which validation/test protects this change from regression?
-11. If this task is driven by parsing-lexicon coverage, is the lexicon entry itself correct before I add coordinates for it?
-12. Will `src/lexicon-bridge.js` resolve this entity only in the intended city/type scope, or could another city's similarly named entity win?
+2. If this is a new city or city expansion, have I verified and represented its current administrative districts before secondary city-local entities?
+3. Does this entity already exist under another canonical name, alias, or nearby type?
+4. Does the same or a confusingly similar canonical/alias name exist in another city, and have I verified the correct parent city?
+5. Is the candidate a real physical entity, or only a parsing phrase/listing convention?
+6. Is `center` independently defensible, and is `accuracyM` realistic for the object's footprint?
+7. Does the attached OSM/Wikidata/GeoNames metadata identify the same physical object?
+8. Am I duplicating lexical aliases that belong in `AmoneMisa/parsing-lexicon`?
+9. Am I adding a second aggregation path, public API, helper, or registry unnecessarily?
+10. Can this be implemented in an existing semantic file instead of creating a batch/temporary file?
+11. Which validation/test protects this change from regression?
+12. If this task is driven by parsing-lexicon coverage, is the lexicon entry itself correct before I add coordinates for it?
+13. Will `src/lexicon-bridge.js` resolve this entity only in the intended city/type scope, or could another city's similarly named entity win?
 
 If the answer reveals a conflict with this file, preserve the architecture and data integrity first, then add the requested coverage.
 
