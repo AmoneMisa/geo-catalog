@@ -14,6 +14,20 @@ const localAreaInput = (canonical) => ({
   canonical,
 });
 
+test('Shifokorlar-2 resolves from its address cluster without claiming an OSM owner', () => {
+  const input = localAreaInput('Shifokorlar-2');
+  const entity = resolveLexiconGeoEntity(input);
+
+  assert.equal(entity?.id, 'uz:tashkent:local-area:shifokorlar-2');
+  assert.equal(entity?.parentId, 'uz:tashkent:almazar');
+  assert.deepEqual(entity?.center, { lat: 41.362796, lng: 69.182929 });
+  assert.equal(entity?.source, 'manual');
+  assert.equal(entity?.accuracy, 'approximate');
+  assert.ok(entity?.accuracyM >= 800);
+  assert.equal(entity?.osm, undefined);
+  assert.equal(isGeoCoverageGap(input), false);
+});
+
 test('Shifokorlar-3 uses a conservative Jiydali representative center without claiming an OSM owner', () => {
   const input = localAreaInput('Shifokorlar-3');
   const entity = resolveLexiconGeoEntity(input);
@@ -28,8 +42,9 @@ test('Shifokorlar-3 uses a conservative Jiydali representative center without cl
   assert.equal(isGeoCoverageGap(input), false);
 });
 
-test('Shifokorlar-1, Shifokorlar-3 and Shifokorlar-4 retain distinct spatial identities', () => {
+test('Shifokorlar-1..4 retain distinct spatial identities', () => {
   assert.deepEqual(getGeoEntity('uz:tashkent:local-area:shifokorlar-1')?.osm, { type: 'way', id: 149513658 });
+  assert.equal(getGeoEntity('uz:tashkent:local-area:shifokorlar-2')?.osm, undefined);
   assert.equal(getGeoEntity('uz:tashkent:local-area:shifokorlar-3')?.osm, undefined);
   assert.deepEqual(getGeoEntity('uz:tashkent:local-area:shifokorlar-4')?.osm, { type: 'way', id: 142245652 });
 });
