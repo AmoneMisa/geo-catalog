@@ -27,6 +27,7 @@ export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('rohatynskyi', 'Rohatynskyi', 49.998555593836, 36.21748869009, 'https://rem.ua/prodazha-kvartir-odnokomnatnye-kharkovskaya-rogatinskiy-proezd', 700),
   residential('ptashka', 'Ptashka', 50.013177, 36.305259, 'https://novobudovy.com/novobudovy-kharkova/ptichka', 260),
   residential('newton', 'Newton', 49.937936, 36.300112, 'https://novobudovy.com/arkhiv/zhk-10', 300),
+  residential('newton-2', 'Newton 2', 49.936511, 36.287822, 'https://urbanplaces.su/ua_harkovskaya-oblast/harkov/card-2979319-kiosk-byistrogo-pitaniya', 350),
   residential('meridian', 'Meridian', 50.032214, 36.358462, 'https://novobudovy.com/ru/all/meridian-harkov', 320),
   residential('mira', 'Mira', 49.945378, 36.392274, 'https://novobudovy.com/ru/novobudovy-kharkova/novostroy-mira', 300),
   residential('nimeckyi-proekt', 'Nimeckyi Proekt', 50.001411, 36.218294, 'https://novobudovy.com/ru/arkhiv/obereg-harkov', 220),
