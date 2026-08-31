@@ -9,6 +9,8 @@ import shapeRows1 from './generated/tashkent-bus-osm-shapes-1.js';
 import shapeRows2 from './generated/tashkent-bus-osm-shapes-2.js';
 import shapeRows3 from './generated/tashkent-bus-osm-shapes-3.js';
 
+const OSM_SNAPSHOT_DATE = '2026-08-31';
+
 const STOP_ROWS = Object.freeze([
   ...stopRows1,
   ...stopRows2,
@@ -46,7 +48,7 @@ export const TASHKENT_BUS_OSM_STOPS = Object.freeze(STOP_ROWS.map((row) => {
     canonicalName: canonicalName || `OSM bus platform ${osmId}`,
     center: Object.freeze({ lat, lng }),
     source: 'osm',
-    sourceUpdatedAt: '2026-08-30',
+    sourceUpdatedAt: OSM_SNAPSHOT_DATE,
     accuracy: 'poi',
     accuracyM: 35,
     osm: Object.freeze({ type: osmType, id: osmId }),
@@ -74,7 +76,7 @@ export const TASHKENT_BUS_OSM_ROUTE_VARIANTS = Object.freeze(VARIANT_ROWS.map((r
           north: shapeRow[2][3],
         }),
         geometrySource: 'osm',
-        geometryUpdatedAt: '2026-08-30',
+        geometryUpdatedAt: OSM_SNAPSHOT_DATE,
       }
     : {};
 
@@ -92,7 +94,7 @@ export const TASHKENT_BUS_OSM_ROUTE_VARIANTS = Object.freeze(VARIANT_ROWS.map((r
     ...(operator ? { operator } : {}),
     ...(network ? { network } : {}),
     source: 'osm',
-    sourceUpdatedAt: '2026-08-30',
+    sourceUpdatedAt: OSM_SNAPSHOT_DATE,
     osm: Object.freeze({ type: 'relation', id: relationId }),
     ...shape,
     stopIds: Object.freeze(stopIndexes.map((index) => {
