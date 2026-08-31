@@ -63,37 +63,24 @@ test('Kyiv Latin parser canonicals bind to existing Ukrainian neighborhood owner
   }
 });
 
-test('Samarkand legacy spellings and parser buckets reuse verified physical owners', () => {
-  assert.equal(
-    geoId('UZ', 'Samarkand', 'mahalla', 'Sartepa'),
-    'uz:samarkand:mahalla:sattepo',
-  );
-  assert.equal(
-    geoId('UZ', 'Samarkand', 'microdistrict', 'Sartepa'),
-    'uz:samarkand:mahalla:sattepo',
-  );
-  assert.equal(
-    geoId('UZ', 'Samarkand', 'microdistrict', 'Sat-Tepo'),
-    'uz:samarkand:mahalla:sattepo',
-  );
-  assert.equal(
-    isGeoCoverageGap({ country: 'UZ', city: 'Samarkand', type: 'microdistrict', canonical: 'Sartepa' }),
-    false,
-  );
-  assert.equal(
-    isGeoCoverageGap({ country: 'UZ', city: 'Samarkand', type: 'microdistrict', canonical: 'Sat-Tepo' }),
-    false,
-  );
-  assert.equal(
-    geoId('UZ', 'Samarkand', 'microdistrict', 'Sogdiana'),
-    'uz:samarkand:mahalla:sogdiana',
-  );
-  assert.equal(
-    geoId('UZ', 'Samarkand', 'microdistrict', 'Kimyogarlar'),
-    'uz:samarkand:settlement:kimyogarlar',
-  );
-  assert.equal(
-    geoId('UZ', 'Samarkand', 'local_area', 'Sugdiyona'),
-    'uz:samarkand:mahalla:sogdiana',
-  );
+test('Samarkand legacy spellings and listing buckets reuse verified physical owners', () => {
+  const expected = [
+    ['mahalla', 'Sartepa', 'uz:samarkand:mahalla:sattepo'],
+    ['microdistrict', 'Sartepa', 'uz:samarkand:mahalla:sattepo'],
+    ['microdistrict', 'Sat-Tepo', 'uz:samarkand:mahalla:sattepo'],
+    ['microdistrict', 'Sogdiana', 'uz:samarkand:mahalla:sogdiana'],
+    ['microdistrict', 'Kimyogarlar', 'uz:samarkand:settlement:kimyogarlar'],
+    ['microdistrict', 'Vokzal', 'uz:samarkand:poi:samarkand-railway-station'],
+    ['microdistrict', 'Universitet', 'uz:samarkand:street:university-boulevard'],
+    ['microdistrict', 'Registan', 'uz:samarkand:poi:registan-square'],
+    ['local_area', 'Sugdiyona', 'uz:samarkand:mahalla:sogdiana'],
+    ['local_area', 'Registon', 'uz:samarkand:poi:registan-square'],
+    ['local_area', 'University area', 'uz:samarkand:street:university-boulevard'],
+    ['local_area', 'Railway Station area', 'uz:samarkand:poi:samarkand-railway-station'],
+  ];
+
+  for (const [type, canonical, id] of expected) {
+    assert.equal(geoId('UZ', 'Samarkand', type, canonical), id, `${type}:${canonical}`);
+    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Samarkand', type, canonical }), false, `${type}:${canonical}`);
+  }
 });
