@@ -31,6 +31,7 @@ export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('mira', 'Mira', 49.945378, 36.392274, 'https://novobudovy.com/ru/novobudovy-kharkova/novostroy-mira', 300),
   residential('nimeckyi-proekt', 'Nimeckyi Proekt', 50.001411, 36.218294, 'https://novobudovy.com/ru/arkhiv/obereg-harkov', 220),
   residential('mlechnyi-shliakh', 'Mlechnyi Shliakh', 50.006117, 36.257562, 'https://novobudovy.com/ru/novobudovy/zhk-mlechnyj-put-m-harkiv', 160),
+  residential('levada', 'Levada', 49.97831195202007, 36.24245827257936, 'https://maps.visicom.ua/c/36.24135%2C49.97852%2C17/f/ADR3KEVMFVI1JWH4FR?lang=uk', 850),
   residential('levada-2', 'Levada 2', 49.980281, 36.240509, 'https://novobudovy.com/novobudovy-kharkova/zhk-levada-m-harkiv', 300),
   residential('vorobiovi-hory', 'Vorobiovi Hory', 50.014026, 36.312008, 'https://novobudovy.com/ru/novobudovy-kharkova/zhk-m-harkiv-vul-cherivecka-timurivciv', 200),
   residential('vorobiovi-hory-family', 'Vorobiovi Hory Family', 50.017387, 36.204117, 'https://novobudovy.com/ru/novobudovy-kharkova/vorobjovi-gori-family', 200),
