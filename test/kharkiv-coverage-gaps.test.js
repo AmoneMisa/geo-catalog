@@ -5,7 +5,6 @@ import { resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
 
 const expected = Object.freeze([
   ['microdistrict', '627 microdistrict'],
-  ['residential_complex', 'Newton 2'],
   ['poi', 'Feldman Ecopark'],
   ['poi', 'Rost'],
   ['poi', 'Klass'],
@@ -20,8 +19,12 @@ test('Kharkiv unresolved spatial canonicals are explicit and unresolved', () => 
   }
 });
 
-test('resolved Kharkiv aliases are not coverage gaps', () => {
-  for (const canonical of ['614 microdistrict', 'Horizont']) {
-    assert.equal(isUaKharkivCoverageGap({ country: 'UA', city: 'Kharkiv', type: 'microdistrict', canonical }), false);
+test('resolved Kharkiv canonicals are not coverage gaps', () => {
+  for (const [type, canonical] of [
+    ['microdistrict', '614 microdistrict'],
+    ['microdistrict', 'Horizont'],
+    ['residential_complex', 'Newton 2'],
+  ]) {
+    assert.equal(isUaKharkivCoverageGap({ country: 'UA', city: 'Kharkiv', type, canonical }), false);
   }
 });
