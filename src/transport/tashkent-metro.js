@@ -1,6 +1,12 @@
 import { TASHKENT_METRO_ENTITIES } from '../data/uz/tashkent/metro.js';
+import metroShapeRows from './generated/tashkent-metro-osm-shapes.js';
 
 const stopId = (stationId) => stationId.replace(':metro:', ':stop:metro:');
+
+const METRO_SHAPES_BY_SLUG = new Map(metroShapeRows.map((row) => [row[0], row]));
+const freezeMultiLine = (segments) => Object.freeze(segments.map((segment) =>
+  Object.freeze(segment.map(([lng, lat]) => Object.freeze([lng, lat]))),
+));
 
 export const TASHKENT_METRO_STOPS = Object.freeze(TASHKENT_METRO_ENTITIES.map((station) => Object.freeze({
   id: stopId(station.id),
@@ -18,19 +24,33 @@ export const TASHKENT_METRO_STOPS = Object.freeze(TASHKENT_METRO_ENTITIES.map((s
   ...(station.wikidataId ? { wikidataId: station.wikidataId } : {}),
 })));
 
-const route = (slug, canonicalName, ref, stationSlugs) => Object.freeze({
-  id: `uz:tashkent:route:metro:${slug}`,
-  type: 'route',
-  mode: 'metro',
-  country: 'UZ',
-  cityId: 'uz:tashkent',
-  canonicalName,
-  ref,
-  source: 'manual',
-  sourceUpdatedAt: '2026-01-03',
-  coverage: 'full',
-  stopIds: Object.freeze(stationSlugs.map((slug) => `uz:tashkent:stop:metro:${slug}`)),
-});
+const route = (slug, canonicalName, ref, stationSlugs) => {
+  const shapeRow = METRO_SHAPES_BY_SLUG.get(slug);
+  if (!shapeRow) throw new Error(`Missing OSM geometry for Tashkent metro line ${slug}.`);
+  const [, relationId, segments, [west, south, east, north]] = shapeRow;
+
+  return Object.freeze({
+    id: `uz:tashkent:route:metro:${slug}`,
+    type: 'route',
+    mode: 'metro',
+    country: 'UZ',
+    cityId: 'uz:tashkent',
+    canonicalName,
+    ref,
+    source: 'manual',
+    sourceUpdatedAt: '2026-01-03',
+    coverage: 'full',
+    stopIds: Object.freeze(stationSlugs.map((stationSlug) => `uz:tashkent:stop:metro:${stationSlug}`)),
+    osm: Object.freeze({ type: 'relation', id: relationId }),
+    geometry: Object.freeze({
+      type: 'MultiLineString',
+      coordinates: freezeMultiLine(segments),
+    }),
+    bounds: Object.freeze({ west, south, east, north }),
+    geometrySource: 'osm',
+    geometryUpdatedAt: '2026-08-30',
+  });
+};
 
 export const TASHKENT_METRO_ROUTES = Object.freeze([
   route('chilonzor', 'Chilonzor Line', 'Chilonzor', [

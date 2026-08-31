@@ -29,13 +29,12 @@ test('Tashkent major streets and Bobur Park resolve to verified OSM owners', () 
   for (const [canonical, id] of [
     ['Assalom Jomiy', 'uz:tashkent:residential:assalom-jomiy'],
     ['Olmazor City', 'uz:tashkent:residential:olmazor-city'],
+    ['Do‘stlar', 'uz:tashkent:residential:dostlar'],
   ]) {
     const input = { country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical };
     assert.equal(resolveLexiconGeoEntity(input)?.id, id);
     assert.equal(isGeoCoverageGap(input), false);
   }
-
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical: 'Do‘stlar' }), true);
 });
 
 test('Tashkent 0.3 spatial identities use semantic types and district parents', () => {
@@ -282,7 +281,7 @@ test('Rakatboshi area and street remain distinct Yakkasaray entities', () => {
   assert.equal(street?.osm, undefined);
 });
 
-test('Manzara residential complex does not consume unresolved area identities', () => {
+test('Manzara residential complex remains distinct from the resolved local area and unresolved microdistrict', () => {
   const complex = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical: 'Manzara' });
   assert.equal(complex?.id, 'uz:tashkent:residential:manzara');
   assert.equal(complex?.parentId, 'uz:tashkent:yunusabad');
@@ -290,15 +289,22 @@ test('Manzara residential complex does not consume unresolved area identities', 
   assert.equal(complex?.accuracy, 'building');
 
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'Manzara' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Manzara' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Manzara' }), false);
 });
 
 test('Taxtapul mahalla and Almazar area remain separate identities', () => {
-  assert.deepEqual(getGeoEntity('uz:tashkent:mahalla:taxtapul')?.osm, { type: 'node', id: 9687947537 });
+  const mahalla = getGeoEntity('uz:tashkent:mahalla:taxtapul');
+  const area = getGeoEntity('uz:tashkent:local-area:taxtapul');
+  assert.deepEqual(mahalla?.osm, { type: 'node', id: 9687947537 });
+  assert.equal(mahalla?.parentId, 'uz:tashkent:shaykhantahur');
+  assert.equal(area?.parentId, 'uz:tashkent:almazar');
+  assert.deepEqual(area?.center, { lat: 41.343113, lng: 69.259525 });
+  assert.equal(area?.source, 'manual');
   assert.equal(getGeoEntity('uz:tashkent:local-area:takhtapul'), null);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Taxtapul' }), false);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Takhtapul' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taxtapul' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Takhtapul' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taxtapul' }), false);
+  assert.notEqual(mahalla?.id, area?.id);
 });
 
 test('Ibn Sino mahalla owns its verified Shaykhantahur boundary', () => {
@@ -309,7 +315,11 @@ test('Ibn Sino mahalla owns its verified Shaykhantahur boundary', () => {
   assert.equal(mahalla?.boundary?.type, 'Polygon');
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Ibn Sino' }), false);
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Ibn Sino-1' }), true);
+  const ibnSino1 = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Ibn Sino-1' });
+  assert.equal(ibnSino1?.id, 'uz:tashkent:local-area:ibn-sino-1');
+  assert.deepEqual(ibnSino1?.osm, { type: 'way', id: 103249732 });
+  assert.notEqual(ibnSino1?.osm?.id, mahalla?.osm?.id);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Ibn Sino-1' }), false);
 });
 
 test('Akademgorodok owns its academy-campus polygon in Mirzo Ulugbek', () => {
@@ -321,7 +331,7 @@ test('Akademgorodok owns its academy-campus polygon in Mirzo Ulugbek', () => {
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Akademgorodok' }), false);
 });
 
-test('Gulobod and Sebzor streets do not consume their unresolved mahallas or areas', () => {
+test('Gulobod and Sebzor streets remain distinct from mahallas and resolved local areas', () => {
   const gulobod = getGeoEntity('uz:tashkent:street:gulobod');
   assert.equal(gulobod?.parentId, 'uz:tashkent:shaykhantahur');
   assert.deepEqual(gulobod?.osm, { type: 'way', id: 641077612 });
@@ -330,13 +340,13 @@ test('Gulobod and Sebzor streets do not consume their unresolved mahallas or are
   assert.equal(sebzor?.parentId, 'uz:tashkent:almazar');
   assert.deepEqual(sebzor?.osm, { type: 'way', id: 641787547 });
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Gulobod' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Sebzor' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Gulobod' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Sebzor' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Gulobod' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Sebzor' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Gulobod' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Sebzor' }), false);
 });
 
-test('Taraqqiyot mahalla owns its verified Almazar residential boundary', () => {
+test('Taraqqiyot mahalla remains distinct from its numbered local areas', () => {
   const mahalla = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Taraqqiyot' });
   assert.equal(mahalla?.id, 'uz:tashkent:mahalla:taraqqiyot');
   assert.equal(mahalla?.parentId, 'uz:tashkent:almazar');
@@ -344,7 +354,10 @@ test('Taraqqiyot mahalla owns its verified Almazar residential boundary', () => 
   assert.equal(mahalla?.boundary?.type, 'Polygon');
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Taraqqiyot' }), false);
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taraqqiyot-1' }), true);
+  for (const canonical of ['Taraqqiyot-1', 'Taraqqiyot-2', 'Taraqqiyot-3', 'Taraqqiyot-4']) {
+    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), false, canonical);
+    assert.notEqual(resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical })?.id, mahalla?.id, canonical);
+  }
 });
 
 test('C-7, Chuqursoy and Shimoliy Olmazor resolve to distinct OSM residential polygons', () => {
@@ -382,10 +395,11 @@ test('Suvsoz-1 and Suvsoz-2 resolve to distinct Bektemir residential areas', () 
     assert.equal(isGeoCoverageGap(input), false, canonical);
   }
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Suvsoz-3' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Suvsoz-3' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Suvsoz-5' }), false);
 });
 
-test('verified dahasi points resolve only their local-area identities', () => {
+test('verified dahasi points remain distinct from independently mapped mahallas', () => {
   const expected = new Map([
     ['Ahmad Yugnakiy', ['uz:tashkent:local-area:ahmad-yugnakiy', 1867262863]],
     ["Bog'ko'cha", ['uz:tashkent:local-area:bogkocha', 1223133760]],
@@ -401,9 +415,9 @@ test('verified dahasi points resolve only their local-area identities', () => {
     assert.equal(isGeoCoverageGap(input), false, canonical);
   }
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Ahmad Yugnakiy' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Olimpiya' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Olimpiya' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Ahmad Yugnakiy' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Olimpiya' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Olimpiya' }), false);
 });
 
 test('ToshGRES uses the lexicon canonical on its existing OSM owner', () => {
@@ -416,24 +430,37 @@ test('ToshGRES uses the lexicon canonical on its existing OSM owner', () => {
 });
 
 test('Taxtapul mahalla does not consume the distinct Almazar local-area identity', () => {
-  const input = { country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Taxtapul' };
-  const entity = resolveLexiconGeoEntity(input);
-  assert.equal(entity?.id, 'uz:tashkent:mahalla:taxtapul');
-  assert.equal(entity?.parentId, 'uz:tashkent:shaykhantahur');
-  assert.deepEqual(entity?.osm, { type: 'node', id: 9687947537 });
-  assert.equal(isGeoCoverageGap(input), false);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taxtapul' }), true);
+  const mahallaInput = { country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Taxtapul' };
+  const mahalla = resolveLexiconGeoEntity(mahallaInput);
+  const areaInput = { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Taxtapul' };
+  const area = resolveLexiconGeoEntity(areaInput);
+  assert.equal(mahalla?.id, 'uz:tashkent:mahalla:taxtapul');
+  assert.equal(mahalla?.parentId, 'uz:tashkent:shaykhantahur');
+  assert.deepEqual(mahalla?.osm, { type: 'node', id: 9687947537 });
+  assert.equal(area?.id, 'uz:tashkent:local-area:taxtapul');
+  assert.equal(area?.parentId, 'uz:tashkent:almazar');
+  assert.equal(area?.source, 'manual');
+  assert.equal(area?.osm, undefined);
+  assert.notEqual(area?.id, mahalla?.id);
+  assert.equal(isGeoCoverageGap(mahallaInput), false);
+  assert.equal(isGeoCoverageGap(areaInput), false);
 });
 
-test("Bog'bon Street remains distinct from Yashnobod mahalla and area identities", () => {
+test("Bog'bon Street remains distinct from Yashnobod mahalla and resolved local area", () => {
   const street = getGeoEntity('uz:tashkent:street:bogbon');
   assert.equal(street?.parentId, 'uz:tashkent:yunusabad');
   assert.deepEqual(street?.osm, { type: 'way', id: 105705400 });
+
+  const area = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Bog'bon" });
+  assert.equal(area?.id, 'uz:tashkent:local-area:bogbon');
+  assert.equal(area?.parentId, 'uz:tashkent:yashnobod');
+  assert.deepEqual(area?.osm, { type: 'way', id: 557224880 });
+
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: "Bog'bon" }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Bog'bon" }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Bog'bon" }), false);
 });
 
-test('newly recorded same-name streets do not consume unresolved area identities', () => {
+test('same-name streets remain independent from resolved area identities', () => {
   const expected = new Map([
     ['muxbir', ['uz:tashkent:almazar', 139815768]],
     ['minora', ['uz:tashkent:almazar', 1133450564]],
@@ -448,7 +475,11 @@ test('newly recorded same-name streets do not consume unresolved area identities
   }
 
   for (const canonical of ['Muxbir', 'Minora']) {
-    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), true, canonical);
+    const area = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical });
+    assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }), false, canonical);
+    assert.equal(area?.source, 'manual', canonical);
+    assert.equal(area?.osm, undefined, canonical);
+    assert.notEqual(area?.id, `uz:tashkent:street:${canonical.toLowerCase()}`, canonical);
   }
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Asalobod' }), true);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Shifokorlar' }), true);

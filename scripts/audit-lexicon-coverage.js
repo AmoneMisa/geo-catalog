@@ -141,10 +141,18 @@ for (const [label, items, toInput] of groups) {
 }
 
 let parentMismatches = 0;
+function semanticTypeMatches(inputType, entityType) {
+  if (inputType === 'poi') return entityType === 'poi' || entityType?.startsWith('poi.');
+  return inputType === entityType;
+}
+
 function auditTashkentParent(input, parentCanonical, label) {
   if (!parentCanonical) return;
   const entity = resolveLexiconGeoEntityExact(input);
   if (!entity) return;
+  // An explicit bridge alias may intentionally reclassify a legacy parser entity
+  // (for example local_area -> poi.market). Its old bucket parent is not a spatial invariant.
+  if (!semanticTypeMatches(input.type, entity.type)) return;
   const parent = resolveLexiconGeoEntityExact({ country: 'UZ', city: 'Tashkent', type: 'district', canonical: parentCanonical });
   if (!parent) {
     console.log(`  parent unresolved: ${label} -> ${parentCanonical}`);

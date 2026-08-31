@@ -1,0 +1,66 @@
+name: Refresh Tashkent bus OSM topology
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [master, main]
+    paths:
+      - '.github/workflows/refresh-tashkent-bus-osm.yml'
+      - 'scripts/refresh-tashkent-bus-osm.js'
+      - 'scripts/refresh-tashkent-bus-shapes.js'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tashkent-bus-osm-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      # Generated OSM snapshots are reviewed through data branches; never write them straight to the protected branch.
+      - name: Refuse protected branches
+        shell: bash
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            master|main)
+              echo "Refusing to refresh generated Tashkent bus data directly on ${GITHUB_REF_NAME}."
+              exit 1
+              ;;
+          esac
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts
+      - name: Discover current OSM bus topology
+        run: node ./scripts/refresh-tashkent-bus-osm.js
+      - name: Refresh OSM bus route geometry
+        run: node ./scripts/refresh-tashkent-bus-shapes.js
+      - name: Validate refreshed transport snapshot
+        run: |
+          npm test
+          npm run validate
+          npm run audit:lexicon
+          npm run audit:transport
+          npm pack --dry-run
+      - name: Commit generated topology
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/transport/generated/tashkent-bus-osm-stops-*.js
+          git add src/transport/generated/tashkent-bus-osm-variants-*.js
+          git add src/transport/generated/tashkent-bus-osm-shapes-*.js
+          if git diff --cached --quiet; then
+            echo "No bus OSM topology changes"
+            exit 0
+          fi
+          git commit -m "data: refresh Tashkent bus OSM topology"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/geo-catalog",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Structured geographic catalog for cities, districts, neighborhoods, residential complexes, transit and POIs with coordinates, bounds and OSM metadata.",
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "test": "node --test",
     "validate": "node ./scripts/validate-catalog.js",
     "audit:lexicon": "node ./scripts/audit-lexicon-coverage.js",
+    "audit:transport": "node ./scripts/audit-transport-coverage.js",
     "prepack": "npm test && npm run validate"
   },
   "devDependencies": {

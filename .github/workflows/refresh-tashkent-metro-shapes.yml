@@ -1,0 +1,35 @@
+name: Refresh Tashkent metro shapes
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Refuse direct default-branch writes
+        run: |
+          if [ "$GITHUB_REF_NAME" = "master" ] || [ "$GITHUB_REF_NAME" = "main" ]; then
+            echo "Run this refresh workflow from a feature/data branch, not the default branch."
+            exit 1
+          fi
+      - name: Generate current OSM metro shapes
+        run: node ./scripts/refresh-tashkent-metro-shapes.js
+      - name: Commit generated shape
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/transport/generated/tashkent-metro-osm-shapes.js
+          if git diff --cached --quiet; then
+            echo "No metro shape changes"
+            exit 0
+          fi
+          git commit -m "data: refresh Tashkent metro route shapes"
+          git push origin "HEAD:$GITHUB_REF_NAME"
