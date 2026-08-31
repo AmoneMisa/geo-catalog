@@ -51,5 +51,6 @@ export const SAMARKAND_POI_ENTITIES = Object.freeze([
   osmPoi('afrosiyob', 'Afrosiyob', 'poi.archaeological_site', 39.67045, 66.98799, 'way', 110296439, 250, 'Q2167520'),
   osmPoi('eternal-city', 'Eternal City', 'poi.cultural_venue', 39.65384, 67.06127, 'way', 1083701137, 180),
   osmPoi('alisher-navoiy-park', 'Alisher Navoiy Park', 'poi.park', 39.64968, 66.95803, 'way', 203548053, 220),
+  osmPoi('yangi-ozbekiston-park', 'Yangi Ozbekiston Park', 'poi.park', 39.72497, 66.93475, 'way', 1181792108, 500),
   manualPoi('family-park', 'Family Park', 'poi.amusement_park', 39.662847, 66.907978, 'building', 180),
 ]);
