@@ -1,12 +1,13 @@
-const station = (slug, canonicalName, lat, lng, osmId) => Object.freeze({
+const station = (slug, canonicalName, lat, lng, osmId, extra = {}) => Object.freeze({
   id: `ua:kharkiv:metro:${slug}`, type: 'metro', country: 'UA', canonicalName,
   parentId: 'ua:kharkiv', center: Object.freeze({ lat, lng }), source: 'osm', accuracy: 'poi', accuracyM: 80,
   osm: Object.freeze({ type: 'node', id: osmId }),
+  ...extra,
 });
 
 export const UA_KHARKIV_METRO_ENTITIES = Object.freeze([
   station('23-serpnia', '23 Серпня', 50.035597, 36.220015, 267466053),
-  station('heroiv-pratsi', 'Героїв Праці', 50.024876, 36.335894, 267465960),
+  station('heroiv-pratsi', 'Салтівська', 50.024876, 36.335894, 267465960, { wikidataId: 'Q1984066' }),
   station('studentska', 'Студентська', 50.017832, 36.329866, 1684642898),
   station('pivdennyi-vokzal', 'Південний вокзал', 49.989735, 36.206392, 267309824),
   station('derzhprom', 'Держпром', 50.005672, 36.230790, 13167973092),
@@ -18,6 +19,7 @@ export const UA_KHARKIV_METRO_ENTITIES = Object.freeze([
   station('peremoha', 'Перемога', 50.058999, 36.201163, 5203495032),
   station('kyivska', 'Київська', 50.002713, 36.271517, 1446590116),
   station('akademika-barabashova', 'Академіка Барабашова', 50.002430, 36.304894, 2573681951),
+  station('levada', 'Левада', 49.980914, 36.243114, 267309844, { wikidataId: 'Q1980939' }),
   station('sportyvna', 'Спортивна', 49.979262, 36.260557, 1448227318),
   station('turboatom', 'Турбоатом', 49.971662, 36.304685, 3395794791),
   station('industrialna', 'Індустріальна', 49.945679, 36.395759, 1445874194),
@@ -27,7 +29,6 @@ export const UA_KHARKIV_METRO_ENTITIES = Object.freeze([
   station('maselskoho', 'Масельського', 49.958162, 36.360458, 987085575),
   station('maidan-konstytutsii', 'Майдан Конституції', 49.991870, 36.231762, 267309843),
   station('akademika-pavlova', 'Академіка Павлова', 50.009072, 36.318358, 1450511933),
-  station('saltivska', 'Салтівська', 50.023665, 36.335114, 2143717364),
   station('istorychnyi-muzei', 'Історичний музей', 49.992027, 36.232057, 267309437),
   station('zavodska', 'Заводська', 49.976011, 36.280881, 267310307),
   station('yaroslava-mudroho', 'Ярослава Мудрого', 50.003868, 36.248325, 267465955),

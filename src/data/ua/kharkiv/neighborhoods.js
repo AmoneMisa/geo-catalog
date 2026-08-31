@@ -1,6 +1,7 @@
-const microdistrict = (slug, canonicalName, lat, lng, accuracyM, sourceUrl) => Object.freeze({
+const microdistrict = (slug, canonicalName, lat, lng, accuracyM, sourceUrl, osm = null) => Object.freeze({
   id: `ua:kharkiv:microdistrict:${slug}`, type: 'microdistrict', country: 'UA', canonicalName,
   parentId: 'ua:kharkiv', center: Object.freeze({ lat, lng }), source: 'osm', accuracy: 'neighborhood', accuracyM, sourceUrl,
+  ...(osm ? { osm: Object.freeze(osm) } : {}),
 });
 
 export const UA_KHARKIV_NEIGHBORHOOD_ENTITIES = Object.freeze([
@@ -14,7 +15,7 @@ export const UA_KHARKIV_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict('khtz', 'ХТЗ', 49.946140, 36.373205, 900, 'https://www.openstreetmap.org/node/1985599392'),
   microdistrict('shatylivka', 'Шатилівка', 50.022052, 36.233556, 900, 'https://www.openstreetmap.org/node/1985618809'),
   microdistrict('nahirnyi', 'Нагірний район', 50.002090, 36.246146, 1000, 'https://www.openstreetmap.org/way/1502819845'),
-  microdistrict('524-mikroraion', '524-й мікрорайон', 50.024695, 36.351188, 500, 'https://www.openstreetmap.org/node/2578454074'),
+  microdistrict('524-mikroraion', '524-й мікрорайон', 50.026680, 36.345180, 500, 'https://www.openstreetmap.org/node/12196622369', { type: 'node', id: 12196622369 }),
   microdistrict('kulynychi', 'Кулиничі', 49.982042, 36.383855, 700, 'https://www.openstreetmap.org/node/337538311'),
   microdistrict('pivnichna-saltivka', 'Північна Салтівка', 50.033763, 36.357666, 700, 'https://www.openstreetmap.org/relation/11553020'),
   microdistrict('pivnichna-saltivka-1', 'Північна Салтівка 1', 50.033094, 36.350288, 500, 'https://www.openstreetmap.org/node/11802588643'),
@@ -25,7 +26,6 @@ export const UA_KHARKIV_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict('rohan', 'Рогань', 49.902255, 36.431106, 900, 'https://www.openstreetmap.org/node/268180182'),
   microdistrict('zhykhar', 'Жихор', 49.912532, 36.219353, 900, 'https://www.openstreetmap.org/node/13895879706'),
   microdistrict('osnova', 'Основа', 49.935868, 36.239203, 900, 'https://www.openstreetmap.org/node/395003980'),
-  microdistrict('barabashovo', 'Барабашово', 50.004278, 36.307550, 700, 'https://www.openstreetmap.org/way/89433884'),
   microdistrict('zaliutyne', 'Залютине', 49.967102, 36.161982, 900, 'https://www.openstreetmap.org/node/1799464842'),
   microdistrict('levada', 'Левада', 49.980914, 36.243114, 700, 'https://www.openstreetmap.org/node/267309844'),
   microdistrict('pomerky', 'Померки', 50.064614, 36.231430, 1200, 'https://www.openstreetmap.org/relation/11595307'),
