@@ -5,6 +5,15 @@ import {
   resolveLexiconGeoEntity,
 } from '../src/index.js';
 
+test('Chernivtsi intentionally has no current administrative district entities', () => {
+  // Chernivtsi City Council decision No. 1542 of 2015-03-26 abolished the city district
+  // division effective 2016-01-01. CEC resolution No. 870 of 2019-04-30 confirms the
+  // cancellation and liquidation of Pershotravnevyi, Sadhirskyi and Shevchenkivskyi.
+  // https://zakon.rada.gov.ua/laws/show/v0870359-19
+  const districts = getGeoChildren('ua:chernivtsi').filter((entity) => entity.type === 'district');
+  assert.deepEqual(districts, []);
+});
+
 test('Chernivtsi lexicon microdistrict canonicals resolve to spatial entities', () => {
   const microdistricts = getGeoChildren('ua:chernivtsi').filter((entity) => entity.type === 'microdistrict');
   assert.equal(microdistricts.length, 22);
