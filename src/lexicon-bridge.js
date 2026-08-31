@@ -80,6 +80,7 @@ const lexiconAliases = new Map([
   alias('UA', 'Kharkiv', 'microdistrict', 'Osnova', 'ua:kharkiv:microdistrict:osnova'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Levada', 'ua:kharkiv:microdistrict:levada'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Rohan', 'ua:kharkiv:microdistrict:rohan'),
+  alias('UA', 'Kharkiv', 'microdistrict', 'Horizont', 'ua:kharkiv:microdistrict:obrii'),
   alias('UA', 'Kharkiv', 'microdistrict', 'Zhykhar', 'ua:kharkiv:microdistrict:zhykhar'),
 
   alias('UA', 'Kharkiv', 'microdistrict', 'Botanical Garden', 'ua:kharkiv:metro:botanichnyi-sad'),
