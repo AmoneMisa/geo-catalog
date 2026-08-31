@@ -340,8 +340,8 @@ test('Gulobod and Sebzor streets remain distinct from mahallas and resolved loca
   assert.equal(sebzor?.parentId, 'uz:tashkent:almazar');
   assert.deepEqual(sebzor?.osm, { type: 'way', id: 641787547 });
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Gulobod' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Sebzor' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Gulobod' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Sebzor' }), false);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Gulobod' }), false);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Sebzor' }), false);
 });
@@ -399,7 +399,7 @@ test('Suvsoz-1 and Suvsoz-2 resolve to distinct Bektemir residential areas', () 
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Suvsoz-5' }), false);
 });
 
-test('verified dahasi points resolve only their local-area identities', () => {
+test('verified dahasi points remain distinct from independently mapped mahallas', () => {
   const expected = new Map([
     ['Ahmad Yugnakiy', ['uz:tashkent:local-area:ahmad-yugnakiy', 1867262863]],
     ["Bog'ko'cha", ['uz:tashkent:local-area:bogkocha', 1223133760]],
@@ -415,8 +415,8 @@ test('verified dahasi points resolve only their local-area identities', () => {
     assert.equal(isGeoCoverageGap(input), false, canonical);
   }
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Ahmad Yugnakiy' }), true);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Olimpiya' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Ahmad Yugnakiy' }), false);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Olimpiya' }), false);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Olimpiya' }), false);
 });
 
