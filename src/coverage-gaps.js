@@ -17,7 +17,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
     'Shimoliy Olmazor-1', 'Shifokorlar-5', 'Shifokorlar-6',
   ], 'Lexicon area name remains unresolved until a standalone owner or defensible map center can be verified; a same-name street, stop, mahalla, or isolated building address is not sufficient.'),
 
-  ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z", 'Shirin', 'Chilkuduk', "Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
+  ...gaps('UZ', 'Samarkand', 'mahalla', ['Shirin', 'Chilkuduk', "Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
   ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob', 'Center', 'Geofizika', 'Super Market area', 'Dinamo area'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'residential_complex', ['Samarkand City', 'Bogishamol City', 'Marokand Avenue', 'Silk Road Residence', 'Registan Residence'], 'Lexicon residential complex still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Samarkand', 'poi', ['Youth Park', 'Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
