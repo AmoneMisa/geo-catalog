@@ -89,6 +89,7 @@ test('Samarkand legacy spellings and listing buckets reuse verified physical own
     ['local_area', 'Panjakent Road', 'uz:samarkand:street:panjakent'],
     ['local_area', "So'zangaron", 'uz:samarkand:street:sozangaron'],
     ['local_area', 'Buyuk Ipak Yoli', 'uz:samarkand:street:buyuk-ipak-yuli'],
+    ['residential_complex', 'Samarkand City', 'uz:samarkand:residential:samarkand-city'],
   ];
 
   for (const [type, canonical, id] of expected) {
