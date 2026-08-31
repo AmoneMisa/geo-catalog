@@ -187,6 +187,7 @@ const lexiconAliases = new Map([
 
   // Samarkand legacy spellings and listing-area buckets reuse verified physical
   // mahalla, station, square, boulevard and street owners instead of duplicate geometry.
+  alias('UZ', 'Samarkand', 'mahalla', 'Chilkuduk', 'uz:samarkand:mahalla:chilquduq'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Sartepa', 'uz:samarkand:mahalla:sattepo'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Sat-Tepo', 'uz:samarkand:mahalla:sattepo'),
   alias('UZ', 'Samarkand', 'microdistrict', 'Sogdiana', 'uz:samarkand:mahalla:sogdiana'),
