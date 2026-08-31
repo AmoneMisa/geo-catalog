@@ -66,6 +66,10 @@ const groups = [
   expandedGroup('Tashkent', tashkentSemanticKeys),
   ...['Kyiv', 'Kharkiv', 'Odesa', 'Dnipro', 'Lviv', 'Zaporizhzhia', 'Kryvyi Rih']
     .map((city) => uaMajorGroup(city, 'districts', 'district')),
+  uaMajorGroup('Kharkiv', 'microdistricts', 'microdistrict'),
+  uaMajorGroup('Kharkiv', 'residentialComplexes', 'residential_complex'),
+  uaMajorGroup('Kharkiv', 'streets', 'street'),
+  uaMajorGroup('Kharkiv', 'landmarks', 'poi'),
   uaRegionalGroup('Chernivtsi', 'microdistricts', 'microdistrict'),
   uaRegionalGroup('Chernivtsi', 'residentialComplexes', 'residential_complex'),
   uaRegionalGroup('Chernivtsi', 'landmarks', 'poi'),
