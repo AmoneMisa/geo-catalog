@@ -130,6 +130,7 @@ export function getGeoEntityByLookupKey(lookupKey: string): Readonly<GeoEntity> 
 export function hasGeoEntity(id: string): boolean;
 export function findGeoEntities(filters?: GeoEntityFilters): readonly Readonly<GeoEntity>[];
 export function getGeoChildren(parentId: string): readonly Readonly<GeoEntity>[];
+export function getGeoDescendants(parentId: string, filters?: Pick<GeoEntityFilters, 'country' | 'type'>): readonly Readonly<GeoEntity>[];
 export function isGeoCoverageGap(input: LexiconGeoEntityInput): boolean;
 export function isValidCoordinate(point: GeoPoint | null | undefined): boolean;
 export function containsPoint(point: GeoPoint, bbox: GeoBBox): boolean;
