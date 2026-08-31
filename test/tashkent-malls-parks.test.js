@@ -5,7 +5,7 @@ import { distanceKm, getGeoEntity } from '../src/index.js';
 
 const entity = (slug) => getGeoEntity(`uz:tashkent:poi:${slug}`);
 
-test('Tashkent official shopping-center set has spatial owners', () => {
+test('Tashkent verified shopping centers have spatial owners', () => {
   const expected = new Map([
     ['tashkent-city-mall', 'Tashkent City Mall'],
     ['compass-mall', 'Compass Mall'],
@@ -17,6 +17,14 @@ test('Tashkent official shopping-center set has spatial owners', () => {
     ['depo-mall', 'Depo Mall'],
     ['chimgan-shopping-center', 'Chimgan Shopping Center'],
     ['high-town-mall', 'High Town Mall'],
+    ['atlas-chilanzar', 'Atlas Chilanzar'],
+    ['atlas-yunusobod', 'Atlas Yunusobod'],
+    ['riviera-mall', 'Riviera Mall'],
+    ['parus-mall', 'Parus Mall'],
+    ['yunusabad-gallery', 'Yunusabad Gallery'],
+    ['alfraganus-mall', 'Alfraganus Mall'],
+    ['seoul-mun-mall', 'Seoul Mun Mall'],
+    ['ecobozor', 'Ecobozor'],
   ]);
 
   for (const [slug, canonicalName] of expected) {
