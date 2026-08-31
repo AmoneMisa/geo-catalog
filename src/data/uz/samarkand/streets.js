@@ -1,3 +1,16 @@
+const mappedStreet = (slug, canonicalName, lat, lng, accuracyM, sourceUrl) => Object.freeze({
+  id: `uz:samarkand:street:${slug}`,
+  type: 'street',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:samarkand',
+  center: Object.freeze({ lat, lng }),
+  source: 'manual',
+  accuracy: 'street',
+  accuracyM,
+  sourceUrl,
+});
+
 export const SAMARKAND_STREET_ENTITIES = Object.freeze([
   Object.freeze({
     id: 'uz:samarkand:street:university-boulevard',
@@ -11,4 +24,15 @@ export const SAMARKAND_STREET_ENTITIES = Object.freeze([
     accuracyM: 1200,
     wikidataId: 'Q18409843',
   }),
+  mappedStreet('dahbed', 'Dahbed Street', 39.668755, 66.969916, 1800, 'https://yandex.com/maps/10334/samarkand/geo/1522495012/'),
+  mappedStreet('sozangaron', "So'zangaron Street", 39.652223, 66.978468, 2300, 'https://yandex.com/maps/10334/samarkand/geo/so_zangaron_ko_chasi/6496708703/'),
+  mappedStreet('spitamen', 'Spitamen Avenue', 39.679404, 66.906442, 2200, 'https://yandex.uz/maps/10334/samarkand/geo/spitamen_shoh_ko_chasi/1522495282/'),
+  mappedStreet('rudakiy', 'Rudakiy Street', 39.674649, 66.952660, 2600, 'https://yandex.com/maps/10334/samarkand/geo/rudakiy_ko_chasi/1522494288/'),
+  mappedStreet('gagarin', 'Gagarin Street', 39.662174, 66.937209, 3000, 'https://yandex.uz/maps/10334/samarkand/geo/1522494286/'),
+  mappedStreet('mirzo-ulugbek', 'Mirzo Ulugbek Street', 39.658188, 66.946641, 1800, 'https://yandex.uz/maps/10334/samarkand/geo/6496706807/'),
+  mappedStreet('buyuk-ipak-yuli', 'Buyuk Ipak Yuli Street', 39.656008, 66.922809, 1800, 'https://yandex.uz/maps/10334/samarkand/geo/buyuk_ipak_yo_li_ko_chasi/1522494980/'),
+  mappedStreet('panjakent', 'Panjakent Street', 39.640695, 67.008104, 3000, 'https://yandex.uz/maps/10334/samarkand/geo/1522495026/'),
+  mappedStreet('siyob', 'Siyob Street', 39.653133, 66.945752, 2200, 'https://yandex.com/maps/10334/samarkand/geo/1533156560/'),
+  mappedStreet('chopon-ota', "Cho'pon-Ota Street", 39.676454, 67.009146, 2600, 'https://yandex.uz/maps/10334/samarkand/geo/4782986663/'),
+  mappedStreet('vohid-abdullayev', 'Academician Vohid Abdullayev Street', 39.670748, 66.981541, 2200, 'https://yandex.com/maps/10334/samarkand/geo/1522495014/'),
 ]);

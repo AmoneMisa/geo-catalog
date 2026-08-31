@@ -17,11 +17,11 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
     'Shimoliy Olmazor-1', 'Shifokorlar-5', 'Shifokorlar-6',
   ], 'Lexicon area name remains unresolved until a standalone owner or defensible map center can be verified; a same-name street, stop, mahalla, or isolated building address is not sufficient.'),
 
-  ...gaps('UZ', 'Samarkand', 'mahalla', ["Navro'z", 'Shirin', 'Chilkuduk', "Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
-  ...gaps('UZ', 'Samarkand', 'microdistrict', ['Sogdiana', 'Sartepa', 'Sat-Tepo', 'Kimyogarlar', 'Vokzal', 'Universitet', 'Registan', 'Dagbitskaya', 'Rudaki'], 'Lexicon microdistrict still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob', 'Registon', 'Center', 'University area', 'Dahbed', 'Railway Station area', 'Rudakiy', 'Gagarin area', 'Mirzo Ulugbek area', 'Spitamen', 'Panjakent Road', 'Geofizika', 'Sugdiyona', 'Super Market area', 'Dinamo area', "So'zangaron", 'Buyuk Ipak Yoli'], 'Lexicon local area still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Samarkand', 'residential_complex', ['Samarkand City', 'Bogishamol City', 'Marokand Avenue', 'Silk Road Residence', 'Registan Residence'], 'Lexicon residential complex still needs a verified standalone spatial match.'),
-  ...gaps('UZ', 'Samarkand', 'poi', ['Samarkand City', 'Youth Park', 'Yangi Ozbekiston Park', 'University Boulevard'], 'Lexicon landmark still needs a verified spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'mahalla', ['Shirin', "Cho'pon ota"], 'Official lexicon entity; verified spatial object still pending.'),
+  ...gaps('UZ', 'Samarkand', 'local_area', ['Siyob', 'Center', 'Geofizika', 'Super Market area'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'residential_complex', ['Bogishamol City', 'Marokand Avenue', 'Registan Residence'], 'Lexicon residential complex still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Samarkand', 'residential_complex', ['Silk Road Residence'], 'Compatibility gap for parsing-lexicon 0.5.3: this legacy seed entry is misclassified under Samarkand. The canonical project is in Tashkent and is corrected in parsing-lexicon 0.5.6; remove this gap when geo-catalog upgrades that dependency.'),
+  ...gaps('UZ', 'Samarkand', 'poi', ['Youth Park'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Namangan', 'mahalla', ['Obihayot', 'Porloq', 'Mustaqillikning 5 yilligi'], 'Official mahalla is confirmed, but no verified standalone spatial boundary/locality object is available yet.'),
   ...gaps('UZ', 'Namangan', 'local_area', ['Center', 'North', 'Chortoq area', 'Uychi area', 'Turaqorgon area', 'Galaba', 'Bobur', 'Navoiy', 'Islom Karimov', 'Qoqimboyshox', 'Afrosiyob', 'Boburshox', 'Ibrat', 'Nodira'], 'Lexicon local area still needs a verified standalone spatial match.'),

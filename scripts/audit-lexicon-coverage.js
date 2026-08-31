@@ -1,5 +1,6 @@
 import { KZ_CITIES, TASHKENT_DISTRICTS, TASHKENT_AREAS } from '@whiteslove/parsing-lexicon/geo';
 import { UA_CITIES } from '@whiteslove/parsing-lexicon/geography';
+import { LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/locations';
 import { UA_REGIONAL_LOCATION_EXTENSIONS } from '@whiteslove/parsing-lexicon/ua-location-extensions-regional';
 import { UA_MAJOR_LOCATION_EXTENSIONS } from '@whiteslove/parsing-lexicon/ua-location-extensions-major';
 import { UZ_CITY_CATALOG } from '@whiteslove/parsing-lexicon/central-asia';
@@ -9,6 +10,7 @@ import { GEO_COVERAGE_GAPS, isGeoCoverageGap } from '../src/coverage-gaps.js';
 import { KZ_CITY_COVERAGE_GAPS, isKzCityCoverageGap } from '../src/coverage-gaps-kz-cities.js';
 import { UA_REGIONAL_COVERAGE_GAPS, isUaRegionalCoverageGap } from '../src/coverage-gaps-ua-regional.js';
 import { UA_KHARKIV_COVERAGE_GAPS, isUaKharkivCoverageGap } from '../src/coverage-gaps-ua-kharkiv.js';
+import { UA_ODESA_COVERAGE_GAPS, isUaOdesaCoverageGap } from '../src/coverage-gaps-ua-odesa.js';
 import { UA_RIVNE_COVERAGE_GAPS, isUaRivneCoverageGap } from '../src/coverage-gaps-ua-rivne.js';
 import { UA_KHERSON_COVERAGE_GAPS, isUaKhersonCoverageGap } from '../src/coverage-gaps-ua-kherson.js';
 import { UA_VINNYTSIA_COVERAGE_GAPS, isUaVinnytsiaCoverageGap } from '../src/coverage-gaps-ua-vinnytsia.js';
@@ -53,6 +55,11 @@ const uaMajorGroup = (city, key, type) => [
   (item) => ({ country: 'UA', city, type, canonical: item.canonical || item.name }),
 ];
 
+const uaDictionaryGroup = (city, key, type) => [
+  `${city} ${key}`, LOCATION_DICTIONARIES.UA?.[city]?.[key] || [],
+  (item) => ({ country: 'UA', city, type, canonical: item.canonical || item.name }),
+];
+
 const expandedUzCities = [
   'Samarkand','Namangan','Andijan','Fergana','Bukhara','Qarshi','Nukus','Urgench','Jizzakh','Navoiy','Termez','Gulistan','Chirchiq','Kokand','Margilan','Almalyk','Angren','Bekabad','Shakhrisabz','Khiva','Denov','Asaka','Kogon','Kattakurgan','Urgut','Yangiyol','Yangiyer','Shirin','Gazalkent','Chartak','Chust','Kosonsoy','Khojeyli','Takhiatash','Kungrad','Muynak','Beruniy','Turtkul','Shahrixon','Xonobod',
 ];
@@ -67,10 +74,12 @@ const groups = [
   expandedGroup('Tashkent', tashkentSemanticKeys),
   ...['Kyiv', 'Kharkiv', 'Odesa', 'Dnipro', 'Lviv', 'Zaporizhzhia', 'Kryvyi Rih']
     .map((city) => uaMajorGroup(city, 'districts', 'district')),
-  uaMajorGroup('Kharkiv', 'microdistricts', 'microdistrict'),
+  uaDictionaryGroup('Kharkiv', 'microdistricts', 'microdistrict'),
   uaMajorGroup('Kharkiv', 'residentialComplexes', 'residential_complex'),
   uaMajorGroup('Kharkiv', 'streets', 'street'),
   uaMajorGroup('Kharkiv', 'landmarks', 'poi'),
+  uaDictionaryGroup('Odesa', 'microdistricts', 'microdistrict'),
+  uaDictionaryGroup('Kyiv', 'microdistricts', 'microdistrict'),
   uaRegionalGroup('Chernivtsi', 'microdistricts', 'microdistrict'),
   uaRegionalGroup('Chernivtsi', 'residentialComplexes', 'residential_complex'),
   uaRegionalGroup('Chernivtsi', 'landmarks', 'poi'),
@@ -113,8 +122,8 @@ const groups = [
   ...expandedUzCities.map((city) => expandedGroup(city)),
 ];
 
-const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaKharkivCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUaVinnytsiaCoverageGap(input) || isUaMykolaivCoverageGap(input) || isUaCherkasyCoverageGap(input) || isUaPoltavaCoverageGap(input) || isUaChernihivCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input) || isUzExpansionCoverageGap(input);
-const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_KHARKIV_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UA_VINNYTSIA_COVERAGE_GAPS, ...UA_MYKOLAIV_COVERAGE_GAPS, ...UA_CHERKASY_COVERAGE_GAPS, ...UA_POLTAVA_COVERAGE_GAPS, ...UA_CHERNIHIV_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS, ...UZ_EXPANSION_COVERAGE_GAPS];
+const isTrackedGap = (input) => isGeoCoverageGap(input) || isKzCityCoverageGap(input) || isUaRegionalCoverageGap(input) || isUaKharkivCoverageGap(input) || isUaOdesaCoverageGap(input) || isUaRivneCoverageGap(input) || isUaKhersonCoverageGap(input) || isUaVinnytsiaCoverageGap(input) || isUaMykolaivCoverageGap(input) || isUaCherkasyCoverageGap(input) || isUaPoltavaCoverageGap(input) || isUaChernihivCoverageGap(input) || isUzSecondaryCoverageGap(input) || isUzTailCoverageGap(input) || isUzExpansionCoverageGap(input);
+const allGaps = [...GEO_COVERAGE_GAPS, ...KZ_CITY_COVERAGE_GAPS, ...UA_REGIONAL_COVERAGE_GAPS, ...UA_KHARKIV_COVERAGE_GAPS, ...UA_ODESA_COVERAGE_GAPS, ...UA_RIVNE_COVERAGE_GAPS, ...UA_KHERSON_COVERAGE_GAPS, ...UA_VINNYTSIA_COVERAGE_GAPS, ...UA_MYKOLAIV_COVERAGE_GAPS, ...UA_CHERKASY_COVERAGE_GAPS, ...UA_POLTAVA_COVERAGE_GAPS, ...UA_CHERNIHIV_COVERAGE_GAPS, ...UZ_SECONDARY_COVERAGE_GAPS, ...UZ_TAIL_COVERAGE_GAPS, ...UZ_EXPANSION_COVERAGE_GAPS];
 
 function hasExactOwner(input) {
   return resolveLexiconGeoEntityExact(input) !== null;
