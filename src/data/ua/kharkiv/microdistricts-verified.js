@@ -46,6 +46,10 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
   wikimapiaMicrodistrict('531-microdistrict', '531 microdistrict', 50.024020, 36.358125, 650),
   wikimapiaMicrodistrict('533-microdistrict', '533 microdistrict', 50.020768, 36.369651, 650),
   wikimapiaMicrodistrict('535a', '535A', 50.00639, 36.35028, 850),
+  microdistrict('601-microdistrict', '601 microdistrict', 49.993708, 36.355008, 900, {
+    source: 'manual',
+    sourceUrl: 'https://adresy.locator.in.ua/kharkiv/yuvilejnyj/82a/b/108830/en/',
+  }),
   wikimapiaMicrodistrict('602-microdistrict', '602 microdistrict', 49.995156, 36.360102, 700),
   wikimapiaMicrodistrict('603-microdistrict', '603 microdistrict', 49.999800, 36.346295, 700),
   wikimapiaMicrodistrict('604-microdistrict', '604 microdistrict', 49.992747, 36.345315, 700),
@@ -53,12 +57,20 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('606-microdistrict', '606 microdistrict', 50.01369, 36.35884, 12196622366, 500),
   wikimapiaMicrodistrict('607-microdistrict', '607 microdistrict', 50.016404, 36.350418, 650),
   wikimapiaMicrodistrict('608-microdistrict', '608 microdistrict', 50.0148, 36.3375, 900),
+  microdistrict('615-microdistrict', '615 microdistrict', 50.006916, 36.326505, 900, {
+    source: 'manual',
+    sourceUrl: 'https://adresy.locator.in.ua/kharkiv/hvardijciv-shyroninciv/41a-43v/b/117005/ru/',
+  }),
   microdistrict('616-microdistrict', '616 microdistrict', 50.000049, 36.327987, 650, {
     source: 'manual',
     sourceUrl: 'https://yandex.com/maps/147/kharkiv/geo/616_y_mikroraion/1508584597/',
   }),
   wikimapiaMicrodistrict('625-microdistrict', '625 microdistrict', 49.986944, 36.355000, 650, 12748817),
   wikimapiaMicrodistrict('626-microdistrict', '626 microdistrict', 49.982500, 36.360833, 650, 7387022),
+  microdistrict('656-microdistrict', '656 microdistrict', 49.995908, 36.323145, 900, {
+    source: 'manual',
+    sourceUrl: 'https://adresy.locator.in.ua/kharkiv/yuvilejnyj/40a/b/98934/ru/',
+  }),
   osmMicrodistrict('moskalevka', 'Moskalevka', 49.97553, 36.22016, 1985548337, 900),
   osmMicrodistrict('nova-bavariia', 'Nova Bavariia', 49.95126, 36.16692, 1377395019, 1100),
   osmMicrodistrict('odeska', 'Odeska', 49.94715, 36.26228, 12246218822, 1000),
