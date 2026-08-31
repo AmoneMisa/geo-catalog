@@ -78,6 +78,8 @@ test('Samarkand legacy spellings and listing buckets reuse verified physical own
   const expected = [
     ['mahalla', 'Sattepo', 'uz:samarkand:mahalla:sattepo'],
     ['mahalla', "Navro'z", 'uz:samarkand:mahalla:navroz'],
+    ['mahalla', 'Chilquduq', 'uz:samarkand:mahalla:chilquduq'],
+    ['mahalla', 'Chilkuduk', 'uz:samarkand:mahalla:chilquduq'],
     ['local_area', 'Sattepo', 'uz:samarkand:mahalla:sattepo'],
     ['microdistrict', 'Sartepa', 'uz:samarkand:mahalla:sattepo'],
     ['microdistrict', 'Sat-Tepo', 'uz:samarkand:mahalla:sattepo'],
