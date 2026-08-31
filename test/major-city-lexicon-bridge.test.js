@@ -26,6 +26,8 @@ test('Odesa listing canonicals reuse verified physical locality owners', () => {
   const expected = new Map([
     ['Kotivskoho', 'ua:odesa:local-area:kotovskoho'],
     ['Malyi Fontan', 'ua:odesa:local-area:malyi-fontan'],
+    ['Vuzivskyi', 'ua:odesa:microdistrict:vuzivskyi'],
+    ['Chubaivka', 'ua:odesa:microdistrict:chubaivka'],
     ['Zastava-1', 'ua:odesa:microdistrict:zastava'],
     ['Zastava-2', 'ua:odesa:microdistrict:zastava'],
     ['Center', 'ua:odesa:local-area:historical-center'],
@@ -60,6 +62,10 @@ test('Tashkent Silk Road Residence has a dedicated physical owner', () => {
   );
   assert.equal(
     isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'residential_complex', canonical: 'Silk Road Residence' }),
+    false,
+  );
+  assert.equal(
+    isGeoCoverageGap({ country: 'UZ', city: 'Samarkand', type: 'residential_complex', canonical: 'Silk Road Residence' }),
     false,
   );
 });
