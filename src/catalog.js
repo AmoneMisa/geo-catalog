@@ -42,6 +42,16 @@ const byLookupKey = new Map(
     .filter((entity) => entity.lookupKey)
     .map((entity) => [entity.lookupKey, entity]),
 );
+const childrenByParentId = new Map();
+for (const entity of GEO_ENTITIES) {
+  if (!entity.parentId) continue;
+  const children = childrenByParentId.get(entity.parentId) ?? [];
+  children.push(entity);
+  childrenByParentId.set(entity.parentId, children);
+}
+for (const [parentId, children] of childrenByParentId) {
+  childrenByParentId.set(parentId, Object.freeze(children));
+}
 
 function matchesType(entityType, requestedType) {
   if (!requestedType) return true;
@@ -71,5 +81,29 @@ export function findGeoEntities(filters = {}) {
 }
 
 export function getGeoChildren(parentId) {
-  return findGeoEntities({ parentId });
+  return childrenByParentId.get(parentId) ?? [];
+}
+
+/**
+ * Return every catalog descendant of `parentId`, while preserving canonical
+ * GEO_ENTITIES order. Filters constrain the returned descendants only; traversal
+ * still crosses intermediate entity types (for example city -> district -> area).
+ */
+export function getGeoDescendants(parentId, filters = {}) {
+  const descendantIds = new Set();
+  const pending = [...getGeoChildren(parentId)];
+
+  while (pending.length) {
+    const entity = pending.pop();
+    if (!entity || descendantIds.has(entity.id)) continue;
+    descendantIds.add(entity.id);
+    pending.push(...getGeoChildren(entity.id));
+  }
+
+  const { country, type } = filters;
+  return GEO_ENTITIES.filter((entity) =>
+    descendantIds.has(entity.id) &&
+    (!country || entity.country === country) &&
+    matchesType(entity.type, type)
+  );
 }
