@@ -56,8 +56,10 @@ export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
   osmPoi('termez', 'termez-railway-station', 'Termez Railway Station', 'poi.railway_station', 37.25114, 67.28607, 'node', 1584479577, 120),
   osmPoi('gulistan', 'gulistan-railway-station', 'Gulistan Railway Station', 'poi.railway_station', 40.49617, 68.76487, 'node', 8343551120, 120),
   osmPoi('chirchiq', 'chirchiq-railway-station', 'Chirchiq Railway Station', 'poi.railway_station', 41.47914, 69.59745, 'way', 147143855, 120),
-  osmPoi('xonobod', 'andijan-reservoir', 'Andijan Reservoir', 'poi.reservoir', 40.774721, 73.1169502, 'relation', 14663093, 300),
-  osmPoi('kattakurgan', 'kattakurgan-reservoir', 'Kattakurgan Reservoir', 'poi.reservoir', 39.7905028, 66.2065745, 'relation', 12571708, 320),
+  // Reservoir is not a catalog POI subtype. Keep the lexicon-compatible generic
+  // POI owner and preserve the direct OSM relation as provenance.
+  osmPoi('xonobod', 'andijan-reservoir', 'Andijan Reservoir', 'poi', 40.774721, 73.1169502, 'relation', 14663093, 300),
+  osmPoi('kattakurgan', 'kattakurgan-reservoir', 'Kattakurgan Reservoir', 'poi', 39.7905028, 66.2065745, 'relation', 12571708, 320),
   wikidataPoi('navoiy', 'navoiy-international-airport', 'Navoi International Airport', 'poi.airport', 40.11720, 65.17080, 'Q1229483', 300),
   wikidataPoi('termez', 'termez-airport', 'Termez International Airport', 'poi.airport', 37.28670, 67.30990, 'Q658171', 300),
 
