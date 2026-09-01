@@ -8,11 +8,11 @@ import {
   validateGeoCatalog,
 } from '../src/index.js';
 
-test('Tashkent major streets and Bobur Park resolve to verified OSM owners', () => {
+test('Tashkent major streets resolve to verified OSM owners and obsolete Bobur POI is removed', () => {
   const expected = new Map([
-    ['Amir Temur Avenue', ['uz:tashkent:street:amir-temur-avenue', 22813507]],
-    ['Buyuk Ipak Yoli Street', ['uz:tashkent:street:buyuk-ipak-yoli', 22795505]],
-    ['Taras Shevchenko Street', ['uz:tashkent:street:taras-shevchenko', 182145811]],
+    ['Amir Temur Avenue', ['uz:tashkent:street:amir-temur-avenue', 176132087]],
+    ['Buyuk Ipak Yoli Street', ['uz:tashkent:street:buyuk-ipak-yoli', 22802833]],
+    ['Taras Shevchenko Street', ['uz:tashkent:street:taras-shevchenko', 32082122]],
   ]);
   for (const [canonical, [id, osmId]] of expected) {
     const input = { country: 'UZ', city: 'Tashkent', type: 'street', canonical };
@@ -21,10 +21,8 @@ test('Tashkent major streets and Bobur Park resolve to verified OSM owners', () 
     assert.equal(isGeoCoverageGap(input), false);
   }
 
-  const parkInput = { country: 'UZ', city: 'Tashkent', type: 'poi', canonical: 'Bobur Park' };
-  assert.equal(resolveLexiconGeoEntity(parkInput)?.id, 'uz:tashkent:poi:bobur-park');
-  assert.equal(getGeoEntity('uz:tashkent:poi:bobur-park')?.osm?.id, 1472538448);
-  assert.equal(isGeoCoverageGap(parkInput), false);
+  assert.equal(getGeoEntity('uz:tashkent:poi:bobur-park'), null);
+  assert.equal(getGeoEntity('uz:tashkent:poi:dostlik-park')?.canonicalName, 'Dostlik Park');
 
   for (const [canonical, id] of [
     ['Assalom Jomiy', 'uz:tashkent:residential:assalom-jomiy'],
@@ -481,7 +479,7 @@ test('same-name streets remain independent from resolved area identities', () =>
     assert.equal(area?.osm, undefined, canonical);
     assert.notEqual(area?.id, `uz:tashkent:street:${canonical.toLowerCase()}`, canonical);
   }
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Asalobod' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Asalobod' }), false);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Shifokorlar' }), true);
 });
 

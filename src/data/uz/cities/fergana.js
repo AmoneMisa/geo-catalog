@@ -40,4 +40,5 @@ export const FERGANA_ENTITIES = Object.freeze([
   wikidataPoi('fergana-international-airport', 'Fergana International Airport', 40.35880, 71.74500, 'Q547124', 260, 'poi.airport'),
   osmPoi('fergana-railway-station', 'Fergana Railway Station', 40.39511, 71.75479, 'node', 299428601, 110, 'poi.railway_station'),
   manualPoi('al-fargoniy-park', 'Al-Fargoniy Park', 40.38975, 71.78353, 260, 'poi.park'),
+  manualPoi('independence-square', 'Independence Square', 40.386879, 71.784105, 320, 'poi.square'),
 ]);

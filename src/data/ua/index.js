@@ -4,6 +4,7 @@ import { UA_KYIV_ENTITIES } from './kyiv/index.js';
 import { UA_ODESA_ENTITIES } from './odesa/index.js';
 import { UA_CHERNIVTSI_ENTITIES } from './chernivtsi/index.js';
 import { UA_KHMELNYTSKYI_ENTITIES } from './khmelnytskyi/index.js';
+import { UA_ZHYTOMYR_ENTITIES } from './zhytomyr/index.js';
 import { UA_SUMY_ENTITIES } from './sumy/index.js';
 import { UA_KROPYVNYTSKYI_ENTITIES } from './kropyvnytskyi/index.js';
 import { UA_KREMENCHUK_ENTITIES } from './kremenchuk/index.js';
@@ -28,6 +29,7 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_ODESA_ENTITIES,
   ...UA_CHERNIVTSI_ENTITIES,
   ...UA_KHMELNYTSKYI_ENTITIES,
+  ...UA_ZHYTOMYR_ENTITIES,
   ...UA_SUMY_ENTITIES,
   ...UA_KROPYVNYTSKYI_ENTITIES,
   ...UA_KREMENCHUK_ENTITIES,

@@ -27,10 +27,19 @@ test('Rivne verified lexicon geography resolves by city and type', () => {
   }
 });
 
+test('Rivne planning zones do not become invented administrative district entities', () => {
+  const districts = getGeoChildren('ua:rivne').filter((entity) => entity.type === 'district');
+  assert.deepEqual(districts, []);
+
+  for (const canonical of ['Pivnichnyi','Skhidnyi','Zakhidnyi','Pivdennyi','Tsentralnyi']) {
+    const input = { country: 'UA', city: 'Rivne', type: 'district', canonical };
+    assert.equal(resolveLexiconGeoEntity(input), null);
+    assert.equal(isUaRivneCoverageGap(input), true);
+  }
+});
+
 test('Rivne unresolved parser canonicals remain explicit coverage gaps', () => {
   const gaps = [
-    ['district', 'Pivnichnyi'],
-    ['district', 'Tsentralnyi'],
     ['microdistrict', 'Tsentr'],
     ['microdistrict', 'Yuvileinyi'],
     ['microdistrict', 'Pyvzavod'],

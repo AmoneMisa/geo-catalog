@@ -1,0 +1,26 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { resolveLexiconGeoEntity } from '../src/lexicon-bridge.js';
+import { isGeoCoverageGap } from '../src/coverage-gaps.js';
+
+test('Qarshi Nasaf local-area alias resolves to the verified Nasaf mahalla', () => {
+  const resolved = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Qarshi',
+    type: 'local_area',
+    canonical: 'Nasaf',
+  });
+
+  assert.ok(resolved);
+  assert.equal(resolved.id, 'uz:qarshi:mahalla:nasaf');
+  assert.equal(resolved.type, 'mahalla');
+  assert.equal(resolved.canonicalName, 'Nasaf');
+  assert.deepEqual(resolved.center, { lat: 38.86914, lng: 65.79576 });
+  assert.equal(resolved.source, 'osm');
+  assert.equal(resolved.accuracy, 'neighborhood');
+  assert.equal(resolved.accuracyM, 750);
+  assert.deepEqual(resolved.osm, { type: 'way', id: 1027629334 });
+  assert.equal(isGeoCoverageGap({
+    country: 'UZ', city: 'Qarshi', type: 'local_area', canonical: 'Nasaf',
+  }), false);
+});

@@ -75,6 +75,8 @@ export const TASHKENT_MAHALLA_ENTITIES = Object.freeze([
   manualMahalla('gulobod', 'Gulobod', 'uz:tashkent:shaykhantahur', 41.327208, 69.22538, 800, 'https://yandex.uz/maps/10335/tashkent/geo/gulobod_mahalla_fuqarolar_yig_ini/1944750071/'),
   manualMahalla('sebzor', 'Sebzor', 'uz:tashkent:almazar', 41.333979, 69.248781, 800, 'https://yandex.uz/maps/10335/tashkent/geo/1945849471/'),
   manualMahalla('qalqon', 'Qalqon', 'uz:tashkent:yashnobod', 41.280806, 69.371535, 800, 'https://yandex.uz/maps/10335/tashkent/geo/6108686495/'),
+  manualMahalla('humoyun', 'Humoyun', 'uz:tashkent:mirzo-ulugbek', 41.343891, 69.388055, 900, 'https://yandex.com/maps/org/makhallinskiy_komitet_khumayun/207044096096/'),
+  manualMahalla('asalobod', 'Asalobod', 'uz:tashkent:yashnobod', 41.2818125, 69.3364375, 900, 'https://www.waze.com/live-map/directions/uz/tashkent/tashkent/asalobod-mahalla-fuqarolar-yigin?to=place.ChIJTTJOMgD1rjgRyo47q8sSICo'),
   mahalla('taxtapul', 'Taxtapul', 'uz:tashkent:shaykhantahur', 41.339682, 69.2642825, 'node', 9687947537, 650),
   mahalla('khastimam', 'Khastimam', 'uz:tashkent:almazar', 41.33303, 69.24287, 'way', 1137236407, 420),
   mahalla('yangi-tashkent', 'Yangi Tashkent', 'uz:tashkent:almazar', 41.36743, 69.22415, 'node', 1866058486, 520),

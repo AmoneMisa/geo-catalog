@@ -63,7 +63,11 @@ const uaDictionaryGroup = (city, key, type) => [
 const expandedUzCities = [
   'Samarkand','Namangan','Andijan','Fergana','Bukhara','Qarshi','Nukus','Urgench','Jizzakh','Navoiy','Termez','Gulistan','Chirchiq','Kokand','Margilan','Almalyk','Angren','Bekabad','Shakhrisabz','Khiva','Denov','Asaka','Kogon','Kattakurgan','Urgut','Yangiyol','Yangiyer','Shirin','Gazalkent','Chartak','Chust','Kosonsoy','Khojeyli','Takhiatash','Kungrad','Muynak','Beruniy','Turtkul','Shahrixon','Xonobod',
 ];
-const tashkentSemanticKeys = Object.freeze(['microdistricts', 'mahallas', 'localAreas', 'developmentAreas']);
+const tashkentSemanticKeys = Object.freeze([
+  'microdistricts', 'mahallas', 'localAreas', 'developmentAreas',
+  'metro', 'residentialComplexes', 'streets', 'landmarks', 'pois',
+]);
+const tashkentParentKeys = Object.freeze(['microdistricts', 'mahallas', 'localAreas', 'developmentAreas']);
 
 const groups = [
   ['UZ cities', UZ_CITY_CATALOG, (item) => ({ country: 'UZ', type: 'city', canonical: item.canonical })],
@@ -181,7 +185,7 @@ for (const { item, district } of tashkentAreas) {
     `Tashkent area ${item.canonical}`,
   );
 }
-for (const { item, type } of expandedCityEntries('Tashkent', tashkentSemanticKeys)) {
+for (const { item, type } of expandedCityEntries('Tashkent', tashkentParentKeys)) {
   if (!item.parent) continue;
   auditTashkentParent(
     { country: 'UZ', city: 'Tashkent', type, canonical: item.canonical || item.name },

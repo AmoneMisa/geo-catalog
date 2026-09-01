@@ -5,10 +5,14 @@ import { isUaKhersonCoverageGap } from '../src/coverage-gaps-ua-kherson.js';
 
 test('Kherson verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:kherson');
+  assert.equal(children.filter((entity) => entity.type === 'district').length, 3);
   assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 12);
   assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 7);
 
   const expected = [
+    [{ type: 'district', canonical: 'Tsentralnyi' }, 'ua:kherson:district:tsentralnyi'],
+    [{ type: 'district', canonical: 'Dniprovskyi' }, 'ua:kherson:district:dniprovskyi'],
+    [{ type: 'district', canonical: 'Korabelnyi' }, 'ua:kherson:district:korabelnyi'],
     [{ type: 'microdistrict', canonical: 'Tavriiskyi' }, 'ua:kherson:microdistrict:tavriiskyi'],
     [{ type: 'microdistrict', canonical: 'Tavriiskyi-2' }, 'ua:kherson:microdistrict:tavriiskyi-2'],
     [{ type: 'microdistrict', canonical: 'Pivnichnyi' }, 'ua:kherson:microdistrict:pivnichnyi'],
@@ -28,7 +32,6 @@ test('Kherson verified lexicon geography resolves by city and type', () => {
 
 test('Kherson hierarchy, alias and unresolved candidates remain explicit gaps', () => {
   const gaps = [
-    ['district', 'Tsentralnyi'],
     ['microdistrict', 'Tsentr'],
     ['microdistrict', 'Tavriiskyi-1'],
     ['microdistrict', 'Korabel'],
