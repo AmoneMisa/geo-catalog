@@ -137,6 +137,15 @@ function isAreaTypeCompatible(row, candidate) {
 
   if (row.type === 'settlement') return /village|hamlet|town|settlement|locality|suburb|neighbou?rhood|place/.test(type);
   if (row.type === 'district') return /administrative|district|borough|boundary/.test(type);
+
+  // Numbered microdistrict names are especially prone to matching a road or a
+  // generic residential landuse polygon. Require the provider to identify the
+  // candidate itself as a named neighbourhood-like feature; weaker residential
+  // polygons stay visible for manual review instead of becoming canonical.
+  if (row.type === 'microdistrict' && /\d/.test(normalizeGeoText(row.canonical))) {
+    return /administrative|district|neighbou?rhood|quarter/.test(type);
+  }
+
   return AREA_CATEGORY_RE.test(type);
 }
 
