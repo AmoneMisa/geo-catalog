@@ -18,6 +18,11 @@ test('Tashkent core mall expansion has spatial anchors', () => {
     'Alfraganus Mall',
     'High Town Mall',
     'Seoul Mun Mall',
+    'Atlas Chilanzar',
+    'Atlas Yunusobod',
+    'Golden Life',
+    "Chig'atoy Mall",
+    'Scopus Mall',
     'Ecobozor',
     'Chimgan Shopping Center',
   ]) {
@@ -29,17 +34,26 @@ test('Tashkent core mall expansion has spatial anchors', () => {
   }
 });
 
-test('Tashkent park expansion has spatial anchors', () => {
+test('Sampi remains a market rather than a fabricated mall', () => {
+  const entry = byCanonical.get('Sampi Bazaar');
+  assert.ok(entry);
+  assert.equal(entry.type, 'poi.market');
+  assert.deepEqual(entry.center, { lat: 41.355236, lng: 69.333878 });
+});
+
+test('Tashkent park expansion has separate physical anchors', () => {
   for (const canonical of [
     'Ecopark',
     'Japanese Garden',
     'Alisher Navoi National Park',
     'Dream Park',
-    'Anhor Lokomotiv Park',
+    'Anhor Park',
+    'Lokomotiv Park',
     'Tashkentland',
     'Victory Park',
     'Ashgabat Park',
     'Dostlik Park',
+    'Friendship Park',
     'Navruz Park',
     'Furqat Park',
     'Yakub Kolas Park',
@@ -52,10 +66,12 @@ test('Tashkent park expansion has spatial anchors', () => {
   }
 });
 
-test('Tashkent POIs keep current physical canonicals', () => {
+test('Tashkent POIs keep current physical canonicals and distinct owners', () => {
   assert.ok(byCanonical.has('Samarqand Darvoza'));
   assert.equal(byCanonical.has('Samarkand Darvoza'), false);
   assert.equal(byCanonical.has('Bobur Park'), false);
-  assert.notEqual(byCanonical.get('Ecopark')?.id, byCanonical.get('Dostlik Park')?.id);
-  assert.notEqual(byCanonical.get('Anhor Park Mall')?.id, byCanonical.get('Anhor Lokomotiv Park')?.id);
+  assert.notEqual(byCanonical.get('Ecopark')?.id, byCanonical.get('Friendship Park')?.id);
+  assert.notEqual(byCanonical.get('Dostlik Park')?.id, byCanonical.get('Friendship Park')?.id);
+  assert.notEqual(byCanonical.get('Anhor Park Mall')?.id, byCanonical.get('Anhor Park')?.id);
+  assert.notEqual(byCanonical.get('Anhor Park')?.id, byCanonical.get('Lokomotiv Park')?.id);
 });
