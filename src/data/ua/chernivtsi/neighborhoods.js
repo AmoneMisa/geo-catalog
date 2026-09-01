@@ -12,10 +12,10 @@ const neighborhood = (slug, canonicalName, lat, lng, accuracyM, extra = {}) => O
 });
 
 export const UA_CHERNIVTSI_NEIGHBORHOOD_ENTITIES = Object.freeze([
-  neighborhood('kalichanka', 'Kalichanka', 48.298889, 25.970561, 900, { wikidataId: 'Q16700730' }),
-  neighborhood('sadhora', 'Sadgora', 48.35, 25.966667, 1700, { wikidataId: 'Q2005381' }),
+  neighborhood('kalichanka', 'Kalichanka', 48.2983, 25.96927, 900, { wikidataId: 'Q16700730', osm: Object.freeze({ type: 'node', id: 2377048985 }) }),
+  neighborhood('sadhora', 'Sadgora', 48.3467, 25.95769, 1700, { wikidataId: 'Q2005381', osm: Object.freeze({ type: 'node', id: 2377048991 }) }),
   neighborhood('rosha', 'Roscha', 48.29315, 25.89105, 1100, { wikidataId: 'Q16714801', osm: Object.freeze({ type: 'node', id: 2377048990 }) }),
-  neighborhood('klokuchka', 'Klokuchka', 48.30546, 25.91431, 1100, { source: 'manual', sourceUrl: 'https://mapcarta.com/13756902' }),
+  neighborhood('klokuchka', 'Klokuchka', 48.30506, 25.91151, 1100, { wikidataId: 'Q16701669', osm: Object.freeze({ type: 'node', id: 2377048986 }) }),
   neighborhood('lenkivtsi', 'Lenkivtsi', 48.325841, 25.900117, 1300, { source: 'manual', sourceUrl: 'https://www.geonames.org/advanced-search.html?q=Ukraine%2C+Chernivtsi' }),
   neighborhood('hraviton', 'Hraviton', 48.27592, 25.99461, 1100, { osm: Object.freeze({ type: 'node', id: 10650273334 }) }),
   neighborhood('rosha-stynka', 'Roscha-Stynka', 48.275699, 25.891529, 1200, { source: 'manual', sourceUrl: 'https://bukowina.org.ua/blog/budynok-folkloru-rosha-stynka/' }),
@@ -25,4 +25,13 @@ export const UA_CHERNIVTSI_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('komarova', 'Komarova', 48.260307, 25.9309, 1300, { source: 'manual', sourceUrl: 'https://dom.ria.com/uk/realty-dolgosrochnaya-arenda-komnata-chernovtsy-komarova-krasnoarmeyskaya-sergeya-skalda-komarova-vladimira-ulitsa-34248784.html' }),
   neighborhood('pivdenno-kiltseva', 'Pivdenno-Kiltseva', 48.253492, 25.93813, 1700, { source: 'manual', sourceUrl: 'https://gb.city.cv.ua/projects/archive/82/show/22' }),
   neighborhood('fastivska', 'Fastivska', 48.286939, 25.974594, 1200, { source: 'manual', sourceUrl: 'https://dom.ria.com/uk/realty-prodaja-spetsialnoe-pomeschenie-chernovtsy-fastovskaya-russkaya-ulitsa-31859706.html' }),
+  neighborhood('rohizna', 'Rohizna', 48.34653, 25.93452, 1050, { wikidataId: 'Q16714464', osm: Object.freeze({ type: 'node', id: 2377048989 }) }),
+  neighborhood('stara-zhuchka', 'Stara Zhuchka', 48.31928, 25.96402, 1100, { osm: Object.freeze({ type: 'node', id: 2377048992 }) }),
+  neighborhood('nova-zhuchka', 'Nova Zhuchka', 48.3543, 25.9738, 1200, { osm: Object.freeze({ type: 'node', id: 2377048988 }) }),
+  neighborhood('sadky', 'Sadky', 48.30222, 25.98411, 750, { osm: Object.freeze({ type: 'node', id: 8626772576 }) }),
+  neighborhood('pentagon', 'Pentagon', 48.28405, 25.94388, 750, { osm: Object.freeze({ type: 'node', id: 10650263108 }) }),
+  neighborhood('mashzavod', 'Mashzavod', 48.29686, 25.95114, 750, { osm: Object.freeze({ type: 'node', id: 9397109160 }) }),
+  neighborhood('pivdennyi-masyv', 'Pivdennyi Masyv', 48.25944, 25.94029, 1300, { osm: Object.freeze({ type: 'node', id: 10650276646 }) }),
+  neighborhood('horecha', 'Horecha', 48.28039, 25.99473, 950, { osm: Object.freeze({ type: 'node', id: 2377048983 }) }),
+  neighborhood('stare-misto', 'Stare Misto', 48.28908, 25.93444, 700, { osm: Object.freeze({ type: 'node', id: 10815462328 }) }),
 ]);

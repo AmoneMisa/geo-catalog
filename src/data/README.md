@@ -34,6 +34,21 @@ src/data/
 
 Use a city directory when that city has multiple subject modules. Country-wide datasets stay directly under the country directory.
 
+## City coverage order
+
+For a new city or a material expansion of an existing city, verify the current administrative hierarchy first.
+
+The default coverage order is:
+
+`city -> administrative districts -> microdistricts/neighborhoods/local areas -> residential complexes -> POIs/parks/malls -> streets/transport/other enrichment`
+
+- If the city has current official administrative districts (or equivalent first-level municipal divisions), add all verified districts before prioritizing finer-grained city-local data.
+- Every district must have a defensible `center` and realistic `accuracyM`; add official boundary geometry or a defensible `bbox` when available, but never fabricate geometry.
+- Align district canonicals with `parsing-lexicon`; historical or renamed forms belong there as aliases.
+- A large amount of microdistrict, POI, residential-complex, or landmark coverage does not make a city substantially/full populated while its administrative district layer is missing.
+- If the city has no current administrative district division, verify that fact explicitly instead of inventing districts.
+- Informal areas described as “район” in listing text are not administrative districts unless authoritative sources establish that status.
+
 ## File names
 
 - Use lowercase kebab-case.
