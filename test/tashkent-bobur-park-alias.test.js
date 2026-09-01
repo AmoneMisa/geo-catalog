@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {
   getGeoEntity,
   isGeoCoverageGap,
-  resolveLexiconGeoEntityExact,
+  resolveLexiconGeoEntity,
 } from '../src/index.js';
 
 test('historical Bobur Park canonical reuses current Friendship Park owner', () => {
@@ -15,7 +15,7 @@ test('historical Bobur Park canonical reuses current Friendship Park owner', () 
     canonical: 'Bobur Park',
   };
 
-  const entity = resolveLexiconGeoEntityExact(input);
+  const entity = resolveLexiconGeoEntity(input);
   assert.equal(entity?.id, 'uz:tashkent:poi:friendship-park');
   assert.equal(entity?.canonicalName, 'Friendship Park');
   assert.equal(getGeoEntity('uz:tashkent:poi:bobur-park'), null);
