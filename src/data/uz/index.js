@@ -15,6 +15,7 @@ import { ANGREN_STREET_ENTITIES } from './angren-streets.js';
 import { CHIRCHIQ_MICRODISTRICT_ENTITIES } from './chirchiq-microdistricts.js';
 import { NAVOIY_MICRODISTRICT_ENTITIES } from './navoiy-microdistricts.js';
 import { UZ_SECONDARY_CITY_ANCHORS } from './secondary-city-anchors.js';
+import { UZ_SECONDARY_AREA_ADDITIONS } from './secondary-area-additions.js';
 import { UZ_SECONDARY_LOCALITY_ENTITIES } from './secondary-localities.js';
 import { UZ_SECONDARY_POI_ANCHORS } from './secondary-poi-anchors.js';
 import { UZ_TAIL_POI_ANCHORS } from './tail-poi-anchors.js';
@@ -40,6 +41,7 @@ export const UZ_ENTITIES = Object.freeze([
   ...CHIRCHIQ_MICRODISTRICT_ENTITIES,
   ...NAVOIY_MICRODISTRICT_ENTITIES,
   ...UZ_SECONDARY_CITY_ANCHORS,
+  ...UZ_SECONDARY_AREA_ADDITIONS,
   ...UZ_SECONDARY_LOCALITY_ENTITIES,
   ...UZ_SECONDARY_POI_ANCHORS,
   ...UZ_TAIL_POI_ANCHORS,
