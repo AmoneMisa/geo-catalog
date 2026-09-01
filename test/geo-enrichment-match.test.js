@@ -1,6 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { isAutoAcceptEligible, nameScore, normalizeGeoText } from '../scripts/geo-enrichment-match.js';
+import {
+  candidateScore,
+  isAutoAcceptEligible,
+  isCandidateInCity,
+  nameScore,
+  normalizeGeoText,
+} from '../scripts/geo-enrichment-match.js';
 
 const nukusBbox = Object.freeze({ south: 42.34, west: 59.52, north: 42.56, east: 59.69 });
 const cityGeo = Object.freeze({ bbox: nukusBbox });
@@ -22,6 +28,12 @@ test('Karakalpak Latin diacritics normalize to crawler-friendly forms', () => {
   assert.equal(normalizeGeoText('Tunǵısh qonıs MPJ'), 'tungish qonis');
   assert.equal(normalizeGeoText('Jolshılar kóshesi'), 'jolshilar');
   assert.ok(nameScore('Qurilisshi', 'Qurılısshı MPJ') >= 0.9);
+});
+
+test('Kazakh numbered-area markers normalize as microdistrict markers', () => {
+  assert.equal(normalizeGeoText('1 шағын аудан'), '1');
+  assert.equal(normalizeGeoText('1 ықшамаудан'), '1');
+  assert.ok(nameScore('1 microdistrict', '1 шағын аудан') >= 0.95);
 });
 
 test('mahalla auto-accept requires the candidate itself to be the area', () => {
@@ -84,4 +96,32 @@ test('numbered microdistrict needs an explicit area marker, not a house number',
     rawType: 'neighbourhood',
     meta: { category: 'place' },
   }), navoiyGeo), true);
+});
+
+test('localized Aktau city names fall back to canonical city-center containment', () => {
+  const row = { country: 'KZ', city: 'Aktau', type: 'microdistrict', canonical: '1 microdistrict' };
+  const aktauGeo = { center: { lat: 43.6532, lng: 51.1975 } };
+  const neighbourhood = candidate({
+    query: '1 microdistrict',
+    label: '1 шағын аудан, Ақтау, Маңғыстау облысы, Қазақстан',
+    city: 'Ақтау',
+    lat: 43.6312032,
+    lng: 51.1822583,
+    rawType: 'neighbourhood',
+    meta: { category: 'place' },
+  });
+  const serviceWay = candidate({
+    query: '1 microdistrict',
+    label: '1 микрорайон, 1 шағын аудан, Ақтау, Қазақстан',
+    city: 'Ақтау',
+    lat: 43.6342874,
+    lng: 51.1786761,
+    rawType: 'service',
+    meta: { category: 'highway' },
+  });
+
+  assert.equal(isCandidateInCity(row, neighbourhood, aktauGeo), true);
+  assert.equal(isAutoAcceptEligible(row, neighbourhood, aktauGeo), true);
+  assert.equal(isAutoAcceptEligible(row, serviceWay, aktauGeo), false);
+  assert.ok(candidateScore(row, neighbourhood, aktauGeo) > candidateScore(row, serviceWay, aktauGeo));
 });
