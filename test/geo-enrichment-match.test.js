@@ -110,6 +110,15 @@ test('localized Aktau city names fall back to canonical city-center containment'
     rawType: 'neighbourhood',
     meta: { category: 'place' },
   });
+  const residentialLanduse = candidate({
+    query: '1 microdistrict',
+    label: '1 микрорайон, 1 шағын аудан, Ақтау, Қазақстан',
+    city: 'Ақтау',
+    lat: 43.6342874,
+    lng: 51.1786761,
+    rawType: 'residential',
+    meta: { category: 'landuse' },
+  });
   const serviceWay = candidate({
     query: '1 microdistrict',
     label: '1 микрорайон, 1 шағын аудан, Ақтау, Қазақстан',
@@ -122,6 +131,7 @@ test('localized Aktau city names fall back to canonical city-center containment'
 
   assert.equal(isCandidateInCity(row, neighbourhood, aktauGeo), true);
   assert.equal(isAutoAcceptEligible(row, neighbourhood, aktauGeo), true);
+  assert.equal(isAutoAcceptEligible(row, residentialLanduse, aktauGeo), false);
   assert.equal(isAutoAcceptEligible(row, serviceWay, aktauGeo), false);
-  assert.ok(candidateScore(row, neighbourhood, aktauGeo) > candidateScore(row, serviceWay, aktauGeo));
+  assert.ok(candidateScore(row, neighbourhood, aktauGeo) > candidateScore(row, residentialLanduse, aktauGeo));
 });
