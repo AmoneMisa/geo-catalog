@@ -41,6 +41,7 @@ export const NAMANGAN_ENTITIES = Object.freeze([
   osmSpatial('4-microdistrict', '4 microdistrict', 'microdistrict', 40.99387, 71.60421, 'way', 1503603833, 500),
   osmSpatial('5-microdistrict', '5 microdistrict', 'microdistrict', 40.99735, 71.60093, 'way', 1504295428, 500),
   osmSpatial('6-microdistrict', '6 microdistrict', 'microdistrict', 40.99712, 71.61644, 'way', 318257014, 520),
+  osmSpatial('porloq', 'Porloq', 'mahalla', 41.0060152, 71.5988033, 'relation', 20587979, 700),
   wikidataPoi('namangan-international-airport', 'Namangan International Airport', 40.98490, 71.55683, 'Q978313', 220, 'poi.airport'),
   osmSpatial('namangan-railway-station', 'Namangan Railway Station', 'poi.railway_station', 40.99959, 71.64403, 'node', 301722995, 100),
   osmSpatial('namangan-chorsu', 'Namangan Chorsu', 'poi.market', 41.00118, 71.67952, 'way', 625100490, 120),
