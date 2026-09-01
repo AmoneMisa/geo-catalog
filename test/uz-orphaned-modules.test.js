@@ -11,7 +11,7 @@ test('previously orphaned Chirchiq spatial modules are present in runtime catalo
 
 test('verified neighborhood modules remain present in runtime catalog', () => {
   assert.equal(getGeoEntity('uz:almalyk:microdistrict:5-1')?.osm?.id, 13265597237);
-  assert.equal(getGeoEntity('uz:angren:microdistrict:2')?.osm?.id, 12511090503);
+  assert.equal(getGeoEntity('uz:angren:microdistrict:2-quarter')?.osm?.id, 12511090503);
   assert.equal(getGeoEntity('uz:navoiy:microdistrict:17')?.osm?.id, 10734160833);
   assert.equal(getGeoEntity('uz:gulistan:mahalla:sayqal')?.osm?.id, 1154906314);
 });
