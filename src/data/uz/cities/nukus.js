@@ -1,6 +1,6 @@
-const osmPoi = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 140, wikidataId = null) => ({
+const osmPoi = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 140, wikidataId = null, type = 'poi') => ({
   id: `uz:nukus:poi:${slug}`,
-  type: 'poi',
+  type,
   country: 'UZ',
   canonicalName,
   parentId: 'uz:nukus',
@@ -38,10 +38,10 @@ const manualMahalla = (slug, canonicalName, lat, lng, accuracyM = 1000) => ({
 });
 
 export const NUKUS_ENTITIES = Object.freeze([
-  osmPoi('savitsky-museum', 'Savitsky Museum', 42.46545, 59.61301, 'way', 884013231, 100, 'Q597055'),
-  osmPoi('nukus-airport', 'Nukus Airport', 42.488333, 59.623333, 'relation', 2268677, 260, 'Q976276'),
-  osmPoi('karakalpak-state-university', 'Karakalpak State University', 42.45287, 59.62706, 'node', 6974150800, 120, 'Q20536396'),
-  osmPoi('nukus-railway-station', 'Nukus Railway Station', 42.43778, 59.64271, 'node', 1584776373, 100, 'Q25394710'),
+  osmPoi('savitsky-museum', 'Savitsky Museum', 42.46545, 59.61301, 'way', 884013231, 100, 'Q597055', 'poi.museum'),
+  osmPoi('nukus-airport', 'Nukus Airport', 42.488333, 59.623333, 'relation', 2268677, 260, 'Q976276', 'poi.airport'),
+  osmPoi('karakalpak-state-university', 'Karakalpak State University', 42.45287, 59.62706, 'node', 6974150800, 120, 'Q20536396', 'poi.university'),
+  osmPoi('nukus-railway-station', 'Nukus Railway Station', 42.43778, 59.64271, 'node', 1584776373, 100, 'Q25394710', 'poi.railway_station'),
 
   osmMahalla('gone-qala', 'Gone qala', 42.45787, 59.58670, 'way', 415541775, 950),
   osmMahalla('turan', 'Turan', 42.45881, 59.59681, 'way', 1009066215, 720),
