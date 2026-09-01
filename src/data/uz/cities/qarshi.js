@@ -50,6 +50,7 @@ export const QARSHI_ENTITIES = Object.freeze([
   osmMahalla('nasaf', 'Nasaf', 38.86914, 65.79576, 'way', 1027629334, 750),
   osmMahalla('navo', 'Navo', 38.8331188, 65.7748733, 'way', 1027278316, 700),
   osmMahalla('gungon', 'Gungon', 38.8226311, 65.8104819, 'way', 1027317833, 700),
+  osmMahalla('qat', 'Qat', 38.8216925, 65.7982117, 'way', 1027317118, 700),
   osmArea('old-city', 'Old City', 'local_area', 38.8703124, 65.8004859, 'node', 4792825352, 850),
   osmArea('xonobod', 'Xonobod', 'local_area', 38.8663128, 65.832888, 'node', 10588792432, 850),
   wikidataPoi('qarshi-bridge', 'Qarshi Bridge', 'poi.bridge', 38.886694, 65.809611, 'Q86663919', 120),
