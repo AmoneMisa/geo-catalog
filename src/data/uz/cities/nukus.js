@@ -25,6 +25,19 @@ const osmMahalla = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 8
   osm: { type: osmType, id: osmId },
 });
 
+const osmLocalArea = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 900) => ({
+  id: `uz:nukus:local-area:${slug}`,
+  type: 'local_area',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:nukus',
+  center: { lat, lng },
+  source: 'osm',
+  accuracy: 'neighborhood',
+  accuracyM,
+  osm: { type: osmType, id: osmId },
+});
+
 const manualMahalla = (slug, canonicalName, lat, lng, accuracyM = 1000) => ({
   id: `uz:nukus:mahalla:${slug}`,
   type: 'mahalla',
@@ -93,6 +106,10 @@ export const NUKUS_ENTITIES = Object.freeze([
   osmMahalla('qos-bulaq', 'Qos bulaq', 42.4499089, 59.5889357, 'way', 1009066236, 760),
   osmMahalla('aq-jagis', 'Aq jagis', 42.4601545, 59.5627023, 'way', 1009066217, 820),
   osmMahalla('shadli-awil', 'Shadli awil', 42.3942259, 59.597638, 'way', 453532276, 900),
+  osmMahalla('tele-oray', 'Tele oray', 42.4142361, 59.6150622, 'way', 415541809, 900),
+  osmMahalla('altin-jagis', 'Altin jagis', 42.4128653, 59.6043285, 'way', 1009066194, 820),
+  osmMahalla('qumbiz-awil', 'Qumbiz awil', 42.4844646, 59.5927597, 'way', 1009066232, 820),
+  osmLocalArea('qizketken', 'Qizketken', 42.3879368, 59.6306127, 'way', 339795351, 950),
 
   manualMahalla('bayterek', 'Bayterek', 42.46600, 59.59120, 1000),
   manualMahalla('aq-otaw', 'Aq otaw', 42.44765, 59.62590, 1000),
