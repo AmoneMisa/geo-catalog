@@ -16,6 +16,7 @@ const GENERIC_AREA_NAMES = new Set([
   'central',
 ]);
 
+const CITY_CENTER_FALLBACK_RADIUS_M = 35_000;
 const AREA_MARKER_RE = /\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|neighbou?rhood|suburb|quarter|rayon|tumani|район|махалла|массив|квартал|микрорайон|мкр|ықшамаудан|шағын\s+аудан)\b/iu;
 const NUMBERED_AREA_MARKER_RE = /\b(?:microdistrict|mikrorayon|mavze(?:si)?|massiv|massivi|daha(?:si)?|quarter|микрорайон|мкр|массив|квартал|ықшамаудан|шағын\s+аудан)\b/iu;
 const AREA_CATEGORY_RE = /\b(?:boundary|place|landuse|administrative|district|neighbou?rhood|suburb|quarter|locality|residential)\b/i;
@@ -61,6 +62,17 @@ function pointInBbox(candidate, bbox) {
     && candidate.lng <= bbox.east;
 }
 
+function haversineM(a, b) {
+  if (![a?.lat, a?.lng, b?.lat, b?.lng].every(Number.isFinite)) return Infinity;
+  const rad = (deg) => deg * Math.PI / 180;
+  const dLat = rad(b.lat - a.lat);
+  const dLng = rad(b.lng - a.lng);
+  const lat1 = rad(a.lat);
+  const lat2 = rad(b.lat);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 6371000 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+}
+
 function labelMentionsCityWithoutDistrictSuffix(row, candidate) {
   const city = normalizeGeoText(row.city);
   if (!city) return false;
@@ -77,6 +89,7 @@ export function isCandidateInCity(row, candidate, cityGeo = null) {
   const actual = normalizeGeoText(candidate.city);
   if (actual && actual === expected) return true;
   if (pointInBbox(candidate, cityGeo?.bbox)) return true;
+  if (cityGeo?.center && haversineM(candidate, cityGeo.center) <= CITY_CENTER_FALLBACK_RADIUS_M) return true;
   if (actual) return false;
   return labelMentionsCityWithoutDistrictSuffix(row, candidate);
 }
