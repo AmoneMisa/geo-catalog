@@ -7,7 +7,6 @@ const normalize = (value) => String(value ?? '')
 const gaps = (type, canonicals, reason) => canonicals.map((canonical) => Object.freeze({ country: 'UA', city: 'Poltava', type, canonical, reason }));
 
 export const UA_POLTAVA_COVERAGE_GAPS = Object.freeze([
-  ...gaps('district', ['Kyivskyi','Podilskyi','Shevchenkivskyi'], 'Administrative district is verified, but an authoritative boundary-derived representative center is not stored; arbitrary neighborhood points are intentionally not substituted.'),
   ...gaps('microdistrict', ['Tsentr','Sady','Polovky','Brailky','Bozhenka','Motel','Zyhina','5 Shkola','Yar'], 'The listing locality is attested, but no independently verified standalone locality center or current map object was established with sufficient confidence in this pass.'),
   ...gaps('microdistrict', ['Sady-3'], 'Current map evidence identifies Sady-3 as Ohnivka; creating a second spatial entity for the same physical locality would duplicate the verified Ohnivka anchor.'),
   ...gaps('microdistrict', ['Rozsoshentsi'], 'Rozsoshentsi is a separate village in Shcherbani hromada rather than a Poltava city microdistrict; the city anchor is intentionally not reused as its parent.'),
