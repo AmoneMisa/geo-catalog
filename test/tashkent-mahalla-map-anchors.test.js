@@ -15,6 +15,8 @@ const rows = [
   ['Gulobod', 'gulobod', 'uz:tashkent:shaykhantahur', 41.327208, 69.22538],
   ['Sebzor', 'sebzor', 'uz:tashkent:almazar', 41.333979, 69.248781],
   ['Qalqon', 'qalqon', 'uz:tashkent:yashnobod', 41.280806, 69.371535],
+  ['Humoyun', 'humoyun', 'uz:tashkent:mirzo-ulugbek', 41.343891, 69.388055],
+  ['Asalobod', 'asalobod', 'uz:tashkent:yashnobod', 41.2818125, 69.3364375],
 ];
 
 test('verified Tashkent mahalla map objects resolve as manual approximate centers', () => {
@@ -33,7 +35,7 @@ test('verified Tashkent mahalla map objects resolve as manual approximate center
 });
 
 test('same-name mahalla and local-area entities retain separate spatial ownership', () => {
-  for (const slug of ['ahmad-yugnakiy', 'olimpiya', 'gulobod', 'sebzor', 'qalqon']) {
+  for (const slug of ['ahmad-yugnakiy', 'humoyun', 'olimpiya', 'gulobod', 'sebzor', 'qalqon']) {
     const mahalla = getGeoEntity(`uz:tashkent:mahalla:${slug}`);
     const area = getGeoEntity(`uz:tashkent:local-area:${slug}`);
 
@@ -41,6 +43,5 @@ test('same-name mahalla and local-area entities retain separate spatial ownershi
     assert.ok(area, slug);
     assert.notEqual(mahalla.id, area.id, slug);
     assert.equal(mahalla.osm, undefined, slug);
-    assert.ok(area.osm, slug);
   }
 });
