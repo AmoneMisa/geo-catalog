@@ -36,3 +36,17 @@ test('Fergana Neftchi area reuses the direct sports-complex OSM way', () => {
   assert.deepEqual(resolved?.center, { lat: 40.4463051, lng: 71.7670633 });
   assert.deepEqual(resolved?.osm, { type: 'way', id: 206681927 });
 });
+
+test('Fergana Navoiy listing area resolves to the city mahalla relation, not Margilan', () => {
+  const resolved = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Fergana',
+    type: 'local_area',
+    canonical: 'Navoiy',
+  });
+
+  assert.equal(resolved?.id, 'uz:fergana:mahalla:navoiy');
+  assert.equal(resolved?.type, 'mahalla');
+  assert.deepEqual(resolved?.center, { lat: 40.3711205, lng: 71.7889134 });
+  assert.deepEqual(resolved?.osm, { type: 'relation', id: 20577025 });
+});
