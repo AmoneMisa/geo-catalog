@@ -89,7 +89,7 @@ test('Samarkand legacy spellings and listing buckets reuse verified physical own
     ['microdistrict', 'Rudaki', 'uz:samarkand:street:rudakiy'],
     ['local_area', 'Sugdiyona', 'uz:samarkand:mahalla:sogdiana'],
     ['local_area', 'Registon', 'uz:samarkand:poi:registan-square'],
-    ['local_area', 'University area', 'uz:samarkand:street:university-boulevard'],
+    ['local_area', 'University area', 'uz:samarkand:local-area:university-area'],
     ['local_area', 'Railway Station area', 'uz:samarkand:poi:samarkand-railway-station'],
     ['local_area', 'Dahbed', 'uz:samarkand:street:dahbed'],
     ['local_area', 'Rudakiy', 'uz:samarkand:street:rudakiy'],
