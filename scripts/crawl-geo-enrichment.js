@@ -464,11 +464,9 @@ function sanitizeCandidate(candidate) {
   if (!candidate.persistable) {
     return {
       provider: candidate.provider,
-      label: candidate.label,
-      providerId: candidate.provider === 'google' ? candidate.providerId : null,
-      score: candidate.score,
       persistable: false,
-      supporting: candidate.supporting || [],
+      verificationOnly: true,
+      ...(candidate.provider === 'google' && candidate.providerId ? { placeId: candidate.providerId } : {}),
     };
   }
   return {
@@ -571,7 +569,7 @@ function filterNewDiscoveries(discoveries, lexicon) {
 function providerNotes(providers) {
   const notes = [];
   if (providers.includes('nominatim')) notes.push('Nominatim public API: one-time crawler uses one thread, >=1.1s between requests and caches responses. --periodic slows this to >=15s/request.');
-  if (providers.includes('google')) notes.push('Google Geocoding is verification-only: coordinates are never persisted by this crawler; only Google place_id may appear in the report.');
+  if (providers.includes('google')) notes.push('Google Geocoding is verification-only: coordinates and formatted-address content are never persisted by this crawler; Google place_id may be retained.');
   if (providers.includes('yandex') && process.env.YANDEX_ALLOW_STORAGE !== '1') notes.push('Yandex is verification-only unless YANDEX_ALLOW_STORAGE=1 is set for a license that explicitly allows storage.');
   if (providers.includes('2gis') && process.env.DGIS_ALLOW_STORAGE !== '1') notes.push('2GIS is verification-only unless DGIS_ALLOW_STORAGE=1 is set after confirming the subscription/license permits storage.');
   if (providers.includes('easyway') && process.env.EASYWAY_ALLOW_STORAGE !== '1') notes.push('EasyWay is verification-only unless EASYWAY_ALLOW_STORAGE=1 is set for an API agreement that permits storing the returned data.');
