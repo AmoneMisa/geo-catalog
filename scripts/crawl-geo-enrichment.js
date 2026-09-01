@@ -49,6 +49,8 @@ const DEFAULT_PROVIDERS = Object.freeze([
 const ZERO_KEY_PROVIDERS = Object.freeze(['nominatim', 'easyway']);
 const DEFAULT_OUTPUT_ROOT = '.cache/geo-enrichment';
 const DEFAULT_TIMEOUT_MS = 12_000;
+const DEFAULT_CITY_CONCURRENCY = 4;
+const MAX_CITY_CONCURRENCY = 32;
 const DISCOVERY_RADIUS_M = 24_000;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -56,6 +58,8 @@ function parseArgs(argv) {
   const out = {
     country: null,
     city: null,
+    allCities: false,
+    concurrency: DEFAULT_CITY_CONCURRENCY,
     providers: [...DEFAULT_PROVIDERS],
     discover: false,
     refresh: false,
@@ -66,11 +70,13 @@ function parseArgs(argv) {
   };
 
   for (const arg of argv) {
-    if (arg === '--discover') out.discover = true;
+    if (arg === '--all-cities') out.allCities = true;
+    else if (arg === '--discover') out.discover = true;
     else if (arg === '--refresh') out.refresh = true;
     else if (arg === '--periodic') out.periodic = true;
     else if (arg.startsWith('--country=')) out.country = arg.slice('--country='.length).trim().toUpperCase();
     else if (arg.startsWith('--city=')) out.city = arg.slice('--city='.length).trim();
+    else if (arg.startsWith('--concurrency=')) out.concurrency = Number.parseInt(arg.slice('--concurrency='.length), 10);
     else if (arg.startsWith('--providers=')) out.providers = arg.slice('--providers='.length).split(',').map((v) => v.trim().toLowerCase()).filter(Boolean);
     else if (arg.startsWith('--min-score=')) out.minScore = Number(arg.slice('--min-score='.length));
     else if (arg.startsWith('--max-aliases=')) out.maxAliases = Number.parseInt(arg.slice('--max-aliases='.length), 10);
@@ -78,8 +84,13 @@ function parseArgs(argv) {
     else throw new Error(`Unknown argument: ${arg}`);
   }
 
-  if (!out.country || !out.city) {
-    throw new Error(`Usage: npm run crawl:geo -- --country=UZ --city=Tashkent [--discover] [--providers=${DEFAULT_PROVIDERS.join(',')}]`);
+  if (!out.country || (!out.city && !out.allCities)) {
+    throw new Error(`Usage: npm run crawl:geo -- --country=UZ (--city=Tashkent | --all-cities [--concurrency=${DEFAULT_CITY_CONCURRENCY}]) [--discover] [--providers=${DEFAULT_PROVIDERS.join(',')}]`);
+  }
+  if (out.city && out.allCities) throw new Error('Use either --city=<name> or --all-cities, not both');
+  if (out.allCities && out.output) throw new Error('--output is only supported for a single --city run; --all-cities writes one report per city');
+  if (!Number.isInteger(out.concurrency) || out.concurrency < 1 || out.concurrency > MAX_CITY_CONCURRENCY) {
+    throw new Error(`--concurrency must be an integer between 1 and ${MAX_CITY_CONCURRENCY}`);
   }
   if (!Number.isFinite(out.minScore) || out.minScore < 0 || out.minScore > 1) throw new Error('--min-score must be between 0 and 1');
   if (!Number.isInteger(out.maxAliases) || out.maxAliases < 0 || out.maxAliases > 10) throw new Error('--max-aliases must be 0..10');
@@ -128,6 +139,12 @@ function haversineM(a, b) {
   const lat2 = rad(b.lat);
   const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
   return 6371000 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+}
+
+function countryCities(country) {
+  const dictionary = LOCATION_DICTIONARIES[country];
+  if (!dictionary) throw new Error(`No LOCATION_DICTIONARIES entry for country ${country}`);
+  return Object.keys(dictionary).sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 }
 
 function lexicalRows(country, city) {
@@ -183,6 +200,8 @@ async function readIfExists(file) {
 }
 
 const lastRequestAt = new Map();
+const providerQueues = new Map();
+
 async function throttle(provider, minDelayMs) {
   if (!minDelayMs) return;
   const elapsed = Date.now() - (lastRequestAt.get(provider) || 0);
@@ -190,11 +209,19 @@ async function throttle(provider, minDelayMs) {
   lastRequestAt.set(provider, Date.now());
 }
 
+function enqueueProvider(provider, operation) {
+  const previous = providerQueues.get(provider) || Promise.resolve();
+  const current = previous.catch(() => {}).then(operation);
+  providerQueues.set(provider, current.catch(() => {}));
+  return current;
+}
+
 async function request(provider, url, options = {}) {
   const {
     cache = false,
     cacheExt = 'json',
     minDelayMs = 0,
+    serialize = false,
     headers = {},
     method = 'GET',
     body,
@@ -206,18 +233,22 @@ async function request(provider, url, options = {}) {
     if (cached != null) return cached;
   }
 
-  await throttle(provider, minDelayMs);
-  const response = await fetch(url, { method, headers, body, signal: AbortSignal.timeout(timeoutMs) });
-  if (!response.ok) {
-    const responseBody = (await response.text()).replace(/\s+/g, ' ').slice(0, 300);
-    throw new Error(`${provider}: HTTP ${response.status}: ${responseBody}`);
-  }
-  const raw = await response.text();
-  if (cache) {
-    await mkdir(path.dirname(cachePath), { recursive: true });
-    await writeFile(cachePath, raw, 'utf8');
-  }
-  return raw;
+  const execute = async () => {
+    await throttle(provider, minDelayMs);
+    const response = await fetch(url, { method, headers, body, signal: AbortSignal.timeout(timeoutMs) });
+    if (!response.ok) {
+      const responseBody = (await response.text()).replace(/\s+/g, ' ').slice(0, 300);
+      throw new Error(`${provider}: HTTP ${response.status}: ${responseBody}`);
+    }
+    const raw = await response.text();
+    if (cache) {
+      await mkdir(path.dirname(cachePath), { recursive: true });
+      await writeFile(cachePath, raw, 'utf8');
+    }
+    return raw;
+  };
+
+  return serialize ? enqueueProvider(provider, execute) : execute();
 }
 
 async function cachedJson(provider, url, options = {}) {
@@ -343,6 +374,7 @@ async function nominatimCandidates(row, queries, args) {
       const payload = await cachedJson('nominatim', url.toString(), {
         cache: true,
         minDelayMs,
+        serialize: true,
         headers: {
           'user-agent': process.env.NOMINATIM_USER_AGENT || '@whiteslove/geo-catalog geo-enrichment (+https://github.com/AmoneMisa/geo-catalog)',
         },
@@ -363,8 +395,6 @@ async function nominatimCandidates(row, queries, args) {
           current.push(candidate);
         }
       }
-      // The previous crawler stopped on name similarity alone. Stop only when
-      // the candidate is also city-scoped and scores strongly for this entity.
       if (current.some((candidate) => isStrongCandidate(row, candidate))) break;
     }
     if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
@@ -878,7 +908,7 @@ function filterNewDiscoveries(discoveries, lexicon) {
 
 function providerNotes(providers) {
   const notes = [];
-  if (providers.includes('nominatim')) notes.push('Nominatim: structured + free-form fallbacks, city bbox bias, one thread, >=1.1s/request (>=15s with --periodic), cached.');
+  if (providers.includes('nominatim')) notes.push('Nominatim: structured + free-form fallbacks, city bbox bias, one process-wide serialized queue, >=1.1s/request (>=15s with --periodic), cached.');
   if (providers.includes('easyway')) notes.push('EasyWay: all public city route schemes are indexed by default; set EASYWAY_MAX_ROUTES only when an explicit cap is needed. Verification-only.');
   if (providers.includes('wikiroutes')) notes.push(process.env.WIKIROUTES_API_KEY || process.env.BUSMAPS_API_KEY ? 'WikiRoutes: BusMaps /v1/stopsInRadius enabled through capi-host=wikiroutes.info.' : 'WikiRoutes requested but WIKIROUTES_API_KEY/BUSMAPS_API_KEY is unset; provider will be skipped.');
   if (providers.includes('google')) notes.push(process.env.GOOGLE_MAPS_API_KEY ? `Google enabled${providerStorageFlag('google') ? ' with storage opt-in' : ' as verification-only'}; set GOOGLE_ALLOW_STORAGE=1 only when your terms permit persistence.` : 'Google requested but GOOGLE_MAPS_API_KEY is unset; provider will be skipped.');
@@ -890,35 +920,46 @@ function providerNotes(providers) {
   return notes;
 }
 
-async function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const lexicon = lexicalRows(args.country, args.city);
+async function mapWithConcurrency(items, concurrency, worker) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+
+  async function runWorker() {
+    while (true) {
+      const index = nextIndex;
+      nextIndex += 1;
+      if (index >= items.length) return;
+      results[index] = await worker(items[index], index);
+    }
+  }
+
+  const workerCount = Math.min(concurrency, items.length);
+  await Promise.all(Array.from({ length: workerCount }, () => runWorker()));
+  return results;
+}
+
+async function processCity(args, city, providers) {
+  const lexicon = lexicalRows(args.country, city);
   const unresolved = args.refresh
     ? lexicon
     : lexicon.filter((row) => !resolveLexiconGeoEntityExact({ country: row.country, city: row.city, type: row.type, canonical: row.canonical }));
+  const prefix = `[${args.country}/${city}]`;
 
-  const providers = args.providers.filter((provider) => PROVIDER_LOADERS[provider]);
-  if (!providers.length) throw new Error(`No supported providers selected. Supported: ${Object.keys(PROVIDER_LOADERS).join(', ')}`);
-
-  console.log(`Geo enrichment: ${args.country}/${args.city}; ${unresolved.length}/${lexicon.length} lexical entities to inspect.`);
-  console.log(`Providers: ${providers.join(', ')}`);
-  console.log(`Keyless providers: ${providers.filter((provider) => ZERO_KEY_PROVIDERS.includes(provider)).join(', ') || 'none'}`);
-  for (const note of providerNotes(providers)) console.log(`  policy: ${note}`);
-
+  console.log(`${prefix} ${unresolved.length}/${lexicon.length} lexical entities to inspect.`);
   const results = [];
   for (let index = 0; index < unresolved.length; index += 1) {
     const row = unresolved[index];
     const queries = queryVariants(row, args.maxAliases);
     const candidates = [];
-    console.log(`[${index + 1}/${unresolved.length}] ${row.type} ${row.canonical}`);
+    console.log(`${prefix} [${index + 1}/${unresolved.length}] ${row.type} ${row.canonical}`);
 
     for (const provider of providers) {
       try {
         const providerRows = await PROVIDER_LOADERS[provider](row, queries, args);
         candidates.push(...providerRows);
-        if (providerRows.length) console.log(`  ${provider}: ${providerRows.length} candidates`);
+        if (providerRows.length) console.log(`${prefix}   ${provider}: ${providerRows.length} candidates`);
       } catch (error) {
-        console.warn(`  ${provider}: ${error?.message || error}`);
+        console.warn(`${prefix}   ${provider}: ${error?.message || error}`);
       }
     }
 
@@ -931,16 +972,16 @@ async function main() {
       accepted,
       candidates: ranked,
     });
-    if (accepted) console.log(`  accepted: ${accepted.provider} ${accepted.lat},${accepted.lng} score=${accepted.score.toFixed(3)}`);
+    if (accepted) console.log(`${prefix}   accepted: ${accepted.provider} ${accepted.lat},${accepted.lng} score=${accepted.score.toFixed(3)}`);
   }
 
   let discoveries = [];
   if (args.discover) {
-    const center = cityEntity(args.country, args.city)?.center || null;
+    const center = cityEntity(args.country, city)?.center || null;
     try {
-      discoveries.push(...await discoverOverpass(args.country, args.city, center));
+      discoveries.push(...await discoverOverpass(args.country, city, center));
     } catch (error) {
-      console.warn(`overpass discovery: ${error?.message || error}`);
+      console.warn(`${prefix} overpass discovery: ${error?.message || error}`);
     }
     discoveries = filterNewDiscoveries(discoveries, lexicon);
   }
@@ -948,7 +989,7 @@ async function main() {
   const report = {
     generatedAt: new Date().toISOString(),
     country: args.country,
-    city: args.city,
+    city,
     providers,
     keylessProviders: providers.filter((provider) => ZERO_KEY_PROVIDERS.includes(provider)),
     policyNotes: providerNotes(providers),
@@ -965,11 +1006,53 @@ async function main() {
     discoveries,
   };
 
-  const output = args.output || path.join(DEFAULT_OUTPUT_ROOT, `${args.country.toLowerCase()}-${slug(args.city)}.json`);
+  const output = args.output || path.join(DEFAULT_OUTPUT_ROOT, `${args.country.toLowerCase()}-${slug(city)}.json`);
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
-  console.log(`Report: ${output}`);
-  console.log(`Accepted ${report.counts.accepted}; review ${report.counts.review}; ambiguous ${report.counts.ambiguous}; not found ${report.counts.notFound}; new discoveries ${report.counts.discoveries}.`);
+  console.log(`${prefix} Report: ${output}`);
+  console.log(`${prefix} Accepted ${report.counts.accepted}; review ${report.counts.review}; ambiguous ${report.counts.ambiguous}; not found ${report.counts.notFound}; new discoveries ${report.counts.discoveries}.`);
+  return report;
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const providers = args.providers.filter((provider) => PROVIDER_LOADERS[provider]);
+  if (!providers.length) throw new Error(`No supported providers selected. Supported: ${Object.keys(PROVIDER_LOADERS).join(', ')}`);
+
+  const cities = args.allCities ? countryCities(args.country) : [args.city];
+  console.log(`Geo enrichment: ${args.country}; ${cities.length} city${cities.length === 1 ? '' : 'ies'}; city concurrency=${args.allCities ? args.concurrency : 1}.`);
+  console.log(`Providers: ${providers.join(', ')}`);
+  console.log(`Keyless providers: ${providers.filter((provider) => ZERO_KEY_PROVIDERS.includes(provider)).join(', ') || 'none'}`);
+  for (const note of providerNotes(providers)) console.log(`  policy: ${note}`);
+
+  if (!args.allCities) {
+    await processCity(args, args.city, providers);
+    return;
+  }
+
+  const outcomes = await mapWithConcurrency(cities, args.concurrency, async (city) => {
+    try {
+      return { city, report: await processCity(args, city, providers), error: null };
+    } catch (error) {
+      console.error(`[${args.country}/${city}] failed: ${error?.stack || error}`);
+      return { city, report: null, error: error?.message || String(error) };
+    }
+  });
+
+  const successful = outcomes.filter((outcome) => outcome.report);
+  const failed = outcomes.filter((outcome) => outcome.error);
+  const totals = successful.reduce((acc, outcome) => {
+    for (const key of ['lexicon', 'inspected', 'accepted', 'review', 'ambiguous', 'notFound', 'discoveries']) {
+      acc[key] += outcome.report.counts[key];
+    }
+    return acc;
+  }, { lexicon: 0, inspected: 0, accepted: 0, review: 0, ambiguous: 0, notFound: 0, discoveries: 0 });
+
+  console.log(`Country run ${args.country}: ${successful.length}/${cities.length} cities completed; accepted ${totals.accepted}; review ${totals.review}; ambiguous ${totals.ambiguous}; not found ${totals.notFound}; discoveries ${totals.discoveries}.`);
+  if (failed.length) {
+    console.error(`Failed cities: ${failed.map((outcome) => `${outcome.city}: ${outcome.error}`).join('; ')}`);
+    process.exitCode = 1;
+  }
 }
 
 await main();
