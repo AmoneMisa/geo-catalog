@@ -28,6 +28,7 @@ export type GeoPoiType =
   | 'poi.observatory'
   | 'poi.school'
   | 'poi.hospital'
+  | 'poi.clinic'
   | 'poi.supermarket'
   | 'poi.amusement_park'
   | 'poi.archaeological_site'

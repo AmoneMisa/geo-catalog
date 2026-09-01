@@ -11,6 +11,18 @@ const osmStreet = (slug, canonicalName, parentId, lat, lng, osmId, accuracyM) =>
   osm: Object.freeze({ type: 'way', id: osmId }),
 });
 
+const catalogStreet = (slug, canonicalName, parentId, lat, lng, accuracyM) => Object.freeze({
+  id: `uz:tashkent:street:${slug}`,
+  type: 'street',
+  country: 'UZ',
+  canonicalName,
+  parentId,
+  center: Object.freeze({ lat, lng }),
+  source: 'manual',
+  accuracy: 'street',
+  accuracyM,
+});
+
 export const TASHKENT_STREET_ADDRESS_ENTITIES = Object.freeze([
   Object.freeze({
     id: 'uz:tashkent:street:bogbon',
@@ -143,6 +155,14 @@ export const TASHKENT_STREET_ADDRESS_ENTITIES = Object.freeze([
   osmStreet('minora', 'Minora Street', 'uz:tashkent:almazar', 41.3469679, 69.2464025, 1133450564, 350),
   osmStreet('shifokorlar', 'Shifokorlar Street', 'uz:tashkent:almazar', 41.3586785, 69.1832858, 592362803, 1800),
   osmStreet('asalobod', 'Asalobod Street', 'uz:tashkent:yashnobod', 41.2809334, 69.338356, 106373371, 1300),
+  catalogStreet('mehrgiyo', 'Mehrgiyo Street', 'uz:tashkent:yangihayot', 41.2220528, 69.2074789, 900),
+  catalogStreet('al-khwarizmi', 'Al-Khwarizmi Street', 'uz:tashkent:chilanzar', 41.2749602, 69.1945793, 1200),
+  catalogStreet('dilsaroy', 'Dilsaroy Street', 'uz:tashkent:almazar', 41.3541403, 69.2328288, 700),
+  catalogStreet('rihsili', 'Rihsili Street', 'uz:tashkent:yunusabad', 41.3673935, 69.2847905, 2400),
+  catalogStreet('chigatoy-darvoza', 'Chigatoy-Darvoza Street', 'uz:tashkent:almazar', 41.3372905, 69.2219824, 900),
+  catalogStreet('gulkhaniy', 'Gulkhaniy Street', 'uz:tashkent:shaykhantahur', 41.3011656, 69.2119554, 1000),
+  catalogStreet('farhod', 'Farhod Street', 'uz:tashkent:uchtepa', 41.2851148, 69.1882192, 1200),
+  catalogStreet('sogdiyona', 'Sogdiyona Street', 'uz:tashkent:sergeli', 41.220733, 69.2281374, 1000),
   Object.freeze({
     id: 'uz:tashkent:address:bagichinar-mahallah-citizens-assembly',
     type: 'address',
