@@ -13,6 +13,7 @@ import { ALMALYK_MICRODISTRICT_ENTITIES } from './almalyk-microdistricts.js';
 import { ANGREN_QUARTER_ENTITIES } from './angren-quarters.js';
 import { ANGREN_STREET_ENTITIES } from './angren-streets.js';
 import { NAVOIY_MICRODISTRICT_ENTITIES } from './navoiy-microdistricts.js';
+import { GULISTAN_SPATIAL_ENTITIES } from './gulistan-anchors.js';
 import { UZ_SECONDARY_CITY_ANCHORS } from './secondary-city-anchors.js';
 import { UZ_SECONDARY_AREA_ADDITIONS } from './secondary-area-additions.js';
 import { UZ_SECONDARY_LOCALITY_ENTITIES } from './secondary-localities.js';
@@ -41,6 +42,7 @@ export const UZ_ENTITIES = Object.freeze([
   ...ANGREN_QUARTER_ENTITIES,
   ...ANGREN_STREET_ENTITIES,
   ...NAVOIY_MICRODISTRICT_ENTITIES,
+  ...GULISTAN_SPATIAL_ENTITIES,
   ...UZ_SECONDARY_CITY_ANCHORS,
   ...UZ_SECONDARY_AREA_ADDITIONS,
   ...UZ_SECONDARY_LOCALITY_ENTITIES,
