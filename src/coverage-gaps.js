@@ -47,7 +47,7 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Nukus', 'poi', ['Berdakh Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Urgench', 'mahalla', ['Mustaqillik', 'Feruz', "Ma'rifat", "Yuqori bog'", 'Al Xorazmiy', 'Besh mergan', 'Shodlik', 'Gulshan', 'Gulzor', 'Navbahor', 'Avesto', 'Ashxobod'], 'Official Urgench mahalla; verified standalone OSM neighbourhood/residential geometry still pending.'),
-  ...gaps('UZ', 'Urgench', 'local_area', ['Center', 'Olimpiya', 'Railway Station area', 'Airport area', 'University area', 'Al-Xorazmiy area', 'Navoiy', 'Gurlan Road', 'Khiva Road'], 'Urgench local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Urgench', 'local_area', ['Center', 'Olimpiya', 'Navoiy', 'Gurlan Road', 'Khiva Road'], 'Urgench local-area alias still needs a verified standalone spatial match.'),
 ].map(Object.freeze));
 
 const gapKeys = new Set(GEO_COVERAGE_GAPS.map((gap) => [gap.country, gap.city, gap.type, gap.canonical].map(normalize).join('|')));
