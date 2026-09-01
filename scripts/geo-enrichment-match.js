@@ -16,8 +16,8 @@ const GENERIC_AREA_NAMES = new Set([
   'central',
 ]);
 
-const AREA_MARKER_RE = /\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|neighbou?rhood|suburb|quarter|rayon|tumani|район|махалла|массив|квартал|микрорайон|мкр)\b/iu;
-const NUMBERED_AREA_MARKER_RE = /\b(?:microdistrict|mikrorayon|mavze(?:si)?|massiv|massivi|daha(?:si)?|quarter|микрорайон|мкр|массив|квартал)\b/iu;
+const AREA_MARKER_RE = /\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|neighbou?rhood|suburb|quarter|rayon|tumani|район|махалла|массив|квартал|микрорайон|мкр|ықшамаудан|шағын\s+аудан)\b/iu;
+const NUMBERED_AREA_MARKER_RE = /\b(?:microdistrict|mikrorayon|mavze(?:si)?|massiv|massivi|daha(?:si)?|quarter|микрорайон|мкр|массив|квартал|ықшамаудан|шағын\s+аудан)\b/iu;
 const AREA_CATEGORY_RE = /\b(?:boundary|place|landuse|administrative|district|neighbou?rhood|suburb|quarter|locality|residential)\b/i;
 const NON_AREA_CATEGORY_RE = /\b(?:highway|amenity|shop|tourism|leisure|office|craft|building|historic|railway|public_transport|aeroway)\b/i;
 
@@ -28,7 +28,7 @@ export function normalizeGeoText(value) {
     .replace(/\p{M}+/gu, '')
     .replace(/ı/g, 'i')
     .replace(/[’ʻʼ‘`´]/g, "'")
-    .replace(/\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|street|ko'chasi|ko‘chasi|koshesi|улица|ул)\b/giu, ' ')
+    .replace(/\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|street|ko'chasi|ko‘chasi|koshesi|улица|ул|ықшамаудан|шағын\s+аудан)\b/giu, ' ')
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
     .replace(/\s+/g, ' ');
@@ -89,13 +89,25 @@ export function providerTypeScore(row, candidate) {
   const type = providerTypeText(candidate);
   if (row.type === 'street') return /road|street|highway|living_street|primary|secondary|tertiary|service|pedestrian|unclassified/.test(type) ? 1 : 0.35;
   if (row.type === 'metro') return /station|subway|railway|public_transport|stop|transit/.test(type) ? 1 : 0.35;
-  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop|poi|marketplace|park|museum|airport|university/.test(type) ? 0.9 : 0.5;
+  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop|poi|marketplace|park|museum|airport|university|mall|sports_centre|garden|botanical_garden/.test(type) ? 0.9 : 0.5;
   if (row.type === 'residential_complex') return /residential|building|apartments|housing|place/.test(type) ? 1 : 0.4;
   if (row.type === 'district') return /administrative|district|borough|boundary/.test(type) ? 1 : 0.2;
-  if (row.type === 'microdistrict') return /administrative|district|neighbou?rhood|quarter|residential|place|locality|landuse/.test(type) ? 1 : 0.2;
-  if (row.type === 'mahalla') return /administrative|district|neighbou?rhood|quarter|residential|suburb|place|locality|landuse/.test(type) ? 1 : 0.2;
-  if (row.type === 'local_area') return /administrative|district|neighbou?rhood|quarter|residential|suburb|place|locality|landuse/.test(type) ? 1 : 0.2;
-  if (row.type === 'suburb') return /suburb|neighbou?rhood|quarter|residential|place|locality|administrative|district/.test(type) ? 1 : 0.2;
+  if (row.type === 'microdistrict') {
+    if (/administrative|district|neighbou?rhood|quarter/.test(type)) return 1;
+    return /residential|place|locality|landuse/.test(type) ? 0.75 : 0.2;
+  }
+  if (row.type === 'mahalla') {
+    if (/administrative|neighbou?rhood|quarter|suburb/.test(type)) return 1;
+    return /district|residential|place|locality|landuse/.test(type) ? 0.75 : 0.2;
+  }
+  if (row.type === 'local_area') {
+    if (/administrative|neighbou?rhood|quarter|suburb|locality/.test(type)) return 1;
+    return /district|residential|place|landuse/.test(type) ? 0.75 : 0.2;
+  }
+  if (row.type === 'suburb') {
+    if (/suburb|neighbou?rhood|quarter|locality/.test(type)) return 1;
+    return /residential|place|administrative|district/.test(type) ? 0.75 : 0.2;
+  }
   if (row.type === 'settlement') return /village|hamlet|town|settlement|locality|suburb|neighbou?rhood|place/.test(type) ? 1 : 0.2;
   if (row.type === 'development_area') return /residential|neighbou?rhood|quarter|administrative|district|place|locality|landuse/.test(type) ? 1 : 0.2;
   return 0.6;
@@ -106,8 +118,8 @@ function isAreaTypeCompatible(row, candidate) {
   if (!AREA_TYPES.has(row.type)) return true;
 
   // Nominatim exposes both a feature type and a feature class/category. A
-  // street, shop or cafe may contain the target mahalla in its address, but it
-  // is not the spatial entity itself.
+  // street, shop or cafe may contain the target area in its address, but it is
+  // not the spatial entity itself.
   if (NON_AREA_CATEGORY_RE.test(candidate.meta?.category || '')) return false;
 
   if (row.type === 'settlement') return /village|hamlet|town|settlement|locality|suburb|neighbou?rhood|place/.test(type);
