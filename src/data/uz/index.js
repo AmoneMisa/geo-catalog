@@ -15,6 +15,7 @@ import { UZ_SECONDARY_LOCALITY_ENTITIES } from './secondary-localities.js';
 import { UZ_SECONDARY_POI_ANCHORS } from './secondary-poi-anchors.js';
 import { UZ_TAIL_POI_ANCHORS } from './tail-poi-anchors.js';
 import { CHIRCHIQ_MICRODISTRICT_ENTITIES } from './chirchiq-microdistricts.js';
+import { CHIRCHIQ_POI_ANCHORS } from './chirchiq-poi-anchors.js';
 import { UZ_TAIL_TRANSPORT_ADDITIONS } from './tail-transport-additions.js';
 import { UZ_HERITAGE_ANCHORS } from './heritage-anchors.js';
 import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './heritage-transport.js';
@@ -38,6 +39,7 @@ export const UZ_ENTITIES = Object.freeze([
   ...UZ_SECONDARY_POI_ANCHORS,
   ...UZ_TAIL_POI_ANCHORS,
   ...CHIRCHIQ_MICRODISTRICT_ENTITIES,
+  ...CHIRCHIQ_POI_ANCHORS,
   ...UZ_TAIL_TRANSPORT_ADDITIONS,
   ...UZ_HERITAGE_ANCHORS,
   ...UZ_HERITAGE_TRANSPORT_ENTITIES,
