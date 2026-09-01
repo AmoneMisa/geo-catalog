@@ -28,7 +28,13 @@ const COUNTRY_NAME = Object.freeze({
   KG: 'Kyrgyzstan',
 });
 
-const DEFAULT_PROVIDERS = Object.freeze(['nominatim', 'easyway', '2gis', 'yandex', 'google']);
+const EASYWAY_PUBLIC_HOST = Object.freeze({
+  UZ: 'https://uz.easyway.info',
+  KZ: 'https://kz.easyway.info',
+});
+
+// Zero-key path. Paid/API-key providers are opt-in via --providers.
+const DEFAULT_PROVIDERS = Object.freeze(['nominatim', 'easyway']);
 const DEFAULT_OUTPUT_ROOT = '.cache/geo-enrichment';
 const DEFAULT_TIMEOUT_MS = 12_000;
 const DISCOVERY_RADIUS_M = 24_000;
@@ -155,38 +161,18 @@ function hash(value) {
   return createHash('sha256').update(value).digest('hex').slice(0, 24);
 }
 
-async function readJsonIfExists(file) {
+async function readIfExists(file) {
   try {
-    return JSON.parse(await readFile(file, 'utf8'));
+    return await readFile(file, 'utf8');
   } catch (error) {
     if (error?.code === 'ENOENT') return null;
     throw error;
   }
 }
 
-async function cachedJson(provider, url, options = {}) {
-  const { cache = false, minDelayMs = 0, headers = {} } = options;
-  const cachePath = path.join(DEFAULT_OUTPUT_ROOT, 'http', provider, `${hash(url)}.json`);
-  if (cache) {
-    const cached = await readJsonIfExists(cachePath);
-    if (cached) return cached;
-  }
-
-  await throttle(provider, minDelayMs);
-  const response = await fetch(url, {
-    headers,
-    signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
-  });
-  if (!response.ok) {
-    const body = (await response.text()).replace(/\s+/g, ' ').slice(0, 300);
-    throw new Error(`${provider}: HTTP ${response.status}: ${body}`);
-  }
-  const payload = await response.json();
-  if (cache) {
-    await mkdir(path.dirname(cachePath), { recursive: true });
-    await writeFile(cachePath, `${JSON.stringify(payload)}\n`, 'utf8');
-  }
-  return payload;
+async function readJsonIfExists(file) {
+  const raw = await readIfExists(file);
+  return raw == null ? null : JSON.parse(raw);
 }
 
 const lastRequestAt = new Map();
@@ -195,6 +181,54 @@ async function throttle(provider, minDelayMs) {
   const elapsed = Date.now() - (lastRequestAt.get(provider) || 0);
   if (elapsed < minDelayMs) await sleep(minDelayMs - elapsed);
   lastRequestAt.set(provider, Date.now());
+}
+
+async function request(provider, url, options = {}) {
+  const {
+    cache = false,
+    cacheExt = 'json',
+    minDelayMs = 0,
+    headers = {},
+    method = 'GET',
+    body,
+    timeoutMs = DEFAULT_TIMEOUT_MS,
+  } = options;
+  const cachePath = path.join(DEFAULT_OUTPUT_ROOT, 'http', provider, `${hash(`${method}:${url}:${body || ''}`)}.${cacheExt}`);
+  if (cache) {
+    const cached = await readIfExists(cachePath);
+    if (cached != null) return cached;
+  }
+
+  await throttle(provider, minDelayMs);
+  const response = await fetch(url, {
+    method,
+    headers,
+    body,
+    signal: AbortSignal.timeout(timeoutMs),
+  });
+  if (!response.ok) {
+    const responseBody = (await response.text()).replace(/\s+/g, ' ').slice(0, 300);
+    throw new Error(`${provider}: HTTP ${response.status}: ${responseBody}`);
+  }
+  const raw = await response.text();
+  if (cache) {
+    await mkdir(path.dirname(cachePath), { recursive: true });
+    await writeFile(cachePath, raw, 'utf8');
+  }
+  return raw;
+}
+
+async function cachedJson(provider, url, options = {}) {
+  const raw = await request(provider, url, { ...options, cacheExt: 'json' });
+  try {
+    return JSON.parse(raw);
+  } catch {
+    throw new Error(`${provider}: response is not valid JSON`);
+  }
+}
+
+async function cachedText(provider, url, options = {}) {
+  return request(provider, url, { ...options, cacheExt: 'txt' });
 }
 
 function candidateBase(provider, row, query, label, lat, lng, extra = {}) {
@@ -216,13 +250,13 @@ function candidateBase(provider, row, query, label, lat, lng, extra = {}) {
   };
 }
 
-function nominatimTypeScore(row, candidate) {
+function providerTypeScore(row, candidate) {
   const type = `${candidate.rawType || ''} ${candidate.meta?.category || ''}`.toLowerCase();
   if (row.type === 'street') return /road|street|highway/.test(type) ? 1 : 0.45;
-  if (row.type === 'metro') return /station|subway|railway|public_transport/.test(type) ? 1 : 0.45;
-  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place/.test(type) ? 0.9 : 0.55;
+  if (row.type === 'metro') return /station|subway|railway|public_transport|stop/.test(type) ? 1 : 0.45;
+  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop/.test(type) ? 0.9 : 0.55;
   if (['district', 'microdistrict', 'mahalla', 'local_area', 'suburb', 'settlement', 'development_area'].includes(row.type)) {
-    return /administrative|neighbou?rhood|suburb|quarter|residential|place|district|locality/.test(type) ? 1 : 0.55;
+    return /administrative|neighbou?rhood|suburb|quarter|residential|place|district|locality|stop/.test(type) ? 1 : 0.55;
   }
   return 0.65;
 }
@@ -234,7 +268,7 @@ function candidateScore(row, candidate) {
   const parent = row.parent
     ? (normalize(candidate.label).includes(normalize(row.parent)) ? 1 : 0.55)
     : 0.75;
-  const type = nominatimTypeScore(row, candidate);
+  const type = providerTypeScore(row, candidate);
   return Math.min(1, n * 0.68 + city * 0.17 + type * 0.10 + parent * 0.05);
 }
 
@@ -270,6 +304,136 @@ async function nominatimCandidates(row, queries, args) {
     if (rows.some((candidate) => nameScore(query, candidate.label) >= 0.95)) break;
   }
   return rows;
+}
+
+function collectLatLngObjects(value, output = [], context = {}) {
+  if (!value || typeof value !== 'object') return output;
+  if (!Array.isArray(value)) {
+    const lat = Number(value.lat ?? value.latitude);
+    const lng = Number(value.lng ?? value.lon ?? value.longitude);
+    const label = value.title ?? value.name ?? value.address ?? value.stopName ?? value.stop_name;
+    if (Number.isFinite(lat) && Number.isFinite(lng) && label) {
+      output.push({ value, lat, lng, label: String(label), ...context });
+    }
+  }
+  for (const child of Array.isArray(value) ? value : Object.values(value)) collectLatLngObjects(child, output, context);
+  return output;
+}
+
+function easyWayPublicBase(country) {
+  return process.env.EASYWAY_PUBLIC_BASE_URL || EASYWAY_PUBLIC_HOST[country] || null;
+}
+
+function easyWayCitySlug(city) {
+  if (process.env.EASYWAY_CITY_SLUG) return process.env.EASYWAY_CITY_SLUG;
+  if (process.env.EASYWAY_CITY_SLUGS) {
+    try {
+      const mapped = JSON.parse(process.env.EASYWAY_CITY_SLUGS)?.[city];
+      if (mapped) return String(mapped);
+    } catch {
+      throw new Error('EASYWAY_CITY_SLUGS must be valid JSON, e.g. {"Tashkent":"tashkent"}');
+    }
+  }
+  return slug(city);
+}
+
+function extractEasyWayRouteIds(html) {
+  const ids = new Set();
+  for (const match of html.matchAll(/data-route-id\s*=\s*["']?(\d+)["']?/giu)) ids.add(match[1]);
+  return [...ids].sort((a, b) => Number(a) - Number(b));
+}
+
+const easyWaySnapshots = new Map();
+async function loadEasyWayPublicSnapshot(country, city) {
+  const cacheKey = `${country}|${city}`;
+  if (easyWaySnapshots.has(cacheKey)) return easyWaySnapshots.get(cacheKey);
+
+  const promise = (async () => {
+    const base = easyWayPublicBase(country);
+    if (!base) return [];
+    const citySlug = easyWayCitySlug(city);
+    const lang = process.env.EASYWAY_PUBLIC_LANG || 'en';
+    const routesUrl = new URL(`/${lang}/cities/${citySlug}/routes`, base).toString();
+    const headers = {
+      accept: 'text/html,application/xhtml+xml',
+      'user-agent': process.env.EASYWAY_USER_AGENT || '@whiteslove/geo-catalog geo-enrichment (+https://github.com/AmoneMisa/geo-catalog)',
+    };
+    const html = await cachedText('easyway-public-routes', routesUrl, {
+      cache: true,
+      minDelayMs: 250,
+      headers,
+    });
+    const routeIds = extractEasyWayRouteIds(html);
+    if (!routeIds.length) {
+      console.warn(`  easyway: no data-route-id values found at ${routesUrl}`);
+      return [];
+    }
+
+    const maxRoutes = Number.parseInt(process.env.EASYWAY_MAX_ROUTES || '500', 10);
+    const selectedIds = routeIds.slice(0, Number.isFinite(maxRoutes) ? maxRoutes : 500);
+    const points = [];
+    for (let index = 0; index < selectedIds.length; index += 1) {
+      const routeId = selectedIds[index];
+      const schemeUrl = new URL(`/ajax/${citySlug}/routeScheme/${routeId}`, base).toString();
+      try {
+        const payload = await cachedJson('easyway-public-scheme', schemeUrl, {
+          cache: true,
+          minDelayMs: 120,
+          headers: {
+            accept: 'application/json, text/javascript, */*; q=0.01',
+            'x-requested-with': 'XMLHttpRequest',
+            referer: routesUrl,
+            'user-agent': headers['user-agent'],
+          },
+        });
+        collectLatLngObjects(payload, points, { routeId });
+      } catch (error) {
+        console.warn(`  easyway route ${routeId}: ${error?.message || error}`);
+      }
+    }
+
+    const dedupe = new Map();
+    for (const point of points) {
+      const key = `${normalize(point.label)}|${point.lat.toFixed(6)}|${point.lng.toFixed(6)}`;
+      if (!dedupe.has(key)) dedupe.set(key, point);
+    }
+    console.log(`  easyway: indexed ${dedupe.size} named route/stop points from ${selectedIds.length} public route schemes`);
+    return [...dedupe.values()];
+  })();
+
+  easyWaySnapshots.set(cacheKey, promise);
+  return promise;
+}
+
+async function easyWayCandidates(row, queries) {
+  const snapshot = await loadEasyWayPublicSnapshot(row.country, row.city);
+  if (!snapshot.length) return [];
+
+  const ranked = [];
+  for (const point of snapshot) {
+    let bestQuery = null;
+    let bestNameScore = 0;
+    for (const query of queries) {
+      const score = nameScore(query, point.label);
+      if (score > bestNameScore) {
+        bestNameScore = score;
+        bestQuery = query;
+      }
+    }
+    if (bestNameScore < 0.55 || !bestQuery) continue;
+    const candidate = candidateBase('easyway', row, bestQuery, point.label, point.lat, point.lng, {
+      city: row.city,
+      rawType: 'public_transport_stop_or_route_point',
+      // Public web/AJAX data is used as a verification signal. Persisted coordinates still come from storage-safe sources such as OSM.
+      persistable: false,
+      source: 'easyway-public',
+      providerId: point.value?.id ? String(point.value.id) : `route:${point.routeId}`,
+    });
+    if (candidate) ranked.push({ candidate, bestNameScore });
+  }
+
+  ranked.sort((a, b) => b.bestNameScore - a.bestNameScore);
+  return ranked.slice(0, 8).map((item) => item.candidate);
 }
 
 async function googleCandidates(row, queries) {
@@ -360,73 +524,12 @@ async function twoGisCandidates(row, queries) {
   return rows;
 }
 
-function collectLatLngObjects(value, output = []) {
-  if (!value || typeof value !== 'object') return output;
-  if (!Array.isArray(value)) {
-    const lat = Number(value.lat ?? value.latitude);
-    const lng = Number(value.lng ?? value.lon ?? value.longitude);
-    const label = value.title ?? value.name ?? value.address;
-    if (Number.isFinite(lat) && Number.isFinite(lng) && label) output.push({ value, lat, lng, label: String(label) });
-  }
-  for (const child of Array.isArray(value) ? value : Object.values(value)) collectLatLngObjects(child, output);
-  return output;
-}
-
-function easyWayCityId(city) {
-  if (process.env.EASYWAY_CITY_ID) return process.env.EASYWAY_CITY_ID;
-  if (!process.env.EASYWAY_CITY_IDS) return null;
-  try {
-    return JSON.parse(process.env.EASYWAY_CITY_IDS)?.[city] || null;
-  } catch {
-    throw new Error('EASYWAY_CITY_IDS must be valid JSON, e.g. {"Tashkent":"tashkent"}');
-  }
-}
-
-async function easyWayCall(city, fn, extra = {}) {
-  const login = process.env.EASYWAY_LOGIN;
-  const password = process.env.EASYWAY_PASSWORD;
-  const cityId = easyWayCityId(city);
-  if (!login || !password || !cityId) return null;
-  const url = new URL(process.env.EASYWAY_API_URL || 'https://api.eway24.ru/');
-  url.searchParams.set('login', login);
-  url.searchParams.set('password', password);
-  url.searchParams.set('function', fn);
-  url.searchParams.set('city', cityId);
-  url.searchParams.set('format', 'json');
-  url.searchParams.set('lang', process.env.EASYWAY_LANG || 'en');
-  for (const [key, value] of Object.entries(extra)) url.searchParams.set(key, value);
-  return cachedJson('easyway', url.toString(), {
-    cache: process.env.EASYWAY_ALLOW_STORAGE === '1',
-    minDelayMs: 100,
-  });
-}
-
-async function easyWayCandidates(row, queries) {
-  const rows = [];
-  const persistable = process.env.EASYWAY_ALLOW_STORAGE === '1';
-  for (const query of queries) {
-    const payload = await easyWayCall(row.city, 'cities.GetPlacesByName', { term: query });
-    if (!payload) return [];
-    for (const hit of collectLatLngObjects(payload)) {
-      const candidate = candidateBase('easyway', row, query, hit.label, hit.lat, hit.lng, {
-        rawType: hit.value.type || 'place_or_stop',
-        persistable,
-        source: 'easyway',
-        providerId: hit.value.id ? String(hit.value.id) : null,
-      });
-      if (candidate) rows.push(candidate);
-    }
-    if (rows.some((candidate) => nameScore(query, candidate.label) >= 0.95)) break;
-  }
-  return rows;
-}
-
 const PROVIDER_LOADERS = Object.freeze({
   nominatim: nominatimCandidates,
+  easyway: easyWayCandidates,
   google: googleCandidates,
   yandex: yandexCandidates,
   '2gis': twoGisCandidates,
-  easyway: easyWayCandidates,
 });
 
 function consensusBoost(candidate, candidates, row) {
@@ -487,18 +590,18 @@ async function discoverOverpass(country, city, center) {
   if (!center) return [];
   const endpoint = process.env.OVERPASS_URL || 'https://overpass-api.de/api/interpreter';
   const query = `[out:json][timeout:70];(nwr(around:${DISCOVERY_RADIUS_M},${center.lat},${center.lng})["place"~"^(neighbourhood|suburb|quarter)$"]["name"];nwr(around:${DISCOVERY_RADIUS_M},${center.lat},${center.lng})["landuse"="residential"]["name"];nwr(around:${DISCOVERY_RADIUS_M},${center.lat},${center.lng})["boundary"="administrative"]["name"];);out center tags;`;
-  await throttle('overpass', 350);
-  const response = await fetch(endpoint, {
+  const raw = await request('overpass', endpoint, {
+    cache: true,
+    minDelayMs: 350,
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
       'user-agent': '@whiteslove/geo-catalog geo-enrichment discovery',
     },
-    body: new URLSearchParams({ data: query }),
-    signal: AbortSignal.timeout(75_000),
+    body: new URLSearchParams({ data: query }).toString(),
+    timeoutMs: 75_000,
   });
-  if (!response.ok) throw new Error(`overpass: HTTP ${response.status}`);
-  const payload = await response.json();
+  const payload = JSON.parse(raw);
   const rows = [];
   for (const item of payload.elements || []) {
     const lat = Number(item.lat ?? item.center?.lat);
@@ -534,22 +637,6 @@ async function discoverOverpass(country, city, center) {
   return rows;
 }
 
-async function discoverEasyWay(country, city) {
-  const payload = await easyWayCall(city, 'cities.GetPlacesList');
-  if (!payload || process.env.EASYWAY_ALLOW_STORAGE !== '1') return [];
-  return collectLatLngObjects(payload).map((hit) => ({
-    provider: 'easyway',
-    country,
-    city,
-    canonical: hit.label,
-    typeHint: 'poi',
-    lat: hit.lat,
-    lng: hit.lng,
-    source: 'easyway',
-    providerId: hit.value.id ? String(hit.value.id) : null,
-  }));
-}
-
 function filterNewDiscoveries(discoveries, lexicon) {
   const known = new Set();
   for (const row of lexicon) {
@@ -568,11 +655,11 @@ function filterNewDiscoveries(discoveries, lexicon) {
 
 function providerNotes(providers) {
   const notes = [];
-  if (providers.includes('nominatim')) notes.push('Nominatim public API: one-time crawler uses one thread, >=1.1s between requests and caches responses. --periodic slows this to >=15s/request.');
-  if (providers.includes('google')) notes.push('Google Geocoding is verification-only: coordinates and formatted-address content are never persisted by this crawler; Google place_id may be retained.');
-  if (providers.includes('yandex') && process.env.YANDEX_ALLOW_STORAGE !== '1') notes.push('Yandex is verification-only unless YANDEX_ALLOW_STORAGE=1 is set for a license that explicitly allows storage.');
-  if (providers.includes('2gis') && process.env.DGIS_ALLOW_STORAGE !== '1') notes.push('2GIS is verification-only unless DGIS_ALLOW_STORAGE=1 is set after confirming the subscription/license permits storage.');
-  if (providers.includes('easyway') && process.env.EASYWAY_ALLOW_STORAGE !== '1') notes.push('EasyWay is verification-only unless EASYWAY_ALLOW_STORAGE=1 is set for an API agreement that permits storing the returned data.');
+  if (providers.includes('nominatim')) notes.push('Nominatim is keyless. One-time crawler uses one thread, >=1.1s between requests and caches responses; --periodic slows this to >=15s/request.');
+  if (providers.includes('easyway')) notes.push('EasyWay default path is keyless public HTTP: the city routes page provides data-route-id values and /ajax/<city>/routeScheme/<id> provides route/stop coordinates. It is verification-only in reports.');
+  if (providers.includes('google')) notes.push(process.env.GOOGLE_MAPS_API_KEY ? 'Google Geocoding is enabled as verification-only; coordinate/address content is not persisted.' : 'Google requested but GOOGLE_MAPS_API_KEY is unset; provider will be skipped.');
+  if (providers.includes('yandex')) notes.push(process.env.YANDEX_GEOCODER_API_KEY ? 'Yandex API is enabled; storage remains disabled unless YANDEX_ALLOW_STORAGE=1.' : 'Yandex requested but YANDEX_GEOCODER_API_KEY is unset; provider will be skipped.');
+  if (providers.includes('2gis')) notes.push(process.env.DGIS_API_KEY ? '2GIS API is enabled; storage remains disabled unless DGIS_ALLOW_STORAGE=1.' : '2GIS requested but DGIS_API_KEY is unset; provider will be skipped.');
   return notes;
 }
 
@@ -587,6 +674,7 @@ async function main() {
   if (!providers.length) throw new Error(`No supported providers selected. Supported: ${Object.keys(PROVIDER_LOADERS).join(', ')}`);
 
   console.log(`Geo enrichment: ${args.country}/${args.city}; ${unresolved.length}/${lexicon.length} lexical entities to inspect.`);
+  console.log(`Providers: ${providers.join(', ')}${providers.every((provider) => DEFAULT_PROVIDERS.includes(provider)) ? ' (zero-key default)' : ''}`);
   for (const note of providerNotes(providers)) console.log(`  policy: ${note}`);
 
   const results = [];
@@ -626,11 +714,6 @@ async function main() {
     } catch (error) {
       console.warn(`overpass discovery: ${error?.message || error}`);
     }
-    try {
-      discoveries.push(...await discoverEasyWay(args.country, args.city));
-    } catch (error) {
-      console.warn(`easyway discovery: ${error?.message || error}`);
-    }
     discoveries = filterNewDiscoveries(discoveries, lexicon);
   }
 
@@ -639,6 +722,7 @@ async function main() {
     country: args.country,
     city: args.city,
     providers,
+    zeroKeyDefault: providers.every((provider) => DEFAULT_PROVIDERS.includes(provider)),
     policyNotes: providerNotes(providers),
     counts: {
       lexicon: lexicon.length,
