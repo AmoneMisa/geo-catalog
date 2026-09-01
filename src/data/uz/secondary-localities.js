@@ -12,18 +12,6 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     osm: { type: 'node', id: 10048580831 },
   },
   {
-    id: 'uz:jizzakh:local-area:zilol',
-    type: 'local_area',
-    country: 'UZ',
-    canonicalName: 'Zilol',
-    parentId: 'uz:jizzakh',
-    center: { lat: 40.172831, lng: 67.8421078 },
-    source: 'osm',
-    accuracy: 'neighborhood',
-    accuracyM: 700,
-    osm: { type: 'node', id: 11725490815 },
-  },
-  {
     id: 'uz:jizzakh:mahalla:navoiy',
     type: 'mahalla',
     country: 'UZ',
