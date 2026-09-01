@@ -5,10 +5,13 @@ import { isUaCherkasyCoverageGap } from '../src/coverage-gaps-ua-cherkasy.js';
 
 test('Cherkasy verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:cherkasy');
+  assert.equal(children.filter((entity) => entity.type === 'district').length, 2);
   assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 5);
   assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 6);
 
   const expected = [
+    [{ type: 'district', canonical: 'Prydniprovskyi' }, 'ua:cherkasy:district:prydniprovskyi'],
+    [{ type: 'district', canonical: 'Sosnivskyi' }, 'ua:cherkasy:district:sosnivskyi'],
     [{ type: 'microdistrict', canonical: 'Mytnytsia' }, 'ua:cherkasy:microdistrict:mytnytsia'],
     [{ type: 'microdistrict', canonical: 'Kazbet' }, 'ua:cherkasy:microdistrict:kazbet'],
     [{ type: 'microdistrict', canonical: 'Sosnivka' }, 'ua:cherkasy:microdistrict:sosnivka'],
@@ -29,8 +32,6 @@ test('Cherkasy verified lexicon geography resolves by city and type', () => {
 
 test('Cherkasy unresolved candidates remain explicit gaps', () => {
   const gaps = [
-    ['district', 'Prydniprovskyi'],
-    ['district', 'Sosnivskyi'],
     ['microdistrict', 'Tsentr'],
     ['microdistrict', 'Khimpaselyshche'],
     ['microdistrict', '700-richchia'],
