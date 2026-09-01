@@ -19,6 +19,7 @@ import { UZ_SECONDARY_AREA_ADDITIONS } from './secondary-area-additions.js';
 import { UZ_SECONDARY_LOCALITY_ENTITIES } from './secondary-localities.js';
 import { UZ_SECONDARY_POI_ANCHORS } from './secondary-poi-anchors.js';
 import { UZ_TAIL_POI_ANCHORS } from './tail-poi-anchors.js';
+import { UZ_TAIL_TRANSPORT_ADDITIONS } from './tail-transport-additions.js';
 import { UZ_HERITAGE_ANCHORS } from './heritage-anchors.js';
 import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './heritage-transport.js';
 import { UZ_TASHKENT_REGION_CITY_ANCHORS } from './tashkent-region-city-anchors.js';
@@ -45,6 +46,7 @@ export const UZ_ENTITIES = Object.freeze([
   ...UZ_SECONDARY_LOCALITY_ENTITIES,
   ...UZ_SECONDARY_POI_ANCHORS,
   ...UZ_TAIL_POI_ANCHORS,
+  ...UZ_TAIL_TRANSPORT_ADDITIONS,
   ...UZ_HERITAGE_ANCHORS,
   ...UZ_HERITAGE_TRANSPORT_ENTITIES,
   ...UZ_TASHKENT_REGION_CITY_ANCHORS,
