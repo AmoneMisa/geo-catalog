@@ -38,11 +38,11 @@ test('Denov Chaganiyon listing area reuses the direct archaeological-site way', 
   assert.deepEqual(resolved?.osm, { type: 'way', id: 274738274 });
 });
 
-test('Denov New Market resolves to the direct shopping-mall way', () => {
+test('Denov New Market listing area reuses the direct shopping-mall way', () => {
   const resolved = resolveLexiconGeoEntity({
     country: 'UZ',
     city: 'Denov',
-    type: 'poi',
+    type: 'local_area',
     canonical: 'New Market',
   });
 
