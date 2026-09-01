@@ -22,3 +22,28 @@ test('Andijan Bobur Square keeps official conservative provenance', () => {
   assert.ok(entity?.accuracyM >= 160);
   assert.equal(entity?.osm, undefined);
 });
+
+test('Andijan enrichment keeps direct OSM area owners instead of same-name POIs and regional settlements', () => {
+  const expected = [
+    ['uz:andijan:mahalla:obod', 'mahalla', 'relation', 20515955],
+    ['uz:andijan:mahalla:bobur', 'mahalla', 'relation', 20515947],
+    ['uz:andijan:local-area:old-city', 'local_area', 'node', 5954037065],
+    ['uz:andijan:local-area:north', 'local_area', 'way', 1504351223],
+  ];
+
+  for (const [id, type, osmType, osmId] of expected) {
+    const entity = getGeoEntity(id);
+    assert.ok(entity, id);
+    assert.equal(entity.parentId, 'uz:andijan');
+    assert.equal(entity.type, type);
+    assert.equal(entity.source, 'osm');
+    assert.deepEqual(entity.osm, { type: osmType, id: osmId });
+  }
+});
+
+test('Andijan report-derived canonicals resolve through the existing lexicon bridge', () => {
+  assert.equal(resolveLexiconGeoEntity({ country: 'UZ', city: 'Andijan', type: 'mahalla', canonical: 'Obod' })?.id, 'uz:andijan:mahalla:obod');
+  assert.equal(resolveLexiconGeoEntity({ country: 'UZ', city: 'Andijan', type: 'local_area', canonical: 'Bobur' })?.id, 'uz:andijan:mahalla:bobur');
+  assert.equal(resolveLexiconGeoEntity({ country: 'UZ', city: 'Andijan', type: 'local_area', canonical: 'Old City' })?.id, 'uz:andijan:local-area:old-city');
+  assert.equal(resolveLexiconGeoEntity({ country: 'UZ', city: 'Andijan', type: 'local_area', canonical: 'North' })?.id, 'uz:andijan:local-area:north');
+});
