@@ -31,3 +31,25 @@ test('heritage-centered listing areas reuse verified POI centers conservatively'
     }), false, `${city}: ${canonical}`);
   }
 });
+
+test('Old Termez has one archaeological physical owner for POI and listing-area semantics', () => {
+  const poi = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Termez',
+    type: 'poi',
+    canonical: 'Old Termez',
+  });
+  const area = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Termez',
+    type: 'local_area',
+    canonical: 'Old Termez',
+  });
+
+  assert.equal(poi?.id, 'uz:termez:poi:old-termez');
+  assert.equal(area?.id, poi?.id);
+  assert.equal(poi?.type, 'poi.archaeological_site');
+  assert.equal(poi?.source, 'osm');
+  assert.deepEqual(poi?.center, { lat: 37.2642736, lng: 67.192273 });
+  assert.deepEqual(poi?.osm, { type: 'way', id: 499907480 });
+});
