@@ -42,3 +42,20 @@ test('Chirchiq 9 microdistrict has a verified mapping-database center', () => {
   assert.equal(entity.accuracyM, 500);
   assert.equal(entity.osm, undefined);
 });
+
+test('Chirchiq Troitsky reuses the city-scoped Troitsk settlement', () => {
+  const entity = GEO_ENTITIES.find(({ id }) => id === 'uz:chirchiq:settlement:troitsky');
+  assert.ok(entity);
+  assert.equal(entity.parentId, 'uz:chirchiq');
+  assert.equal(entity.type, 'settlement');
+  assert.deepEqual(entity.center, { lat: 41.4383504, lng: 69.5415444 });
+  assert.deepEqual(entity.osm, { type: 'node', id: 1223044803 });
+
+  const resolved = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Chirchiq',
+    type: 'local_area',
+    canonical: 'Troitsky',
+  });
+  assert.equal(resolved?.id, entity.id);
+});
