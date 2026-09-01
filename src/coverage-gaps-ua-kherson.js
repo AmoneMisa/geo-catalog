@@ -11,7 +11,6 @@ const gaps = (type, canonicals, reason) => canonicals.map((canonical) => Object.
 }));
 
 export const UA_KHERSON_COVERAGE_GAPS = Object.freeze([
-  ...gaps('district', ['Tsentralnyi','Dniprovskyi','Korabelnyi'], 'Current Kherson urban district is verified administratively, but an authoritative boundary-derived representative center has not yet been stored; arbitrary neighborhood points are intentionally not substituted.'),
   ...gaps('microdistrict', ['Tsentr','Tavriiskyi-1','KhBK'], 'The Kherson locality is attested, but its current standalone locality center/object reference was not recovered with sufficient confidence in this pass.'),
   Object.freeze({
     country: 'UA', city: 'Kherson', type: 'microdistrict', canonical: 'Korabel',
