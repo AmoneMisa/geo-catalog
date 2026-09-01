@@ -11,6 +11,10 @@ import { URGENCH_ENTITIES } from './cities/urgench.js';
 import { TURTKUL_ENTITIES } from './cities/turtkul.js';
 import { UZ_SECONDARY_CITY_ANCHORS } from './secondary-city-anchors.js';
 import { UZ_SECONDARY_AREA_ADDITIONS } from './secondary-area-additions.js';
+import { UZ_SECONDARY_LOCALITY_ENTITIES } from './secondary-localities.js';
+import { UZ_SECONDARY_POI_ANCHORS } from './secondary-poi-anchors.js';
+import { UZ_TAIL_POI_ANCHORS } from './tail-poi-anchors.js';
+import { CHIRCHIQ_MICRODISTRICT_ENTITIES } from './chirchiq-microdistricts.js';
 import { UZ_TAIL_TRANSPORT_ADDITIONS } from './tail-transport-additions.js';
 import { UZ_HERITAGE_ANCHORS } from './heritage-anchors.js';
 import { UZ_HERITAGE_TRANSPORT_ENTITIES } from './heritage-transport.js';
@@ -30,6 +34,10 @@ export const UZ_ENTITIES = Object.freeze([
   ...TURTKUL_ENTITIES,
   ...UZ_SECONDARY_CITY_ANCHORS,
   ...UZ_SECONDARY_AREA_ADDITIONS,
+  ...UZ_SECONDARY_LOCALITY_ENTITIES,
+  ...UZ_SECONDARY_POI_ANCHORS,
+  ...UZ_TAIL_POI_ANCHORS,
+  ...CHIRCHIQ_MICRODISTRICT_ENTITIES,
   ...UZ_TAIL_TRANSPORT_ADDITIONS,
   ...UZ_HERITAGE_ANCHORS,
   ...UZ_HERITAGE_TRANSPORT_ENTITIES,
