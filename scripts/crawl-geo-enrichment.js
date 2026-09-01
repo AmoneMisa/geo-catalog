@@ -4,6 +4,7 @@ import path from 'node:path';
 
 import { LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/locations';
 import { resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
+import { isAutoAcceptEligible } from './geo-enrichment-match.js';
 
 const TYPE_BY_KEY = Object.freeze({
   districts: 'district',
@@ -99,10 +100,12 @@ function parseArgs(argv) {
 
 function normalize(value) {
   return String(value ?? '')
-    .normalize('NFKC')
+    .normalize('NFKD')
     .toLowerCase()
+    .replace(/\p{M}+/gu, '')
+    .replace(/ı/g, 'i')
     .replace(/[’ʻʼ‘`´]/g, "'")
-    .replace(/\b(?:mahalla(?:si)?|mfy|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|street|ko'chasi|ko‘chasi|улица|ул)\b/giu, ' ')
+    .replace(/\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|street|ko'chasi|ko‘chasi|kóshesi|улица|ул)\b/giu, ' ')
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
     .replace(/\s+/g, ' ');
@@ -362,8 +365,8 @@ function nominatimUrls(row, query) {
 }
 
 function isStrongCandidate(row, candidate) {
-  const cityText = normalize(`${candidate.city || ''} ${candidate.label || ''}`);
-  return cityText.includes(normalize(row.city)) && candidateScore(row, candidate) >= 0.9;
+  const cityGeo = cityBias(row);
+  return isAutoAcceptEligible(row, candidate, cityGeo) && candidateScore(row, candidate) >= 0.9;
 }
 
 async function nominatimCandidates(row, queries, args) {
@@ -802,6 +805,7 @@ function dedupeCandidates(candidates) {
 }
 
 function chooseCandidate(row, candidates, minScore) {
+  const cityGeo = cityBias(row);
   const ranked = dedupeCandidates(candidates)
     .map((candidate) => {
       const baseScore = candidateScore(row, candidate);
@@ -810,7 +814,7 @@ function chooseCandidate(row, candidates, minScore) {
     })
     .sort((a, b) => b.score - a.score);
 
-  const persistable = ranked.filter((candidate) => candidate.persistable);
+  const persistable = ranked.filter((candidate) => candidate.persistable && isAutoAcceptEligible(row, candidate, cityGeo));
   const best = persistable[0] || null;
   if (!best || best.score < minScore) return { accepted: null, ranked };
 
@@ -908,7 +912,7 @@ function filterNewDiscoveries(discoveries, lexicon) {
 
 function providerNotes(providers) {
   const notes = [];
-  if (providers.includes('nominatim')) notes.push('Nominatim: structured + free-form fallbacks, city bbox bias, one process-wide serialized queue, >=1.1s/request (>=15s with --periodic), cached.');
+  if (providers.includes('nominatim')) notes.push('Nominatim: structured + free-form fallbacks, city bbox bias, one process-wide serialized queue, >=1.1s/request (>=15s with --periodic), cached; spatial auto-accepts require direct type/name/city evidence.');
   if (providers.includes('easyway')) notes.push('EasyWay: all public city route schemes are indexed by default; set EASYWAY_MAX_ROUTES only when an explicit cap is needed. Verification-only.');
   if (providers.includes('wikiroutes')) notes.push(process.env.WIKIROUTES_API_KEY || process.env.BUSMAPS_API_KEY ? 'WikiRoutes: BusMaps /v1/stopsInRadius enabled through capi-host=wikiroutes.info.' : 'WikiRoutes requested but WIKIROUTES_API_KEY/BUSMAPS_API_KEY is unset; provider will be skipped.');
   if (providers.includes('google')) notes.push(process.env.GOOGLE_MAPS_API_KEY ? `Google enabled${providerStorageFlag('google') ? ' with storage opt-in' : ' as verification-only'}; set GOOGLE_ALLOW_STORAGE=1 only when your terms permit persistence.` : 'Google requested but GOOGLE_MAPS_API_KEY is unset; provider will be skipped.');
