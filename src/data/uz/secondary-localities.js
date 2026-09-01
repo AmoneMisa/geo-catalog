@@ -46,6 +46,18 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     osm: { type: 'node', id: 2520618202 },
   },
   {
+    id: 'uz:chirchiq:settlement:troitsky',
+    type: 'settlement',
+    country: 'UZ',
+    canonicalName: 'Troitsky',
+    parentId: 'uz:chirchiq',
+    center: { lat: 41.4383504, lng: 69.5415444 },
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 650,
+    osm: { type: 'node', id: 1223044803 },
+  },
+  {
     id: 'uz:khiva:local-area:dishan-kala',
     type: 'local_area',
     country: 'UZ',
