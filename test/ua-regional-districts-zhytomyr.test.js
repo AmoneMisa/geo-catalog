@@ -43,3 +43,20 @@ test('verified Zhytomyr listing localities resolve to independent OSM owners', (
     assert.deepEqual(entity?.osm, { type: 'node', id: nodeId });
   }
 });
+
+test('verified Zhytomyr landmarks resolve through generic POI canonicals', () => {
+  const expected = new Map([
+    ['Castle Hill', 'ua:zhytomyr:poi:castle-hill'],
+    ['Cosmonautics Museum', 'ua:zhytomyr:poi:cosmonautics-museum'],
+    ['Korolov Museum', 'ua:zhytomyr:poi:korolov-museum'],
+    ['Chatsky Rock', 'ua:zhytomyr:poi:chatsky-rock'],
+    ['Hydropark', 'ua:zhytomyr:poi:hydropark'],
+    ['Soborna Square', 'ua:zhytomyr:poi:soborna-square'],
+  ]);
+
+  for (const [canonical, id] of expected) {
+    const entity = resolveLexiconGeoEntity({ country: 'UA', city: 'Zhytomyr', type: 'poi', canonical });
+    assert.equal(entity?.id, id, canonical);
+    assert.equal(getGeoEntity(id)?.accuracy, 'poi', canonical);
+  }
+});
