@@ -9,8 +9,10 @@ import {
   reconcileStopsWithOsm,
 } from '../scripts/refresh-tashkent-bus-wikiroutes.js';
 
-test('catalog parser takes every bus route link and ignores later route sections', () => {
+test('catalog parser takes every counted bus route link and ignores service labels and later sections', () => {
   const html = `
+    <script>const transportTabs = ['Автобусы', 'Маршрутки'];</script>
+    <a href="/tashkent?routes=99999">service-link-before-catalog</a>
     <h2>Автобусы (2)</h2>
     <a href="/tashkent?routes=10600">1</a>
     <a href="/tashkent?routes=10601">101 (Ташкент - Дархан)</a>
