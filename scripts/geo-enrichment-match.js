@@ -42,7 +42,7 @@ const POI_SEMANTIC_RULES = Object.freeze([
   [/\b(?:island|islet|острів|остров)\b/iu, /\b(?:island|islet)\b/i],
   [/hes\b|ges\b|гес\b|гэс\b|hydroelectric|dam|гребл/iu, /\b(?:dam|hydro|hydroelectric|power|generator)\b/i],
   [/\b(?:railway\s+station|train\s+station|station|вокзал|станц(?:ія|ия))\b/iu, /\b(?:railway_station|train_station|station|railway)\b/i],
-  [/\b(?:fortress|fort|castle|фортец(?:я|і)|крепост(?:ь|и)|замок)\b/iu, /\b(?:fortress|fort|castle|historic|attraction)\b/i],
+  [/\b(?:fortress|fort|castle|mug\s+qal['’ʻʼ`]?a|mug\s+qala|фортец(?:я|і)|крепост(?:ь|и)|замок)\b/iu, /\b(?:fortress|fort|castle|historic|attraction|archaeological_site)\b/i],
   [/\b(?:square|площа|площадь|майдан)\b/iu, /\b(?:square|pedestrian)\b/i],
   [/\b(?:sea\s+port|port|порт)\b/iu, /\b(?:port|harbour|harbor|dock|terminal|industrial)\b/i],
   [/\b(?:monastery|монастир|монастырь)\b/iu, /\b(?:monastery|place_of_worship|religious|historic|attraction|castle)\b/i],
@@ -197,6 +197,7 @@ function isAreaTypeCompatible(row, candidate) {
   if (!AREA_TYPES.has(row.type)) return true;
 
   if (NON_AREA_CATEGORY_RE.test(candidate.meta?.category || '')) return false;
+  if (row.type !== 'development_area' && /\bindustrial\b/.test(type)) return false;
 
   if (row.type === 'settlement') return /village|hamlet|town|settlement|locality|suburb|neighbou?rhood|place/.test(type);
   if (row.type === 'district') return /administrative|district|borough|boundary/.test(type);
