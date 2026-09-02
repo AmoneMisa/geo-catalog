@@ -18,6 +18,7 @@ const expected = Object.freeze([
   ['mahalla', 'Taslaq', 339799160],
   ['mahalla', 'Qum awil', 413793561],
   ['mahalla', 'Qutli makan', 1009066250],
+  ['mahalla', "Botanika bag'i", 4571573171],
   ['mahalla', 'Shimbay shayxana', 9662439527],
   ['mahalla', 'Sarbinaz', 460790124],
   ['mahalla', 'Shayirlar awili', 1009066244],
@@ -37,7 +38,9 @@ const expected = Object.freeze([
   ['mahalla', 'Shadli awil', 453532276],
   ['mahalla', 'Tele oray', 415541809],
   ['mahalla', 'Altin jagis', 1009066194],
+  ['mahalla', 'Kok ozek', 1009066212],
   ['mahalla', 'Qumbiz awil', 1009066232],
+  ['mahalla', 'Nawpir', 1009066200],
   ['local_area', 'Qizketken', 339795351],
 ]);
 
