@@ -39,6 +39,59 @@ jobs:
       - run: npm install --ignore-scripts
       - name: Verify WikiRoutes parser fixtures
         run: node --test test/wikiroutes-crawler.test.js
+      - name: Probe live WikiRoutes catalog and route markup
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import {
+            CATALOG_URL,
+            normalizeRouteRef,
+            parseCatalogRoutes,
+            parseRoutePage,
+          } from './scripts/refresh-tashkent-bus-wikiroutes.js';
+
+          const fetchHtml = async (url) => {
+            const response = await fetch(url, {
+              headers: { 'user-agent': 'geo-catalog WikiRoutes markup probe' },
+              signal: AbortSignal.timeout(12000),
+            });
+            if (!response.ok) throw new Error(`${response.status} ${response.statusText} for ${url}`);
+            return response.text();
+          };
+
+          const catalogHtml = await fetchHtml(CATALOG_URL);
+          const routes = parseCatalogRoutes(catalogHtml);
+          const uniqueRefs = new Set(routes.map((route) => normalizeRouteRef(route.ref)));
+          console.log(JSON.stringify({
+            catalogRouteCount: routes.length,
+            uniqueRouteRefCount: uniqueRefs.size,
+            firstRoutes: routes.slice(0, 10).map(({ sourceRouteId, ref, sourceRouteUrl }) => ({ sourceRouteId, ref, sourceRouteUrl })),
+            lastRoutes: routes.slice(-10).map(({ sourceRouteId, ref, sourceRouteUrl }) => ({ sourceRouteId, ref, sourceRouteUrl })),
+          }, null, 2));
+
+          const route = routes[0];
+          if (!route) throw new Error('Tashkent catalog returned no bus routes');
+          const routeHtml = await fetchHtml(route.sourceRouteUrl);
+          const parsed = parseRoutePage(routeHtml, route);
+          const rawStopLinks = [...routeHtml.matchAll(/href=["']([^"']*\/stops\/\d+[^"']*)["']/gi)].length;
+          const headings = [...routeHtml.matchAll(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi)]
+            .slice(0, 10)
+            .map((match) => ({
+              attrs: match[1].trim(),
+              text: match[2].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 180),
+            }));
+          console.log(JSON.stringify({
+            probeRoute: { sourceRouteId: route.sourceRouteId, ref: route.ref, sourceRouteUrl: route.sourceRouteUrl },
+            rawStopLinks,
+            parsedDirections: parsed.directions.map((direction) => ({
+              name: direction.name,
+              stopCount: direction.stops.length,
+              firstStop: direction.stops[0]?.name,
+              lastStop: direction.stops.at(-1)?.name,
+            })),
+            headings,
+          }, null, 2));
+          NODE
       - name: Crawl current WikiRoutes Tashkent bus catalog
         run: npm run crawl:wikiroutes
       - name: Validate refreshed transport snapshot
