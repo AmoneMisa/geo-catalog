@@ -1,8 +1,22 @@
+import { assembleRings, lineMidpoint, polygonPointOnSurface } from './geo-polygon.js';
+
 const DEFAULT_DISCOVERY_RADIUS_M = 8_000;
 const MIN_DISCOVERY_RADIUS_M = 6_000;
 const MAX_DISCOVERY_RADIUS_M = 12_000;
 const STREET_HIGHWAY_RE = '^(motorway|trunk|primary|secondary|tertiary|residential|living_street|unclassified|pedestrian)$';
 const RESIDENTIAL_COMPLEX_RE = /(?:\b(?:residence|residenc(?:e|y)|residential|complex| ЖК |zhk)\b|(?:^|\s)(?:ЖК|ТЖК)(?:\s|$)|житлов(?:ий|ого)\s+комплекс)/iu;
+const POI_AMENITY_RE = '^(hospital|clinic|university|college|school|theatre|cinema|marketplace|bus_station|place_of_worship|library|townhall|community_centre|stadium|arts_centre|courthouse)$';
+const POI_TOURISM_RE = '^(attraction|museum|zoo|gallery|viewpoint|theme_park|artwork)$';
+const POI_LEISURE_RE = '^(park|stadium|sports_centre|water_park)$';
+const TRANSIT_STOP_PUBLIC_TRANSPORT_RE = '^(stop_position|platform|station)$';
+const TRANSIT_STOP_RAILWAY_RE = '^(station|halt|tram_stop)$';
+const TRANSIT_ROUTE_RE = '^(bus|trolleybus|tram|subway|share_taxi|light_rail|train|monorail)$';
+const POI_AMENITY_TEST = new RegExp(POI_AMENITY_RE);
+const POI_TOURISM_TEST = new RegExp(POI_TOURISM_RE);
+const POI_LEISURE_TEST = new RegExp(POI_LEISURE_RE);
+const TRANSIT_STOP_PUBLIC_TRANSPORT_TEST = new RegExp(TRANSIT_STOP_PUBLIC_TRANSPORT_RE);
+const TRANSIT_STOP_RAILWAY_TEST = new RegExp(TRANSIT_STOP_RAILWAY_RE);
+const TRANSIT_ROUTE_TEST = new RegExp(TRANSIT_ROUTE_RE);
 
 function normalize(value) {
   return String(value ?? '')
@@ -61,6 +75,82 @@ function itemCenter(item) {
   const lat = Number(item?.lat ?? item?.center?.lat);
   const lng = Number(item?.lon ?? item?.center?.lon);
   return Number.isFinite(lat) && Number.isFinite(lng) ? { lat, lng } : null;
+}
+
+function geometryCoords(geometry) {
+  return (geometry || [])
+    .filter((p) => Number.isFinite(p?.lat) && Number.isFinite(p?.lon))
+    .map((p) => ({ lat: p.lat, lng: p.lon }));
+}
+
+function isClosedRing(coords) {
+  if (coords.length < 4) return false;
+  const first = coords[0];
+  const last = coords[coords.length - 1];
+  return Math.abs(first.lat - last.lat) < 1e-9 && Math.abs(first.lng - last.lng) < 1e-9;
+}
+
+function isAreaLikeWay(item, coords) {
+  const tags = item.tags || {};
+  if (tags.boundary === 'administrative') return true;
+  if (tags.landuse) return true;
+  if (tags.building) return true;
+  return isClosedRing(coords);
+}
+
+/**
+ * Computes a representative point that actually sits inside the feature's
+ * geometry, instead of Overpass's `out center`, which is bbox-based and can
+ * land outside concave (L-shaped, crescent, exclave) boundaries or off a
+ * winding street/route line.
+ */
+function representativePoint(item) {
+  if (item.type === 'node') {
+    const lat = Number(item.lat);
+    const lng = Number(item.lon);
+    return Number.isFinite(lat) && Number.isFinite(lng) ? { lat, lng } : null;
+  }
+
+  if (item.type === 'way') {
+    const coords = geometryCoords(item.geometry);
+    if (!coords.length) return itemCenter(item);
+    if (isAreaLikeWay(item, coords)) {
+      const point = polygonPointOnSurface({ outer: [coords] });
+      if (point) return point;
+    }
+    return lineMidpoint(coords) || itemCenter(item);
+  }
+
+  if (item.type === 'relation') {
+    const members = item.members || [];
+    const wayMembers = members.filter((member) => member.type === 'way' && Array.isArray(member.geometry));
+
+    if (item.tags?.type === 'route') {
+      const segments = wayMembers.map((member) => geometryCoords(member.geometry));
+      const assembled = assembleRings(segments);
+      const longest = assembled.reduce((best, ring) => (ring.length > (best?.length || 0) ? ring : best), null);
+      return lineMidpoint(longest || segments.flat()) || itemCenter(item);
+    }
+
+    const outerSegments = wayMembers
+      .filter((member) => (member.role || 'outer') !== 'inner')
+      .map((member) => geometryCoords(member.geometry));
+    const innerSegments = wayMembers
+      .filter((member) => member.role === 'inner')
+      .map((member) => geometryCoords(member.geometry));
+
+    const outerRings = assembleRings(outerSegments);
+    const innerRings = assembleRings(innerSegments);
+    if (outerRings.length) {
+      const point = polygonPointOnSurface({ outer: outerRings, inner: innerRings });
+      if (point) return point;
+    }
+
+    const fallback = outerSegments.flat();
+    return lineMidpoint(fallback) || itemCenter(item);
+  }
+
+  return itemCenter(item);
 }
 
 function relationNames(item) {
@@ -144,20 +234,34 @@ export function buildDiscoveryQuery(scope) {
     + `nwr${selector}["landuse"="residential"]["name"];`
     + `way${selector}["highway"~"${STREET_HIGHWAY_RE}"]["name"];`
     + adminClause
-    + ');out center tags;';
+    + `nwr${selector}["amenity"~"${POI_AMENITY_RE}"]["name"];`
+    + `nwr${selector}["tourism"~"${POI_TOURISM_RE}"]["name"];`
+    + `nwr${selector}["leisure"~"${POI_LEISURE_RE}"]["name"];`
+    + `nwr${selector}["shop"="mall"]["name"];`
+    + `nwr${selector}["highway"="bus_stop"]["name"];`
+    + `nwr${selector}["public_transport"~"${TRANSIT_STOP_PUBLIC_TRANSPORT_RE}"]["name"];`
+    + `nwr${selector}["railway"~"${TRANSIT_STOP_RAILWAY_RE}"]["name"];`
+    + `rel${selector}["type"="route"]["route"~"${TRANSIT_ROUTE_RE}"]["name"];`
+    + ');out geom;';
 }
 
 export function classifyDiscovery(item, scope = null) {
   if (!item?.tags?.name) return null;
   if (scope?.relationId && item.type === 'relation' && item.id === scope.relationId) return null;
-  const place = String(item.tags.place || '').toLowerCase();
-  if (item.tags.highway) return 'street';
+  const tags = item.tags;
+  const place = String(tags.place || '').toLowerCase();
+  if (tags.type === 'route' && TRANSIT_ROUTE_TEST.test(tags.route || '')) return 'transit_route';
+  if (tags.highway === 'bus_stop') return 'transit_stop';
+  if (TRANSIT_STOP_PUBLIC_TRANSPORT_TEST.test(tags.public_transport || '')) return 'transit_stop';
+  if (TRANSIT_STOP_RAILWAY_TEST.test(tags.railway || '')) return 'transit_stop';
+  if (tags.highway) return 'street';
   if (place === 'suburb') return 'suburb';
   if (['village', 'hamlet', 'town'].includes(place)) return 'settlement';
   if (place === 'neighbourhood' || place === 'quarter') return 'local_area';
-  if (item.tags.boundary === 'administrative') return 'district';
-  if (item.tags.landuse === 'residential' && RESIDENTIAL_COMPLEX_RE.test(` ${item.tags.name} `)) return 'residential_complex';
-  if (item.tags.landuse === 'residential') return 'local_area';
+  if (tags.boundary === 'administrative') return 'district';
+  if (tags.landuse === 'residential' && RESIDENTIAL_COMPLEX_RE.test(` ${tags.name} `)) return 'residential_complex';
+  if (tags.landuse === 'residential') return 'local_area';
+  if (POI_AMENITY_TEST.test(tags.amenity || '') || POI_TOURISM_TEST.test(tags.tourism || '') || POI_LEISURE_TEST.test(tags.leisure || '') || tags.shop === 'mall') return 'poi';
   return null;
 }
 
@@ -211,7 +315,7 @@ export async function discoverOverpassScoped({ country, city, cityGeo, center = 
   const payload = await overpassPayload(request, endpoint, buildDiscoveryQuery(scope));
   const rows = [];
   for (const item of payload.elements || []) {
-    const point = itemCenter(item);
+    const point = representativePoint(item);
     const typeHint = classifyDiscovery(item, scope);
     if (!point || !typeHint) continue;
     rows.push({
@@ -235,6 +339,13 @@ export async function discoverOverpassScoped({ country, city, cityGeo, center = 
         highway: item.tags.highway || null,
         boundary: item.tags.boundary || null,
         adminLevel: item.tags.admin_level || null,
+        amenity: item.tags.amenity || null,
+        tourism: item.tags.tourism || null,
+        leisure: item.tags.leisure || null,
+        shop: item.tags.shop || null,
+        publicTransport: item.tags.public_transport || null,
+        railway: item.tags.railway || null,
+        route: item.tags.type === 'route' ? item.tags.route || null : null,
       },
     });
   }

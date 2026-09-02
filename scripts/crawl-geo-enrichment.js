@@ -6,7 +6,11 @@ import { LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/locations';
 import { GEO_ENTITIES } from '../src/catalog.js';
 import { resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
 import { discoverOverpassScoped } from './geo-enrichment-discovery.js';
-import { isAutoAcceptEligible } from './geo-enrichment-match.js';
+import {
+  candidateScore as matchCandidateScore,
+  isAutoAcceptEligible,
+  nameScore as matchNameScore,
+} from './geo-enrichment-match.js';
 
 const TYPE_BY_KEY = Object.freeze({
   districts: 'district',
@@ -44,7 +48,6 @@ const DEFAULT_PROVIDERS = Object.freeze([
   'wikiroutes',
   'google',
   'yandex',
-  '2gis',
   'maptiler',
   'geoapify',
   'mapbox',
@@ -117,23 +120,8 @@ function slug(value) {
   return normalize(value).replace(/\s+/g, '-');
 }
 
-function tokenDice(a, b) {
-  const left = new Set(normalize(a).split(' ').filter(Boolean));
-  const right = new Set(normalize(b).split(' ').filter(Boolean));
-  if (!left.size || !right.size) return 0;
-  let common = 0;
-  for (const token of left) if (right.has(token)) common += 1;
-  return (2 * common) / (left.size + right.size);
-}
-
 function nameScore(query, label) {
-  const a = normalize(query);
-  const b = normalize(label);
-  if (!a || !b) return 0;
-  if (a === b) return 1;
-  if (b.startsWith(`${a} `) || b.endsWith(` ${a}`)) return 0.95;
-  if (b.includes(a) || a.includes(b)) return 0.9;
-  return tokenDice(a, b);
+  return matchNameScore(query, label);
 }
 
 function haversineM(a, b) {
@@ -292,26 +280,8 @@ function candidateBase(provider, row, query, label, lat, lng, extra = {}) {
   };
 }
 
-function providerTypeScore(row, candidate) {
-  const type = `${candidate.rawType || ''} ${candidate.meta?.category || ''}`.toLowerCase();
-  if (row.type === 'street') return /road|street|highway/.test(type) ? 1 : 0.45;
-  if (row.type === 'metro') return /station|subway|railway|public_transport|stop|transit/.test(type) ? 1 : 0.45;
-  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop|poi/.test(type) ? 0.9 : 0.55;
-  if (['district', 'microdistrict', 'mahalla', 'local_area', 'suburb', 'settlement', 'development_area'].includes(row.type)) {
-    return /administrative|neighbou?rhood|suburb|quarter|residential|place|district|locality|stop/.test(type) ? 1 : 0.55;
-  }
-  return 0.65;
-}
-
 function candidateScore(row, candidate) {
-  const n = nameScore(candidate.query, candidate.label);
-  const cityText = normalize(`${candidate.city || ''} ${candidate.label || ''}`);
-  const city = cityText.includes(normalize(row.city)) ? 1 : 0.45;
-  const parent = row.parent
-    ? (normalize(candidate.label).includes(normalize(row.parent)) ? 1 : 0.55)
-    : 0.75;
-  const type = providerTypeScore(row, candidate);
-  return Math.min(1, n * 0.68 + city * 0.17 + type * 0.10 + parent * 0.05);
+  return matchCandidateScore(row, candidate, cityBias(row));
 }
 
 function cityBias(row) {
@@ -655,35 +625,6 @@ async function yandexCandidates(row, queries) {
   return rows;
 }
 
-async function twoGisCandidates(row, queries) {
-  const key = process.env.DGIS_API_KEY;
-  if (!key) return [];
-  const allowStorage = providerStorageFlag('dgis');
-  const rows = [];
-  for (const query of queries) {
-    const url = new URL('https://catalog.api.2gis.com/3.0/items/geocode');
-    url.searchParams.set('q', `${query}, ${row.city}`);
-    url.searchParams.set('fields', 'items.point,items.adm_div,items.geometry.centroid');
-    url.searchParams.set('page_size', '8');
-    url.searchParams.set('key', key);
-    const payload = await cachedJson('2gis', url.toString(), { cache: allowStorage, minDelayMs: 100 });
-    for (const item of payload.result?.items || []) {
-      const point = item.point || item.geometry?.centroid;
-      const city = (item.adm_div || []).find((part) => /city|locality/i.test(part.type || ''))?.name || null;
-      const candidate = candidateBase('2gis', row, query, item.full_name || item.name || item.address_name, Number(point?.lat), Number(point?.lon), {
-        city,
-        rawType: item.type || null,
-        persistable: allowStorage,
-        source: '2gis',
-        providerId: item.id || null,
-      });
-      if (candidate) rows.push(candidate);
-    }
-    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
-  }
-  return rows;
-}
-
 async function mapTilerCandidates(row, queries) {
   const key = process.env.MAPTILER_API_KEY;
   if (!key) return [];
@@ -785,7 +726,6 @@ const PROVIDER_LOADERS = Object.freeze({
   wikiroutes: wikiRoutesCandidates,
   google: googleCandidates,
   yandex: yandexCandidates,
-  '2gis': twoGisCandidates,
   maptiler: mapTilerCandidates,
   geoapify: geoapifyCandidates,
   mapbox: mapboxCandidates,
@@ -886,7 +826,6 @@ function providerNotes(providers) {
   if (providers.includes('wikiroutes')) notes.push(process.env.WIKIROUTES_API_KEY || process.env.BUSMAPS_API_KEY ? 'WikiRoutes: BusMaps /v1/stopsInRadius enabled through capi-host=wikiroutes.info.' : 'WikiRoutes requested but WIKIROUTES_API_KEY/BUSMAPS_API_KEY is unset; provider will be skipped.');
   if (providers.includes('google')) notes.push(process.env.GOOGLE_MAPS_API_KEY ? `Google enabled${providerStorageFlag('google') ? ' with storage opt-in' : ' as verification-only'}; set GOOGLE_ALLOW_STORAGE=1 only when your terms permit persistence.` : 'Google requested but GOOGLE_MAPS_API_KEY is unset; provider will be skipped.');
   if (providers.includes('yandex')) notes.push(process.env.YANDEX_GEOCODER_API_KEY ? `Yandex enabled${providerStorageFlag('yandex') ? ' with storage opt-in' : ' as verification-only'}.` : 'Yandex requested but YANDEX_GEOCODER_API_KEY is unset; provider will be skipped.');
-  if (providers.includes('2gis')) notes.push(process.env.DGIS_API_KEY ? `2GIS enabled${providerStorageFlag('dgis') ? ' with storage opt-in' : ' as verification-only'}.` : '2GIS requested but DGIS_API_KEY is unset; provider will be skipped.');
   if (providers.includes('maptiler')) notes.push(process.env.MAPTILER_API_KEY ? `MapTiler enabled${providerStorageFlag('maptiler') ? ' with storage opt-in' : ' as verification-only'}.` : 'MapTiler requested but MAPTILER_API_KEY is unset; provider will be skipped.');
   if (providers.includes('geoapify')) notes.push(process.env.GEOAPIFY_API_KEY ? `Geoapify enabled${providerStorageFlag('geoapify') ? ' with storage opt-in' : ' as verification-only'}.` : 'Geoapify requested but GEOAPIFY_API_KEY is unset; provider will be skipped.');
   if (providers.includes('mapbox')) notes.push(process.env.MAPBOX_ACCESS_TOKEN ? `Mapbox enabled${process.env.MAPBOX_PERMANENT === '1' ? ' with permanent geocoding' : ' as temporary/verification-only'}.` : 'Mapbox requested but MAPBOX_ACCESS_TOKEN is unset; provider will be skipped.');
