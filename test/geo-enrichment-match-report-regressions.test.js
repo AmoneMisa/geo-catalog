@@ -79,6 +79,26 @@ test('far explicit provider city cannot be accepted as Navoiy', () => {
   assert.equal(isAutoAcceptEligible(row, zarafshonApartment, navoiy), false);
 });
 
+test('Tashkent mahalla cannot auto-accept the same-name Chinoz hamlet', () => {
+  const row = { country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: "Bog'bon" };
+  const tashkent = {
+    center: { lat: 41.3123363, lng: 69.2787079 },
+    bbox: { south: 41.1577334, west: 69.121797, north: 41.4224955, east: 69.525908 },
+  };
+  const chinozHamlet = candidate({
+    query: "Bog'bon",
+    label: "Bog'bon, Chinoz Tumani, Toshkent Viloyati, Oʻzbekiston",
+    city: 'Chinoz',
+    lat: 41.0017371,
+    lng: 68.8850292,
+    rawType: 'hamlet',
+    meta: { category: 'place' },
+  });
+
+  assert.equal(isCandidateInCity(row, chinozHamlet, tashkent), false);
+  assert.equal(isAutoAcceptEligible(row, chinozHamlet, tashkent), false);
+});
+
 test('explicit mismatched city gets a tighter fallback for non-area candidates', () => {
   const row = { country: 'KZ', city: 'Aktau', type: 'poi', canonical: 'Example Park' };
   const aktau = { center: { lat: 43.6532, lng: 51.1975 } };
