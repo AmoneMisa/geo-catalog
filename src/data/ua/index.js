@@ -9,6 +9,9 @@ import { UA_SUMY_ENTITIES } from './sumy/index.js';
 import { UA_KROPYVNYTSKYI_ENTITIES } from './kropyvnytskyi/index.js';
 import { UA_KREMENCHUK_ENTITIES } from './kremenchuk/index.js';
 import { UA_BILA_TSERKVA_ENTITIES } from './bila-tserkva/index.js';
+import { UA_BERDIANSK_ENTITIES } from './berdiansk/index.js';
+import { UA_BERDYCHIV_ENTITIES } from './berdychiv/index.js';
+import { UA_BILHOROD_DNISTROVSKYI_ENTITIES } from './bilhorod-dnistrovskyi/index.js';
 import { UA_RIVNE_ENTITIES } from './rivne/index.js';
 import { UA_KHERSON_ENTITIES } from './kherson/index.js';
 import { UA_VINNYTSIA_ENTITIES } from './vinnytsia/index.js';
@@ -34,6 +37,9 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_KROPYVNYTSKYI_ENTITIES,
   ...UA_KREMENCHUK_ENTITIES,
   ...UA_BILA_TSERKVA_ENTITIES,
+  ...UA_BERDIANSK_ENTITIES,
+  ...UA_BERDYCHIV_ENTITIES,
+  ...UA_BILHOROD_DNISTROVSKYI_ENTITIES,
   ...UA_RIVNE_ENTITIES,
   ...UA_KHERSON_ENTITIES,
   ...UA_VINNYTSIA_ENTITIES,
