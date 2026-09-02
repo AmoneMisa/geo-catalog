@@ -23,6 +23,7 @@ const AREA_MARKER_RE = /\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|
 const NUMBERED_AREA_MARKER_RE = /\b(?:microdistrict|mikrorayon|mavze(?:si)?|massiv|massivi|daha(?:si)?|quarter|микрорайон|мкр|массив|квартал|ықшамаудан|шағын\s+аудан)\b/iu;
 const AREA_CATEGORY_RE = /\b(?:boundary|place|landuse|administrative|district|neighbou?rhood|suburb|quarter|locality|residential)\b/i;
 const NON_AREA_CATEGORY_RE = /\b(?:highway|amenity|shop|tourism|leisure|office|craft|building|historic|railway|public_transport|aeroway)\b/i;
+const NON_AREA_RAW_TYPE_RE = /\b(?:cemetery|graveyard|hospital|clinic|doctors|dentist|pharmacy|cafe|restaurant|fast_food|school|college|university|kindergarten|hotel|hostel|guest_house|supermarket|mall|marketplace|shop|office|sports_centre|swimming_pool|attraction|monument|memorial|museum|place_of_worship|mosque|church|cathedral|ruins|construction)\b/i;
 const SEPARATE_LOCALITY_TYPE_RE = /\b(?:city|town|village|hamlet|settlement|administrative|municipality)\b/i;
 
 const CITY_CYRILLIC_FOLD = Object.freeze({
@@ -197,6 +198,7 @@ function isAreaTypeCompatible(row, candidate) {
   if (!AREA_TYPES.has(row.type)) return true;
 
   if (NON_AREA_CATEGORY_RE.test(candidate.meta?.category || '')) return false;
+  if (NON_AREA_RAW_TYPE_RE.test(candidate.rawType || '')) return false;
   if (row.type !== 'development_area' && /\bindustrial\b/.test(type)) return false;
 
   if (row.type === 'settlement') return /village|hamlet|town|settlement|locality|suburb|neighbou?rhood|place/.test(type);
