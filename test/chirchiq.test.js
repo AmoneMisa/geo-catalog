@@ -59,3 +59,19 @@ test('Chirchiq Troitsky reuses the city-scoped Troitsk settlement', () => {
   });
   assert.equal(resolved?.id, entity.id);
 });
+
+test('Chirchiq River resolves to the river segment adjacent to the city', () => {
+  const resolved = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Chirchiq',
+    type: 'poi',
+    canonical: 'Chirchiq River',
+  });
+
+  assert.equal(resolved?.id, 'uz:chirchiq:poi:chirchiq-river');
+  assert.equal(resolved?.type, 'poi');
+  assert.equal(resolved?.parentId, 'uz:chirchiq');
+  assert.deepEqual(resolved?.center, { lat: 41.472377, lng: 69.6052702 });
+  assert.deepEqual(resolved?.osm, { type: 'way', id: 216918327 });
+  assert.equal(resolved?.source, 'osm');
+});
