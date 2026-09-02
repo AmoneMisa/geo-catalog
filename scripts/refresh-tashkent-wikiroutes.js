@@ -21,6 +21,8 @@ const MODE_LABELS = Object.freeze([
   ['Трамваи', 'tram'],
   ['Фуникулёры', 'funicular'],
   ['Фуникулеры', 'funicular'],
+  ['Фуникулёр', 'funicular'],
+  ['Фуникулер', 'funicular'],
 ]);
 export const SUPPORTED_WIKIROUTES_MODES = Object.freeze([
   'bus',
@@ -54,6 +56,15 @@ const htmlAttribute = (attributes, name) => {
   return match?.[1] ?? match?.[2] ?? match?.[3] ?? null;
 };
 
+const elementRows = (source, tag) => [...String(source).matchAll(
+  new RegExp(`<${tag}\\b([^>]*)>([\\s\\S]*?)<\\/${tag}>`, 'gi'),
+)].map((match) => ({
+  attributes: match[1],
+  html: match[2],
+  text: stripTags(match[2]),
+  classes: (htmlAttribute(match[1], 'class') ?? '').split(/\s+/).filter(Boolean),
+}));
+
 const typeBlocks = (html) => {
   const source = String(html);
   const starts = [...source.matchAll(/<div\b([^>]*)>/gi)].flatMap((match) => {
@@ -63,11 +74,12 @@ const typeBlocks = (html) => {
 
   return starts.flatMap((start, index) => {
     const section = source.slice(start.index, starts[index + 1]?.index ?? source.length);
-    const headerMatch = section.match(/<span\b[^>]*class\s*=\s*["'][^"']*\btypeHeader-name\b[^"']*["'][^>]*>([\s\S]*?)<\/span>/i);
-    const header = stripTags(headerMatch?.[1] ?? '');
+    const spans = elementRows(section.slice(0, 2200), 'span');
+    const header = spans.find((span) => span.classes.includes('typeHeader-name'))?.text ?? '';
     const mode = MODE_LABELS.find(([label]) => header.toLocaleLowerCase('ru') === label.toLocaleLowerCase('ru'))?.[1];
     if (!mode) return [];
-    const countMatch = section.match(/<span\b[^>]*class\s*=\s*["'][^"']*\bcount\b[^"']*["'][^>]*>\s*\((\d+)\)\s*<\/span>/i);
+    const countText = spans.find((span) => span.classes.includes('count'))?.text ?? '';
+    const countMatch = countText.match(/\(?\s*(\d+)\s*\)?/);
     return [{ mode, header, declaredCount: countMatch ? Number(countMatch[1]) : null, section }];
   });
 };
@@ -128,10 +140,10 @@ export function parseActiveCatalog(html, { modes = SUPPORTED_WIKIROUTES_MODES } 
 
 export const normalizeRouteRef = (value) => stripTags(value)
   .toLocaleUpperCase('ru')
-  .replace(/Т/gu, 'T')
-  .replace(/М/gu, 'M')
-  .replace(/И/gu, 'I')
-  .replace(/[\s'’`-]+/g, '');
+  .replace(/[\s'’`-]+/g, '')
+  .replace(/Т$/u, 'T')
+  .replace(/М$/u, 'M')
+  .replace(/И$/u, 'I');
 
 const metroMatchKey = (value) => {
   const normalized = normalizeRouteRef(value);
@@ -166,7 +178,7 @@ const normalizeStopName = (value) => stripTags(value)
 export function reconcileStops(stops, knownStops, { matchRadiusM = DEFAULT_MATCH_RADIUS_M } = {}) {
   return stops.map((stop) => {
     if (!Number.isFinite(stop.lat) || !Number.isFinite(stop.lng)) {
-      return { ...stop, knownStopId: null, knownStopDistanceM: null, knownStopSource: null };
+      return { ...stop, knownStopId: null, knownStopMode: null, knownStopDistanceM: null, knownStopSource: null };
     }
     const modes = new Set(stop.modes ?? []);
     const name = normalizeStopName(stop.name);
