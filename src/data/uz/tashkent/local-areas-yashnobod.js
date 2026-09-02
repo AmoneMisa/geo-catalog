@@ -16,4 +16,5 @@ export const TASHKENT_YASHNOBOD_LOCAL_AREA_ENTITIES = Object.freeze([
   osmLocalArea('aviasozlar-2', 'Aviasozlar-2', 41.28230, 69.34583, 1867257404),
   osmLocalArea('aviasozlar-3', 'Aviasozlar-3', 41.28747, 69.34146, 1867257433),
   osmLocalArea('aviasozlar-4', 'Aviasozlar-4', 41.29609, 69.34548, 1867257440),
+  osmLocalArea('tashselmash', 'Tashselmash', 41.3054111, 69.3067984, 6123092387, 650),
 ]);
