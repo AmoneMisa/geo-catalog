@@ -39,6 +39,30 @@ jobs:
       - run: npm install --ignore-scripts
       - name: Verify WikiRoutes parser fixtures
         run: node --test test/wikiroutes-crawler.test.js
+      - name: Probe live WikiRoutes route markup
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          const url = 'https://ru.wikiroutes.info/tashkent?routes=11020';
+          const response = await fetch(url, {
+            headers: { 'user-agent': 'geo-catalog WikiRoutes markup probe' },
+            signal: AbortSignal.timeout(12000),
+          });
+          const html = await response.text();
+          const stops = [...html.matchAll(/href=["']([^"']*\/stops\/\d+[^"']*)["']/gi)];
+          const headings = [...html.matchAll(/<(h[1-6])\b([^>]*)>([\s\S]*?)<\/\1>/gi)]
+            .slice(0, 20)
+            .map((match) => ({ tag: match[1], attrs: match[2].trim(), text: match[3].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160) }));
+          console.log(JSON.stringify({ status: response.status, bytes: html.length, stopLinks: stops.length, headings }, null, 2));
+          const firstStop = stops[0];
+          if (firstStop) {
+            const index = firstStop.index ?? html.indexOf(firstStop[0]);
+            const snippet = html.slice(Math.max(0, index - 900), Math.min(html.length, index + 900))
+              .replace(/\s+/g, ' ')
+              .replace(/>\s+</g, '><');
+            console.log('FIRST_STOP_CONTEXT=' + snippet);
+          }
+          NODE
       - name: Crawl current WikiRoutes Tashkent bus catalog
         run: npm run crawl:wikiroutes
       - name: Validate refreshed transport snapshot
