@@ -1,0 +1,245 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+const CATALOG_URL = 'https://ru.wikiroutes.info/tashkent/catalog';
+const BASE_URL = new URL(CATALOG_URL).origin;
+const DEFAULT_CONCURRENCY = 6;
+const DEFAULT_TIMEOUT_MS = 12_000;
+const DEFAULT_OUTPUT = '.cache/wikiroutes/tashkent-active.json';
+const TASHKENT_BOUNDS = Object.freeze({ south: 40.9, north: 41.6, west: 68.8, east: 69.8 });
+
+const MODE_LABELS = new Map([
+  ['автобусы', 'bus'],
+  ['маршрутки', 'minibus'],
+  ['метро', 'metro'],
+  ['троллейбусы', 'trolleybus'],
+  ['трамваи', 'tram'],
+  ['фуникулёры', 'funicular'],
+  ['фуникулеры', 'funicular'],
+  ['фуникулёр', 'funicular'],
+  ['фуникулер', 'funicular'],
+]);
+
+const decodeHtml = (value) => String(value ?? '')
+  .replace(/&nbsp;/gi, ' ')
+  .replace(/&quot;/gi, '"')
+  .replace(/&#39;|&apos;/gi, "'")
+  .replace(/&mdash;|&ndash;/gi, '—')
+  .replace(/&amp;/gi, '&')
+  .replace(/&lt;/gi, '<')
+  .replace(/&gt;/gi, '>')
+  .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+  .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)));
+
+const stripTags = (value) => decodeHtml(String(value ?? '').replace(/<[^>]*>/g, ' '))
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const htmlAttribute = (attributes, name) => {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = String(attributes).match(new RegExp(`\\b${escaped}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, 'i'));
+  return match?.[1] ?? match?.[2] ?? match?.[3] ?? null;
+};
+
+const elementRows = (source, tag) => [...String(source).matchAll(new RegExp(`<${tag}\\b([^>]*)>([\\s\\S]*?)<\\/${tag}>`, 'gi'))]
+  .map((match) => ({
+    index: match.index ?? 0,
+    attributes: match[1],
+    text: stripTags(match[2]),
+    classes: (htmlAttribute(match[1], 'class') ?? '').split(/\s+/).filter(Boolean),
+  }));
+
+function parseActiveCatalog(html) {
+  const source = String(html);
+  const starts = [...source.matchAll(/<div\b([^>]*)>/gi)].flatMap((match) => {
+    const classes = (htmlAttribute(match[1], 'class') ?? '').split(/\s+/).filter(Boolean);
+    return classes.includes('typeBlock') ? [{ index: match.index ?? 0 }] : [];
+  });
+
+  const routes = [];
+  const seen = new Set();
+  const declaredCountsByMode = {};
+
+  for (let i = 0; i < starts.length; i += 1) {
+    const section = source.slice(starts[i].index, starts[i + 1]?.index ?? source.length);
+    const spans = elementRows(section.slice(0, 2400), 'span');
+    const header = spans.find((row) => row.classes.includes('typeHeader-name'))?.text ?? '';
+    const mode = MODE_LABELS.get(header.toLocaleLowerCase('ru'));
+    if (!mode) continue;
+
+    const countText = spans.find((row) => row.classes.includes('count'))?.text ?? '';
+    const countMatch = countText.match(/(\d+)/);
+    declaredCountsByMode[mode] = countMatch ? Number(countMatch[1]) : null;
+
+    for (const match of section.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
+      const href = htmlAttribute(match[1], 'href');
+      if (!href) continue;
+      const classes = (htmlAttribute(match[1], 'class') ?? '').split(/\s+/).filter(Boolean);
+      if (classes.includes('no-active')) continue;
+
+      const url = new URL(decodeHtml(href), BASE_URL);
+      const sourceRouteId = url.searchParams.get('routes');
+      if (url.pathname !== '/tashkent' || !sourceRouteId || seen.has(sourceRouteId)) continue;
+      seen.add(sourceRouteId);
+
+      const label = stripTags(htmlAttribute(match[1], 'title') ?? match[2]);
+      routes.push({
+        sourceRouteId,
+        sourceRouteUrl: url.href,
+        mode,
+        active: true,
+        scope: classes.find((value) => ['city', 'suburban', 'intercity'].includes(value)) ?? null,
+        ref: label.replace(/\s*\([^)]*\)\s*$/, '').trim(),
+        label,
+      });
+    }
+  }
+
+  return { routes, declaredCountsByMode };
+}
+
+const anchorRows = (html) => [...String(html).matchAll(/<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi)]
+  .map((match) => ({ href: decodeHtml(match[1]), text: stripTags(match[2]) }));
+
+const stopIdFromUrl = (url) => new URL(url, BASE_URL).pathname.match(/^\/stops\/(\d+)\/?$/)?.[1] ?? null;
+
+function parseRoutePage(html, route) {
+  const source = String(html);
+  const headings = [...source.matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/gi)]
+    .map((match) => ({ index: match.index ?? 0, text: stripTags(match[1]) }))
+    .filter(({ text }) => text.includes('—') || text.includes('→'));
+
+  const directions = headings.map((heading, index) => {
+    const section = source.slice(heading.index, headings[index + 1]?.index ?? source.length);
+    const stops = anchorRows(section).flatMap(({ href, text }) => {
+      const sourceStopUrl = new URL(href, route.sourceRouteUrl).href;
+      const sourceStopId = stopIdFromUrl(sourceStopUrl);
+      return sourceStopId ? [{ sourceStopId, sourceStopUrl, name: text }] : [];
+    });
+    const [from = stops[0]?.name ?? '', to = stops.at(-1)?.name ?? ''] = heading.text
+      .split(/\s+[—→]\s+/)
+      .map((value) => value.trim());
+    return { directionIndex: index, name: heading.text, from, to, stops };
+  }).filter((direction) => direction.stops.length >= 2);
+
+  return { ...route, directions };
+}
+
+const inTashkent = (lat, lng) => Number.isFinite(lat) && Number.isFinite(lng)
+  && lat >= TASHKENT_BOUNDS.south && lat <= TASHKENT_BOUNDS.north
+  && lng >= TASHKENT_BOUNDS.west && lng <= TASHKENT_BOUNDS.east;
+
+function parseStopPage(html, stop) {
+  const source = decodeHtml(String(html));
+  const candidates = [];
+  for (const match of source.matchAll(/[?&]cbll=(-?\d+(?:\.\d+)?)(?:%2C|,)(-?\d+(?:\.\d+)?)/gi)) {
+    candidates.push({ lat: Number(match[1]), lng: Number(match[2]), coordinateSource: 'google_street_view' });
+  }
+  for (const match of source.matchAll(/["'](?:lat|latitude)["']\s*:\s*(-?\d+(?:\.\d+)?)[\s\S]{0,160}?["'](?:lng|lon|longitude)["']\s*:\s*(-?\d+(?:\.\d+)?)/gi)) {
+    candidates.push({ lat: Number(match[1]), lng: Number(match[2]), coordinateSource: 'embedded_lat_lng' });
+  }
+  const point = candidates.find(({ lat, lng }) => inTashkent(lat, lng));
+  return point
+    ? { ...stop, ...point, coordinateStatus: 'ok' }
+    : { ...stop, lat: null, lng: null, coordinateSource: null, coordinateStatus: 'missing' };
+}
+
+async function fetchText(url, timeoutMs) {
+  const response = await fetch(url, {
+    headers: { 'user-agent': 'geo-catalog manual WikiRoutes checker' },
+    signal: AbortSignal.timeout(timeoutMs),
+  });
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText} for ${url}`);
+  return response.text();
+}
+
+async function mapConcurrent(items, concurrency, worker) {
+  const results = new Array(items.length);
+  let cursor = 0;
+  async function run() {
+    while (cursor < items.length) {
+      const index = cursor++;
+      results[index] = await worker(items[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, run));
+  return results;
+}
+
+async function main() {
+  const output = process.argv.find((arg) => arg.startsWith('--output='))?.slice('--output='.length) || DEFAULT_OUTPUT;
+  const concurrency = Number(process.argv.find((arg) => arg.startsWith('--concurrency='))?.split('=')[1] ?? DEFAULT_CONCURRENCY);
+  const timeoutMs = Number(process.argv.find((arg) => arg.startsWith('--timeout='))?.split('=')[1] ?? DEFAULT_TIMEOUT_MS);
+
+  const catalog = parseActiveCatalog(await fetchText(CATALOG_URL, timeoutMs));
+  const routeResults = await mapConcurrent(catalog.routes, concurrency, async (route) => {
+    try {
+      return parseRoutePage(await fetchText(route.sourceRouteUrl, timeoutMs), route);
+    } catch (error) {
+      return { ...route, directions: [], crawlError: String(error?.message ?? error) };
+    }
+  });
+
+  const routes = routeResults.filter((route) => route.directions.length);
+  const uniqueStops = new Map();
+  for (const route of routes) {
+    for (const direction of route.directions) {
+      for (const stop of direction.stops) {
+        if (!uniqueStops.has(stop.sourceStopId)) uniqueStops.set(stop.sourceStopId, stop);
+      }
+    }
+  }
+
+  const stops = await mapConcurrent([...uniqueStops.values()], concurrency, async (stop) => {
+    try {
+      return parseStopPage(await fetchText(stop.sourceStopUrl, timeoutMs), stop);
+    } catch (error) {
+      return { ...stop, lat: null, lng: null, coordinateSource: null, coordinateStatus: 'error', error: String(error?.message ?? error) };
+    }
+  });
+  const stopById = new Map(stops.map((stop) => [stop.sourceStopId, stop]));
+  const hydratedRoutes = routes.map((route) => ({
+    ...route,
+    directions: route.directions.map((direction) => ({
+      ...direction,
+      stops: direction.stops.map((stop) => stopById.get(stop.sourceStopId) ?? stop),
+    })),
+  }));
+
+  const routeCountsByMode = hydratedRoutes.reduce((counts, route) => {
+    counts[route.mode] = (counts[route.mode] ?? 0) + 1;
+    return counts;
+  }, {});
+
+  const snapshot = {
+    source: 'wikiroutes',
+    activeOnly: true,
+    catalogUrl: CATALOG_URL,
+    fetchedAt: new Date().toISOString(),
+    declaredCountsByMode: catalog.declaredCountsByMode,
+    routeCountsByMode,
+    routeCount: hydratedRoutes.length,
+    routeErrorCount: routeResults.filter((route) => route.crawlError).length,
+    stopCount: stops.length,
+    stopCoordinateCount: stops.filter((stop) => stop.coordinateStatus === 'ok').length,
+    routes: hydratedRoutes,
+  };
+
+  await fs.mkdir(path.dirname(output), { recursive: true });
+  await fs.writeFile(output, `${JSON.stringify(snapshot, null, 2)}\n`, 'utf8');
+
+  console.log(JSON.stringify({
+    output,
+    declaredCountsByMode: snapshot.declaredCountsByMode,
+    routeCountsByMode: snapshot.routeCountsByMode,
+    routeCount: snapshot.routeCount,
+    routeErrorCount: snapshot.routeErrorCount,
+    stopCount: snapshot.stopCount,
+    stopCoordinateCount: snapshot.stopCoordinateCount,
+  }, null, 2));
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
