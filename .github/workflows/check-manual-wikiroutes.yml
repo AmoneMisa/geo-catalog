@@ -1,0 +1,52 @@
+name: Check manual WikiRoutes crawler
+
+on:
+  push:
+    branches:
+      - feat/ua-city-districts-cherkasy-poltava-chernihiv
+    paths:
+      - '.github/workflows/check-manual-wikiroutes.yml'
+      - 'scripts/refresh-tashkent-wikiroutes.js'
+
+permissions:
+  contents: read
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --check scripts/refresh-tashkent-wikiroutes.js
+      - run: node scripts/refresh-tashkent-wikiroutes.js --output=.cache/wikiroutes/tashkent-active.json --concurrency=8 --timeout=15000
+      - name: Inspect snapshot
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const data = JSON.parse(fs.readFileSync('.cache/wikiroutes/tashkent-active.json', 'utf8'));
+          const byMode = Object.fromEntries(Object.entries(data.routeCountsByMode ?? {}).sort());
+          const missingCoordinates = [];
+          const routeErrors = [];
+          for (const route of data.routes ?? []) {
+            if (route.crawlError) routeErrors.push([route.mode, route.ref, route.crawlError]);
+            for (const direction of route.directions ?? []) {
+              for (const stop of direction.stops ?? []) {
+                if (stop.coordinateStatus !== 'ok') missingCoordinates.push([route.mode, route.ref, stop.sourceStopId, stop.name, stop.coordinateStatus]);
+              }
+            }
+          }
+          console.log('SUMMARY', JSON.stringify({
+            declaredCountsByMode: data.declaredCountsByMode,
+            routeCountsByMode: byMode,
+            routeCount: data.routeCount,
+            routeErrorCount: data.routeErrorCount,
+            stopCount: data.stopCount,
+            stopCoordinateCount: data.stopCoordinateCount,
+            missingCoordinateRefs: missingCoordinates.length,
+            firstMissingCoordinateRefs: missingCoordinates.slice(0, 30),
+            routeErrors: routeErrors.slice(0, 30),
+          }, null, 2));
+          NODE
