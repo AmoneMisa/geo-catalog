@@ -179,3 +179,94 @@ test('railway station POI does not auto-accept a bus stop with station text', ()
     meta: { category: 'railway' },
   }), berdychivGeo), true);
 });
+
+test('nearby separate settlements are not treated as city neighborhoods', () => {
+  const row = { country: 'UA', city: 'Uzhhorod', type: 'microdistrict', canonical: 'Minai' };
+  const uzhhorodGeo = { center: { lat: 48.6224, lng: 22.3023 } };
+  assert.equal(isCandidateInCity(row, candidate({
+    query: 'Minai',
+    label: 'Минай, Холмківська сільська громада, Ужгородський район, Україна',
+    city: 'Минай',
+    lat: 48.589088,
+    lng: 22.27718,
+    rawType: 'administrative',
+    meta: { category: 'boundary' },
+  }), uzhhorodGeo), false);
+});
+
+test('city-center fallback no longer admits a different city 34 km away', () => {
+  const row = { country: 'UA', city: 'Vinnytsia', type: 'poi', canonical: 'Friendship Park', aliases: ['парк Дружби народів'] };
+  const vinnytsiaGeo = { center: { lat: 49.232, lng: 28.468 } };
+  assert.equal(isCandidateInCity(row, candidate({
+    query: 'парк Дружби народів',
+    label: 'Парк Дружби Народів, Жмеринка, Вінницька область, Україна',
+    city: 'Жмеринка',
+    lat: 49.0401142,
+    lng: 28.0969646,
+    rawType: 'park',
+    meta: { category: 'leisure' },
+  }), vinnytsiaGeo), false);
+});
+
+test('DniproHES requires a hydro object instead of a same-name transport stop', () => {
+  const row = { country: 'UA', city: 'Zaporizhzhia', type: 'poi', canonical: 'DniproHES', aliases: ['ДніпроГЕС', 'ДнепроГЭС'] };
+  const zaporizhzhiaGeo = { bbox: { south: 47.75, west: 34.98, north: 47.96, east: 35.37 } };
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'ДніпроГЕС',
+    label: 'ДніпроГЕС, Запоріжжя, Україна',
+    lat: 47.8743681,
+    lng: 35.0783239,
+    rawType: 'bus_stop',
+    meta: { category: 'highway' },
+  }), zaporizhzhiaGeo), false);
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'ДніпроГЕС',
+    label: 'Дніпровська ГЕС, Запоріжжя, Україна',
+    lat: 47.8678685,
+    lng: 35.089358,
+    rawType: 'dam',
+    meta: { category: 'waterway' },
+  }), zaporizhzhiaGeo), true);
+});
+
+test('mall landmarks reject parking lots and accept the mall owner', () => {
+  const row = { country: 'UA', city: 'Zaporizhzhia', type: 'poi', canonical: 'City Mall', aliases: [] };
+  const zaporizhzhiaGeo = { bbox: { south: 47.75, west: 34.98, north: 47.96, east: 35.37 } };
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'City Mall',
+    label: 'City mall, Запоріжжя, Україна',
+    lat: 47.818805,
+    lng: 35.1558985,
+    rawType: 'parking',
+    meta: { category: 'amenity' },
+  }), zaporizhzhiaGeo), false);
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'City Mall',
+    label: 'City Mall, Запоріжжя, Україна',
+    lat: 47.8183818,
+    lng: 35.1569137,
+    rawType: 'mall',
+    meta: { category: 'shop' },
+  }), zaporizhzhiaGeo), true);
+});
+
+test('park aliases reject transport stops with the same name', () => {
+  const row = { country: 'UA', city: 'Ternopil', type: 'poi', canonical: 'National Revival Park', aliases: ['парк Національного відродження'] };
+  const ternopilGeo = { center: { lat: 49.5558, lng: 25.5924 } };
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'парк Національного відродження',
+    label: 'Парк Національного відродження, Тернопіль, Україна',
+    lat: 49.5574115,
+    lng: 25.631643,
+    rawType: 'bus_stop',
+    meta: { category: 'highway' },
+  }), ternopilGeo), false);
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'парк Національного відродження',
+    label: 'Парк Національного Відродження, Тернопіль, Україна',
+    lat: 49.5533185,
+    lng: 25.6339767,
+    rawType: 'park',
+    meta: { category: 'leisure' },
+  }), ternopilGeo), true);
+});
