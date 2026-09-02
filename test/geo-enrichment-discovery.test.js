@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import {
   buildDiscoveryQuery,
+  buildRouteFeature,
   classifyDiscovery,
   discoveryRadiusM,
   selectCityBoundary,
@@ -56,4 +57,34 @@ test('discovery classifier retains streets and typed residential complexes', () 
   assert.equal(classifyDiscovery({ type: 'way', id: 3, tags: { name: 'Будьонівка', place: 'neighbourhood', landuse: 'residential' } }), 'local_area');
   assert.equal(classifyDiscovery({ type: 'relation', id: 4, tags: { name: 'Village', place: 'village', boundary: 'administrative' } }), 'settlement');
   assert.equal(classifyDiscovery({ type: 'relation', id: 3313703, tags: { name: 'Bakhmut', boundary: 'administrative' } }, { relationId: 3313703 }), null);
+});
+
+test('discovery query surfaces POIs and transit stops/routes with full geometry', () => {
+  const query = buildDiscoveryQuery({ mode: 'radius', center: { lat: 50, lng: 30 }, radiusM: 9000 });
+  assert.match(query, /amenity/);
+  assert.match(query, /public_transport/);
+  assert.match(query, /"type"="route"/);
+  assert.match(query, /out geom;$/);
+});
+
+test('buildRouteFeature stitches out-of-order way members into one ordered polyline and collects stops', () => {
+  const relation = {
+    type: 'relation',
+    id: 99,
+    tags: { type: 'route', route: 'bus', name: 'Route 5' },
+    members: [
+      { type: 'way', ref: 2, role: '', geometry: [{ lat: 0, lon: 2 }, { lat: 0, lon: 1 }] },
+      { type: 'way', ref: 1, role: '', geometry: [{ lat: 0, lon: 0 }, { lat: 0, lon: 1 }] },
+      { type: 'node', ref: 10, role: 'stop', lat: 0, lon: 0 },
+      { type: 'node', ref: 11, role: 'stop', lat: 0, lon: 2 },
+    ],
+  };
+
+  const feature = buildRouteFeature(relation);
+  assert.equal(feature.geometry.length, 3);
+  const lngs = feature.geometry.map((p) => p.lng).sort((a, b) => a - b);
+  assert.deepEqual(lngs, [0, 1, 2]);
+  assert.equal(feature.stops.length, 2);
+  assert.deepEqual(feature.stops.map((s) => s.lng).sort((a, b) => a - b), [0, 2]);
+  assert.ok(feature.point.lng > 0 && feature.point.lng < 2, 'route midpoint should sit along the assembled line');
 });

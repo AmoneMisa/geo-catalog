@@ -98,6 +98,40 @@ function isAreaLikeWay(item, coords) {
   return isClosedRing(coords);
 }
 
+function relationStops(members) {
+  const stops = [];
+  for (const member of members) {
+    if (!/stop|platform/i.test(member.role || '')) continue;
+    if (member.type === 'node' && Number.isFinite(member.lat) && Number.isFinite(member.lon)) {
+      stops.push({ lat: member.lat, lng: member.lon, role: member.role, osm: { type: 'node', id: member.ref } });
+      continue;
+    }
+    if (Array.isArray(member.geometry) && member.geometry.length) {
+      const first = member.geometry[0];
+      if (Number.isFinite(first?.lat) && Number.isFinite(first?.lon)) {
+        stops.push({ lat: first.lat, lng: first.lon, role: member.role, osm: { type: member.type, id: member.ref } });
+      }
+    }
+  }
+  return stops;
+}
+
+/**
+ * Assembles a transit route relation's way members into a single ordered
+ * polyline (via endpoint stitching, robust to Overpass returning members
+ * out of order or reversed), plus its stop/platform members and a
+ * representative midpoint along the assembled line.
+ */
+export function buildRouteFeature(item) {
+  const members = item.members || [];
+  const wayMembers = members.filter((member) => member.type === 'way' && Array.isArray(member.geometry));
+  const segments = wayMembers.map((member) => geometryCoords(member.geometry));
+  const assembled = assembleRings(segments);
+  const geometry = assembled.reduce((best, ring) => (ring.length > (best?.length || 0) ? ring : best), null) || segments.flat();
+  const point = lineMidpoint(geometry) || itemCenter(item);
+  return { point, geometry, stops: relationStops(members) };
+}
+
 /**
  * Computes a representative point that actually sits inside the feature's
  * geometry, instead of Overpass's `out center`, which is bbox-based and can
@@ -122,15 +156,10 @@ function representativePoint(item) {
   }
 
   if (item.type === 'relation') {
+    if (item.tags?.type === 'route') return buildRouteFeature(item).point;
+
     const members = item.members || [];
     const wayMembers = members.filter((member) => member.type === 'way' && Array.isArray(member.geometry));
-
-    if (item.tags?.type === 'route') {
-      const segments = wayMembers.map((member) => geometryCoords(member.geometry));
-      const assembled = assembleRings(segments);
-      const longest = assembled.reduce((best, ring) => (ring.length > (best?.length || 0) ? ring : best), null);
-      return lineMidpoint(longest || segments.flat()) || itemCenter(item);
-    }
 
     const outerSegments = wayMembers
       .filter((member) => (member.role || 'outer') !== 'inner')
@@ -315,9 +344,13 @@ export async function discoverOverpassScoped({ country, city, cityGeo, center = 
   const payload = await overpassPayload(request, endpoint, buildDiscoveryQuery(scope));
   const rows = [];
   for (const item of payload.elements || []) {
-    const point = representativePoint(item);
     const typeHint = classifyDiscovery(item, scope);
-    if (!point || !typeHint) continue;
+    if (!typeHint) continue;
+
+    const routeFeature = typeHint === 'transit_route' ? buildRouteFeature(item) : null;
+    const point = routeFeature ? routeFeature.point : representativePoint(item);
+    if (!point) continue;
+
     rows.push({
       provider: 'overpass',
       country,
@@ -346,7 +379,13 @@ export async function discoverOverpassScoped({ country, city, cityGeo, center = 
         publicTransport: item.tags.public_transport || null,
         railway: item.tags.railway || null,
         route: item.tags.type === 'route' ? item.tags.route || null : null,
+        ref: item.tags.ref || null,
+        operator: item.tags.operator || null,
       },
+      route: routeFeature ? {
+        geometry: routeFeature.geometry.map((p) => ({ lat: p.lat, lng: p.lng })),
+        stops: routeFeature.stops,
+      } : null,
     });
   }
   return rows;
