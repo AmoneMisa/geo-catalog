@@ -9,15 +9,26 @@ import {
   reconcileStopsWithOsm,
 } from '../scripts/refresh-tashkent-bus-wikiroutes.js';
 
-test('catalog parser takes every counted bus route link and ignores service labels and later sections', () => {
+test('catalog parser scopes routes to the WikiRoutes bus typeBlock', () => {
   const html = `
-    <script>const transportTabs = ['Автобусы', 'Маршрутки'];</script>
     <a href="/tashkent?routes=99999">service-link-before-catalog</a>
-    <h2>Автобусы (2)</h2>
-    <a href="/tashkent?routes=10600">1</a>
-    <a href="/tashkent?routes=10601">101 (Ташкент - Дархан)</a>
-    <h2>Маршрутки (1)</h2>
-    <a href="/tashkent?routes=20000">1м</a>`;
+    <div class="typeBlock" data-number="0">
+      <span class=typeHeader-name>Другой транспорт</span>
+      <a href="/tashkent?routes=99998">service-link-inside-other-block</a>
+    </div>
+    <div data-number='1' class='catalog typeBlock'>
+      <div class="typeHeader">
+        <span class=typeHeader-name>Автобусы</span>
+        <span class=count>(2)</span>
+      </div>
+      <a href="/tashkent?routes=10600">1</a>
+      <a href="/tashkent?routes=10601">101 (Ташкент - Дархан)</a>
+    </div>
+    <div class="typeBlock" data-number=2>
+      <span class=typeHeader-name>Маршрутки</span>
+      <span class=count>(1)</span>
+      <a href="/tashkent?routes=20000">1м</a>
+    </div>`;
   assert.deepEqual(parseCatalogRoutes(html).map(({ sourceRouteId, ref }) => [sourceRouteId, ref]), [
     ['10600', '1'],
     ['10601', '101'],
