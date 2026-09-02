@@ -48,23 +48,40 @@ export const normalizeRouteRef = (value) => stripTags(value)
   .replace(/Т/gu, 'T')
   .replace(/\s+/g, '');
 
-const countedSectionIndex = (source, label) => source.search(
-  new RegExp(`${label}(?:\\s|&nbsp;|<[^>]*>){0,8}\\(\\s*\\d+\\s*\\)`, 'i'),
-);
+const htmlAttribute = (attributes, name) => {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = String(attributes).match(
+    new RegExp(`\\b${escapedName}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, 'i'),
+  );
+  return match?.[1] ?? match?.[2] ?? match?.[3] ?? null;
+};
+
+const typeBlockRows = (source) => [...String(source).matchAll(/<div\b([^>]*)>/gi)].flatMap((match) => {
+  const attributes = match[1];
+  const classes = (htmlAttribute(attributes, 'class') ?? '').split(/\s+/).filter(Boolean);
+  if (!classes.includes('typeBlock')) return [];
+  return [{
+    index: match.index ?? 0,
+    dataNumber: htmlAttribute(attributes, 'data-number'),
+  }];
+});
 
 export function parseCatalogRoutes(html, { mode = 'bus' } = {}) {
   const source = String(html);
-  const busStart = countedSectionIndex(source, 'Автобусы');
-  const minibusStart = countedSectionIndex(source, 'Маршрутки');
-  const metroStart = countedSectionIndex(source, 'Метро');
+  const dataNumberByMode = { bus: '1' };
+  const dataNumber = dataNumberByMode[mode];
+  if (!dataNumber) return [];
 
-  if (mode === 'bus' && busStart < 0) return [];
-  const sectionEnd = [minibusStart, metroStart]
-    .filter((value) => value > busStart)
-    .sort((a, b) => a - b)[0] ?? source.length;
+  const blocks = typeBlockRows(source);
+  const blockIndex = blocks.findIndex((block) => block.dataNumber === dataNumber);
+  if (blockIndex < 0) return [];
 
-  const rows = anchorRows(source).filter(({ href, index }) => {
-    if (mode === 'bus' && (index < busStart || index >= sectionEnd)) return false;
+  const block = blocks[blockIndex];
+  const nextBlock = blocks[blockIndex + 1];
+  const section = source.slice(block.index, nextBlock?.index ?? source.length);
+  if (mode === 'bus' && !/Автобусы/i.test(stripTags(section.slice(0, 1800)))) return [];
+
+  const rows = anchorRows(section).filter(({ href }) => {
     const url = new URL(href, BASE_URL);
     return url.pathname === '/tashkent' && Boolean(url.searchParams.get('routes'));
   });
