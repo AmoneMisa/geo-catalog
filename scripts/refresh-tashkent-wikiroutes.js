@@ -6,7 +6,7 @@ const BASE_URL = new URL(CATALOG_URL).origin;
 const DEFAULT_CONCURRENCY = 6;
 const DEFAULT_TIMEOUT_MS = 12_000;
 const DEFAULT_OUTPUT = '.cache/wikiroutes/tashkent-active.json';
-const TASHKENT_BOUNDS = Object.freeze({ south: 40.9, north: 41.6, west: 68.8, east: 69.8 });
+const SUPPORTED_MODES = Object.freeze(['bus', 'minibus', 'metro', 'trolleybus', 'tram', 'funicular']);
 
 const MODE_LABELS = new Map([
   ['автобусы', 'bus'],
@@ -49,6 +49,9 @@ const elementRows = (source, tag) => [...String(source).matchAll(new RegExp(`<${
     classes: (htmlAttribute(match[1], 'class') ?? '').split(/\s+/).filter(Boolean),
   }));
 
+const emptyModeCounts = () => Object.fromEntries(SUPPORTED_MODES.map((mode) => [mode, 0]));
+const routeRefFromLabel = (label) => String(label ?? '').replace(/\s*\([^)]*\)\s*$/, '').trim();
+
 function parseActiveCatalog(html) {
   const source = String(html);
   const starts = [...source.matchAll(/<div\b([^>]*)>/gi)].flatMap((match) => {
@@ -57,8 +60,11 @@ function parseActiveCatalog(html) {
   });
 
   const routes = [];
-  const seen = new Set();
+  const seen = new Map();
   const declaredCountsByMode = {};
+  const activeLinkCountsByMode = emptyModeCounts();
+  const inactiveLinkCountsByMode = emptyModeCounts();
+  const duplicateRouteLinks = [];
 
   for (let i = 0; i < starts.length; i += 1) {
     const section = source.slice(starts[i].index, starts[i + 1]?.index ?? source.length);
@@ -74,28 +80,55 @@ function parseActiveCatalog(html) {
     for (const match of section.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
       const href = htmlAttribute(match[1], 'href');
       if (!href) continue;
-      const classes = (htmlAttribute(match[1], 'class') ?? '').split(/\s+/).filter(Boolean);
-      if (classes.includes('no-active')) continue;
 
+      const classes = (htmlAttribute(match[1], 'class') ?? '').split(/\s+/).filter(Boolean);
       const url = new URL(decodeHtml(href), BASE_URL);
       const sourceRouteId = url.searchParams.get('routes');
-      if (url.pathname !== '/tashkent' || !sourceRouteId || seen.has(sourceRouteId)) continue;
-      seen.add(sourceRouteId);
+      if (url.pathname !== '/tashkent' || !sourceRouteId) continue;
 
+      if (classes.includes('no-active')) {
+        inactiveLinkCountsByMode[mode] += 1;
+        continue;
+      }
+
+      activeLinkCountsByMode[mode] += 1;
       const label = stripTags(htmlAttribute(match[1], 'title') ?? match[2]);
-      routes.push({
+      const route = {
         sourceRouteId,
         sourceRouteUrl: url.href,
         mode,
         active: true,
         scope: classes.find((value) => ['city', 'suburban', 'intercity'].includes(value)) ?? null,
-        ref: label.replace(/\s*\([^)]*\)\s*$/, '').trim(),
+        ref: routeRefFromLabel(label),
         label,
-      });
+      };
+
+      const existing = seen.get(sourceRouteId);
+      if (existing) {
+        duplicateRouteLinks.push({
+          sourceRouteId,
+          mode,
+          ref: route.ref,
+          label: route.label,
+          scope: route.scope,
+          duplicateOfMode: existing.mode,
+          duplicateOfRef: existing.ref,
+        });
+        continue;
+      }
+
+      seen.set(sourceRouteId, route);
+      routes.push(route);
     }
   }
 
-  return { routes, declaredCountsByMode };
+  return {
+    routes,
+    declaredCountsByMode,
+    activeLinkCountsByMode,
+    inactiveLinkCountsByMode,
+    duplicateRouteLinks,
+  };
 }
 
 const anchorRows = (html) => [...String(html).matchAll(/<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi)]
@@ -125,20 +158,27 @@ function parseRoutePage(html, route) {
   return { ...route, directions };
 }
 
-const inTashkent = (lat, lng) => Number.isFinite(lat) && Number.isFinite(lng)
-  && lat >= TASHKENT_BOUNDS.south && lat <= TASHKENT_BOUNDS.north
-  && lng >= TASHKENT_BOUNDS.west && lng <= TASHKENT_BOUNDS.east;
+const isValidWgs84 = (lat, lng) => Number.isFinite(lat) && Number.isFinite(lng)
+  && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
 
 function parseStopPage(html, stop) {
   const source = decodeHtml(String(html));
   const candidates = [];
+
   for (const match of source.matchAll(/[?&]cbll=(-?\d+(?:\.\d+)?)(?:%2C|,)(-?\d+(?:\.\d+)?)/gi)) {
     candidates.push({ lat: Number(match[1]), lng: Number(match[2]), coordinateSource: 'google_street_view' });
   }
   for (const match of source.matchAll(/["'](?:lat|latitude)["']\s*:\s*(-?\d+(?:\.\d+)?)[\s\S]{0,160}?["'](?:lng|lon|longitude)["']\s*:\s*(-?\d+(?:\.\d+)?)/gi)) {
     candidates.push({ lat: Number(match[1]), lng: Number(match[2]), coordinateSource: 'embedded_lat_lng' });
   }
-  const point = candidates.find(({ lat, lng }) => inTashkent(lat, lng));
+  for (const match of source.matchAll(/["'](?:lng|lon|longitude)["']\s*:\s*(-?\d+(?:\.\d+)?)[\s\S]{0,160}?["'](?:lat|latitude)["']\s*:\s*(-?\d+(?:\.\d+)?)/gi)) {
+    candidates.push({ lat: Number(match[2]), lng: Number(match[1]), coordinateSource: 'embedded_lng_lat' });
+  }
+  for (const match of source.matchAll(/data-lat(?:itude)?\s*=\s*["'](-?\d+(?:\.\d+)?)["'][\s\S]{0,160}?data-l(?:ng|on|ongitude)\s*=\s*["'](-?\d+(?:\.\d+)?)["']/gi)) {
+    candidates.push({ lat: Number(match[1]), lng: Number(match[2]), coordinateSource: 'data_attributes' });
+  }
+
+  const point = candidates.find(({ lat, lng }) => isValidWgs84(lat, lng));
   return point
     ? { ...stop, ...point, coordinateStatus: 'ok' }
     : { ...stop, lat: null, lng: null, coordinateSource: null, coordinateStatus: 'missing' };
@@ -166,10 +206,21 @@ async function mapConcurrent(items, concurrency, worker) {
   return results;
 }
 
+const countBy = (items, keyOf, initial = {}) => {
+  const counts = { ...initial };
+  for (const item of items) {
+    const key = keyOf(item) ?? 'unknown';
+    counts[key] = (counts[key] ?? 0) + 1;
+  }
+  return counts;
+};
+
 async function main() {
   const output = process.argv.find((arg) => arg.startsWith('--output='))?.slice('--output='.length) || DEFAULT_OUTPUT;
-  const concurrency = Number(process.argv.find((arg) => arg.startsWith('--concurrency='))?.split('=')[1] ?? DEFAULT_CONCURRENCY);
-  const timeoutMs = Number(process.argv.find((arg) => arg.startsWith('--timeout='))?.split('=')[1] ?? DEFAULT_TIMEOUT_MS);
+  const concurrencyArg = Number(process.argv.find((arg) => arg.startsWith('--concurrency='))?.split('=')[1] ?? DEFAULT_CONCURRENCY);
+  const timeoutArg = Number(process.argv.find((arg) => arg.startsWith('--timeout='))?.split('=')[1] ?? DEFAULT_TIMEOUT_MS);
+  const concurrency = Number.isInteger(concurrencyArg) && concurrencyArg > 0 ? concurrencyArg : DEFAULT_CONCURRENCY;
+  const timeoutMs = Number.isFinite(timeoutArg) && timeoutArg > 0 ? timeoutArg : DEFAULT_TIMEOUT_MS;
 
   const catalog = parseActiveCatalog(await fetchText(CATALOG_URL, timeoutMs));
   const routeResults = await mapConcurrent(catalog.routes, concurrency, async (route) => {
@@ -181,6 +232,9 @@ async function main() {
   });
 
   const routes = routeResults.filter((route) => route.directions.length);
+  const routeErrors = routeResults.filter((route) => route.crawlError);
+  const routeParseMisses = routeResults.filter((route) => !route.crawlError && !route.directions.length);
+
   const uniqueStops = new Map();
   for (const route of routes) {
     for (const direction of route.directions) {
@@ -194,22 +248,34 @@ async function main() {
     try {
       return parseStopPage(await fetchText(stop.sourceStopUrl, timeoutMs), stop);
     } catch (error) {
-      return { ...stop, lat: null, lng: null, coordinateSource: null, coordinateStatus: 'error', error: String(error?.message ?? error) };
+      return {
+        ...stop,
+        lat: null,
+        lng: null,
+        coordinateSource: null,
+        coordinateStatus: 'error',
+        error: String(error?.message ?? error),
+      };
     }
   });
+
   const stopById = new Map(stops.map((stop) => [stop.sourceStopId, stop]));
   const hydratedRoutes = routes.map((route) => ({
     ...route,
     directions: route.directions.map((direction) => ({
       ...direction,
+      // Do not dedupe this array: repeated physical stops can be meaningful on loops.
       stops: direction.stops.map((stop) => stopById.get(stop.sourceStopId) ?? stop),
     })),
   }));
 
-  const routeCountsByMode = hydratedRoutes.reduce((counts, route) => {
-    counts[route.mode] = (counts[route.mode] ?? 0) + 1;
-    return counts;
-  }, {});
+  const routeCountsByMode = countBy(hydratedRoutes, (route) => route.mode, emptyModeCounts());
+  const routeCountsByScope = countBy(hydratedRoutes, (route) => route.scope ?? 'unknown');
+  const coordinateCountsBySource = countBy(
+    stops.filter((stop) => stop.coordinateStatus === 'ok'),
+    (stop) => stop.coordinateSource,
+  );
+  const missingStops = stops.filter((stop) => stop.coordinateStatus !== 'ok');
 
   const snapshot = {
     source: 'wikiroutes',
@@ -217,11 +283,23 @@ async function main() {
     catalogUrl: CATALOG_URL,
     fetchedAt: new Date().toISOString(),
     declaredCountsByMode: catalog.declaredCountsByMode,
+    activeLinkCountsByMode: catalog.activeLinkCountsByMode,
+    inactiveLinkCountsByMode: catalog.inactiveLinkCountsByMode,
+    duplicateRouteLinkCount: catalog.duplicateRouteLinks.length,
+    duplicateRouteLinks: catalog.duplicateRouteLinks,
     routeCountsByMode,
+    routeCountsByScope,
     routeCount: hydratedRoutes.length,
-    routeErrorCount: routeResults.filter((route) => route.crawlError).length,
+    routeErrorCount: routeErrors.length,
+    routeParseMissCount: routeParseMisses.length,
+    routeErrors: routeErrors.map(({ sourceRouteId, mode, ref, crawlError }) => ({ sourceRouteId, mode, ref, crawlError })),
+    routeParseMisses: routeParseMisses.map(({ sourceRouteId, mode, ref, sourceRouteUrl }) => ({ sourceRouteId, mode, ref, sourceRouteUrl })),
     stopCount: stops.length,
     stopCoordinateCount: stops.filter((stop) => stop.coordinateStatus === 'ok').length,
+    stopMissingCoordinateCount: missingStops.length,
+    stopErrorCount: stops.filter((stop) => stop.coordinateStatus === 'error').length,
+    coordinateCountsBySource,
+    stops,
     routes: hydratedRoutes,
   };
 
@@ -231,11 +309,19 @@ async function main() {
   console.log(JSON.stringify({
     output,
     declaredCountsByMode: snapshot.declaredCountsByMode,
+    activeLinkCountsByMode: snapshot.activeLinkCountsByMode,
+    inactiveLinkCountsByMode: snapshot.inactiveLinkCountsByMode,
+    duplicateRouteLinkCount: snapshot.duplicateRouteLinkCount,
     routeCountsByMode: snapshot.routeCountsByMode,
+    routeCountsByScope: snapshot.routeCountsByScope,
     routeCount: snapshot.routeCount,
     routeErrorCount: snapshot.routeErrorCount,
+    routeParseMissCount: snapshot.routeParseMissCount,
     stopCount: snapshot.stopCount,
     stopCoordinateCount: snapshot.stopCoordinateCount,
+    stopMissingCoordinateCount: snapshot.stopMissingCoordinateCount,
+    stopErrorCount: snapshot.stopErrorCount,
+    coordinateCountsBySource: snapshot.coordinateCountsBySource,
   }, null, 2));
 }
 
