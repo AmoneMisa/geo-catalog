@@ -18,6 +18,7 @@ const GENERIC_AREA_NAMES = new Set([
 
 const CITY_CENTER_FALLBACK_RADIUS_M = 15_000;
 const EXPLICIT_CITY_FALLBACK_RADIUS_M = 8_000;
+const SAME_CITY_NAME_MAX_DISTANCE_M = 45_000;
 const AREA_MARKER_RE = /\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|neighbou?rhood|suburb|quarter|rayon|tumani|район|махалла|массив|квартал|микрорайон|мкр|ықшамаудан|шағын\s+аудан)\b/iu;
 const NUMBERED_AREA_MARKER_RE = /\b(?:microdistrict|mikrorayon|mavze(?:si)?|massiv|massivi|daha(?:si)?|quarter|микрорайон|мкр|массив|квартал|ықшамаудан|шағын\s+аудан)\b/iu;
 const AREA_CATEGORY_RE = /\b(?:boundary|place|landuse|administrative|district|neighbou?rhood|suburb|quarter|locality|residential)\b/i;
@@ -135,14 +136,23 @@ function providerTypeText(candidate) {
 export function isCandidateInCity(row, candidate, cityGeo = null) {
   const expected = normalizeGeoText(row.city);
   const actual = normalizeGeoText(candidate.city);
-  if (actual && (actual === expected || looseCityKey(actual) === looseCityKey(expected))) return true;
-  if (pointInBbox(candidate, cityGeo?.bbox)) return true;
+  const sameCityName = Boolean(actual && (actual === expected || looseCityKey(actual) === looseCityKey(expected)));
+  const inBbox = pointInBbox(candidate, cityGeo?.bbox);
+  if (inBbox) return true;
+
+  const distance = cityGeo?.center ? haversineM(candidate, cityGeo.center) : Infinity;
+  if (sameCityName) {
+    // Same-name localities exist across every supported country. Once we have
+    // spatial context for the target city, text equality alone is not enough.
+    if (cityGeo?.bbox && Number.isFinite(candidate?.lat) && Number.isFinite(candidate?.lng)) return false;
+    if (cityGeo?.center && distance > SAME_CITY_NAME_MAX_DISTANCE_M) return false;
+    return true;
+  }
 
   if (actual && actual !== expected && SEPARATE_LOCALITY_TYPE_RE.test(providerTypeText(candidate))) {
     return false;
   }
 
-  const distance = cityGeo?.center ? haversineM(candidate, cityGeo.center) : Infinity;
   if (actual && actual !== expected) {
     const radius = AREA_TYPES.has(row.type) ? CITY_CENTER_FALLBACK_RADIUS_M : EXPLICIT_CITY_FALLBACK_RADIUS_M;
     return distance <= radius;
