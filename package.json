@@ -26,6 +26,7 @@
     "validate": "node ./scripts/validate-catalog.js",
     "audit:lexicon": "node ./scripts/audit-lexicon-coverage.js",
     "audit:transport": "node ./scripts/audit-transport-coverage.js",
+    "audit:tashkent-minibus": "node ./scripts/audit-tashkent-minibus-sources.js",
     "crawl:geo": "node ./scripts/crawl-geo-enrichment.js",
     "check:crawler": "node --check ./scripts/crawl-geo-enrichment.js",
     "prepack": "npm test && npm run validate && npm run check:crawler"
