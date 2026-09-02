@@ -17,4 +17,5 @@ export const UA_VINNYTSIA_POI_ENTITIES = Object.freeze([
   poi('vinnytsia-tower', 'poi.landmark', 'Vinnytsia Tower', 49.23493, 28.46965, 120, { osm: Object.freeze({ type: 'way', id: 47054973 }), wikidataId: 'Q12090095' }),
   poi('pyrohov-museum', 'poi.landmark', 'Pyrohov Museum', 49.2160305556, 28.408375, 300, { wikidataId: 'Q4306061' }),
   poi('european-square', 'poi.landmark', 'European Square', 49.234653, 28.468743, 220, { source: 'manual', sourceUrl: 'https://vinnytsia.city/yevropejska-ploshha/' }),
+  poi('vyshenske-lake', 'poi.lake', 'Vyshenske Lake', 49.2144387, 28.4211506, 700, { osm: Object.freeze({ type: 'way', id: 33826716 }) }),
 ]);
