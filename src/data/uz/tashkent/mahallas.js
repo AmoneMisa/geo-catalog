@@ -82,6 +82,7 @@ export const TASHKENT_MAHALLA_ENTITIES = Object.freeze([
   // Keep them as mahallas even where a same-name mavze/local-area exists elsewhere.
   mahalla('bogkocha', "Bog'ko'cha", 'uz:tashkent:shaykhantahur', 41.3277799, 69.2191542, 'relation', 2336787, 650),
   mahalla('shifokorlar', 'Shifokorlar', 'uz:tashkent:almazar', 41.3552738, 69.1742802, 'way', 1123281625, 700),
+  mahalla('chamanbog', "Chamanbog'", 'uz:tashkent:almazar', 41.3690631, 69.1942643, 'way', 1150374391, 650),
 
   mahalla('taxtapul', 'Taxtapul', 'uz:tashkent:shaykhantahur', 41.339682, 69.2642825, 'node', 9687947537, 650),
   mahalla('khastimam', 'Khastimam', 'uz:tashkent:almazar', 41.33303, 69.24287, 'way', 1137236407, 420),
