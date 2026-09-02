@@ -40,6 +40,7 @@ const resolvedAreas = Object.freeze([
   ["Qo'yliq-6", 'uz:tashkent:local-area:qoyliq-6', 'uz:tashkent:sergeli', 'node', 4750071797],
   ["Qo'yliq-7", 'uz:tashkent:local-area:qoyliq-7', 'uz:tashkent:sergeli', 'node', 5637605369],
   ['Tashselmash', 'uz:tashkent:local-area:tashselmash', 'uz:tashkent:yashnobod', 'node', 6123092387],
+  ['Qiyot', 'uz:tashkent:local-area:kiyot', 'uz:tashkent:yunusabad', 'relation', 2351549],
 ]);
 
 const derivedAreas = Object.freeze([
@@ -112,13 +113,18 @@ test('same-name Tashkent mahallas remain independent spatial identities', () => 
     );
   }
 
-  for (const canonical of ['Humoyun', 'Asalobod', 'Gulobod', 'Qalqon', 'Olimpiya', 'Sebzor']) {
+  for (const canonical of [
+    'Humoyun', 'Asalobod', 'Gulobod', 'Qalqon', 'Olimpiya', 'Sebzor', "Bog'ko'cha", 'Shifokorlar',
+  ]) {
     assert.equal(
       isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical }),
       false,
       canonical,
     );
   }
+
+  assert.deepEqual(getGeoEntity('uz:tashkent:mahalla:bogkocha')?.osm, { type: 'relation', id: 2336787 });
+  assert.deepEqual(getGeoEntity('uz:tashkent:mahalla:shifokorlar')?.osm, { type: 'way', id: 1123281625 });
 
   const ibnSinoMahalla = getGeoEntity('uz:tashkent:mahalla:ibn-sino');
   const ibnSino1 = getGeoEntity('uz:tashkent:local-area:ibn-sino-1');
