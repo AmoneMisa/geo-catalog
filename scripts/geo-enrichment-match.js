@@ -17,11 +17,22 @@ const GENERIC_AREA_NAMES = new Set([
 ]);
 
 const CITY_CENTER_FALLBACK_RADIUS_M = 15_000;
+const EXPLICIT_CITY_FALLBACK_RADIUS_M = 8_000;
 const AREA_MARKER_RE = /\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|neighbou?rhood|suburb|quarter|rayon|tumani|район|махалла|массив|квартал|микрорайон|мкр|ықшамаудан|шағын\s+аудан)\b/iu;
 const NUMBERED_AREA_MARKER_RE = /\b(?:microdistrict|mikrorayon|mavze(?:si)?|massiv|massivi|daha(?:si)?|quarter|микрорайон|мкр|массив|квартал|ықшамаудан|шағын\s+аудан)\b/iu;
 const AREA_CATEGORY_RE = /\b(?:boundary|place|landuse|administrative|district|neighbou?rhood|suburb|quarter|locality|residential)\b/i;
 const NON_AREA_CATEGORY_RE = /\b(?:highway|amenity|shop|tourism|leisure|office|craft|building|historic|railway|public_transport|aeroway)\b/i;
 const SEPARATE_LOCALITY_TYPE_RE = /\b(?:city|town|village|hamlet|settlement|administrative|municipality)\b/i;
+
+const CITY_CYRILLIC_FOLD = Object.freeze({
+  а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'e', ж: 'zh', з: 'z',
+  и: 'i', й: 'y', к: 'k', л: 'l', м: 'm', н: 'n', о: 'o', п: 'p', р: 'r',
+  с: 's', т: 't', у: 'u', ф: 'f', х: 'h', ц: 'ts', ч: 'ch', ш: 'sh', щ: 'shch',
+  ъ: '', ы: 'y', ь: '', э: 'e', ю: 'yu', я: 'ya',
+  қ: 'k', ғ: 'g', ә: 'a', і: 'i', ң: 'n', ө: 'o', ұ: 'u', ү: 'u', һ: 'h',
+  ў: 'o', ҳ: 'h',
+  є: 'ye', ї: 'yi', ґ: 'g',
+});
 
 const POI_SEMANTIC_RULES = Object.freeze([
   [/\b(?:river|річка|река)\b/iu, /\b(?:river|waterway|stream|water|hydro)\b/i],
@@ -52,11 +63,20 @@ export function normalizeGeoText(value) {
     .toLowerCase()
     .replace(/\p{M}+/gu, '')
     .replace(/ı/g, 'i')
+    .replace(/(\d+)а\b/gu, '$1a')
     .replace(/[’ʻʼ‘`´]/g, "'")
     .replace(/\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|street|ko'chasi|ko‘chasi|koshesi|улица|ул|ықшамаудан|шағын\s+аудан)\b/giu, ' ')
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .replace(/\b(\d+)\s+[aа]\b/gu, '$1a')
     .trim()
     .replace(/\s+/g, ' ');
+}
+
+function looseCityKey(value) {
+  return normalizeGeoText(value)
+    .split('')
+    .map((char) => CITY_CYRILLIC_FOLD[char] ?? char)
+    .join('');
 }
 
 function tokenDice(a, b) {
@@ -115,14 +135,20 @@ function providerTypeText(candidate) {
 export function isCandidateInCity(row, candidate, cityGeo = null) {
   const expected = normalizeGeoText(row.city);
   const actual = normalizeGeoText(candidate.city);
-  if (actual && actual === expected) return true;
+  if (actual && (actual === expected || looseCityKey(actual) === looseCityKey(expected))) return true;
   if (pointInBbox(candidate, cityGeo?.bbox)) return true;
 
   if (actual && actual !== expected && SEPARATE_LOCALITY_TYPE_RE.test(providerTypeText(candidate))) {
     return false;
   }
 
-  if (cityGeo?.center && haversineM(candidate, cityGeo.center) <= CITY_CENTER_FALLBACK_RADIUS_M) return true;
+  const distance = cityGeo?.center ? haversineM(candidate, cityGeo.center) : Infinity;
+  if (actual && actual !== expected) {
+    const radius = AREA_TYPES.has(row.type) ? CITY_CENTER_FALLBACK_RADIUS_M : EXPLICIT_CITY_FALLBACK_RADIUS_M;
+    return distance <= radius;
+  }
+
+  if (distance <= CITY_CENTER_FALLBACK_RADIUS_M) return true;
   if (actual) return false;
   return labelMentionsCityWithoutDistrictSuffix(row, candidate);
 }
@@ -136,6 +162,7 @@ export function providerTypeScore(row, candidate) {
   if (row.type === 'district') return /administrative|district|borough|boundary/.test(type) ? 1 : 0.2;
   if (row.type === 'microdistrict') {
     if (/administrative|district|neighbou?rhood|quarter/.test(type)) return 1;
+    if (/\d/.test(normalizeGeoText(row.canonical))) return /residential|place|locality|landuse|suburb/.test(type) ? 0.3 : 0.2;
     return /residential|place|locality|landuse|suburb/.test(type) ? 0.75 : 0.2;
   }
   if (row.type === 'mahalla') {
