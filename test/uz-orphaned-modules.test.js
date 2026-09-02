@@ -27,3 +27,14 @@ test('verified industrial modules are present in runtime catalog', () => {
   assert.equal(getGeoEntity('uz:angren:poi:angren-tpp')?.type, 'poi.power_plant');
   assert.equal(getGeoEntity('uz:almalyk:poi:almalyk-mmc')?.type, 'poi.factory');
 });
+
+test('remaining verified regional modules are present in runtime catalog', () => {
+  assert.equal(getGeoEntity('uz:muynak:poi:ship-cemetery')?.osm?.id, 348697797);
+  assert.equal(getGeoEntity('uz:muynak:poi:aral-sea-museum')?.osm?.id, 6911874385);
+  assert.equal(getGeoEntity('uz:jizzakh:poi:jizzakh-pedagogical-university')?.type, 'poi.university');
+  assert.equal(getGeoEntity('uz:asaka:poi:asaka-bank')?.source, 'official');
+  assert.equal(getGeoEntity('uz:denov:poi:denov-railway-station')?.osm?.id, 245671270);
+  assert.equal(getGeoEntity('uz:urgut:poi:urgut-railway-station')?.osm?.id, 13717491021);
+  assert.equal(getGeoEntity('uz:kogon:poi:palace-of-the-emir-of-bukhara')?.osm?.id, 3348088626);
+  assert.equal(getGeoEntity('uz:paxtazor')?.osm?.id, 514231681);
+});
