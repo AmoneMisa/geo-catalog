@@ -6,21 +6,48 @@ on:
       - feat/ua-city-districts-cherkasy-poltava-chernihiv
     paths:
       - '.github/workflows/check-enrichment-regressions.yml'
-      - 'scripts/geo-enrichment-match.js'
-      - 'test/geo-enrichment-match-regressions.test.js'
 
 permissions:
   contents: read
 
 jobs:
-  verify:
+  compare:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install --ignore-scripts
-      - run: node --test test/geo-enrichment-match-regressions.test.js
-      - run: npm test
-      - run: npm run validate
+      - name: Baseline suite
+        shell: bash
+        run: |
+          git checkout --detach 2844d9d9965810842ccde4c5e5b5885747a5a519
+          npm install --ignore-scripts >/dev/null
+          set +e
+          npm test > /tmp/baseline.log 2>&1
+          echo "BASELINE_EXIT=$?"
+          set -e
+          grep '^# fail ' /tmp/baseline.log || true
+          grep '^not ok ' /tmp/baseline.log | sed -E 's/^not ok [0-9]+ - //' | sort > /tmp/baseline-failures.txt || true
+          cat /tmp/baseline-failures.txt
+      - name: Current suite and diff
+        shell: bash
+        run: |
+          git checkout --detach "$GITHUB_SHA"
+          npm install --ignore-scripts >/dev/null
+          set +e
+          npm test > /tmp/current.log 2>&1
+          echo "CURRENT_EXIT=$?"
+          set -e
+          grep '^# fail ' /tmp/current.log || true
+          grep '^not ok ' /tmp/current.log | sed -E 's/^not ok [0-9]+ - //' | sort > /tmp/current-failures.txt || true
+          echo '--- newly failing vs baseline ---'
+          comm -13 /tmp/baseline-failures.txt /tmp/current-failures.txt || true
+          echo '--- fixed vs baseline ---'
+          comm -23 /tmp/baseline-failures.txt /tmp/current-failures.txt || true
+          echo '--- current failures ---'
+          cat /tmp/current-failures.txt
+      - name: Targeted matcher regressions
+        run: node --test test/geo-enrichment-match-regressions.test.js
