@@ -42,12 +42,19 @@ const stopIdFromUrl = (url) => {
   return match?.[1] ?? null;
 };
 
+export const normalizeRouteRef = (value) => stripTags(value)
+  .toLocaleUpperCase('ru')
+  .replace(/Т/gu, 'T')
+  .replace(/\s+/g, '');
+
 export function parseCatalogRoutes(html, { mode = 'bus' } = {}) {
   const source = String(html);
   const busStart = source.search(/Автобусы(?:\s|&nbsp;|<)/i);
   const minibusStart = source.search(/Маршрутки(?:\s|&nbsp;|<)/i);
   const metroStart = source.search(/Метро(?:\s|&nbsp;|<)/i);
-  const sectionEnd = [minibusStart, metroStart].filter((value) => value >= 0).sort((a, b) => a - b)[0] ?? source.length;
+  const sectionEnd = [minibusStart, metroStart]
+    .filter((value) => value >= 0)
+    .sort((a, b) => a - b)[0] ?? source.length;
 
   const rows = anchorRows(source).filter(({ href, index }) => {
     if (mode === 'bus' && busStart >= 0 && (index < busStart || index >= sectionEnd)) return false;
@@ -67,7 +74,7 @@ export function parseCatalogRoutes(html, { mode = 'bus' } = {}) {
 }
 
 const headingRows = (html, level) => [...String(html).matchAll(new RegExp(`<h${level}\\b[^>]*>([\\s\\S]*?)<\\/h${level}>`, 'gi'))]
-  .map((match) => ({ index: match.index ?? 0, text: stripTags(match[1]), html: match[1] }));
+  .map((match) => ({ index: match.index ?? 0, text: stripTags(match[1]) }));
 
 export function parseRoutePage(html, route) {
   const source = String(html);
@@ -77,12 +84,10 @@ export function parseRoutePage(html, route) {
   const parsed = directions.map((direction, directionIndex) => {
     const end = directions[directionIndex + 1]?.index ?? source.length;
     const section = source.slice(direction.index, end);
-    const seen = new Set();
     const stops = anchorRows(section).flatMap(({ href, text }) => {
       const sourceStopUrl = absoluteUrl(href, route.sourceRouteUrl);
       const sourceStopId = stopIdFromUrl(sourceStopUrl);
-      if (!sourceStopId || seen.has(sourceStopId)) return [];
-      seen.add(sourceStopId);
+      if (!sourceStopId) return [];
       return [{ sourceStopId, sourceStopUrl, name: text }];
     });
     const [from = stops[0]?.name ?? '', to = stops.at(-1)?.name ?? ''] = direction.text
@@ -105,20 +110,39 @@ const inTashkent = (lat, lng) => Number.isFinite(lat) && Number.isFinite(lng)
   && lng >= TASHKENT_BOUNDS.west && lng <= TASHKENT_BOUNDS.east;
 
 const candidateCoordinates = (html) => {
-  const source = String(html);
+  const source = decodeHtml(String(html));
   const patterns = [
-    /["'](?:lat|latitude)["']\s*:\s*(-?\d+(?:\.\d+)?)[\s\S]{0,160}?["'](?:lng|lon|longitude)["']\s*:\s*(-?\d+(?:\.\d+)?)/gi,
-    /["'](?:lng|lon|longitude)["']\s*:\s*(-?\d+(?:\.\d+)?)[\s\S]{0,160}?["'](?:lat|latitude)["']\s*:\s*(-?\d+(?:\.\d+)?)/gi,
-    /data-lat(?:itude)?\s*=\s*["'](-?\d+(?:\.\d+)?)["'][\s\S]{0,160}?data-l(?:ng|on|ongitude)\s*=\s*["'](-?\d+(?:\.\d+)?)["']/gi,
-    /(?:center|coordinates)\s*[:=]\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]/gi,
+    {
+      source: 'google_street_view',
+      pattern: /[?&]cbll=(-?\d+(?:\.\d+)?)(?:%2C|,)(-?\d+(?:\.\d+)?)/gi,
+      toPoint: (match) => ({ lat: Number(match[1]), lng: Number(match[2]) }),
+    },
+    {
+      source: 'embedded_lat_lng',
+      pattern: /["'](?:lat|latitude)["']\s*:\s*(-?\d+(?:\.\d+)?)[\s\S]{0,160}?["'](?:lng|lon|longitude)["']\s*:\s*(-?\d+(?:\.\d+)?)/gi,
+      toPoint: (match) => ({ lat: Number(match[1]), lng: Number(match[2]) }),
+    },
+    {
+      source: 'embedded_lng_lat',
+      pattern: /["'](?:lng|lon|longitude)["']\s*:\s*(-?\d+(?:\.\d+)?)[\s\S]{0,160}?["'](?:lat|latitude)["']\s*:\s*(-?\d+(?:\.\d+)?)/gi,
+      toPoint: (match) => ({ lat: Number(match[2]), lng: Number(match[1]) }),
+    },
+    {
+      source: 'data_attributes',
+      pattern: /data-lat(?:itude)?\s*=\s*["'](-?\d+(?:\.\d+)?)["'][\s\S]{0,160}?data-l(?:ng|on|ongitude)\s*=\s*["'](-?\d+(?:\.\d+)?)["']/gi,
+      toPoint: (match) => ({ lat: Number(match[1]), lng: Number(match[2]) }),
+    },
+    {
+      source: 'coordinate_array',
+      pattern: /(?:center|coordinates)\s*[:=]\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]/gi,
+      toPoint: (match) => ({ lat: Number(match[2]), lng: Number(match[1]) }),
+    },
   ];
+
   const results = [];
-  for (const [patternIndex, pattern] of patterns.entries()) {
-    for (const match of source.matchAll(pattern)) {
-      const a = Number(match[1]);
-      const b = Number(match[2]);
-      if (patternIndex === 1 || patternIndex === 3) results.push({ lat: b, lng: a });
-      else results.push({ lat: a, lng: b });
+  for (const candidate of patterns) {
+    for (const match of source.matchAll(candidate.pattern)) {
+      results.push({ ...candidate.toPoint(match), source: candidate.source });
     }
   }
   return results;
@@ -126,8 +150,16 @@ const candidateCoordinates = (html) => {
 
 export function parseStopPage(html, stop) {
   const coordinates = candidateCoordinates(html).find(({ lat, lng }) => inTashkent(lat, lng));
-  if (!coordinates) return { ...stop, lat: null, lng: null, coordinateStatus: 'missing' };
-  return { ...stop, ...coordinates, coordinateStatus: 'ok' };
+  if (!coordinates) {
+    return { ...stop, lat: null, lng: null, coordinateStatus: 'missing', coordinateSource: null };
+  }
+  return {
+    ...stop,
+    lat: coordinates.lat,
+    lng: coordinates.lng,
+    coordinateStatus: 'ok',
+    coordinateSource: coordinates.source,
+  };
 }
 
 const normalizeName = (value) => stripTags(value)
@@ -149,7 +181,9 @@ const haversineM = (a, b) => {
 
 export function reconcileStopsWithOsm(wikiStops, osmStops, { matchRadiusM = DEFAULT_MATCH_RADIUS_M } = {}) {
   return wikiStops.map((stop) => {
-    if (!inTashkent(stop.lat, stop.lng)) return { ...stop, osmMatchId: null, osmMatchDistanceM: null };
+    if (!inTashkent(stop.lat, stop.lng)) {
+      return { ...stop, osmMatchId: null, osmMatchDistanceM: null };
+    }
     const wikiName = normalizeName(stop.name);
     const candidates = osmStops
       .filter((osm) => osm?.center && inTashkent(osm.center.lat, osm.center.lng))
@@ -167,9 +201,34 @@ export function reconcileStopsWithOsm(wikiStops, osmStops, { matchRadiusM = DEFA
   });
 }
 
+export function reconcileRoutes(routes, knownRoutes = [], knownVariants = []) {
+  const routeByRef = new Map(knownRoutes.map((route) => [normalizeRouteRef(route.ref), route]));
+  const variantsByRef = new Map();
+  for (const variant of knownVariants) {
+    const key = normalizeRouteRef(variant.ref);
+    if (!variantsByRef.has(key)) variantsByRef.set(key, []);
+    variantsByRef.get(key).push(variant);
+  }
+
+  return routes.map((route) => {
+    const key = normalizeRouteRef(route.ref);
+    const knownRoute = routeByRef.get(key);
+    const variants = variantsByRef.get(key) ?? [];
+    return {
+      ...route,
+      catalogRouteId: knownRoute?.id ?? null,
+      catalogCoverage: knownRoute?.coverage ?? null,
+      knownVariantIds: variants.map((variant) => variant.id),
+      knownVariantSources: [...new Set(variants.map((variant) => variant.source).filter(Boolean))],
+    };
+  });
+}
+
 async function fetchText(url, { timeoutMs = DEFAULT_TIMEOUT_MS } = {}) {
   const response = await fetch(url, {
-    headers: { 'user-agent': 'geo-catalog/0.7 wikiroutes transport refresh (+https://github.com/AmoneMisa/geo-catalog)' },
+    headers: {
+      'user-agent': 'geo-catalog/0.7 wikiroutes transport refresh (+https://github.com/AmoneMisa/geo-catalog)',
+    },
     signal: AbortSignal.timeout(timeoutMs),
   });
   if (!response.ok) throw new Error(`${response.status} ${response.statusText} for ${url}`);
@@ -191,8 +250,12 @@ async function mapConcurrent(items, concurrency, worker) {
 
 const uniqueStops = (routes) => {
   const stops = new Map();
-  for (const route of routes) for (const direction of route.directions) for (const stop of direction.stops) {
-    if (!stops.has(stop.sourceStopId)) stops.set(stop.sourceStopId, stop);
+  for (const route of routes) {
+    for (const direction of route.directions) {
+      for (const stop of direction.stops) {
+        if (!stops.has(stop.sourceStopId)) stops.set(stop.sourceStopId, stop);
+      }
+    }
   }
   return [...stops.values()];
 };
@@ -203,37 +266,80 @@ export async function crawlWikiRoutes({
   timeoutMs = DEFAULT_TIMEOUT_MS,
   fetcher = fetchText,
   osmStops = [],
+  knownRoutes = [],
+  knownVariants = [],
 } = {}) {
   const catalogHtml = await fetcher(catalogUrl, { timeoutMs });
   const catalogRoutes = parseCatalogRoutes(catalogHtml);
-  const routes = (await mapConcurrent(catalogRoutes, concurrency, async (route) => {
-    const html = await fetcher(route.sourceRouteUrl, { timeoutMs });
-    return parseRoutePage(html, route);
-  })).filter((route) => route.directions.length);
+  const routeResults = await mapConcurrent(catalogRoutes, concurrency, async (route) => {
+    try {
+      const html = await fetcher(route.sourceRouteUrl, { timeoutMs });
+      return parseRoutePage(html, route);
+    } catch (error) {
+      return { ...route, directions: [], crawlError: String(error?.message ?? error) };
+    }
+  });
+  const routes = routeResults.filter((route) => route.directions.length);
+  const routeErrors = routeResults.filter((route) => route.crawlError);
 
   const stopPages = await mapConcurrent(uniqueStops(routes), concurrency, async (stop) => {
     try {
       return parseStopPage(await fetcher(stop.sourceStopUrl, { timeoutMs }), stop);
     } catch (error) {
-      return { ...stop, lat: null, lng: null, coordinateStatus: 'error', error: String(error?.message ?? error) };
+      return {
+        ...stop,
+        lat: null,
+        lng: null,
+        coordinateStatus: 'error',
+        coordinateSource: null,
+        error: String(error?.message ?? error),
+      };
     }
   });
   const reconciledStops = reconcileStopsWithOsm(stopPages, osmStops);
   const stopById = new Map(reconciledStops.map((stop) => [stop.sourceStopId, stop]));
+  const hydratedRoutes = routes.map((route) => ({
+    ...route,
+    directions: route.directions.map((direction) => ({
+      ...direction,
+      stops: direction.stops.map((stop) => stopById.get(stop.sourceStopId) ?? stop),
+    })),
+  }));
+  const reconciledRoutes = reconcileRoutes(hydratedRoutes, knownRoutes, knownVariants);
+
+  const wikiRefs = new Set(reconciledRoutes.map((route) => normalizeRouteRef(route.ref)));
+  const knownRefs = new Map(knownRoutes.map((route) => [normalizeRouteRef(route.ref), route.ref]));
+  const coordinatesResolved = reconciledStops.filter((stop) => stop.coordinateStatus === 'ok').length;
+  const osmMatchedStops = reconciledStops.filter((stop) => stop.osmMatchId).length;
 
   return {
     source: 'wikiroutes',
     catalogUrl,
     fetchedAt: new Date().toISOString(),
-    routeCount: routes.length,
+    catalogRouteCount: catalogRoutes.length,
+    routeCount: reconciledRoutes.length,
+    routeErrorCount: routeErrors.length,
     stopCount: reconciledStops.length,
-    routes: routes.map((route) => ({
-      ...route,
-      directions: route.directions.map((direction) => ({
-        ...direction,
-        stops: direction.stops.map((stop) => stopById.get(stop.sourceStopId) ?? stop),
-      })),
+    stopCoordinateCount: coordinatesResolved,
+    stopCoordinateMissingCount: reconciledStops.length - coordinatesResolved,
+    osmMatchedStopCount: osmMatchedStops,
+    reconciliation: {
+      knownRouteCount: knownRoutes.length,
+      matchedKnownRouteCount: reconciledRoutes.filter((route) => route.catalogRouteId).length,
+      wikiRouteRefsMissingFromCatalog: reconciledRoutes
+        .filter((route) => !route.catalogRouteId)
+        .map((route) => route.ref),
+      catalogRouteRefsMissingFromWiki: [...knownRefs]
+        .filter(([ref]) => !wikiRefs.has(ref))
+        .map(([, ref]) => ref),
+    },
+    routeErrors: routeErrors.map(({ sourceRouteId, sourceRouteUrl, ref, crawlError }) => ({
+      sourceRouteId,
+      sourceRouteUrl,
+      ref,
+      crawlError,
     })),
+    routes: reconciledRoutes,
   };
 }
 
@@ -245,20 +351,42 @@ async function main() {
     || 'src/transport/generated/tashkent-bus-wikiroutes-snapshot.js';
 
   let osmStops = [];
+  let knownRoutes = [];
+  let knownVariants = [];
   try {
-    ({ TASHKENT_BUS_OSM_STOPS: osmStops } = await import('../src/transport/tashkent-bus-osm.js'));
+    const [bus, osm, official] = await Promise.all([
+      import('../src/transport/tashkent-bus.js'),
+      import('../src/transport/tashkent-bus-osm.js'),
+      import('../src/transport/tashkent-bus-official.js'),
+    ]);
+    osmStops = osm.TASHKENT_BUS_OSM_STOPS;
+    knownRoutes = bus.TASHKENT_BUS_ROUTES;
+    knownVariants = [
+      ...osm.TASHKENT_BUS_OSM_ROUTE_VARIANTS,
+      ...official.TASHKENT_BUS_OFFICIAL_ROUTE_VARIANTS,
+    ];
   } catch (error) {
-    console.warn(`[wikiroutes] OSM reconciliation unavailable: ${error?.message ?? error}`);
+    console.warn(`[wikiroutes] local transport reconciliation unavailable: ${error?.message ?? error}`);
   }
 
-  const snapshot = await crawlWikiRoutes({ osmStops });
+  const snapshot = await crawlWikiRoutes({ osmStops, knownRoutes, knownVariants });
   const moduleSource = `// Generated by scripts/refresh-tashkent-bus-wikiroutes.js.\nexport default ${jsString(snapshot)};\n`;
   await fs.mkdir(path.dirname(output), { recursive: true });
   await fs.writeFile(output, moduleSource, 'utf8');
-  const missingCoordinates = snapshot.routes.flatMap((route) => route.directions)
-    .flatMap((direction) => direction.stops)
-    .filter((stop) => stop.coordinateStatus !== 'ok').length;
-  console.log(`[wikiroutes] routes=${snapshot.routeCount} uniqueStops=${snapshot.stopCount} unresolvedCoordinateRefs=${missingCoordinates}`);
+
+  console.log(
+    `[wikiroutes] catalog=${snapshot.catalogRouteCount} parsed=${snapshot.routeCount} `
+    + `routeErrors=${snapshot.routeErrorCount}`,
+  );
+  console.log(
+    `[wikiroutes] uniqueStops=${snapshot.stopCount} coordinates=${snapshot.stopCoordinateCount} `
+    + `osmMatched=${snapshot.osmMatchedStopCount}`,
+  );
+  console.log(
+    `[wikiroutes] routeMatches=${snapshot.reconciliation.matchedKnownRouteCount}/${snapshot.reconciliation.knownRouteCount} `
+    + `wikiOnly=${snapshot.reconciliation.wikiRouteRefsMissingFromCatalog.length} `
+    + `catalogOnly=${snapshot.reconciliation.catalogRouteRefsMissingFromWiki.length}`,
+  );
   console.log(`[wikiroutes] wrote ${output}`);
 }
 
