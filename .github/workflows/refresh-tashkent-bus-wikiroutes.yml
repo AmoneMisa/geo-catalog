@@ -39,7 +39,7 @@ jobs:
       - run: npm install --ignore-scripts
       - name: Verify WikiRoutes parser fixtures
         run: node --test test/wikiroutes-crawler.test.js
-      - name: Probe live WikiRoutes catalog and route markup
+      - name: Probe raw WikiRoutes catalog boundaries
         shell: bash
         run: |
           node --input-type=module <<'NODE'
@@ -58,39 +58,46 @@ jobs:
             if (!response.ok) throw new Error(`${response.status} ${response.statusText} for ${url}`);
             return response.text();
           };
+          const compact = (value) => value.replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
+          const snippetsFor = (html, pattern, radius = 450) => [...html.matchAll(pattern)].slice(0, 8).map((match) => {
+            const index = match.index ?? 0;
+            return compact(html.slice(Math.max(0, index - radius), Math.min(html.length, index + match[0].length + radius)));
+          });
 
           const catalogHtml = await fetchHtml(CATALOG_URL);
+          const rawRouteAnchors = [...catalogHtml.matchAll(/<a\b[^>]*href=["']([^"']*\/tashkent\?[^"']*routes=\d+[^"']*)["'][^>]*>[\s\S]*?<\/a>/gi)];
+          console.log(JSON.stringify({
+            bytes: catalogHtml.length,
+            busLabelSnippets: snippetsFor(catalogHtml, /Автобусы/gi),
+            minibusLabelSnippets: snippetsFor(catalogHtml, /Маршрутки/gi),
+            firstRawRouteAnchors: rawRouteAnchors.slice(0, 8).map((match) => compact(match[0]).slice(0, 500)),
+            route10600Snippets: snippetsFor(catalogHtml, /routes=10600/gi),
+          }, null, 2));
+
           const routes = parseCatalogRoutes(catalogHtml);
           const uniqueRefs = new Set(routes.map((route) => normalizeRouteRef(route.ref)));
           console.log(JSON.stringify({
-            catalogRouteCount: routes.length,
+            parsedCatalogRouteCount: routes.length,
             uniqueRouteRefCount: uniqueRefs.size,
             firstRoutes: routes.slice(0, 10).map(({ sourceRouteId, ref, sourceRouteUrl }) => ({ sourceRouteId, ref, sourceRouteUrl })),
             lastRoutes: routes.slice(-10).map(({ sourceRouteId, ref, sourceRouteUrl }) => ({ sourceRouteId, ref, sourceRouteUrl })),
           }, null, 2));
 
           const route = routes[0];
-          if (!route) throw new Error('Tashkent catalog returned no bus routes');
-          const routeHtml = await fetchHtml(route.sourceRouteUrl);
-          const parsed = parseRoutePage(routeHtml, route);
-          const rawStopLinks = [...routeHtml.matchAll(/href=["']([^"']*\/stops\/\d+[^"']*)["']/gi)].length;
-          const headings = [...routeHtml.matchAll(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi)]
-            .slice(0, 10)
-            .map((match) => ({
-              attrs: match[1].trim(),
-              text: match[2].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 180),
-            }));
-          console.log(JSON.stringify({
-            probeRoute: { sourceRouteId: route.sourceRouteId, ref: route.ref, sourceRouteUrl: route.sourceRouteUrl },
-            rawStopLinks,
-            parsedDirections: parsed.directions.map((direction) => ({
-              name: direction.name,
-              stopCount: direction.stops.length,
-              firstStop: direction.stops[0]?.name,
-              lastStop: direction.stops.at(-1)?.name,
-            })),
-            headings,
-          }, null, 2));
+          if (route) {
+            const routeHtml = await fetchHtml(route.sourceRouteUrl);
+            const parsed = parseRoutePage(routeHtml, route);
+            console.log(JSON.stringify({
+              probeRoute: { sourceRouteId: route.sourceRouteId, ref: route.ref, sourceRouteUrl: route.sourceRouteUrl },
+              rawStopLinks: [...routeHtml.matchAll(/href=["']([^"']*\/stops\/\d+[^"']*)["']/gi)].length,
+              parsedDirections: parsed.directions.map((direction) => ({
+                name: direction.name,
+                stopCount: direction.stops.length,
+                firstStop: direction.stops[0]?.name,
+                lastStop: direction.stops.at(-1)?.name,
+              })),
+            }, null, 2));
+          }
           NODE
       - name: Crawl current WikiRoutes Tashkent bus catalog
         run: npm run crawl:wikiroutes
