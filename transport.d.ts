@@ -1,4 +1,4 @@
-export type TransportMode = 'metro' | 'bus' | 'tram' | 'trolleybus' | 'minibus' | 'funicular' | 'rail' | 'walk';
+export type TransportMode = 'metro' | 'bus' | 'tram' | 'trolleybus' | 'minibus' | 'rail' | 'walk';
 export type TransportSource = 'osm' | 'wikidata' | 'official' | 'manual' | 'geonames' | string;
 export type TransportAccuracy = 'country' | 'region' | 'city' | 'district' | 'neighborhood' | 'street' | 'building' | 'poi' | 'entrance' | 'approximate';
 export type TransportRouteCoverage = 'full' | 'terminals_only' | 'metadata_only';
