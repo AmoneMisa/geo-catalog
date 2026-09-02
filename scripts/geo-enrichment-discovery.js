@@ -294,7 +294,7 @@ export function classifyDiscovery(item, scope = null) {
   return null;
 }
 
-async function overpassPayload(request, endpoint, query) {
+export async function overpassPayload(request, endpoint, query) {
   const raw = await request('overpass', endpoint, {
     cache: true,
     minDelayMs: 350,
