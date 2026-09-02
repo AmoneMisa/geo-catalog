@@ -89,6 +89,7 @@ export const NUKUS_ENTITIES = Object.freeze([
   osmMahalla('taslaq', 'Taslaq', 42.5134978, 59.6203248, 'way', 339799160, 950),
   osmMahalla('qum-awil', 'Qum awil', 42.4719493, 59.6414198, 'way', 413793561, 900),
   osmMahalla('qutli-makan', 'Qutli makan', 42.5278456, 59.6057122, 'way', 1009066250, 820),
+  osmMahalla('botanika-bagi', "Botanika bag'i", 42.4826965, 59.6060249, 'node', 4571573171, 760),
   osmMahalla('shimbay-shayxana', 'Shimbay shayxana', 42.4809655, 59.6001135, 'node', 9662439527, 900),
   osmMahalla('sarbinaz', 'Sarbinaz', 42.447601, 59.6140865, 'way', 460790124, 800),
   osmMahalla('shayirlar-awili', 'Shayirlar awili', 42.4584029, 59.6256922, 'way', 1009066244, 720),
@@ -108,7 +109,9 @@ export const NUKUS_ENTITIES = Object.freeze([
   osmMahalla('shadli-awil', 'Shadli awil', 42.3942259, 59.597638, 'way', 453532276, 900),
   osmMahalla('tele-oray', 'Tele oray', 42.4142361, 59.6150622, 'way', 415541809, 900),
   osmMahalla('altin-jagis', 'Altin jagis', 42.4128653, 59.6043285, 'way', 1009066194, 820),
+  osmMahalla('kok-ozek', 'Kok ozek', 42.4712297, 59.5840849, 'way', 1009066212, 800),
   osmMahalla('qumbiz-awil', 'Qumbiz awil', 42.4844646, 59.5927597, 'way', 1009066232, 820),
+  osmMahalla('nawpir', 'Nawpir', 42.4731136, 59.5694793, 'way', 1009066200, 800),
   osmLocalArea('qizketken', 'Qizketken', 42.3879368, 59.6306127, 'way', 339795351, 950),
 
   manualMahalla('bayterek', 'Bayterek', 42.46600, 59.59120, 1000),
