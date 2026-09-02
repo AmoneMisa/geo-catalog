@@ -99,6 +99,23 @@ test('Tashkent mahalla cannot auto-accept the same-name Chinoz hamlet', () => {
   assert.equal(isAutoAcceptEligible(row, chinozHamlet, tashkent), false);
 });
 
+test('same-name Beruniy locality far from the target city is rejected', () => {
+  const row = { country: 'UZ', city: 'Beruniy', type: 'local_area', canonical: 'Center' };
+  const beruniy = { center: { lat: 41.6945, lng: 60.7497 } };
+  const tashkentRegionBeruniy = candidate({
+    query: 'Center',
+    label: 'Центр Димитров, Beruniy, Quyichirchiq Tumani, Toshkent Viloyati, Oʻzbekiston',
+    city: 'Beruniy',
+    lat: 41.0031809,
+    lng: 69.1473936,
+    rawType: 'attraction',
+    meta: { category: 'tourism' },
+  });
+
+  assert.equal(isCandidateInCity(row, tashkentRegionBeruniy, beruniy), false);
+  assert.equal(isAutoAcceptEligible(row, tashkentRegionBeruniy, beruniy), false);
+});
+
 test('explicit mismatched city gets a tighter fallback for non-area candidates', () => {
   const row = { country: 'KZ', city: 'Aktau', type: 'poi', canonical: 'Example Park' };
   const aktau = { center: { lat: 43.6532, lng: 51.1975 } };
