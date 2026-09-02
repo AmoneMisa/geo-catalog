@@ -22,6 +22,7 @@ import { UA_POLTAVA_ENTITIES } from './poltava/index.js';
 import { UA_CHERNIHIV_ENTITIES } from './chernihiv/index.js';
 import { UA_TERNOPIL_ENTITIES } from './ternopil/index.js';
 import { UA_UZHHOROD_ENTITIES } from './uzhhorod/index.js';
+import { UA_IVANO_FRANKIVSK_ENTITIES } from './ivano-frankivsk/index.js';
 import { UA_KHARKIV_ENTITIES } from './kharkiv/index.js';
 import { UA_DNIPRO_ENTITIES } from './dnipro/index.js';
 import { UA_LVIV_ENTITIES } from './lviv/index.js';
@@ -55,6 +56,7 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_CHERNIHIV_ENTITIES,
   ...UA_TERNOPIL_ENTITIES,
   ...UA_UZHHOROD_ENTITIES,
+  ...UA_IVANO_FRANKIVSK_ENTITIES,
   ...UA_KHARKIV_ENTITIES,
   ...UA_DNIPRO_ENTITIES,
   ...UA_LVIV_ENTITIES,
