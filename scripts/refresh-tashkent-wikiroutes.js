@@ -5,6 +5,7 @@ const CATALOG_URL = 'https://ru.wikiroutes.info/tashkent/catalog';
 const BASE_URL = new URL(CATALOG_URL).origin;
 const DEFAULT_CONCURRENCY = 6;
 const DEFAULT_TIMEOUT_MS = 12_000;
+const DEFAULT_MATCH_RADIUS_M = 80;
 const DEFAULT_OUTPUT = '.cache/wikiroutes/tashkent-active.json';
 const SUPPORTED_MODES = Object.freeze(['bus', 'minibus', 'metro', 'trolleybus', 'tram', 'funicular']);
 
@@ -184,6 +185,149 @@ function parseStopPage(html, stop) {
     : { ...stop, lat: null, lng: null, coordinateSource: null, coordinateStatus: 'missing' };
 }
 
+const normalizeRouteRef = (value) => stripTags(value)
+  .toLocaleUpperCase('ru')
+  .replace(/[«»"'`’._\s-]+/g, '')
+  .replace(/Т$/u, 'T')
+  .replace(/М$/u, 'M')
+  .replace(/И$/u, 'I');
+
+const metroRouteKey = (value) => {
+  const normalized = normalizeRouteRef(value);
+  const aliases = new Map([
+    ['ЛИНИЯТРИДЦАТИЛЕТИЯНЕЗАВИСИМОСТИУЗБЕКИСТАНА', 'CIRCLE'],
+    ['УЗБЕКИСТАНСКАЯЛИНИЯ', 'OZBEKISTON'],
+    ['ЧИЛАНЗАРСКАЯЛИНИЯ', 'CHILONZOR'],
+    ['ЮНУСАБАДСКАЯЛИНИЯ', 'YUNUSOBOD'],
+  ]);
+  return aliases.get(normalized) ?? normalized;
+};
+
+const routeMatchKey = (mode, ref) => `${mode}:${mode === 'metro' ? metroRouteKey(ref) : normalizeRouteRef(ref)}`;
+
+const normalizeStopName = (value) => stripTags(value)
+  .toLocaleLowerCase('ru')
+  .replace(/[«»"'`’.,()№]/g, ' ')
+  .replace(/\b(?:остановка|станция|автобусная|метро|ул(?:ица)?|проспект|массив|ст\.?\s*м\.?)\b/gu, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const radians = (degrees) => degrees * Math.PI / 180;
+const haversineM = (a, b) => {
+  const dLat = radians(b.lat - a.lat);
+  const dLng = radians(b.lng - a.lng);
+  const lat1 = radians(a.lat);
+  const lat2 = radians(b.lat);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 6_371_000 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+};
+
+const chooseStopMatch = (wikiStop, knownStops, matchRadiusM) => {
+  if (!isValidWgs84(wikiStop.lat, wikiStop.lng)) return null;
+  const wikiNames = new Set((wikiStop.names ?? [wikiStop.name]).map(normalizeStopName).filter(Boolean));
+  const candidates = knownStops
+    .filter((known) => known?.center && isValidWgs84(known.center.lat, known.center.lng))
+    .map((known) => ({
+      known,
+      distanceM: haversineM(wikiStop, known.center),
+      normalizedName: normalizeStopName(known.canonicalName),
+    }))
+    .filter(({ distanceM }) => distanceM <= matchRadiusM)
+    .sort((a, b) => a.distanceM - b.distanceM);
+
+  const exactName = candidates.find(({ normalizedName }) => normalizedName && wikiNames.has(normalizedName));
+  return exactName ?? (candidates[0]?.distanceM <= 35 ? candidates[0] : null);
+};
+
+function reconcileStops(stops, knownStops, matchRadiusM) {
+  const knownByMode = new Map();
+  for (const stop of knownStops) {
+    const rows = knownByMode.get(stop.mode) ?? [];
+    rows.push(stop);
+    knownByMode.set(stop.mode, rows);
+  }
+
+  return stops.map((stop) => {
+    const modes = stop.modes?.length ? stop.modes : SUPPORTED_MODES;
+    const candidates = [];
+    const seen = new Set();
+    for (const mode of modes) {
+      for (const known of knownByMode.get(mode) ?? []) {
+        if (seen.has(known.id)) continue;
+        seen.add(known.id);
+        candidates.push(known);
+      }
+    }
+
+    const catalogMatch = chooseStopMatch(stop, candidates, matchRadiusM);
+    const osmCandidates = candidates.filter((known) => known.source === 'osm' || known.osm);
+    const osmMatch = chooseStopMatch(stop, osmCandidates, matchRadiusM);
+
+    return {
+      ...stop,
+      catalogStopId: catalogMatch?.known.id ?? null,
+      catalogStopMode: catalogMatch?.known.mode ?? null,
+      catalogStopName: catalogMatch?.known.canonicalName ?? null,
+      catalogStopSource: catalogMatch?.known.source ?? null,
+      catalogStopDistanceM: catalogMatch ? Math.round(catalogMatch.distanceM * 10) / 10 : null,
+      osmStopId: osmMatch?.known.id ?? null,
+      osmStopDistanceM: osmMatch ? Math.round(osmMatch.distanceM * 10) / 10 : null,
+      osmRef: osmMatch?.known.osm ?? null,
+    };
+  });
+}
+
+function reconcileRoutes(routes, knownRoutes, knownVariants) {
+  const routeByKey = new Map(knownRoutes.map((route) => [routeMatchKey(route.mode, route.ref), route]));
+  const variantsByKey = new Map();
+  for (const variant of knownVariants) {
+    const key = routeMatchKey(variant.mode, variant.ref);
+    const variants = variantsByKey.get(key) ?? [];
+    variants.push(variant);
+    variantsByKey.set(key, variants);
+  }
+
+  return routes.map((route) => {
+    const key = routeMatchKey(route.mode, route.ref);
+    const knownRoute = routeByKey.get(key);
+    const variants = variantsByKey.get(key) ?? [];
+    return {
+      ...route,
+      catalogRouteId: knownRoute?.id ?? null,
+      catalogCoverage: knownRoute?.coverage ?? null,
+      catalogRouteSource: knownRoute?.source ?? null,
+      catalogVariantCount: variants.length,
+      catalogVariantSources: [...new Set(variants.map((variant) => variant.source).filter(Boolean))],
+      catalogOsmRef: knownRoute?.osm ?? null,
+    };
+  });
+}
+
+async function loadTransportCatalog(enabled) {
+  if (!enabled) return { enabled: false, loaded: false, stops: [], routes: [], variants: [], error: null };
+  try {
+    const transport = await import('../src/transport/catalog.js');
+    const cityFilter = (row) => row.cityId === 'uz:tashkent';
+    return {
+      enabled: true,
+      loaded: true,
+      stops: transport.TRANSPORT_STOPS.filter(cityFilter),
+      routes: transport.TRANSPORT_ROUTES.filter(cityFilter),
+      variants: transport.TRANSPORT_ROUTE_VARIANTS.filter(cityFilter),
+      error: null,
+    };
+  } catch (error) {
+    return {
+      enabled: true,
+      loaded: false,
+      stops: [],
+      routes: [],
+      variants: [],
+      error: String(error?.message ?? error),
+    };
+  }
+}
+
 async function fetchText(url, timeoutMs) {
   const response = await fetch(url, {
     headers: { 'user-agent': 'geo-catalog manual WikiRoutes checker' },
@@ -219,8 +363,11 @@ async function main() {
   const output = process.argv.find((arg) => arg.startsWith('--output='))?.slice('--output='.length) || DEFAULT_OUTPUT;
   const concurrencyArg = Number(process.argv.find((arg) => arg.startsWith('--concurrency='))?.split('=')[1] ?? DEFAULT_CONCURRENCY);
   const timeoutArg = Number(process.argv.find((arg) => arg.startsWith('--timeout='))?.split('=')[1] ?? DEFAULT_TIMEOUT_MS);
+  const radiusArg = Number(process.argv.find((arg) => arg.startsWith('--match-radius='))?.split('=')[1] ?? DEFAULT_MATCH_RADIUS_M);
+  const compareCatalog = !process.argv.includes('--no-compare-catalog');
   const concurrency = Number.isInteger(concurrencyArg) && concurrencyArg > 0 ? concurrencyArg : DEFAULT_CONCURRENCY;
   const timeoutMs = Number.isFinite(timeoutArg) && timeoutArg > 0 ? timeoutArg : DEFAULT_TIMEOUT_MS;
+  const matchRadiusM = Number.isFinite(radiusArg) && radiusArg > 0 ? radiusArg : DEFAULT_MATCH_RADIUS_M;
 
   const catalog = parseActiveCatalog(await fetchText(CATALOG_URL, timeoutMs));
   const routeResults = await mapConcurrent(catalog.routes, concurrency, async (route) => {
@@ -239,12 +386,26 @@ async function main() {
   for (const route of routes) {
     for (const direction of route.directions) {
       for (const stop of direction.stops) {
-        if (!uniqueStops.has(stop.sourceStopId)) uniqueStops.set(stop.sourceStopId, stop);
+        const current = uniqueStops.get(stop.sourceStopId);
+        if (current) {
+          current.modes.add(route.mode);
+          current.names.add(stop.name);
+          continue;
+        }
+        uniqueStops.set(stop.sourceStopId, {
+          ...stop,
+          modes: new Set([route.mode]),
+          names: new Set([stop.name]),
+        });
       }
     }
   }
 
-  const stops = await mapConcurrent([...uniqueStops.values()], concurrency, async (stop) => {
+  const stops = await mapConcurrent([...uniqueStops.values()].map((stop) => ({
+    ...stop,
+    modes: [...stop.modes],
+    names: [...stop.names],
+  })), concurrency, async (stop) => {
     try {
       return parseStopPage(await fetchText(stop.sourceStopUrl, timeoutMs), stop);
     } catch (error) {
@@ -259,7 +420,22 @@ async function main() {
     }
   });
 
-  const stopById = new Map(stops.map((stop) => [stop.sourceStopId, stop]));
+  const transportCatalog = await loadTransportCatalog(compareCatalog);
+  const reconciledStops = transportCatalog.loaded
+    ? reconcileStops(stops, transportCatalog.stops, matchRadiusM)
+    : stops.map((stop) => ({
+      ...stop,
+      catalogStopId: null,
+      catalogStopMode: null,
+      catalogStopName: null,
+      catalogStopSource: null,
+      catalogStopDistanceM: null,
+      osmStopId: null,
+      osmStopDistanceM: null,
+      osmRef: null,
+    }));
+
+  const stopById = new Map(reconciledStops.map((stop) => [stop.sourceStopId, stop]));
   const hydratedRoutes = routes.map((route) => ({
     ...route,
     directions: route.directions.map((direction) => ({
@@ -268,14 +444,34 @@ async function main() {
       stops: direction.stops.map((stop) => stopById.get(stop.sourceStopId) ?? stop),
     })),
   }));
+  const reconciledRoutes = transportCatalog.loaded
+    ? reconcileRoutes(hydratedRoutes, transportCatalog.routes, transportCatalog.variants)
+    : hydratedRoutes.map((route) => ({
+      ...route,
+      catalogRouteId: null,
+      catalogCoverage: null,
+      catalogRouteSource: null,
+      catalogVariantCount: 0,
+      catalogVariantSources: [],
+      catalogOsmRef: null,
+    }));
 
-  const routeCountsByMode = countBy(hydratedRoutes, (route) => route.mode, emptyModeCounts());
-  const routeCountsByScope = countBy(hydratedRoutes, (route) => route.scope ?? 'unknown');
+  const routeCountsByMode = countBy(reconciledRoutes, (route) => route.mode, emptyModeCounts());
+  const routeCountsByScope = countBy(reconciledRoutes, (route) => route.scope ?? 'unknown');
   const coordinateCountsBySource = countBy(
-    stops.filter((stop) => stop.coordinateStatus === 'ok'),
+    reconciledStops.filter((stop) => stop.coordinateStatus === 'ok'),
     (stop) => stop.coordinateSource,
   );
-  const missingStops = stops.filter((stop) => stop.coordinateStatus !== 'ok');
+  const missingStops = reconciledStops.filter((stop) => stop.coordinateStatus !== 'ok');
+  const routesNotInCatalog = transportCatalog.loaded
+    ? reconciledRoutes.filter((route) => !route.catalogRouteId)
+    : [];
+  const stopsNotInCatalog = transportCatalog.loaded
+    ? reconciledStops.filter((stop) => !stop.catalogStopId)
+    : [];
+  const stopsWithoutOsmMatch = transportCatalog.loaded
+    ? reconciledStops.filter((stop) => !stop.osmStopId)
+    : [];
 
   const snapshot = {
     source: 'wikiroutes',
@@ -289,18 +485,53 @@ async function main() {
     duplicateRouteLinks: catalog.duplicateRouteLinks,
     routeCountsByMode,
     routeCountsByScope,
-    routeCount: hydratedRoutes.length,
+    routeCount: reconciledRoutes.length,
     routeErrorCount: routeErrors.length,
     routeParseMissCount: routeParseMisses.length,
     routeErrors: routeErrors.map(({ sourceRouteId, mode, ref, crawlError }) => ({ sourceRouteId, mode, ref, crawlError })),
     routeParseMisses: routeParseMisses.map(({ sourceRouteId, mode, ref, sourceRouteUrl }) => ({ sourceRouteId, mode, ref, sourceRouteUrl })),
-    stopCount: stops.length,
-    stopCoordinateCount: stops.filter((stop) => stop.coordinateStatus === 'ok').length,
+    stopCount: reconciledStops.length,
+    stopCoordinateCount: reconciledStops.filter((stop) => stop.coordinateStatus === 'ok').length,
     stopMissingCoordinateCount: missingStops.length,
-    stopErrorCount: stops.filter((stop) => stop.coordinateStatus === 'error').length,
+    stopErrorCount: reconciledStops.filter((stop) => stop.coordinateStatus === 'error').length,
     coordinateCountsBySource,
-    stops,
-    routes: hydratedRoutes,
+    catalogComparison: {
+      enabled: transportCatalog.enabled,
+      loaded: transportCatalog.loaded,
+      error: transportCatalog.error,
+      matchRadiusM,
+      knownRouteCount: transportCatalog.routes.length,
+      knownVariantCount: transportCatalog.variants.length,
+      knownStopCount: transportCatalog.stops.length,
+      matchedRouteCount: reconciledRoutes.filter((route) => route.catalogRouteId).length,
+      routesNotInCatalogCount: routesNotInCatalog.length,
+      routesNotInCatalogByMode: countBy(routesNotInCatalog, (route) => route.mode, emptyModeCounts()),
+      routesNotInCatalogByScope: countBy(routesNotInCatalog, (route) => route.scope ?? 'unknown'),
+      matchedStopCount: reconciledStops.filter((stop) => stop.catalogStopId).length,
+      stopsNotInCatalogCount: stopsNotInCatalog.length,
+      osmMatchedStopCount: reconciledStops.filter((stop) => stop.osmStopId).length,
+      stopsWithoutOsmMatchCount: stopsWithoutOsmMatch.length,
+    },
+    routesNotInCatalog: routesNotInCatalog.map(({ sourceRouteId, sourceRouteUrl, mode, scope, ref, label }) => ({
+      sourceRouteId,
+      sourceRouteUrl,
+      mode,
+      scope,
+      ref,
+      label,
+    })),
+    stopsNotInCatalog: stopsNotInCatalog.map(({ sourceStopId, sourceStopUrl, name, names, modes, lat, lng, coordinateSource }) => ({
+      sourceStopId,
+      sourceStopUrl,
+      name,
+      names,
+      modes,
+      lat,
+      lng,
+      coordinateSource,
+    })),
+    stops: reconciledStops,
+    routes: reconciledRoutes,
   };
 
   await fs.mkdir(path.dirname(output), { recursive: true });
@@ -322,6 +553,7 @@ async function main() {
     stopMissingCoordinateCount: snapshot.stopMissingCoordinateCount,
     stopErrorCount: snapshot.stopErrorCount,
     coordinateCountsBySource: snapshot.coordinateCountsBySource,
+    catalogComparison: snapshot.catalogComparison,
   }, null, 2));
 }
 
