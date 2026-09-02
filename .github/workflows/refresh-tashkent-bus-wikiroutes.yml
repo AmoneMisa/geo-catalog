@@ -39,29 +39,58 @@ jobs:
       - run: npm install --ignore-scripts
       - name: Verify WikiRoutes parser fixtures
         run: node --test test/wikiroutes-crawler.test.js
-      - name: Probe live WikiRoutes route markup
+      - name: Probe live WikiRoutes catalog and route markup
         shell: bash
         run: |
           node --input-type=module <<'NODE'
-          const url = 'https://ru.wikiroutes.info/tashkent?routes=11020';
-          const response = await fetch(url, {
-            headers: { 'user-agent': 'geo-catalog WikiRoutes markup probe' },
-            signal: AbortSignal.timeout(12000),
-          });
-          const html = await response.text();
-          const stops = [...html.matchAll(/href=["']([^"']*\/stops\/\d+[^"']*)["']/gi)];
-          const headings = [...html.matchAll(/<(h[1-6])\b([^>]*)>([\s\S]*?)<\/\1>/gi)]
-            .slice(0, 20)
-            .map((match) => ({ tag: match[1], attrs: match[2].trim(), text: match[3].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160) }));
-          console.log(JSON.stringify({ status: response.status, bytes: html.length, stopLinks: stops.length, headings }, null, 2));
-          const firstStop = stops[0];
-          if (firstStop) {
-            const index = firstStop.index ?? html.indexOf(firstStop[0]);
-            const snippet = html.slice(Math.max(0, index - 900), Math.min(html.length, index + 900))
-              .replace(/\s+/g, ' ')
-              .replace(/>\s+</g, '><');
-            console.log('FIRST_STOP_CONTEXT=' + snippet);
-          }
+          import {
+            CATALOG_URL,
+            normalizeRouteRef,
+            parseCatalogRoutes,
+            parseRoutePage,
+          } from './scripts/refresh-tashkent-bus-wikiroutes.js';
+
+          const fetchHtml = async (url) => {
+            const response = await fetch(url, {
+              headers: { 'user-agent': 'geo-catalog WikiRoutes markup probe' },
+              signal: AbortSignal.timeout(12000),
+            });
+            if (!response.ok) throw new Error(`${response.status} ${response.statusText} for ${url}`);
+            return response.text();
+          };
+
+          const catalogHtml = await fetchHtml(CATALOG_URL);
+          const routes = parseCatalogRoutes(catalogHtml);
+          const uniqueRefs = new Set(routes.map((route) => normalizeRouteRef(route.ref)));
+          console.log(JSON.stringify({
+            catalogRouteCount: routes.length,
+            uniqueRouteRefCount: uniqueRefs.size,
+            firstRoutes: routes.slice(0, 10).map(({ sourceRouteId, ref, sourceRouteUrl }) => ({ sourceRouteId, ref, sourceRouteUrl })),
+            lastRoutes: routes.slice(-10).map(({ sourceRouteId, ref, sourceRouteUrl }) => ({ sourceRouteId, ref, sourceRouteUrl })),
+          }, null, 2));
+
+          const route = routes[0];
+          if (!route) throw new Error('Tashkent catalog returned no bus routes');
+          const routeHtml = await fetchHtml(route.sourceRouteUrl);
+          const parsed = parseRoutePage(routeHtml, route);
+          const rawStopLinks = [...routeHtml.matchAll(/href=["']([^"']*\/stops\/\d+[^"']*)["']/gi)].length;
+          const headings = [...routeHtml.matchAll(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi)]
+            .slice(0, 10)
+            .map((match) => ({
+              attrs: match[1].trim(),
+              text: match[2].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 180),
+            }));
+          console.log(JSON.stringify({
+            probeRoute: { sourceRouteId: route.sourceRouteId, ref: route.ref, sourceRouteUrl: route.sourceRouteUrl },
+            rawStopLinks,
+            parsedDirections: parsed.directions.map((direction) => ({
+              name: direction.name,
+              stopCount: direction.stops.length,
+              firstStop: direction.stops[0]?.name,
+              lastStop: direction.stops.at(-1)?.name,
+            })),
+            headings,
+          }, null, 2));
           NODE
       - name: Crawl current WikiRoutes Tashkent bus catalog
         run: npm run crawl:wikiroutes
