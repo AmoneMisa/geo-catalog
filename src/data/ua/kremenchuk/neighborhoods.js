@@ -21,4 +21,5 @@ export const UA_KREMENCHUK_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('pershyi-zanasyp', 'Pershyi Zanasyp', 49.0640917, 33.4320554, 1400, { osm: Object.freeze({ type: 'node', id: 3373551567 }), wikidataId: 'Q12139999' }),
   neighborhood('druhyi-zanasyp', 'Druhyi Zanasyp', 49.07496, 33.4416, 1400, { osm: Object.freeze({ type: 'node', id: 3373551559 }), wikidataId: 'Q12102514' }),
   neighborhood('tretii-zanasyp', 'Tretii Zanasyp', 49.08205, 33.45744, 1400, { osm: Object.freeze({ type: 'node', id: 3373551573 }), wikidataId: 'Q12162360' }),
+  neighborhood('pyvzavod', 'Pyvzavod', 49.1081036, 33.434572, 1000, { osm: Object.freeze({ type: 'node', id: 3373551569 }) }),
 ]);
