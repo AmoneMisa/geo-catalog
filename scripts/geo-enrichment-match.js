@@ -16,21 +16,34 @@ const GENERIC_AREA_NAMES = new Set([
   'central',
 ]);
 
-const CITY_CENTER_FALLBACK_RADIUS_M = 35_000;
+const CITY_CENTER_FALLBACK_RADIUS_M = 15_000;
 const AREA_MARKER_RE = /\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|neighbou?rhood|suburb|quarter|rayon|tumani|район|махалла|массив|квартал|микрорайон|мкр|ықшамаудан|шағын\s+аудан)\b/iu;
 const NUMBERED_AREA_MARKER_RE = /\b(?:microdistrict|mikrorayon|mavze(?:si)?|massiv|massivi|daha(?:si)?|quarter|микрорайон|мкр|массив|квартал|ықшамаудан|шағын\s+аудан)\b/iu;
 const AREA_CATEGORY_RE = /\b(?:boundary|place|landuse|administrative|district|neighbou?rhood|suburb|quarter|locality|residential)\b/i;
 const NON_AREA_CATEGORY_RE = /\b(?:highway|amenity|shop|tourism|leisure|office|craft|building|historic|railway|public_transport|aeroway)\b/i;
+const SEPARATE_LOCALITY_TYPE_RE = /\b(?:city|town|village|hamlet|settlement|administrative|municipality)\b/i;
 
 const POI_SEMANTIC_RULES = Object.freeze([
   [/\b(?:river|річка|река)\b/iu, /\b(?:river|waterway|stream|water|hydro)\b/i],
   [/\b(?:estuary|liman|лиман)\b/iu, /\b(?:water|estuary|lagoon|bay|hydro)\b/i],
+  [/\b(?:pond|lake|озеро|став|пруд)\b/iu, /\b(?:pond|lake|reservoir|water|basin)\b/i],
+  [/\b(?:island|islet|острів|остров)\b/iu, /\b(?:island|islet)\b/i],
+  [/hes\b|ges\b|гес\b|гэс\b|hydroelectric|dam|гребл/iu, /\b(?:dam|hydro|hydroelectric|power|generator)\b/i],
   [/\b(?:railway\s+station|train\s+station|station|вокзал|станц(?:ія|ия))\b/iu, /\b(?:railway_station|train_station|station|railway)\b/i],
-  [/\b(?:fortress|fort|фортец(?:я|і)|крепост(?:ь|и))\b/iu, /\b(?:fortress|fort|castle|historic|attraction)\b/i],
-  [/\b(?:square|площа|площадь)\b/iu, /\b(?:square|pedestrian)\b/i],
+  [/\b(?:fortress|fort|castle|фортец(?:я|і)|крепост(?:ь|и)|замок)\b/iu, /\b(?:fortress|fort|castle|historic|attraction)\b/i],
+  [/\b(?:square|площа|площадь|майдан)\b/iu, /\b(?:square|pedestrian)\b/i],
   [/\b(?:sea\s+port|port|порт)\b/iu, /\b(?:port|harbour|harbor|dock|terminal|industrial)\b/i],
   [/\b(?:monastery|монастир|монастырь)\b/iu, /\b(?:monastery|place_of_worship|religious|historic|attraction|castle)\b/i],
-  [/\b(?:park|парк)\b/iu, /\b(?:park|garden|recreation|leisure)\b/i],
+  [/\b(?:cathedral|church|собор|церкв)\b/iu, /\b(?:cathedral|church|place_of_worship|religious)\b/i],
+  [/\b(?:park|парк)\b/iu, /\b(?:park|garden|recreation|leisure|wood|nature_reserve)\b/i],
+  [/\b(?:mall|shopping\s+cent(?:er|re)|торгов(?:ий|ый)\s+центр|тц)\b/iu, /\b(?:mall|department_store|retail|shopping_centre|shopping_center)\b/i],
+  [/\b(?:bridge|міст|мост)\b/iu, /\b(?:bridge|pedestrian|footway)\b/i],
+  [/\b(?:embankment|набережн)\b/iu, /\b(?:pedestrian|footway|path|residential|road|street)\b/i],
+  [/\b(?:fountain|фонтан)\b/iu, /\b(?:fountain|water)\b/i],
+  [/\b(?:avenue|prospect|проспект)\b/iu, /\b(?:primary|secondary|tertiary|residential|road|pedestrian)\b/i],
+  [/\b(?:alley|алея|аллея)\b/iu, /\b(?:park|garden|pedestrian|footway|path)\b/i],
+  [/\b(?:reserve|заповідник|заповедник)\b/iu, /\b(?:nature_reserve|protected_area|park|island|islet|attraction|historic)\b/i],
+  [/\b(?:sich|січ|сечь)\b/iu, /\b(?:historic|museum|attraction|archaeological_site|fort|fortress|castle)\b/i],
 ]);
 
 export function normalizeGeoText(value) {
@@ -95,25 +108,30 @@ function labelMentionsCityWithoutDistrictSuffix(row, candidate) {
   return !['rayon', 'rayoni', 'tumani', 'district', 'oblast', 'region'].includes(next);
 }
 
+function providerTypeText(candidate) {
+  return `${candidate.rawType || ''} ${candidate.meta?.category || ''}`.toLowerCase();
+}
+
 export function isCandidateInCity(row, candidate, cityGeo = null) {
   const expected = normalizeGeoText(row.city);
   const actual = normalizeGeoText(candidate.city);
   if (actual && actual === expected) return true;
   if (pointInBbox(candidate, cityGeo?.bbox)) return true;
+
+  if (actual && actual !== expected && SEPARATE_LOCALITY_TYPE_RE.test(providerTypeText(candidate))) {
+    return false;
+  }
+
   if (cityGeo?.center && haversineM(candidate, cityGeo.center) <= CITY_CENTER_FALLBACK_RADIUS_M) return true;
   if (actual) return false;
   return labelMentionsCityWithoutDistrictSuffix(row, candidate);
-}
-
-function providerTypeText(candidate) {
-  return `${candidate.rawType || ''} ${candidate.meta?.category || ''}`.toLowerCase();
 }
 
 export function providerTypeScore(row, candidate) {
   const type = providerTypeText(candidate);
   if (row.type === 'street') return /road|street|highway|living_street|primary|secondary|tertiary|service|pedestrian|unclassified/.test(type) ? 1 : 0.35;
   if (row.type === 'metro') return /station|subway|railway|public_transport|stop|transit/.test(type) ? 1 : 0.35;
-  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop|poi|marketplace|park|museum|airport|university|mall|sports_centre|garden|botanical_garden|river|water|waterway|estuary|lagoon|bay|square|castle|fort|train_station|railway_station|industrial/.test(type) ? 0.9 : 0.5;
+  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop|poi|marketplace|park|museum|airport|university|mall|department_store|retail|sports_centre|garden|botanical_garden|river|water|waterway|pond|lake|reservoir|estuary|lagoon|bay|square|castle|fort|train_station|railway_station|industrial|dam|hydro|island|islet|bridge|pedestrian|footway|place_of_worship|church|cathedral|nature_reserve|fountain/.test(type) ? 0.9 : 0.5;
   if (row.type === 'residential_complex') return /residential|building|apartments|housing|place/.test(type) ? 1 : 0.4;
   if (row.type === 'district') return /administrative|district|borough|boundary/.test(type) ? 1 : 0.2;
   if (row.type === 'microdistrict') {
@@ -155,7 +173,7 @@ function isAreaTypeCompatible(row, candidate) {
 
 function isPoiTypeCompatible(row, candidate) {
   if (row.type !== 'poi') return true;
-  const semanticText = `${row.canonical || ''} ${candidate.query || ''}`;
+  const semanticText = `${row.canonical || ''} ${(row.aliases || []).join(' ')} ${candidate.query || ''}`;
   const rule = POI_SEMANTIC_RULES.find(([namePattern]) => namePattern.test(semanticText));
   if (!rule) return true;
   return rule[1].test(providerTypeText(candidate));
