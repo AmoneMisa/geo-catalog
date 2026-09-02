@@ -69,4 +69,5 @@ export const FERGANA_ENTITIES = Object.freeze([
   manualPoi('independence-square', 'Independence Square', 40.386879, 71.784105, 320, 'poi.square'),
   osmArea('qirguli', 'Qirguli', 40.4346533, 71.7669316, 'node', 2171217263, 950),
   osmMahalla('navoiy', 'Navoiy', 40.3711205, 71.7889134, 'relation', 20577025, 750),
+  osmMahalla('mustaqillik', 'Mustaqillik', 40.382657, 71.8370632, 'relation', 20582351, 750),
 ]);
