@@ -60,17 +60,11 @@ export const UZ_SECONDARY_CITY_ANCHORS = Object.freeze([
   // POI owner and preserve the direct OSM relation as provenance.
   osmPoi('xonobod', 'andijan-reservoir', 'Andijan Reservoir', 'poi', 40.774721, 73.1169502, 'relation', 14663093, 300),
   osmPoi('kattakurgan', 'kattakurgan-reservoir', 'Kattakurgan Reservoir', 'poi', 39.7905028, 66.2065745, 'relation', 12571708, 320),
-  osmPoi('jizzakh', 'sangzor-river', 'Sangzor River', 'poi', 40.119779, 67.8117796, 'way', 1310350609, 450),
-  osmPoi('denov', 'new-market', 'New Market', 'poi.shopping_mall', 38.2512785, 67.9038606, 'way', 1031989034, 180),
-  osmPoi('termez', 'alpomish', 'Alpomish', 'poi', 37.2444298, 67.2861956, 'way', 110890449, 180),
   wikidataPoi('navoiy', 'navoiy-international-airport', 'Navoi International Airport', 'poi.airport', 40.11720, 65.17080, 'Q1229483', 300),
   wikidataPoi('termez', 'termez-airport', 'Termez International Airport', 'poi.airport', 37.28670, 67.30990, 'Q658171', 300),
 
   osmArea('jizzakh', 'zilol', 'Zilol', 'local_area', 40.172831, 67.8421078, 'node', 11725490815, 850),
-  osmArea('jizzakh', 'navoiy', 'Navoiy', 'mahalla', 40.1103511, 67.8293821, 'way', 316353350, 750),
   osmArea('navoiy', 'guliston', 'Guliston', 'mahalla', 40.0822634, 65.4033527, 'way', 1137853275, 700),
-  osmArea('chirchiq', 'troitsky', 'Troitsky', 'settlement', 41.4383504, 69.5415444, 'node', 1223044803, 650),
-  osmArea('kosonsoy', 'center', 'Center', 'local_area', 41.2539517, 71.5449341, 'way', 969223446, 650),
 
   approximateArea('navoiy', 'railway-station-area', 'Railway Station area', 40.07297, 65.39630, 1100),
   approximateArea('jizzakh', 'railway-station-area', 'Railway Station area', 40.09821, 67.84245, 1100),
