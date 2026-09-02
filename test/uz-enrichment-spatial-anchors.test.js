@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { getGeoEntity } from '../src/index.js';
 import { resolveLexiconGeoEntity } from '../src/lexicon-bridge.js';
 
 const expected = Object.freeze([
@@ -24,6 +25,14 @@ const expected = Object.freeze([
   ['Kattakurgan', 'poi', 'Kattakurgan Reservoir', 12571708],
 ]);
 
+const namanganStreets = Object.freeze([
+  ['galaba', 'Galaba Street', 798437179],
+  ['alisher-navoiy', 'Alisher Navoiy Street', 720208509],
+  ['islom-karimov', 'Islom Karimov Street', 26978858],
+  ['qoqimboyshox', 'Qoqimboyshox Street', 718816732],
+  ['nodira', 'Nodira Street', 525607577],
+]);
+
 test('verified enrichment anchors resolve through the lexicon bridge', () => {
   for (const [city, type, canonical, osmId] of expected) {
     const resolved = resolveLexiconGeoEntity({ country: 'UZ', city, type, canonical });
@@ -32,5 +41,17 @@ test('verified enrichment anchors resolve through the lexicon bridge', () => {
     assert.equal(resolved.osm?.id, osmId, `${city}/${canonical}`);
     assert.ok(Number.isFinite(resolved.center?.lat), `${city}/${canonical}`);
     assert.ok(Number.isFinite(resolved.center?.lng), `${city}/${canonical}`);
+  }
+});
+
+test('road matches from Namangan area searches are preserved as streets', () => {
+  for (const [slug, canonicalName, osmId] of namanganStreets) {
+    const entity = getGeoEntity(`uz:namangan:street:${slug}`);
+    assert.ok(entity, canonicalName);
+    assert.equal(entity.type, 'street', canonicalName);
+    assert.equal(entity.canonicalName, canonicalName, canonicalName);
+    assert.equal(entity.parentId, 'uz:namangan', canonicalName);
+    assert.equal(entity.accuracy, 'street', canonicalName);
+    assert.deepEqual(entity.osm, { type: 'way', id: osmId }, canonicalName);
   }
 });
