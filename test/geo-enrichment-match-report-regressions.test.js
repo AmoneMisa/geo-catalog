@@ -116,6 +116,40 @@ test('same-name Beruniy locality far from the target city is rejected', () => {
   assert.equal(isAutoAcceptEligible(row, tashkentRegionBeruniy, beruniy), false);
 });
 
+test('Kosonsoy Mug qala POI cannot resolve to a living street', () => {
+  const row = { country: 'UZ', city: 'Kosonsoy', type: 'poi', canonical: 'Mug qala' };
+  const kosonsoy = { center: { lat: 41.2529, lng: 71.5446 } };
+  const street = candidate({
+    query: 'Mug qala',
+    label: 'Mug`qala, Obod 2, Kosonsoy tumani, Namangan Viloyati, 160303, Oʻzbekiston',
+    city: 'Kosonsoy',
+    lat: 41.2747391,
+    lng: 71.5494692,
+    rawType: 'living_street',
+    meta: { category: 'highway' },
+  });
+
+  assert.equal(isCandidateInCity(row, street, kosonsoy), true);
+  assert.equal(isAutoAcceptEligible(row, street, kosonsoy), false);
+});
+
+test('Shirin Syrdarya local area cannot resolve to the industrial power plant', () => {
+  const row = { country: 'UZ', city: 'Shirin', type: 'local_area', canonical: 'Syrdarya' };
+  const shirin = { center: { lat: 40.2303, lng: 69.12631 } };
+  const powerPlant = candidate({
+    query: 'Sirdaryo',
+    label: 'Sirdaryo Issiqlik Energiya Stanstiyasi, Shirin, Xovos Tumani, Sirdaryo Viloyati, Oʻzbekiston',
+    city: 'Shirin',
+    lat: 40.2283294,
+    lng: 69.0996741,
+    rawType: 'industrial',
+    meta: { category: 'landuse' },
+  });
+
+  assert.equal(isCandidateInCity(row, powerPlant, shirin), true);
+  assert.equal(isAutoAcceptEligible(row, powerPlant, shirin), false);
+});
+
 test('explicit mismatched city gets a tighter fallback for non-area candidates', () => {
   const row = { country: 'KZ', city: 'Aktau', type: 'poi', canonical: 'Example Park' };
   const aktau = { center: { lat: 43.6532, lng: 51.1975 } };
