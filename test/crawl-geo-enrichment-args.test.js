@@ -22,6 +22,14 @@ test('crawl:geo accepts --all-cities as the country-level execution mode', () =>
   assert.doesNotMatch(result.stderr, /Usage: npm run crawl:geo/);
 });
 
+test('crawl:geo enumerates country cities from geo-catalog even when the lexicon has no country dictionary', () => {
+  const result = run(['--country=KG', '--all-cities', '--providers=not-a-provider']);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /No supported providers selected/);
+  assert.doesNotMatch(result.stderr, /No LOCATION_DICTIONARIES entry/);
+  assert.doesNotMatch(result.stderr, /No city entities in geo catalog/);
+});
+
 test('crawl:geo rejects --city together with --all-cities', () => {
   const result = run(['--country=UZ', '--city=Tashkent', '--all-cities']);
   assert.notEqual(result.status, 0);

@@ -3,6 +3,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/locations';
+import { GEO_ENTITIES } from '../src/catalog.js';
 import { resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
 import { isAutoAcceptEligible } from './geo-enrichment-match.js';
 
@@ -145,14 +146,18 @@ function haversineM(a, b) {
 }
 
 function countryCities(country) {
-  const dictionary = LOCATION_DICTIONARIES[country];
-  if (!dictionary) throw new Error(`No LOCATION_DICTIONARIES entry for country ${country}`);
-  return Object.keys(dictionary).sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
+  const cities = GEO_ENTITIES
+    .filter((entity) => entity.country === country && entity.type === 'city')
+    .map((entity) => entity.canonicalName)
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
+  if (!cities.length) throw new Error(`No city entities in geo catalog for country ${country}`);
+  return cities;
 }
 
 function lexicalRows(country, city) {
   const cityData = LOCATION_DICTIONARIES[country]?.[city];
-  if (!cityData) throw new Error(`No LOCATION_DICTIONARIES entry for ${country}/${city}`);
+  if (!cityData) return [];
 
   const rows = [];
   const seen = new Set();
@@ -177,7 +182,7 @@ function lexicalRows(country, city) {
 }
 
 function cityEntity(country, city) {
-  return resolveLexiconGeoEntityExact({ country, type: 'city', canonical: city });
+  return GEO_ENTITIES.find((entity) => entity.country === country && entity.type === 'city' && entity.canonicalName === city) || null;
 }
 
 function queryVariants(row, maxAliases) {
@@ -850,6 +855,7 @@ async function discoverOverpass(country, city, center) {
   const raw = await request('overpass', endpoint, {
     cache: true,
     minDelayMs: 350,
+    serialize: true,
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -943,12 +949,15 @@ async function mapWithConcurrency(items, concurrency, worker) {
 }
 
 async function processCity(args, city, providers) {
+  const lexiconAvailable = Boolean(LOCATION_DICTIONARIES[args.country]?.[city]);
   const lexicon = lexicalRows(args.country, city);
+  const bootstrapDiscovery = !lexiconAvailable;
   const unresolved = args.refresh
     ? lexicon
     : lexicon.filter((row) => !resolveLexiconGeoEntityExact({ country: row.country, city: row.city, type: row.type, canonical: row.canonical }));
   const prefix = `[${args.country}/${city}]`;
 
+  if (bootstrapDiscovery) console.log(`${prefix} no LOCATION_DICTIONARIES city entry; running catalog-backed discovery bootstrap.`);
   console.log(`${prefix} ${unresolved.length}/${lexicon.length} lexical entities to inspect.`);
   const results = [];
   for (let index = 0; index < unresolved.length; index += 1) {
@@ -980,7 +989,7 @@ async function processCity(args, city, providers) {
   }
 
   let discoveries = [];
-  if (args.discover) {
+  if (args.discover || bootstrapDiscovery) {
     const center = cityEntity(args.country, city)?.center || null;
     try {
       discoveries.push(...await discoverOverpass(args.country, city, center));
@@ -994,6 +1003,8 @@ async function processCity(args, city, providers) {
     generatedAt: new Date().toISOString(),
     country: args.country,
     city,
+    mode: bootstrapDiscovery ? 'discovery-bootstrap' : args.discover ? 'lexicon-and-discovery' : 'lexicon',
+    lexiconAvailable,
     providers,
     keylessProviders: providers.filter((provider) => ZERO_KEY_PROVIDERS.includes(provider)),
     policyNotes: providerNotes(providers),
@@ -1020,10 +1031,10 @@ async function processCity(args, city, providers) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+  const cities = args.allCities ? countryCities(args.country) : [args.city];
   const providers = args.providers.filter((provider) => PROVIDER_LOADERS[provider]);
   if (!providers.length) throw new Error(`No supported providers selected. Supported: ${Object.keys(PROVIDER_LOADERS).join(', ')}`);
 
-  const cities = args.allCities ? countryCities(args.country) : [args.city];
   console.log(`Geo enrichment: ${args.country}; ${cities.length} city${cities.length === 1 ? '' : 'ies'}; city concurrency=${args.allCities ? args.concurrency : 1}.`);
   console.log(`Providers: ${providers.join(', ')}`);
   console.log(`Keyless providers: ${providers.filter((provider) => ZERO_KEY_PROVIDERS.includes(provider)).join(', ') || 'none'}`);
