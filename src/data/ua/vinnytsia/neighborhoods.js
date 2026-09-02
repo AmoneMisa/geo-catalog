@@ -23,4 +23,6 @@ export const UA_VINNYTSIA_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('akademichnyi', 'Akademichnyi', 49.20571, 28.42199, 1200, { osm: Object.freeze({ type: 'node', id: 11237948239 }) }),
   neighborhood('sabariv', 'Sabariv', 49.19738, 28.45114, 1700, { osm: Object.freeze({ type: 'node', id: 4845144837 }), wikidataId: 'Q12149926' }),
   neighborhood('pyrohovo', 'Pyrohovo', 49.21588, 28.39345, 1700, { source: 'manual', sourceUrl: 'https://mapcarta.com/13740060' }),
+  neighborhood('urozhai', 'Urozhai', 49.226882, 28.4476706, 1100, { osm: Object.freeze({ type: 'node', id: 13795975856 }) }),
+  neighborhood('koreia', 'Koreia', 49.2443123, 28.4429566, 1100, { osm: Object.freeze({ type: 'node', id: 7807632123 }) }),
 ]);
