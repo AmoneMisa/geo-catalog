@@ -67,7 +67,6 @@ export const FERGANA_ENTITIES = Object.freeze([
   osmPoi('fergana-railway-station', 'Fergana Railway Station', 40.39511, 71.75479, 'node', 299428601, 110, 'poi.railway_station'),
   manualPoi('al-fargoniy-park', 'Al-Fargoniy Park', 40.38975, 71.78353, 260, 'poi.park'),
   manualPoi('independence-square', 'Independence Square', 40.386879, 71.784105, 320, 'poi.square'),
-  osmPoi('neftchi', 'Neftchi', 40.4463051, 71.7670633, 'way', 206681927, 180),
   osmArea('qirguli', 'Qirguli', 40.4346533, 71.7669316, 'node', 2171217263, 950),
   osmMahalla('navoiy', 'Navoiy', 40.3711205, 71.7889134, 'relation', 20577025, 750),
   osmMahalla('mustaqillik', 'Mustaqillik', 40.382657, 71.8370632, 'relation', 20582351, 750),
