@@ -9,6 +9,7 @@ import { UA_SUMY_ENTITIES } from './sumy/index.js';
 import { UA_KROPYVNYTSKYI_ENTITIES } from './kropyvnytskyi/index.js';
 import { UA_KREMENCHUK_ENTITIES } from './kremenchuk/index.js';
 import { UA_BILA_TSERKVA_ENTITIES } from './bila-tserkva/index.js';
+import { UA_UMAN_ENTITIES } from './uman/index.js';
 import { UA_BERDIANSK_ENTITIES } from './berdiansk/index.js';
 import { UA_BERDYCHIV_ENTITIES } from './berdychiv/index.js';
 import { UA_BILHOROD_DNISTROVSKYI_ENTITIES } from './bilhorod-dnistrovskyi/index.js';
@@ -26,6 +27,8 @@ import { UA_DNIPRO_ENTITIES } from './dnipro/index.js';
 import { UA_LVIV_ENTITIES } from './lviv/index.js';
 import { UA_ZAPORIZHZHIA_ENTITIES } from './zaporizhzhia/index.js';
 import { UA_KRYVYI_RIH_ENTITIES } from './kryvyi-rih/index.js';
+import { UA_KRAMATORSK_ENTITIES } from './kramatorsk/index.js';
+import { UA_SLOVIANSK_ENTITIES } from './sloviansk/index.js';
 
 export const UA_ENTITIES = Object.freeze([
   ...UA_CITY_ENTITIES,
@@ -39,6 +42,7 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_KROPYVNYTSKYI_ENTITIES,
   ...UA_KREMENCHUK_ENTITIES,
   ...UA_BILA_TSERKVA_ENTITIES,
+  ...UA_UMAN_ENTITIES,
   ...UA_BERDIANSK_ENTITIES,
   ...UA_BERDYCHIV_ENTITIES,
   ...UA_BILHOROD_DNISTROVSKYI_ENTITIES,
@@ -56,4 +60,6 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_LVIV_ENTITIES,
   ...UA_ZAPORIZHZHIA_ENTITIES,
   ...UA_KRYVYI_RIH_ENTITIES,
+  ...UA_KRAMATORSK_ENTITIES,
+  ...UA_SLOVIANSK_ENTITIES,
 ]);
