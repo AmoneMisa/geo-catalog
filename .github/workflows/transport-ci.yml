@@ -1,0 +1,49 @@
+name: Transport CI
+
+on:
+  push:
+    paths:
+      - '.github/workflows/transport-ci.yml'
+      - 'src/transport/**'
+      - 'scripts/audit-transport-coverage.js'
+      - 'scripts/audit-tashkent-minibus-sources.js'
+      - 'test/transport-*.test.js'
+      - 'test/tashkent-transport-map.test.js'
+      - 'test/tashkent-minibus-official.test.js'
+      - 'package.json'
+  pull_request:
+    paths:
+      - '.github/workflows/transport-ci.yml'
+      - 'src/transport/**'
+      - 'scripts/audit-transport-coverage.js'
+      - 'scripts/audit-tashkent-minibus-sources.js'
+      - 'test/transport-*.test.js'
+      - 'test/tashkent-transport-map.test.js'
+      - 'test/tashkent-minibus-official.test.js'
+      - 'package.json'
+
+permissions:
+  contents: read
+
+jobs:
+  transport:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install --ignore-scripts
+      - name: Transport tests
+        run: node --test test/transport-catalog.test.js test/transport-nearest.test.js test/tashkent-transport-map.test.js test/tashkent-minibus-official.test.js
+      - name: Validate catalog
+        run: npm run validate
+      - name: Audit bus transport coverage
+        run: npm run audit:transport
+      - name: Reconcile Tashkent minibus sources
+        run: npm run audit:tashkent-minibus
+      - name: Check package contents
+        run: npm pack --dry-run --ignore-scripts
