@@ -48,4 +48,5 @@ export const NAMANGAN_ENTITIES = Object.freeze([
   osmSpatial('namangan-chorsu', 'Namangan Chorsu', 'poi.market', 41.00118, 71.67952, 'way', 625100490, 120),
   wikidataPoi('valley-of-legends', 'Valley of Legends', 41.003333, 71.616944, 'Q135947258', 250, 'poi.amusement_park'),
   osmSpatial('bobur-park', 'Bobur Park', 'poi.park', 40.99679, 71.67197, 'way', 399917916, 140),
+  osmSpatial('yangi-ozbekiston-park', 'Yangi Ozbekiston Park', 'poi.amusement_park', 41.0023723, 71.5600246, 'way', 560575723, 180),
 ]);
