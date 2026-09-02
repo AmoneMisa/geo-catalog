@@ -82,6 +82,18 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     osm: { type: 'node', id: 1223044803 },
   },
   {
+    id: 'uz:kosonsoy:local-area:center',
+    type: 'local_area',
+    country: 'UZ',
+    canonicalName: 'Center',
+    parentId: 'uz:kosonsoy',
+    center: { lat: 41.2539517, lng: 71.5449341 },
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 650,
+    osm: { type: 'way', id: 969223446 },
+  },
+  {
     id: 'uz:khiva:local-area:dishan-kala',
     type: 'local_area',
     country: 'UZ',
