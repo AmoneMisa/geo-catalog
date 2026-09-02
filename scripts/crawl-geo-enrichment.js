@@ -5,6 +5,7 @@ import path from 'node:path';
 import { LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/locations';
 import { GEO_ENTITIES } from '../src/catalog.js';
 import { resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
+import { discoverOverpassScoped } from './geo-enrichment-discovery.js';
 import { isAutoAcceptEligible } from './geo-enrichment-match.js';
 
 const TYPE_BY_KEY = Object.freeze({
@@ -849,55 +850,13 @@ function sanitizeCandidate(candidate) {
 }
 
 async function discoverOverpass(country, city, center) {
-  if (!center) return [];
-  const endpoint = process.env.OVERPASS_URL || 'https://overpass-api.de/api/interpreter';
-  const query = `[out:json][timeout:70];(nwr(around:${DISCOVERY_RADIUS_M},${center.lat},${center.lng})["place"~"^(neighbourhood|suburb|quarter)$"]["name"];nwr(around:${DISCOVERY_RADIUS_M},${center.lat},${center.lng})["landuse"="residential"]["name"];nwr(around:${DISCOVERY_RADIUS_M},${center.lat},${center.lng})["boundary"="administrative"]["name"];);out center tags;`;
-  const raw = await request('overpass', endpoint, {
-    cache: true,
-    minDelayMs: 350,
-    serialize: true,
-    method: 'POST',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      'user-agent': '@whiteslove/geo-catalog geo-enrichment discovery',
-    },
-    body: new URLSearchParams({ data: query }).toString(),
-    timeoutMs: 75_000,
+  return discoverOverpassScoped({
+    country,
+    city,
+    cityGeo: cityEntity(country, city),
+    center,
+    request,
   });
-  const payload = JSON.parse(raw);
-  const rows = [];
-  for (const item of payload.elements || []) {
-    const lat = Number(item.lat ?? item.center?.lat);
-    const lng = Number(item.lon ?? item.center?.lon);
-    const name = item.tags?.name;
-    if (!name || !Number.isFinite(lat) || !Number.isFinite(lng)) continue;
-    const place = item.tags?.place;
-    const typeHint = item.tags?.boundary === 'administrative'
-      ? 'district'
-      : place === 'neighbourhood' || place === 'quarter'
-        ? 'local_area'
-        : place === 'suburb'
-          ? 'suburb'
-          : 'local_area';
-    rows.push({
-      provider: 'overpass',
-      country,
-      city,
-      canonical: name,
-      typeHint,
-      lat,
-      lng,
-      source: 'osm',
-      osm: { type: item.type, id: item.id },
-      tags: {
-        place: place || null,
-        landuse: item.tags?.landuse || null,
-        boundary: item.tags?.boundary || null,
-        adminLevel: item.tags?.admin_level || null,
-      },
-    });
-  }
-  return rows;
 }
 
 function filterNewDiscoveries(discoveries, lexicon) {
