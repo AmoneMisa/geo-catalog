@@ -135,3 +135,47 @@ test('localized Aktau city names fall back to canonical city-center containment'
   assert.equal(isAutoAcceptEligible(row, serviceWay, aktauGeo), false);
   assert.ok(candidateScore(row, neighbourhood, aktauGeo) > candidateScore(row, residentialLanduse, aktauGeo));
 });
+
+test('named river POI cannot auto-accept a same-name hotel', () => {
+  const row = { country: 'UA', city: 'Bila Tserkva', type: 'poi', canonical: 'Ros River' };
+  const bilaTserkvaGeo = { center: { lat: 49.795, lng: 30.115 } };
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'Ros River',
+    label: 'Рось, 94, Олександрійський бульвар, Біла Церква, Україна',
+    lat: 49.795,
+    lng: 30.11,
+    rawType: 'hotel',
+    meta: { category: 'tourism' },
+  }), bilaTserkvaGeo), false);
+
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'Ros River',
+    label: 'Рось, Біла Церква, Україна',
+    lat: 49.79,
+    lng: 30.12,
+    rawType: 'river',
+    meta: { category: 'waterway' },
+  }), bilaTserkvaGeo), true);
+});
+
+test('railway station POI does not auto-accept a bus stop with station text', () => {
+  const row = { country: 'UA', city: 'Berdychiv', type: 'poi', canonical: 'Railway Station' };
+  const berdychivGeo = { center: { lat: 49.894, lng: 28.5815 } };
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'Railway Station',
+    label: 'Залізничний вокзал, Бердичів, Україна',
+    lat: 49.892,
+    lng: 28.6,
+    rawType: 'bus_stop',
+    meta: { category: 'highway' },
+  }), berdychivGeo), false);
+
+  assert.equal(isAutoAcceptEligible(row, candidate({
+    query: 'Railway Station',
+    label: 'Berdychiv railway station, Бердичів, Україна',
+    lat: 49.892,
+    lng: 28.6,
+    rawType: 'railway_station',
+    meta: { category: 'railway' },
+  }), berdychivGeo), true);
+});
