@@ -15,7 +15,10 @@ import { ANGREN_STREET_ENTITIES } from './angren-streets.js';
 import { NAVOIY_MICRODISTRICT_ENTITIES } from './navoiy-microdistricts.js';
 import { GULISTAN_SPATIAL_ENTITIES } from './gulistan-anchors.js';
 import { UZ_INDUSTRIAL_ANCHORS } from './industrial-anchors.js';
+import { UZ_KARAKALPAKSTAN_ANCHORS } from './karakalpakstan-anchors.js';
+import { UZ_OFFICIAL_INSTITUTION_ANCHORS } from './official-institution-anchors.js';
 import { UZ_P3_TRANSPORT_ENTITIES } from './p3-transport.js';
+import { UZ_REGIONAL_ANCHORS } from './regional-anchors.js';
 import { UZ_SECONDARY_CITY_ANCHORS } from './secondary-city-anchors.js';
 import { UZ_SECONDARY_AREA_ADDITIONS } from './secondary-area-additions.js';
 import { UZ_SECONDARY_LOCALITY_ENTITIES } from './secondary-localities.js';
@@ -46,7 +49,10 @@ export const UZ_ENTITIES = Object.freeze([
   ...NAVOIY_MICRODISTRICT_ENTITIES,
   ...GULISTAN_SPATIAL_ENTITIES,
   ...UZ_INDUSTRIAL_ANCHORS,
+  ...UZ_KARAKALPAKSTAN_ANCHORS,
+  ...UZ_OFFICIAL_INSTITUTION_ANCHORS,
   ...UZ_P3_TRANSPORT_ENTITIES,
+  ...UZ_REGIONAL_ANCHORS,
   ...UZ_SECONDARY_CITY_ANCHORS,
   ...UZ_SECONDARY_AREA_ADDITIONS,
   ...UZ_SECONDARY_LOCALITY_ENTITIES,
