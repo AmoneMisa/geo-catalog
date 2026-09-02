@@ -1,0 +1,62 @@
+name: Refresh Tashkent bus WikiRoutes snapshot
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [master, main]
+    paths:
+      - '.github/workflows/refresh-tashkent-bus-wikiroutes.yml'
+      - 'scripts/refresh-tashkent-bus-wikiroutes.js'
+      - 'test/wikiroutes-crawler.test.js'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tashkent-bus-wikiroutes-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Refuse protected branches
+        shell: bash
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            master|main)
+              echo "Refusing to refresh generated WikiRoutes data directly on ${GITHUB_REF_NAME}."
+              exit 1
+              ;;
+          esac
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts
+      - name: Verify WikiRoutes parser fixtures
+        run: node --test test/wikiroutes-crawler.test.js
+      - name: Crawl current WikiRoutes Tashkent bus catalog
+        run: npm run crawl:wikiroutes
+      - name: Validate refreshed transport snapshot
+        run: |
+          npm test
+          npm run validate
+          npm run audit:transport
+          npm pack --dry-run
+      - name: Commit WikiRoutes snapshot
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/transport/generated/tashkent-bus-wikiroutes-snapshot.js
+          if git diff --cached --quiet; then
+            echo "No WikiRoutes snapshot changes"
+            exit 0
+          fi
+          git commit -m "data: refresh Tashkent bus WikiRoutes snapshot"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
