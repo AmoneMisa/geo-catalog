@@ -27,8 +27,10 @@
     "audit:lexicon": "node ./scripts/audit-lexicon-coverage.js",
     "audit:transport": "node ./scripts/audit-transport-coverage.js",
     "crawl:geo": "node ./scripts/run-geo-enrichment.js",
+    "crawl:wikiroutes": "node ./scripts/refresh-tashkent-bus-wikiroutes.js",
     "check:crawler": "node --check ./scripts/crawl-geo-enrichment.js && node --check ./scripts/geo-enrichment-match.js && node --check ./scripts/run-geo-enrichment.js",
-    "prepack": "npm test && npm run validate && npm run check:crawler"
+    "check:wikiroutes": "node --check ./scripts/refresh-tashkent-bus-wikiroutes.js",
+    "prepack": "npm test && npm run validate && npm run check:crawler && npm run check:wikiroutes"
   },
   "devDependencies": {
     "@whiteslove/parsing-lexicon": "0.5.8"
