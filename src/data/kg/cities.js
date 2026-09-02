@@ -1,4 +1,4 @@
-const city = (id, canonicalName, lat, lng, sourceUrl, accuracyM = 10000) => Object.freeze({
+const city = (id, canonicalName, lat, lng, sourceUrl, accuracyM = 10000, osm = null) => Object.freeze({
   id,
   type: 'city',
   country: 'KG',
@@ -8,6 +8,7 @@ const city = (id, canonicalName, lat, lng, sourceUrl, accuracyM = 10000) => Obje
   sourceUrl,
   accuracy: 'city',
   accuracyM,
+  ...(osm ? { osm: Object.freeze(osm) } : {}),
 });
 
 const geonames = (name) => `https://www.geonames.org/advanced-search.html?country=KG&q=${encodeURIComponent(name)}`;
@@ -22,7 +23,7 @@ export const KG_CITY_ENTITIES = Object.freeze([
   city('kg:talas', 'Talas', 42.52, 72.24, geonames('Talas')),
   city('kg:batken', 'Batken', 40.06, 70.82, geonames('Batken')),
   city('kg:kara-balta', 'Kara-Balta', 42.81, 73.85, geonames('Kara-Balta')),
-  city('kg:balykchy', 'Balykchy', 42.46, 76.19, geonames('Balykchy')),
+  city('kg:balykchy', 'Balykchy', 42.46, 76.19, geonames('Balykchy'), 10000, { type: 'relation', id: 15586036 }),
   city('kg:kant', 'Kant', 42.89, 74.85, geonames('Kant')),
   city('kg:uzgen', 'Uzgen', 40.77, 73.30, geonames('Uzgen')),
   city('kg:kyzyl-kiya', 'Kyzyl-Kiya', 40.26, 72.13, geonames('Kyzyl-Kiya')),
