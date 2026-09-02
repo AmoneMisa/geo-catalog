@@ -1,0 +1,90 @@
+name: Refresh Tashkent active WikiRoutes snapshot
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [master, main]
+    paths:
+      - '.github/workflows/refresh-tashkent-wikiroutes.yml'
+      - 'scripts/refresh-tashkent-wikiroutes.js'
+      - 'scripts/refresh-tashkent-bus-wikiroutes.js'
+      - 'test/wikiroutes-crawler.test.js'
+      - 'test/wikiroutes-active-catalog.test.js'
+      - 'package.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tashkent-wikiroutes-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Refuse protected branches
+        shell: bash
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            master|main)
+              echo "Refusing to refresh generated WikiRoutes data directly on ${GITHUB_REF_NAME}."
+              exit 1
+              ;;
+          esac
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts
+      - name: Verify WikiRoutes parser fixtures
+        run: node --test test/wikiroutes-crawler.test.js test/wikiroutes-active-catalog.test.js
+      - name: Verify live active catalog boundaries
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { CATALOG_URL, parseActiveCatalog } from './scripts/refresh-tashkent-wikiroutes.js';
+          const response = await fetch(CATALOG_URL, {
+            headers: { 'user-agent': 'geo-catalog active WikiRoutes catalog probe' },
+            signal: AbortSignal.timeout(12000),
+          });
+          if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+          const catalog = parseActiveCatalog(await response.text());
+          console.log(JSON.stringify({
+            declaredCountsByMode: catalog.declaredCountsByMode,
+            routeCountsByMode: catalog.routeCountsByMode,
+            firstRoutes: catalog.routes.slice(0, 12).map(({ mode, ref, sourceRouteId }) => ({ mode, ref, sourceRouteId })),
+          }, null, 2));
+          if (!catalog.routes.length) throw new Error('No active WikiRoutes routes parsed');
+          for (const [mode, declared] of Object.entries(catalog.declaredCountsByMode)) {
+            if (declared !== null && catalog.routeCountsByMode[mode] !== declared) {
+              throw new Error(`${mode}: parsed ${catalog.routeCountsByMode[mode]} active routes, catalog declares ${declared}`);
+            }
+          }
+          if (catalog.routes.some((route) => route.active !== true)) {
+            throw new Error('Non-active route leaked into active-only catalog');
+          }
+          NODE
+      - name: Crawl current active WikiRoutes transport
+        run: npm run crawl:wikiroutes
+      - name: Validate refreshed transport data
+        run: |
+          npm run check:wikiroutes
+          npm run validate
+          npm run audit:transport
+      - name: Commit WikiRoutes snapshot
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/transport/generated/tashkent-wikiroutes-snapshot.js
+          if git diff --cached --quiet; then
+            echo "No WikiRoutes snapshot changes"
+            exit 0
+          fi
+          git commit -m "data: refresh Tashkent active WikiRoutes snapshot"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
