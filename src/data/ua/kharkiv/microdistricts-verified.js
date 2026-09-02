@@ -64,6 +64,7 @@ export const UA_KHARKIV_VERIFIED_MICRODISTRICT_ENTITIES = Object.freeze([
   }),
   wikimapiaMicrodistrict('607-microdistrict', '607 microdistrict', 50.016404, 36.350418, 650),
   wikimapiaMicrodistrict('608-microdistrict', '608 microdistrict', 50.0148, 36.3375, 900),
+  osmMicrodistrict('614-microdistrict', '614 microdistrict', 49.9950676, 36.3376701, 12273087446, 500),
   microdistrict('615-microdistrict', '615 microdistrict', 50.003730, 36.332136, 900, {
     source: 'manual',
     sourceUrl: 'https://urbanplaces.su/ua_harkovskaya-oblast/harkov/card-2996411-kvtucha-tucha',

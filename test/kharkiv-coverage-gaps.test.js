@@ -6,7 +6,6 @@ import { resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
 const expected = Object.freeze([
   ['microdistrict', '536 microdistrict'],
   ['microdistrict', '537 microdistrict'],
-  ['microdistrict', '614 microdistrict'],
   ['poi', 'Feldman Ecopark'],
   ['poi', 'Rost'],
   ['poi', 'Klass'],
@@ -30,6 +29,7 @@ test('Kulynychi reuses the existing verified Kharkiv physical owner', () => {
 test('resolved Kharkiv canonicals are not coverage gaps', () => {
   for (const [type, canonical] of [
     ['microdistrict', '535A'],
+    ['microdistrict', '614 microdistrict'],
     ['microdistrict', '627 microdistrict'],
     ['microdistrict', 'Horizont'],
     ['microdistrict', 'Kulynychi'],
