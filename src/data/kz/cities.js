@@ -43,4 +43,9 @@ export const KZ_CITY_ENTITIES = Object.freeze([
   city('kz:stepnogorsk','Stepnogorsk',52.3506,71.8816),
   city('kz:atbasar','Atbasar',51.820495,68.363693),
   city('kz:shchuchinsk','Shchuchinsk',52.9359,70.189),
+  city('kz:makinsk','Makinsk',52.63287,70.41821),
+  city('kz:ereymentau','Ereymentau',51.61656,73.14575),
+  city('kz:akkol','Akkol',51.99439,70.95196),
+  city('kz:kaskelen','Kaskelen',43.19769,76.63039),
+  city('kz:talgar','Talgar',43.30272,77.23947),
 ]);
