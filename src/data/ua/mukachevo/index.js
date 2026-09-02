@@ -1,0 +1,9 @@
+import { UA_MUKACHEVO_NEIGHBORHOOD_ENTITIES } from './neighborhoods.js';
+import { UA_MUKACHEVO_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes.js';
+import { UA_MUKACHEVO_POI_ENTITIES } from './poi.js';
+
+export const UA_MUKACHEVO_ENTITIES = Object.freeze([
+  ...UA_MUKACHEVO_NEIGHBORHOOD_ENTITIES,
+  ...UA_MUKACHEVO_RESIDENTIAL_COMPLEX_ENTITIES,
+  ...UA_MUKACHEVO_POI_ENTITIES,
+]);
