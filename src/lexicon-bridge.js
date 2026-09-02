@@ -57,6 +57,9 @@ const lexiconAliases = new Map([
   alias('UZ', 'Tashkent', 'local_area', 'Takhtapul', 'uz:tashkent:local-area:taxtapul'),
   alias('UZ', 'Tashkent', 'local_area', 'Stroygorod', 'uz:tashkent:poi:stroygorod-market'),
   alias('UZ', 'Tashkent', 'local_area', 'Yangi Choshtepa', 'uz:tashkent:microdistrict:yangi-choshtepa'),
+  alias('UZ', 'Tashkent', 'poi', 'Milliy Bog Park', 'uz:tashkent:poi:alisher-navoi-national-park'),
+  alias('UZ', 'Tashkent', 'poi', 'Samarqand Darvoza', 'uz:tashkent:poi:samarkand-darvoza'),
+  alias('UZ', 'Tashkent', 'poi', 'HT Mall', 'uz:tashkent:poi:high-town-mall'),
 
   alias('UA', 'Kharkiv', 'microdistrict', 'Saltivka', 'ua:kharkiv:microdistrict:saltivka'),
   alias('UA', 'Kharkiv', 'microdistrict', 'North Saltivka', 'ua:kharkiv:microdistrict:pivnichna-saltivka'),
