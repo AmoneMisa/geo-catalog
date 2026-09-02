@@ -42,6 +42,7 @@ export const UA_KYIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   sourcedResidential('rusanivska-havan', 'Rusanivska Havan', 50.460189, 30.581331, 'https://novobudovy.com/novobudovy-kyieva/zhk-rusanivskij-m-kiiv-vul-m-raskovoi', 220),
   sourcedResidential('slavutych', 'Slavutych', 50.394979, 30.604495, 'https://archi.ru/projects/world/9460/zhiloi-kompleks-slavutich', 200),
   osmResidential('parkland', 'ParkLand', 50.39606, 30.46904, 'way', 464888988, 260),
+  osmResidential('tetris-hall', 'Tetris Hall', 50.4289276, 30.5194827, 'way', 1152235223, 240),
   sourcedResidential('nova-anhliia', 'Nova Anhliia', 50.394872, 30.474606, 'https://novobudovy.com/novobudovy-kyieva/novaya-angliya-kiev', 220),
   sourcedResidential('bulvar-fontaniv', 'Bulvar Fontaniv', 50.419194, 30.531345, 'https://skyscraperpage.com/forum/showthread.php?t=247260', 220),
   sourcedResidential('greenville-park', 'Greenville Park', 50.461866, 30.491322, 'https://novobudovy.com/novobudovy-kyieva/novobudovy-shevchenkivskyi-raion/greenville-park', 180),
