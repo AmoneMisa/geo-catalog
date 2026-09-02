@@ -58,6 +58,18 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     osm: { type: 'node', id: 2520618202 },
   },
   {
+    id: 'uz:bekabad:local-area:syrdarya',
+    type: 'local_area',
+    country: 'UZ',
+    canonicalName: 'Syrdarya',
+    parentId: 'uz:bekabad',
+    center: { lat: 40.2250529, lng: 69.2571173 },
+    source: 'osm',
+    accuracy: 'neighborhood',
+    accuracyM: 650,
+    osm: { type: 'way', id: 333537419 },
+  },
+  {
     id: 'uz:chirchiq:settlement:troitsky',
     type: 'settlement',
     country: 'UZ',
