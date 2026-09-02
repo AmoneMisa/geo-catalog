@@ -15,6 +15,7 @@ const expected = Object.freeze([
   ['Qarshi', 'local_area', 'Xonobod', 10588792432],
   ['Jizzakh', 'local_area', 'Zilol', 11725490815],
   ['Jizzakh', 'local_area', 'Navoiy', 316353350],
+  ['Jizzakh', 'poi', 'Sangzor River', 1310350609],
   ['Kosonsoy', 'local_area', 'Center', 969223446],
   ['Navoiy', 'mahalla', 'Guliston', 1137853275],
   ['Xonobod', 'poi', 'Andijan Reservoir', 14663093],
