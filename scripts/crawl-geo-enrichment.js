@@ -804,7 +804,11 @@ function consensusBoost(candidate, candidates, row) {
 function dedupeCandidates(candidates) {
   const dedupe = new Map();
   for (const candidate of candidates) {
-    const key = `${candidate.provider}|${candidate.providerId || ''}|${candidate.lat.toFixed(6)}|${candidate.lng.toFixed(6)}|${normalize(candidate.label)}`;
+    const osmIdentity = candidate.osm?.type && Number.isFinite(candidate.osm?.id)
+      ? `${candidate.provider}|osm:${candidate.osm.type}:${candidate.osm.id}`
+      : null;
+    const key = osmIdentity
+      || `${candidate.provider}|${candidate.providerId || ''}|${candidate.lat.toFixed(6)}|${candidate.lng.toFixed(6)}|${normalize(candidate.label)}`;
     if (!dedupe.has(key)) dedupe.set(key, candidate);
   }
   return [...dedupe.values()];
