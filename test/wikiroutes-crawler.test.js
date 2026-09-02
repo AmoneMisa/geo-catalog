@@ -22,19 +22,20 @@ test('catalog parser takes every bus route link and ignores later route sections
   ]);
 });
 
-test('route parser preserves both direction stop orders including repeated stop ids', () => {
+test('route parser decodes WikiRoutes direction entities and preserves repeated stop ids', () => {
   const route = { sourceRouteUrl: 'https://ru.wikiroutes.info/tashkent?routes=10600', ref: '1' };
   const html = `
-    <h2>A — B</h2>
+    <h2 class="route-direction__title">A &mdash; B</h2>
     <h3><a href="/stops/10">A</a></h3>
     <h3><a href="/stops/11">Middle</a></h3>
     <h3><a href="/stops/10">A again</a></h3>
     <h3><a href="/stops/12">B</a></h3>
-    <h2>B — A</h2>
+    <h2 class="route-direction__title">B &ndash; A</h2>
     <h3><a href="/stops/12">B</a></h3>
     <h3><a href="/stops/13">Other</a></h3>
     <h3><a href="/stops/10">A</a></h3>`;
   const parsed = parseRoutePage(html, route);
+  assert.deepEqual(parsed.directions.map((direction) => direction.name), ['A — B', 'B — A']);
   assert.deepEqual(parsed.directions.map((direction) => direction.stops.map((stop) => stop.sourceStopId)), [
     ['10', '11', '10', '12'],
     ['12', '13', '10'],
