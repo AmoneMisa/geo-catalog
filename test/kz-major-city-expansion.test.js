@@ -10,6 +10,11 @@ const expected = Object.freeze([
   ['kz:rudny', 'Rudny', 52.9645, 63.1335],
   ['kz:zhezkazgan', 'Zhezkazgan', 47.7833, 67.7667],
   ['kz:balkhash', 'Balkhash', 46.8481, 74.9950],
+  ['kz:konaev', 'Konaev', 43.86484, 77.06604],
+  ['kz:zhanaozen', 'Zhanaozen', 43.3381, 52.8556],
+  ['kz:satbayev', 'Satbayev', 47.9049, 67.5306],
+  ['kz:kosshy', 'Kosshy', 50.9754, 71.3549],
+  ['kz:arys', 'Arys', 42.43247, 68.81349],
 ]);
 
 test('KZ major city expansion is present in the geo catalog', () => {
