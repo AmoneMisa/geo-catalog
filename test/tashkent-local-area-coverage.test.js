@@ -26,7 +26,7 @@ const resolvedAreas = Object.freeze([
   ['Ibn Sino-1', 'uz:tashkent:local-area:ibn-sino-1', 'uz:tashkent:shaykhantahur', 'way', 103249732],
   ['Ibn Sino-2', 'uz:tashkent:local-area:ibn-sino-2', 'uz:tashkent:shaykhantahur', 'way', 149989839],
   ['Parkent-Riyoziy', 'uz:tashkent:local-area:parkent-riyoziy', 'uz:tashkent:yashnobod', 'node', 1867099585],
-  ['Beruniy-B3', 'uz:tashkent:local-area:beruniy-b3', 'uz:tashkent:almazar', 'node', 1866097646],
+  ['Beruniy-B3', 'uz:tashkent:local-area:beruniy-b3', 'uz:tashkent:almazar', 'node', 4984463379],
   ['Qalqon', 'uz:tashkent:local-area:qalqon', 'uz:tashkent:yashnobod', 'node', 12173937446],
   ["Bog'bon", 'uz:tashkent:local-area:bogbon', 'uz:tashkent:yashnobod', 'way', 557224880],
   ['Shifokorlar-1', 'uz:tashkent:local-area:shifokorlar-1', 'uz:tashkent:almazar', 'way', 149513658],
@@ -39,6 +39,7 @@ const resolvedAreas = Object.freeze([
   ["Qo'yliq-5", 'uz:tashkent:local-area:qoyliq-5', 'uz:tashkent:sergeli', 'node', 3991877007],
   ["Qo'yliq-6", 'uz:tashkent:local-area:qoyliq-6', 'uz:tashkent:sergeli', 'node', 4750071797],
   ["Qo'yliq-7", 'uz:tashkent:local-area:qoyliq-7', 'uz:tashkent:sergeli', 'node', 5637605369],
+  ['Tashselmash', 'uz:tashkent:local-area:tashselmash', 'uz:tashkent:yashnobod', 'node', 6123092387],
 ]);
 
 const derivedAreas = Object.freeze([
