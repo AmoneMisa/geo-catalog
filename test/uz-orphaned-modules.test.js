@@ -20,3 +20,10 @@ test('previously orphaned railway station anchors are present in runtime catalog
   assert.equal(getGeoEntity('uz:yangiyol:poi:yangiyol-railway-station')?.osm?.id, 2209501413);
   assert.equal(getGeoEntity('uz:chust:poi:chust-railway-station')?.osm?.id, 1587386149);
 });
+
+test('verified industrial modules are present in runtime catalog', () => {
+  assert.equal(getGeoEntity('uz:shirin:poi:syrdarya-tpp')?.osm?.id, 229824212);
+  assert.equal(getGeoEntity('uz:shirin:poi:syrdarya-tpp')?.type, 'poi.power_plant');
+  assert.equal(getGeoEntity('uz:angren:poi:angren-tpp')?.type, 'poi.power_plant');
+  assert.equal(getGeoEntity('uz:almalyk:poi:almalyk-mmc')?.type, 'poi.factory');
+});
