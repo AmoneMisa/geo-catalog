@@ -4,6 +4,7 @@ node_modules/
 coverage/
 /.idea/
 .cache/geo-enrichment/
+.cache/wikiroutes/
 .env
 .env.*
 !.env.example
