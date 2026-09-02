@@ -39,8 +39,11 @@ jobs:
           node --input-type=module <<'NODE'
           import { TRANSPORT_ROUTES } from './src/transport/catalog.js';
           const routes = TRANSPORT_ROUTES.filter((route) => route.cityId === 'uz:tashkent');
-          const counts = Object.groupBy(routes, (route) => route.mode);
-          console.log(Object.fromEntries(Object.entries(counts).map(([mode, rows]) => [mode, rows.length])));
+          const counts = routes.reduce((result, route) => {
+            result[route.mode] = (result[route.mode] ?? 0) + 1;
+            return result;
+          }, {});
+          console.log(counts);
           for (const mode of ['tram', 'trolleybus', 'funicular']) {
             if (routes.some((route) => route.mode === mode)) {
               throw new Error(`Unexpected inactive/historical ${mode} route in current Tashkent catalog`);
