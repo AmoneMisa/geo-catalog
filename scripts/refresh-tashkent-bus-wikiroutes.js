@@ -48,17 +48,23 @@ export const normalizeRouteRef = (value) => stripTags(value)
   .replace(/Т/gu, 'T')
   .replace(/\s+/g, '');
 
+const countedSectionIndex = (source, label) => source.search(
+  new RegExp(`${label}(?:\\s|&nbsp;|<[^>]*>){0,8}\\(\\s*\\d+\\s*\\)`, 'i'),
+);
+
 export function parseCatalogRoutes(html, { mode = 'bus' } = {}) {
   const source = String(html);
-  const busStart = source.search(/Автобусы(?:\s|&nbsp;|<)/i);
-  const minibusStart = source.search(/Маршрутки(?:\s|&nbsp;|<)/i);
-  const metroStart = source.search(/Метро(?:\s|&nbsp;|<)/i);
+  const busStart = countedSectionIndex(source, 'Автобусы');
+  const minibusStart = countedSectionIndex(source, 'Маршрутки');
+  const metroStart = countedSectionIndex(source, 'Метро');
+
+  if (mode === 'bus' && busStart < 0) return [];
   const sectionEnd = [minibusStart, metroStart]
-    .filter((value) => value >= 0)
+    .filter((value) => value > busStart)
     .sort((a, b) => a - b)[0] ?? source.length;
 
   const rows = anchorRows(source).filter(({ href, index }) => {
-    if (mode === 'bus' && busStart >= 0 && (index < busStart || index >= sectionEnd)) return false;
+    if (mode === 'bus' && (index < busStart || index >= sectionEnd)) return false;
     const url = new URL(href, BASE_URL);
     return url.pathname === '/tashkent' && Boolean(url.searchParams.get('routes'));
   });
