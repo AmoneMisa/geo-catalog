@@ -21,4 +21,5 @@ export const UA_POLTAVA_NEIGHBORHOOD_ENTITIES = Object.freeze([
   neighborhood('dublianshchyna', 'Dublianshchyna', 49.60358, 34.60685, 1800, { osm: Object.freeze({ type: 'node', id: 6687075985 }), wikidataId: 'Q12102631' }),
   neighborhood('pavlenky', 'Pavlenky', 49.60299, 34.54363, 1500, { osm: Object.freeze({ type: 'node', id: 13116747133 }) }),
   neighborhood('yurivka', 'Yurivka', 49.58954, 34.5167, 1500, { osm: Object.freeze({ type: 'node', id: 7482775250 }), wikidataId: 'Q60860060' }),
+  neighborhood('brailky', 'Brailky', 49.605489, 34.4928827, 1200, { osm: Object.freeze({ type: 'node', id: 7482794626 }) }),
 ]);
