@@ -22,6 +22,17 @@ const NUMBERED_AREA_MARKER_RE = /\b(?:microdistrict|mikrorayon|mavze(?:si)?|mass
 const AREA_CATEGORY_RE = /\b(?:boundary|place|landuse|administrative|district|neighbou?rhood|suburb|quarter|locality|residential)\b/i;
 const NON_AREA_CATEGORY_RE = /\b(?:highway|amenity|shop|tourism|leisure|office|craft|building|historic|railway|public_transport|aeroway)\b/i;
 
+const POI_SEMANTIC_RULES = Object.freeze([
+  [/\b(?:river|річка|река)\b/iu, /\b(?:river|waterway|stream|water|hydro)\b/i],
+  [/\b(?:estuary|liman|лиман)\b/iu, /\b(?:water|estuary|lagoon|bay|hydro)\b/i],
+  [/\b(?:railway\s+station|train\s+station|station|вокзал|станц(?:ія|ия))\b/iu, /\b(?:railway_station|train_station|station|railway)\b/i],
+  [/\b(?:fortress|fort|фортец(?:я|і)|крепост(?:ь|и))\b/iu, /\b(?:fortress|fort|castle|historic|attraction)\b/i],
+  [/\b(?:square|площа|площадь)\b/iu, /\b(?:square|pedestrian)\b/i],
+  [/\b(?:sea\s+port|port|порт)\b/iu, /\b(?:port|harbour|harbor|dock|terminal|industrial)\b/i],
+  [/\b(?:monastery|монастир|монастырь)\b/iu, /\b(?:monastery|place_of_worship|religious|historic|attraction|castle)\b/i],
+  [/\b(?:park|парк)\b/iu, /\b(?:park|garden|recreation|leisure)\b/i],
+]);
+
 export function normalizeGeoText(value) {
   return String(value ?? '')
     .normalize('NFKD')
@@ -102,12 +113,12 @@ export function providerTypeScore(row, candidate) {
   const type = providerTypeText(candidate);
   if (row.type === 'street') return /road|street|highway|living_street|primary|secondary|tertiary|service|pedestrian|unclassified/.test(type) ? 1 : 0.35;
   if (row.type === 'metro') return /station|subway|railway|public_transport|stop|transit/.test(type) ? 1 : 0.35;
-  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop|poi|marketplace|park|museum|airport|university|mall|sports_centre|garden|botanical_garden/.test(type) ? 0.9 : 0.5;
+  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop|poi|marketplace|park|museum|airport|university|mall|sports_centre|garden|botanical_garden|river|water|waterway|estuary|lagoon|bay|square|castle|fort|train_station|railway_station|industrial/.test(type) ? 0.9 : 0.5;
   if (row.type === 'residential_complex') return /residential|building|apartments|housing|place/.test(type) ? 1 : 0.4;
   if (row.type === 'district') return /administrative|district|borough|boundary/.test(type) ? 1 : 0.2;
   if (row.type === 'microdistrict') {
     if (/administrative|district|neighbou?rhood|quarter/.test(type)) return 1;
-    return /residential|place|locality|landuse/.test(type) ? 0.75 : 0.2;
+    return /residential|place|locality|landuse|suburb/.test(type) ? 0.75 : 0.2;
   }
   if (row.type === 'mahalla') {
     if (/administrative|neighbou?rhood|quarter|suburb/.test(type)) return 1;
@@ -130,23 +141,24 @@ function isAreaTypeCompatible(row, candidate) {
   const type = providerTypeText(candidate);
   if (!AREA_TYPES.has(row.type)) return true;
 
-  // Nominatim exposes both a feature type and a feature class/category. A
-  // street, shop or cafe may contain the target area in its address, but it is
-  // not the spatial entity itself.
   if (NON_AREA_CATEGORY_RE.test(candidate.meta?.category || '')) return false;
 
   if (row.type === 'settlement') return /village|hamlet|town|settlement|locality|suburb|neighbou?rhood|place/.test(type);
   if (row.type === 'district') return /administrative|district|borough|boundary/.test(type);
 
-  // Numbered microdistrict names are especially prone to matching a road or a
-  // generic residential landuse polygon. Require the provider to identify the
-  // candidate itself as a named neighbourhood-like feature; weaker residential
-  // polygons stay visible for manual review instead of becoming canonical.
   if (row.type === 'microdistrict' && /\d/.test(normalizeGeoText(row.canonical))) {
     return /administrative|district|neighbou?rhood|quarter/.test(type);
   }
 
   return AREA_CATEGORY_RE.test(type);
+}
+
+function isPoiTypeCompatible(row, candidate) {
+  if (row.type !== 'poi') return true;
+  const semanticText = `${row.canonical || ''} ${candidate.query || ''}`;
+  const rule = POI_SEMANTIC_RULES.find(([namePattern]) => namePattern.test(semanticText));
+  if (!rule) return true;
+  return rule[1].test(providerTypeText(candidate));
 }
 
 function firstLabelPart(candidate) {
@@ -187,6 +199,7 @@ export function isAutoAcceptEligible(row, candidate, cityGeo = null) {
   if (!candidate?.persistable) return false;
   if (!isCandidateInCity(row, candidate, cityGeo)) return false;
   if (!isAreaTypeCompatible(row, candidate)) return false;
+  if (!isPoiTypeCompatible(row, candidate)) return false;
   if (!hasDirectAreaNameEvidence(row, candidate)) return false;
   return true;
 }
