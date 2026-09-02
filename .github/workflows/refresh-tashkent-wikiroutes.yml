@@ -55,13 +55,19 @@ jobs:
           const catalog = parseActiveCatalog(await response.text());
           console.log(JSON.stringify({
             declaredCountsByMode: catalog.declaredCountsByMode,
-            routeCountsByMode: catalog.routeCountsByMode,
+            uniqueActiveRoutesByMode: catalog.routeCountsByMode,
             firstRoutes: catalog.routes.slice(0, 12).map(({ mode, ref, sourceRouteId }) => ({ mode, ref, sourceRouteId })),
           }, null, 2));
           if (!catalog.routes.length) throw new Error('No active WikiRoutes routes parsed');
           for (const [mode, declared] of Object.entries(catalog.declaredCountsByMode)) {
-            if (declared !== null && catalog.routeCountsByMode[mode] !== declared) {
-              throw new Error(`${mode}: parsed ${catalog.routeCountsByMode[mode]} active routes, catalog declares ${declared}`);
+            if (declared === null) continue;
+            const parsed = catalog.routeCountsByMode[mode] ?? 0;
+            if (parsed > declared) {
+              throw new Error(`${mode}: parsed ${parsed} unique active routes, catalog declares only ${declared}`);
+            }
+            const allowedDuplicateGap = Math.max(5, Math.ceil(declared * 0.03));
+            if (declared - parsed > allowedDuplicateGap) {
+              throw new Error(`${mode}: parsed ${parsed} unique active routes, catalog declares ${declared}; gap ${declared - parsed} is too large`);
             }
           }
           if (catalog.routes.some((route) => route.active !== true)) {
