@@ -14,6 +14,7 @@ import { UA_KAMIANETS_PODILSKYI_ENTITIES } from './kamianets-podilskyi/index.js'
 import { UA_DROHOBYCH_ENTITIES } from './drohobych/index.js';
 import { UA_KOLOMYIA_ENTITIES } from './kolomyia/index.js';
 import { UA_KOVEL_ENTITIES } from './kovel/index.js';
+import { UA_VOLODYMYR_ENTITIES } from './volodymyr/index.js';
 import { UA_BERDIANSK_ENTITIES } from './berdiansk/index.js';
 import { UA_BERDYCHIV_ENTITIES } from './berdychiv/index.js';
 import { UA_BILHOROD_DNISTROVSKYI_ENTITIES } from './bilhorod-dnistrovskyi/index.js';
@@ -54,6 +55,7 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_DROHOBYCH_ENTITIES,
   ...UA_KOLOMYIA_ENTITIES,
   ...UA_KOVEL_ENTITIES,
+  ...UA_VOLODYMYR_ENTITIES,
   ...UA_BERDIANSK_ENTITIES,
   ...UA_BERDYCHIV_ENTITIES,
   ...UA_BILHOROD_DNISTROVSKYI_ENTITIES,
