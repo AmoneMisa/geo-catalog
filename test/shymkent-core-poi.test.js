@@ -5,6 +5,7 @@ import { KZ_SHYMKENT_ENTITIES } from '../src/data/kz/shymkent/index.js';
 const expected = Object.freeze([
   ['kz:shymkent:poi:shymkent-zoo', 'poi.zoo', 'Shymkent Zoo', 'way', 164667870],
   ['kz:shymkent:poi:shymkent-international-airport', 'poi.airport', 'Shymkent International Airport', 'way', 112117550],
+  ['kz:shymkent:poi:shymkent-railway-station', 'poi.railway_station', 'Shymkent Railway Station', 'node', 2753413127],
 ]);
 
 test('Shymkent exposes verified core POIs with stable OSM identity', () => {
