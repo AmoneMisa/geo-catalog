@@ -8,6 +8,9 @@ const EXPECTED = Object.freeze([
   ['samal-3', 'Самал-3', 43.226818, 76.955993],
   ['aksai-1', 'Аксай-1', 43.242305, 76.833239],
   ['koktem-1', 'Коктем-1', 43.230089, 76.926385],
+  ['orbita-2', 'Орбита-2', 43.196954, 76.884649],
+  ['orbita-4', 'Орбита-4', 43.196481, 76.877795],
+  ['mamyr-1', 'Мамыр-1', 43.211247, 76.845707],
 ]);
 
 test('Almaty core microdistricts are registered with verified representative centers', () => {
