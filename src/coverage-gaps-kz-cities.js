@@ -8,8 +8,8 @@ const normalize = (value) => String(value ?? '')
 
 const cityNames = Object.freeze([
   'Shelek','Uzynagash',
-  'Dossor','Zhitikara',
-  'Aksai','Baikonur','Aral','Kazaly','Shu','Karatau','Zhanatas','Merke','Zhetysai','Lenger','Shardara',
+  'Dossor',
+  'Shu','Karatau','Zhanatas','Merke','Zhetysai','Lenger','Shardara',
 ]);
 
 export const KZ_CITY_COVERAGE_GAPS = Object.freeze(cityNames.map((canonical) => Object.freeze({
