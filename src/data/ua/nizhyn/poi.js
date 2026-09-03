@@ -30,4 +30,9 @@ export const UA_NIZHYN_POI_ENTITIES = Object.freeze([
     sourceUrl: 'https://www.openstreetmap.org/way/367351473',
     officialUrl: 'https://nizhynrada.gov.ua/nmr/kultura/ekskursiyne-obslugovuvannya',
   }),
+  poi('mykola-gogol-state-university', 'Ніжинський державний університет імені Миколи Гоголя', 51.05324, 31.88132, 120, {
+    source: 'manual',
+    sourceUrl: 'https://discover.ua/locations/kartinna-galerea-nizinskogo-derzavnogo-universitetu-imeni-mikoli-gogola',
+    officialUrl: 'https://www.ndu.edu.ua/index.php/ua/yniversutet/about-univer',
+  }),
 ]);
