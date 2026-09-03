@@ -34,4 +34,9 @@ export const UA_KONOTOP_POI_ENTITIES = Object.freeze([
     sourceUrl: 'https://www.openstreetmap.org/way/806081200',
     officialUrl: 'https://konotop-rada.gov.ua/875-2011-04-12-11-08-43/',
   }),
+  poi('myru-square', 'Площа Миру', 51.23161, 33.20016, 100, {
+    source: 'manual',
+    sourceUrl: 'https://ru.wikiroutes.info/stops/423962',
+    officialUrl: 'https://konotop-rada.gov.ua/4813-2016-02-19-11-33-25/',
+  }),
 ]);
