@@ -67,7 +67,7 @@ export function normalizeGeoText(value) {
     .replace(/ı/g, 'i')
     .replace(/(\d+)а\b/gu, '$1a')
     .replace(/[’ʻʼ‘`´]/g, "'")
-    .replace(/(?<!\p{L})(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|street|ko'chasi|ko‘chasi|koshesi|улица|ул|ықшамаудан|шағын\s+аудан)(?!\p{L})/giu, ' ')
+    .replace(/(?<!\p{L})(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|микрора(?:й|и)он|street|ko'chasi|ko‘chasi|koshesi|улица|ул|ықшамаудан|шағын\s+аудан)(?!\p{L})/giu, ' ')
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .replace(/\b(\d+)\s+[aа]\b/gu, '$1a')
     .trim()

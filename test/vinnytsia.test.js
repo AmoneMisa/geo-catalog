@@ -5,8 +5,8 @@ import { isUaVinnytsiaCoverageGap } from '../src/coverage-gaps-ua-vinnytsia.js';
 
 test('Vinnytsia verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:vinnytsia');
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 11);
-  assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 5);
+  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 13);
+  assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 6);
 
   const expected = [
     [{ type: 'microdistrict', canonical: 'Tsentr' }, 'ua:vinnytsia:microdistrict:tsentr'],
@@ -30,13 +30,10 @@ test('Vinnytsia verified lexicon geography resolves by city and type', () => {
 test('Vinnytsia unresolved and hierarchy-sensitive candidates remain explicit gaps', () => {
   const gaps = [
     ['microdistrict', 'Slovianska'],
-    ['microdistrict', 'Urozhai'],
-    ['microdistrict', 'Koreia'],
     ['microdistrict', 'Barske Shose'],
     ['microdistrict', 'Vinnytski Khutory'],
     ['residential_complex', 'Avalon'],
     ['residential_complex', 'European Quarter'],
-    ['poi', 'Vyshenske Lake'],
     ['poi', 'Friendship Park'],
     ['poi', 'Roshen Embankment'],
   ];

@@ -5,8 +5,8 @@ import { isUaRivneCoverageGap } from '../src/coverage-gaps-ua-rivne.js';
 
 test('Rivne verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:rivne');
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 5);
-  assert.equal(children.filter((entity) => entity.type === 'residential_complex').length, 7);
+  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 8);
+  assert.equal(children.filter((entity) => entity.type === 'residential_complex').length, 9);
   assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 9);
 
   const expected = [
@@ -41,7 +41,6 @@ test('Rivne planning zones do not become invented administrative district entiti
 test('Rivne unresolved parser canonicals remain explicit coverage gaps', () => {
   const gaps = [
     ['microdistrict', 'Tsentr'],
-    ['microdistrict', 'Yuvileinyi'],
     ['microdistrict', 'Pyvzavod'],
     ['residential_complex', 'Prestige'],
     ['residential_complex', 'Panorama'],

@@ -9,7 +9,7 @@ import { isUaRegionalCoverageGap } from '../src/coverage-gaps-ua-regional.js';
 test('Kremenchuk verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:kremenchuk');
   assert.equal(children.filter((entity) => entity.type === 'district').length, 2);
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 9);
+  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 10);
   assert.equal(children.filter((entity) => entity.type === 'residential_complex').length, 1);
   assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 4);
 
@@ -32,7 +32,6 @@ test('Kremenchuk verified lexicon geography resolves by city and type', () => {
 
 test('Kremenchuk ambiguous or insufficiently geocoded lexicon candidates remain explicit gaps', () => {
   const gaps = [
-    ['microdistrict', 'Pyvzavod'],
     ['microdistrict', 'Vodokanal'],
     ['microdistrict', 'Avtokrazivskyi'],
     ['residential_complex', 'Dniprovska Riviera'],

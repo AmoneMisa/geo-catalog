@@ -6,7 +6,7 @@ import { isUaPoltavaCoverageGap } from '../src/coverage-gaps-ua-poltava.js';
 test('Poltava verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:poltava');
   assert.equal(children.filter((entity) => entity.type === 'district').length, 3);
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 9);
+  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 10);
   assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 6);
 
   const expected = [

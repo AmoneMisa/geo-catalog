@@ -73,7 +73,7 @@ test('street and entity keys do not fork when an inferred district changes', () 
 test('expanded city catalogs are represented for UA, UZ and KZ', () => {
   assert.ok(findGeoEntities({ country: 'UA', type: 'city' }).length >= 88);
   assert.ok(findGeoEntities({ country: 'UZ', type: 'city' }).length >= 41);
-  assert.equal(findGeoEntities({ country: 'KZ', type: 'city' }).length, 18);
+  assert.equal(findGeoEntities({ country: 'KZ', type: 'city' }).length, 75);
 
   assert.equal(getGeoEntity('ua:chuhuiv')?.canonicalName, 'Chuhuiv');
   assert.equal(getGeoEntity('ua:vynohradiv')?.canonicalName, 'Vynohradiv');

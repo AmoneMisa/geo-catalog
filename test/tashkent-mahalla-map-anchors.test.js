@@ -34,16 +34,16 @@ test('verified Tashkent mahalla map objects resolve as manual approximate center
   }
 });
 
-test('Chamanbog enrichment report resolves to the direct Olmazor OSM owner', () => {
+test('Chamanbog keeps a distinct conservative mahalla owner', () => {
   const input = { country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: "Chamanbog'" };
   const entity = resolveLexiconGeoEntity(input);
 
   assert.equal(entity?.id, 'uz:tashkent:mahalla:chamanbog');
   assert.equal(entity?.parentId, 'uz:tashkent:almazar');
   assert.deepEqual(entity?.center, { lat: 41.3690631, lng: 69.1942643 });
-  assert.equal(entity?.source, 'osm');
-  assert.equal(entity?.accuracy, 'neighborhood');
-  assert.deepEqual(entity?.osm, { type: 'way', id: 1150374391 });
+  assert.equal(entity?.source, 'manual');
+  assert.equal(entity?.accuracy, 'approximate');
+  assert.equal(entity?.osm, undefined);
   assert.equal(isGeoCoverageGap(input), false);
 });
 
