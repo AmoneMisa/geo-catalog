@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/geo-catalog",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Structured geographic catalog for cities, districts, neighborhoods, residential complexes, transit and POIs with coordinates, bounds and OSM metadata.",
   "repository": {
     "type": "git",
