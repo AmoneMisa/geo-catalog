@@ -39,4 +39,9 @@ export const VOLODYMYR_POIS = Object.freeze([
       sourceUrl: 'https://zabytki.in.ua/service/uk/location/object/718',
     },
   ),
+  poi('dormition-cathedral', 'Свято-Успенський кафедральний собор', 50.841111, 24.320278, 50, {
+    source: 'osm',
+    osm: Object.freeze({ type: 'way', id: 145439183 }),
+    wikidataId: 'Q4478056',
+  }),
 ]);
