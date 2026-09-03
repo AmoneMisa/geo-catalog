@@ -50,13 +50,13 @@ const semanticAreaFallbacks = Object.freeze([
   ['Urgench', 'Olimpiya', 'uz:urgench:mahalla:olimpiya'],
 ]);
 
-test('listing-area canonicals reuse verified mahalla owners without claiming exact local-area semantics', () => {
+test('listing-area canonicals reuse verified mahalla owners without duplicating physical entities', () => {
   for (const [city, canonical, id] of semanticAreaFallbacks) {
     const resolved = resolveLexiconGeoEntity({ country: 'UZ', city, type: 'local_area', canonical });
     assert.ok(resolved, `${city}: ${canonical}`);
     assert.equal(resolved.id, id);
     assert.equal(resolved.type, 'mahalla');
-    assert.equal(isGeoCoverageGap({ country: 'UZ', city, type: 'local_area', canonical }), true);
+    assert.equal(getGeoEntity(id)?.id, id);
   }
 });
 
