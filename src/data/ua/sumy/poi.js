@@ -31,6 +31,13 @@ export const UA_SUMY_POI_ENTITIES = Object.freeze([
     sourceUrl: 'https://novobudovy.com/torhovi-tsentry-sum/evrobazar',
     officialUrl: 'https://visit.sumy.ua/evrobazar/',
   }),
+  poi('sumy-airport', 'poi.airport', 'Sumy Airport', 50.8583333, 34.7627778, 120, {
+    source: 'manual',
+    sourceUrl: 'https://vacc-ua.org/static/files/charts/UKHS.pdf',
+    officialUrl: 'https://www.aisukraine.net/',
+    iataCode: 'UMY',
+    icaoCode: 'UKHS',
+  }),
   poi('railway-station', 'poi.landmark', 'Sumy Railway Station', 50.883333, 34.766667, 1200, {
     wikidataId: 'Q9348123',
     sourceUrl: 'https://www.wikidata.org/wiki/Q9348123',
