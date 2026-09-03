@@ -9,6 +9,7 @@ export type GeoPoiType =
   | 'poi.fortress'
   | 'poi.embankment'
   | 'poi.lake'
+  | 'poi.natural_feature'
   | 'poi.cathedral'
   | 'poi.stadium'
   | 'poi.cultural_venue'

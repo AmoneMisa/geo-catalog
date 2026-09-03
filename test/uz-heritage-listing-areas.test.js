@@ -63,7 +63,7 @@ test('Termez Alpomish listing area reuses the direct sports-complex way', () => 
   });
 
   assert.equal(resolved?.id, 'uz:termez:poi:alpomish');
-  assert.equal(resolved?.type, 'poi');
+  assert.equal(resolved?.type, 'poi.stadium');
   assert.deepEqual(resolved?.center, { lat: 37.2444298, lng: 67.2861956 });
   assert.deepEqual(resolved?.osm, { type: 'way', id: 110890449 });
 });
