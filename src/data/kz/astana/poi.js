@@ -19,4 +19,7 @@ export const KZ_ASTANA_POI_ENTITIES = Object.freeze([
   osmPoi('palace-of-peace-and-reconciliation', 'poi.cultural_venue', 'Palace of Peace and Reconciliation', 51.12311, 71.46346, 'node', 5130027840, 180, 'Q2119741'),
   osmPoi('astana-nurly-zhol-station', 'poi.railway_station', 'Astana-Nurly Zhol Railway Station', 51.11236, 71.53172, 'way', 424980293, 300, 'Q30642068'),
   osmPoi('astana-international-airport', 'poi.airport', 'Astana International Airport', 51.02589, 71.46629, 'way', 507841374, 1800, 'Q174233'),
+  osmPoi('hazrat-sultan-mosque', 'poi.mosque', 'Hazrat Sultan Mosque', 51.12543, 71.47219, 'way', 240860325, 350, 'Q4494668'),
+  osmPoi('astana-opera', 'poi.cultural_venue', 'Astana Opera', 51.13545, 71.41075, 'way', 917478479, 260, 'Q21371563'),
+  osmPoi('city-circus', 'poi.cultural_venue', 'City Circus', 51.14507, 71.41891, 'node', 5126825313, 180),
 ]);
