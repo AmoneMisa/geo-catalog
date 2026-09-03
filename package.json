@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/geo-catalog",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "Structured geographic catalog for cities, districts, neighborhoods, residential complexes, transit and POIs with coordinates, bounds and OSM metadata.",
   "repository": {
     "type": "git",
@@ -10,17 +10,46 @@
   "main": "./src/index.js",
   "types": "./index.d.ts",
   "exports": {
-    ".": { "types": "./index.d.ts", "import": "./src/index.js" },
-    "./catalog": { "types": "./index.d.ts", "import": "./src/catalog.js" },
-    "./spatial": { "types": "./index.d.ts", "import": "./src/spatial.js" },
-    "./validate": { "types": "./index.d.ts", "import": "./src/validate.js" },
-    "./lexicon-bridge": { "types": "./index.d.ts", "import": "./src/lexicon-bridge.js" },
-    "./lookup-key": { "types": "./index.d.ts", "import": "./src/lookup-key.js" },
-    "./transport": { "types": "./transport.d.ts", "import": "./src/transport/catalog.js" }
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./src/index.js"
+    },
+    "./catalog": {
+      "types": "./index.d.ts",
+      "import": "./src/catalog.js"
+    },
+    "./spatial": {
+      "types": "./index.d.ts",
+      "import": "./src/spatial.js"
+    },
+    "./validate": {
+      "types": "./index.d.ts",
+      "import": "./src/validate.js"
+    },
+    "./lexicon-bridge": {
+      "types": "./index.d.ts",
+      "import": "./src/lexicon-bridge.js"
+    },
+    "./lookup-key": {
+      "types": "./index.d.ts",
+      "import": "./src/lookup-key.js"
+    },
+    "./transport": {
+      "types": "./transport.d.ts",
+      "import": "./src/transport/catalog.js"
+    }
   },
-  "files": ["src", "index.d.ts", "transport.d.ts", "README.md", "LICENSE"],
+  "files": [
+    "src",
+    "index.d.ts",
+    "transport.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "test": "node --test",
     "validate": "node ./scripts/validate-catalog.js",
@@ -33,6 +62,17 @@
   "devDependencies": {
     "@whiteslove/parsing-lexicon": "0.6.7"
   },
-  "keywords": ["geography", "geospatial", "coordinates", "openstreetmap", "osm", "cities", "districts", "transit", "poi", "parsing-lexicon"],
+  "keywords": [
+    "geography",
+    "geospatial",
+    "coordinates",
+    "openstreetmap",
+    "osm",
+    "cities",
+    "districts",
+    "transit",
+    "poi",
+    "parsing-lexicon"
+  ],
   "license": "MIT"
 }
