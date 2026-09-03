@@ -1,0 +1,42 @@
+name: Generate WikiRoutes import
+
+on:
+  push:
+    branches: [data/wikiroutes-routes]
+    paths:
+      - scripts/import-wikiroutes-transport.js
+      - .github/workflows/generate-wikiroutes-import.yml
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: data/wikiroutes-routes
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generate compact WikiRoutes transport data
+        env:
+          WIKIROUTES_CONCURRENCY: 10
+          WIKIROUTES_TIMEOUT_MS: 20000
+          WIKIROUTES_RETRIES: 3
+          WIKIROUTES_SHAPE_TOLERANCE_M: 8
+        run: node scripts/import-wikiroutes-transport.js
+      - name: Commit generated transport data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/transport/generated/wikiroutes
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git commit -m "Add generated WikiRoutes transport data"
+          git push origin HEAD:data/wikiroutes-routes
