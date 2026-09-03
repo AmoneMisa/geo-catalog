@@ -28,4 +28,9 @@ export const KZ_ALMATY_POI_ENTITIES = Object.freeze([
   osmPoi('central-mosque', 'poi.mosque', 'Central Mosque', 43.2683, 76.95292, 'way', 1458254422, 160, 'Q190682'),
   osmPoi('botanical-garden', 'poi.botanical_garden', 'Almaty Botanical Garden', 43.225, 76.915, 'way', 307056816, 900, 'Q4062764'),
   osmPoi('mega-alma-ata', 'poi.shopping_mall', 'MEGA Alma-Ata', 43.2025, 76.89211, 'way', 207798752, 260, 'Q1916971'),
+  osmPoi('golden-warrior-monument', 'poi.monument', 'Golden Warrior Monument', 43.23857, 76.9454, 'node', 5199937659, 50, 'Q4302193'),
+  osmPoi('statue-of-abay-kunanbayev', 'poi.monument', 'Statue of Abay Kunanbayev', 43.24313, 76.9575, 'node', 2420909713, 50, 'Q4343037'),
+  osmPoi('beatles-monument', 'poi.monument', 'The Beatles Monument', 43.23305, 76.97604, 'node', 6490366185, 50, 'Q4342994'),
+  osmPoi('auezov-home-museum', 'poi.museum', 'Auezov Home Museum', 43.24339, 76.94956, 'way', 248868009, 120, 'Q258173'),
+  osmPoi('almaty-national-circus', 'poi.cultural_venue', 'Almaty National Circus', 43.23911, 76.91727, 'node', 13121324233, 120, 'Q205932'),
 ]);
