@@ -77,6 +77,16 @@ export const TASHKENT_MAHALLA_ENTITIES = Object.freeze([
   manualMahalla('qalqon', 'Qalqon', 'uz:tashkent:yashnobod', 41.280806, 69.371535, 800, 'https://yandex.uz/maps/10335/tashkent/geo/6108686495/'),
   manualMahalla('humoyun', 'Humoyun', 'uz:tashkent:mirzo-ulugbek', 41.343891, 69.388055, 900, 'https://yandex.com/maps/org/makhallinskiy_komitet_khumayun/207044096096/'),
   manualMahalla('asalobod', 'Asalobod', 'uz:tashkent:yashnobod', 41.2818125, 69.3364375, 900, 'https://www.waze.com/live-map/directions/uz/tashkent/tashkent/asalobod-mahalla-fuqarolar-yigin?to=place.ChIJTTJOMgD1rjgRyo47q8sSICo'),
+
+  // Direct city-scoped OSM residential owners from the geo-enrichment report.
+  // Keep them as mahallas only when the OSM object is not already the physical
+  // owner of a same-name mavze/local-area entity.
+  mahalla('bogkocha', "Bog'ko'cha", 'uz:tashkent:shaykhantahur', 41.3277799, 69.2191542, 'relation', 2336787, 650),
+  mahalla('shifokorlar', 'Shifokorlar', 'uz:tashkent:almazar', 41.3552738, 69.1742802, 'way', 1123281625, 700),
+  // Nominatim matches the same residential way used by local-area:chamanbog.
+  // Preserve the official mahalla semantic owner without duplicating physical OSM ownership.
+  manualMahalla('chamanbog', "Chamanbog'", 'uz:tashkent:almazar', 41.3690631, 69.1942643, 800),
+
   mahalla('taxtapul', 'Taxtapul', 'uz:tashkent:shaykhantahur', 41.339682, 69.2642825, 'node', 9687947537, 650),
   mahalla('khastimam', 'Khastimam', 'uz:tashkent:almazar', 41.33303, 69.24287, 'way', 1137236407, 420),
   mahalla('yangi-tashkent', 'Yangi Tashkent', 'uz:tashkent:almazar', 41.36743, 69.22415, 'node', 1866058486, 520),

@@ -3,6 +3,7 @@ const accuracyByType = Object.freeze({
   microdistrict: 'neighborhood',
   mahalla: 'neighborhood',
   local_area: 'neighborhood',
+  street: 'street',
   poi: 'poi',
 });
 
@@ -41,9 +42,21 @@ export const NAMANGAN_ENTITIES = Object.freeze([
   osmSpatial('4-microdistrict', '4 microdistrict', 'microdistrict', 40.99387, 71.60421, 'way', 1503603833, 500),
   osmSpatial('5-microdistrict', '5 microdistrict', 'microdistrict', 40.99735, 71.60093, 'way', 1504295428, 500),
   osmSpatial('6-microdistrict', '6 microdistrict', 'microdistrict', 40.99712, 71.61644, 'way', 318257014, 520),
+  osmSpatial('porloq', 'Porloq', 'mahalla', 41.0060152, 71.5988033, 'relation', 20587979, 700),
+  osmSpatial('boburshox', 'Boburshox', 'mahalla', 40.9911956, 71.6810535, 'relation', 20578134, 700),
+
+  // Street matches exposed while resolving same-name local-area lexicon rows.
+  // These remain independent street entities; a road hit must never satisfy a local_area gap.
+  osmSpatial('galaba', 'Galaba Street', 'street', 41.0125935, 71.6745114, 'way', 798437179, 1100),
+  osmSpatial('alisher-navoiy', 'Alisher Navoiy Street', 'street', 40.9972682, 71.6464427, 'way', 720208509, 2200),
+  osmSpatial('islom-karimov', 'Islom Karimov Street', 'street', 41.0070306, 71.6249352, 'way', 26978858, 2600),
+  osmSpatial('qoqimboyshox', 'Qoqimboyshox Street', 'street', 41.0027769, 71.6109908, 'way', 718816732, 1500),
+  osmSpatial('nodira', 'Nodira Street', 'street', 40.9953489, 71.6673385, 'way', 525607577, 1200),
+
   wikidataPoi('namangan-international-airport', 'Namangan International Airport', 40.98490, 71.55683, 'Q978313', 220, 'poi.airport'),
   osmSpatial('namangan-railway-station', 'Namangan Railway Station', 'poi.railway_station', 40.99959, 71.64403, 'node', 301722995, 100),
   osmSpatial('namangan-chorsu', 'Namangan Chorsu', 'poi.market', 41.00118, 71.67952, 'way', 625100490, 120),
   wikidataPoi('valley-of-legends', 'Valley of Legends', 41.003333, 71.616944, 'Q135947258', 250, 'poi.amusement_park'),
   osmSpatial('bobur-park', 'Bobur Park', 'poi.park', 40.99679, 71.67197, 'way', 399917916, 140),
+  osmSpatial('yangi-ozbekiston-park', 'Yangi Ozbekiston Park', 'poi.amusement_park', 41.0023723, 71.5600246, 'way', 560575723, 180),
 ]);

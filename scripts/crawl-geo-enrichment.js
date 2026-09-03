@@ -3,7 +3,10 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/locations';
+import { GEO_ENTITIES } from '../src/catalog.js';
 import { resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
+import { discoverOverpassScoped } from './geo-enrichment-discovery.js';
+import { isAutoAcceptEligible } from './geo-enrichment-match.js';
 
 const TYPE_BY_KEY = Object.freeze({
   districts: 'district',
@@ -33,10 +36,24 @@ const EASYWAY_PUBLIC_HOST = Object.freeze({
   KZ: 'https://kz.easyway.info',
 });
 
-// Zero-key path. Paid/API-key providers are opt-in via --providers.
-const DEFAULT_PROVIDERS = Object.freeze(['nominatim', 'easyway']);
+// All supported providers are part of the same crawler. Providers that require
+// credentials simply skip themselves when the corresponding key is absent.
+const DEFAULT_PROVIDERS = Object.freeze([
+  'nominatim',
+  'easyway',
+  'wikiroutes',
+  'google',
+  'yandex',
+  '2gis',
+  'maptiler',
+  'geoapify',
+  'mapbox',
+]);
+const ZERO_KEY_PROVIDERS = Object.freeze(['nominatim', 'easyway']);
 const DEFAULT_OUTPUT_ROOT = '.cache/geo-enrichment';
 const DEFAULT_TIMEOUT_MS = 12_000;
+const DEFAULT_CITY_CONCURRENCY = 4;
+const MAX_CITY_CONCURRENCY = 32;
 const DISCOVERY_RADIUS_M = 24_000;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -44,6 +61,8 @@ function parseArgs(argv) {
   const out = {
     country: null,
     city: null,
+    allCities: false,
+    concurrency: DEFAULT_CITY_CONCURRENCY,
     providers: [...DEFAULT_PROVIDERS],
     discover: false,
     refresh: false,
@@ -54,11 +73,13 @@ function parseArgs(argv) {
   };
 
   for (const arg of argv) {
-    if (arg === '--discover') out.discover = true;
+    if (arg === '--all-cities') out.allCities = true;
+    else if (arg === '--discover') out.discover = true;
     else if (arg === '--refresh') out.refresh = true;
     else if (arg === '--periodic') out.periodic = true;
     else if (arg.startsWith('--country=')) out.country = arg.slice('--country='.length).trim().toUpperCase();
     else if (arg.startsWith('--city=')) out.city = arg.slice('--city='.length).trim();
+    else if (arg.startsWith('--concurrency=')) out.concurrency = Number.parseInt(arg.slice('--concurrency='.length), 10);
     else if (arg.startsWith('--providers=')) out.providers = arg.slice('--providers='.length).split(',').map((v) => v.trim().toLowerCase()).filter(Boolean);
     else if (arg.startsWith('--min-score=')) out.minScore = Number(arg.slice('--min-score='.length));
     else if (arg.startsWith('--max-aliases=')) out.maxAliases = Number.parseInt(arg.slice('--max-aliases='.length), 10);
@@ -66,8 +87,13 @@ function parseArgs(argv) {
     else throw new Error(`Unknown argument: ${arg}`);
   }
 
-  if (!out.country || !out.city) {
-    throw new Error('Usage: npm run crawl:geo -- --country=UZ --city=Tashkent [--discover] [--providers=nominatim,easyway,2gis,yandex,google]');
+  if (!out.country || (!out.city && !out.allCities)) {
+    throw new Error(`Usage: npm run crawl:geo -- --country=UZ (--city=Tashkent | --all-cities [--concurrency=${DEFAULT_CITY_CONCURRENCY}]) [--discover] [--providers=${DEFAULT_PROVIDERS.join(',')}]`);
+  }
+  if (out.city && out.allCities) throw new Error('Use either --city=<name> or --all-cities, not both');
+  if (out.allCities && out.output) throw new Error('--output is only supported for a single --city run; --all-cities writes one report per city');
+  if (!Number.isInteger(out.concurrency) || out.concurrency < 1 || out.concurrency > MAX_CITY_CONCURRENCY) {
+    throw new Error(`--concurrency must be an integer between 1 and ${MAX_CITY_CONCURRENCY}`);
   }
   if (!Number.isFinite(out.minScore) || out.minScore < 0 || out.minScore > 1) throw new Error('--min-score must be between 0 and 1');
   if (!Number.isInteger(out.maxAliases) || out.maxAliases < 0 || out.maxAliases > 10) throw new Error('--max-aliases must be 0..10');
@@ -76,10 +102,12 @@ function parseArgs(argv) {
 
 function normalize(value) {
   return String(value ?? '')
-    .normalize('NFKC')
+    .normalize('NFKD')
     .toLowerCase()
+    .replace(/\p{M}+/gu, '')
+    .replace(/ı/g, 'i')
     .replace(/[’ʻʼ‘`´]/g, "'")
-    .replace(/\b(?:mahalla(?:si)?|mfy|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|street|ko'chasi|ko‘chasi|улица|ул)\b/giu, ' ')
+    .replace(/\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|street|ko'chasi|ko‘chasi|kóshesi|улица|ул)\b/giu, ' ')
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
     .replace(/\s+/g, ' ');
@@ -118,9 +146,19 @@ function haversineM(a, b) {
   return 6371000 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
 }
 
+function countryCities(country) {
+  const cities = GEO_ENTITIES
+    .filter((entity) => entity.country === country && entity.type === 'city')
+    .map((entity) => entity.canonicalName)
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
+  if (!cities.length) throw new Error(`No city entities in geo catalog for country ${country}`);
+  return cities;
+}
+
 function lexicalRows(country, city) {
   const cityData = LOCATION_DICTIONARIES[country]?.[city];
-  if (!cityData) throw new Error(`No LOCATION_DICTIONARIES entry for ${country}/${city}`);
+  if (!cityData) return [];
 
   const rows = [];
   const seen = new Set();
@@ -145,7 +183,7 @@ function lexicalRows(country, city) {
 }
 
 function cityEntity(country, city) {
-  return resolveLexiconGeoEntityExact({ country, type: 'city', canonical: city });
+  return GEO_ENTITIES.find((entity) => entity.country === country && entity.type === 'city' && entity.canonicalName === city) || null;
 }
 
 function queryVariants(row, maxAliases) {
@@ -170,12 +208,9 @@ async function readIfExists(file) {
   }
 }
 
-async function readJsonIfExists(file) {
-  const raw = await readIfExists(file);
-  return raw == null ? null : JSON.parse(raw);
-}
-
 const lastRequestAt = new Map();
+const providerQueues = new Map();
+
 async function throttle(provider, minDelayMs) {
   if (!minDelayMs) return;
   const elapsed = Date.now() - (lastRequestAt.get(provider) || 0);
@@ -183,11 +218,19 @@ async function throttle(provider, minDelayMs) {
   lastRequestAt.set(provider, Date.now());
 }
 
+function enqueueProvider(provider, operation) {
+  const previous = providerQueues.get(provider) || Promise.resolve();
+  const current = previous.catch(() => {}).then(operation);
+  providerQueues.set(provider, current.catch(() => {}));
+  return current;
+}
+
 async function request(provider, url, options = {}) {
   const {
     cache = false,
     cacheExt = 'json',
     minDelayMs = 0,
+    serialize = false,
     headers = {},
     method = 'GET',
     body,
@@ -199,23 +242,22 @@ async function request(provider, url, options = {}) {
     if (cached != null) return cached;
   }
 
-  await throttle(provider, minDelayMs);
-  const response = await fetch(url, {
-    method,
-    headers,
-    body,
-    signal: AbortSignal.timeout(timeoutMs),
-  });
-  if (!response.ok) {
-    const responseBody = (await response.text()).replace(/\s+/g, ' ').slice(0, 300);
-    throw new Error(`${provider}: HTTP ${response.status}: ${responseBody}`);
-  }
-  const raw = await response.text();
-  if (cache) {
-    await mkdir(path.dirname(cachePath), { recursive: true });
-    await writeFile(cachePath, raw, 'utf8');
-  }
-  return raw;
+  const execute = async () => {
+    await throttle(provider, minDelayMs);
+    const response = await fetch(url, { method, headers, body, signal: AbortSignal.timeout(timeoutMs) });
+    if (!response.ok) {
+      const responseBody = (await response.text()).replace(/\s+/g, ' ').slice(0, 300);
+      throw new Error(`${provider}: HTTP ${response.status}: ${responseBody}`);
+    }
+    const raw = await response.text();
+    if (cache) {
+      await mkdir(path.dirname(cachePath), { recursive: true });
+      await writeFile(cachePath, raw, 'utf8');
+    }
+    return raw;
+  };
+
+  return serialize ? enqueueProvider(provider, execute) : execute();
 }
 
 async function cachedJson(provider, url, options = {}) {
@@ -253,8 +295,8 @@ function candidateBase(provider, row, query, label, lat, lng, extra = {}) {
 function providerTypeScore(row, candidate) {
   const type = `${candidate.rawType || ''} ${candidate.meta?.category || ''}`.toLowerCase();
   if (row.type === 'street') return /road|street|highway/.test(type) ? 1 : 0.45;
-  if (row.type === 'metro') return /station|subway|railway|public_transport|stop/.test(type) ? 1 : 0.45;
-  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop/.test(type) ? 0.9 : 0.55;
+  if (row.type === 'metro') return /station|subway|railway|public_transport|stop|transit/.test(type) ? 1 : 0.45;
+  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop|poi/.test(type) ? 0.9 : 0.55;
   if (['district', 'microdistrict', 'mahalla', 'local_area', 'suburb', 'settlement', 'development_area'].includes(row.type)) {
     return /administrative|neighbou?rhood|suburb|quarter|residential|place|district|locality|stop/.test(type) ? 1 : 0.55;
   }
@@ -272,36 +314,99 @@ function candidateScore(row, candidate) {
   return Math.min(1, n * 0.68 + city * 0.17 + type * 0.10 + parent * 0.05);
 }
 
+function cityBias(row) {
+  return cityEntity(row.country, row.city) || null;
+}
+
+function applyNominatimCommon(url, row, cityGeo) {
+  url.searchParams.set('format', 'jsonv2');
+  url.searchParams.set('addressdetails', '1');
+  url.searchParams.set('namedetails', '1');
+  url.searchParams.set('dedupe', '1');
+  url.searchParams.set('limit', '8');
+  url.searchParams.set('countrycodes', row.country.toLowerCase());
+  if (cityGeo?.bbox) {
+    url.searchParams.set('viewbox', `${cityGeo.bbox.west},${cityGeo.bbox.north},${cityGeo.bbox.east},${cityGeo.bbox.south}`);
+    url.searchParams.set('bounded', '1');
+  }
+}
+
+function nominatimUrls(row, query) {
+  const endpoint = process.env.NOMINATIM_URL || 'https://nominatim.openstreetmap.org/search';
+  const country = COUNTRY_NAME[row.country] || row.country;
+  const cityGeo = cityBias(row);
+  const texts = [
+    row.parent ? `${query}, ${row.parent}, ${row.city}, ${country}` : `${query}, ${row.city}, ${country}`,
+    `${query}, ${row.city}`,
+  ];
+  if (row.type === 'metro') texts.push(`${query} station, ${row.city}, ${country}`);
+  if (['district', 'microdistrict', 'mahalla', 'local_area', 'suburb'].includes(row.type)) texts.push(`${query} district, ${row.city}, ${country}`);
+  if (row.type === 'residential_complex') texts.push(`${query} residential complex, ${row.city}, ${country}`);
+
+  const urls = texts.map((text) => {
+    const url = new URL(endpoint);
+    applyNominatimCommon(url, row, cityGeo);
+    url.searchParams.set('q', text);
+    return url;
+  });
+
+  if (row.type === 'street') {
+    const url = new URL(endpoint);
+    applyNominatimCommon(url, row, cityGeo);
+    url.searchParams.set('street', query);
+    url.searchParams.set('city', row.city);
+    url.searchParams.set('country', country);
+    urls.unshift(url);
+  }
+  if (['poi', 'metro', 'residential_complex'].includes(row.type)) {
+    const url = new URL(endpoint);
+    applyNominatimCommon(url, row, cityGeo);
+    url.searchParams.set('amenity', query);
+    url.searchParams.set('city', row.city);
+    url.searchParams.set('country', country);
+    urls.unshift(url);
+  }
+
+  return [...new Map(urls.map((url) => [url.toString(), url])).values()];
+}
+
+function isStrongCandidate(row, candidate) {
+  const cityGeo = cityBias(row);
+  return isAutoAcceptEligible(row, candidate, cityGeo) && candidateScore(row, candidate) >= 0.9;
+}
+
 async function nominatimCandidates(row, queries, args) {
   const rows = [];
   const minDelayMs = args.periodic ? 15_000 : 1_100;
   for (const query of queries) {
-    const url = new URL(process.env.NOMINATIM_URL || 'https://nominatim.openstreetmap.org/search');
-    url.searchParams.set('format', 'jsonv2');
-    url.searchParams.set('q', `${query}, ${row.city}, ${COUNTRY_NAME[row.country] || row.country}`);
-    url.searchParams.set('addressdetails', '1');
-    url.searchParams.set('limit', '5');
-    url.searchParams.set('countrycodes', row.country.toLowerCase());
-    const payload = await cachedJson('nominatim', url.toString(), {
-      cache: true,
-      minDelayMs,
-      headers: {
-        'user-agent': process.env.NOMINATIM_USER_AGENT || '@whiteslove/geo-catalog geo-enrichment (+https://github.com/AmoneMisa/geo-catalog)',
-      },
-    });
-    for (const item of payload || []) {
-      const candidate = candidateBase('nominatim', row, query, item.display_name, Number(item.lat), Number(item.lon), {
-        city: item.address?.city || item.address?.town || item.address?.municipality || null,
-        rawType: item.type,
-        persistable: true,
-        source: 'osm',
-        osm: item.osm_type && item.osm_id ? { type: item.osm_type, id: Number(item.osm_id) } : null,
-        providerId: item.place_id ? String(item.place_id) : null,
-        meta: { category: item.category || item.class || null, importance: item.importance ?? null },
+    for (const url of nominatimUrls(row, query)) {
+      const payload = await cachedJson('nominatim', url.toString(), {
+        cache: true,
+        minDelayMs,
+        serialize: true,
+        headers: {
+          'user-agent': process.env.NOMINATIM_USER_AGENT || '@whiteslove/geo-catalog geo-enrichment (+https://github.com/AmoneMisa/geo-catalog)',
+        },
       });
-      if (candidate) rows.push(candidate);
+      const current = [];
+      for (const item of payload || []) {
+        const candidate = candidateBase('nominatim', row, query, item.display_name, Number(item.lat), Number(item.lon), {
+          city: item.address?.city || item.address?.town || item.address?.municipality || item.address?.village || null,
+          rawType: item.type,
+          persistable: true,
+          source: 'osm',
+          osm: item.osm_type && item.osm_id ? { type: item.osm_type, id: Number(item.osm_id) } : null,
+          providerId: item.place_id ? String(item.place_id) : null,
+          meta: { category: item.category || item.class || null, importance: item.importance ?? null },
+        });
+        if (candidate) {
+          rows.push(candidate);
+          current.push(candidate);
+        }
+      }
+      if (current.some((candidate) => isStrongCandidate(row, candidate))) break;
     }
-    if (rows.some((candidate) => nameScore(query, candidate.label) >= 0.95)) break;
+    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
   }
   return rows;
 }
@@ -309,12 +414,10 @@ async function nominatimCandidates(row, queries, args) {
 function collectLatLngObjects(value, output = [], context = {}) {
   if (!value || typeof value !== 'object') return output;
   if (!Array.isArray(value)) {
-    const lat = Number(value.lat ?? value.latitude);
-    const lng = Number(value.lng ?? value.lon ?? value.longitude);
+    const lat = Number(value.lat ?? value.latitude ?? value.stopLat);
+    const lng = Number(value.lng ?? value.lon ?? value.longitude ?? value.stopLon);
     const label = value.title ?? value.name ?? value.address ?? value.stopName ?? value.stop_name;
-    if (Number.isFinite(lat) && Number.isFinite(lng) && label) {
-      output.push({ value, lat, lng, label: String(label), ...context });
-    }
+    if (Number.isFinite(lat) && Number.isFinite(lng) && label) output.push({ value, lat, lng, label: String(label), ...context });
   }
   for (const child of Array.isArray(value) ? value : Object.values(value)) collectLatLngObjects(child, output, context);
   return output;
@@ -358,22 +461,17 @@ async function loadEasyWayPublicSnapshot(country, city) {
       accept: 'text/html,application/xhtml+xml',
       'user-agent': process.env.EASYWAY_USER_AGENT || '@whiteslove/geo-catalog geo-enrichment (+https://github.com/AmoneMisa/geo-catalog)',
     };
-    const html = await cachedText('easyway-public-routes', routesUrl, {
-      cache: true,
-      minDelayMs: 250,
-      headers,
-    });
+    const html = await cachedText('easyway-public-routes', routesUrl, { cache: true, minDelayMs: 250, headers });
     const routeIds = extractEasyWayRouteIds(html);
     if (!routeIds.length) {
       console.warn(`  easyway: no data-route-id values found at ${routesUrl}`);
       return [];
     }
 
-    const maxRoutes = Number.parseInt(process.env.EASYWAY_MAX_ROUTES || '500', 10);
-    const selectedIds = routeIds.slice(0, Number.isFinite(maxRoutes) ? maxRoutes : 500);
+    const configuredMax = Number.parseInt(process.env.EASYWAY_MAX_ROUTES || '', 10);
+    const selectedIds = Number.isInteger(configuredMax) && configuredMax > 0 ? routeIds.slice(0, configuredMax) : routeIds;
     const points = [];
-    for (let index = 0; index < selectedIds.length; index += 1) {
-      const routeId = selectedIds[index];
+    for (const routeId of selectedIds) {
       const schemeUrl = new URL(`/ajax/${citySlug}/routeScheme/${routeId}`, base).toString();
       try {
         const payload = await cachedJson('easyway-public-scheme', schemeUrl, {
@@ -397,7 +495,7 @@ async function loadEasyWayPublicSnapshot(country, city) {
       const key = `${normalize(point.label)}|${point.lat.toFixed(6)}|${point.lng.toFixed(6)}`;
       if (!dedupe.has(key)) dedupe.set(key, point);
     }
-    console.log(`  easyway: indexed ${dedupe.size} named route/stop points from ${selectedIds.length} public route schemes`);
+    console.log(`  easyway: indexed ${dedupe.size} named route/stop points from ${selectedIds.length}/${routeIds.length} public route schemes`);
     return [...dedupe.values()];
   })();
 
@@ -405,10 +503,7 @@ async function loadEasyWayPublicSnapshot(country, city) {
   return promise;
 }
 
-async function easyWayCandidates(row, queries) {
-  const snapshot = await loadEasyWayPublicSnapshot(row.country, row.city);
-  if (!snapshot.length) return [];
-
+async function snapshotCandidates(provider, row, queries, snapshot, options = {}) {
   const ranked = [];
   for (const point of snapshot) {
     let bestQuery = null;
@@ -420,31 +515,94 @@ async function easyWayCandidates(row, queries) {
         bestQuery = query;
       }
     }
-    if (bestNameScore < 0.55 || !bestQuery) continue;
-    const candidate = candidateBase('easyway', row, bestQuery, point.label, point.lat, point.lng, {
+    if (bestNameScore < (options.minNameScore ?? 0.55) || !bestQuery) continue;
+    const candidate = candidateBase(provider, row, bestQuery, point.label, point.lat, point.lng, {
       city: row.city,
-      rawType: 'public_transport_stop_or_route_point',
-      // Public web/AJAX data is used as a verification signal. Persisted coordinates still come from storage-safe sources such as OSM.
-      persistable: false,
-      source: 'easyway-public',
-      providerId: point.value?.id ? String(point.value.id) : `route:${point.routeId}`,
+      rawType: options.rawType || 'public_transport_stop_or_route_point',
+      persistable: Boolean(options.persistable),
+      source: options.source || provider,
+      providerId: options.providerId?.(point) || point.value?.id || null,
+      meta: options.meta?.(point) || null,
     });
     if (candidate) ranked.push({ candidate, bestNameScore });
   }
-
   ranked.sort((a, b) => b.bestNameScore - a.bestNameScore);
-  return ranked.slice(0, 8).map((item) => item.candidate);
+  return ranked.slice(0, 12).map((item) => item.candidate);
+}
+
+async function easyWayCandidates(row, queries) {
+  const snapshot = await loadEasyWayPublicSnapshot(row.country, row.city);
+  return snapshotCandidates('easyway', row, queries, snapshot, {
+    source: 'easyway-public',
+    providerId: (point) => point.value?.id ? String(point.value.id) : `route:${point.routeId}`,
+  });
+}
+
+const wikiRoutesSnapshots = new Map();
+async function loadWikiRoutesSnapshot(row) {
+  const apiKey = process.env.WIKIROUTES_API_KEY || process.env.BUSMAPS_API_KEY;
+  if (!apiKey) return [];
+  const cityGeo = cityBias(row);
+  if (!cityGeo?.center) return [];
+  const key = `${row.country}|${row.city}`;
+  if (wikiRoutesSnapshots.has(key)) return wikiRoutesSnapshots.get(key);
+
+  const promise = (async () => {
+    const url = new URL('https://capi.busmaps.com:8443/v1/stopsInRadius');
+    url.searchParams.set('location', `${cityGeo.center.lat},${cityGeo.center.lng}`);
+    url.searchParams.set('radius', String(Number.parseInt(process.env.WIKIROUTES_RADIUS_M || '', 10) || DISCOVERY_RADIUS_M));
+    url.searchParams.set('limit', String(Number.parseInt(process.env.WIKIROUTES_STOP_LIMIT || '', 10) || 3000));
+    url.searchParams.set('lang', process.env.WIKIROUTES_LANG || 'en');
+    const payload = await cachedJson('wikiroutes', url.toString(), {
+      cache: true,
+      minDelayMs: 150,
+      headers: {
+        'capi-key': `Bearer ${apiKey}`,
+        'capi-host': 'wikiroutes.info',
+        'user-agent': '@whiteslove/geo-catalog geo-enrichment',
+      },
+    });
+    const points = [];
+    collectLatLngObjects(payload?.stops || payload, points);
+    const dedupe = new Map();
+    for (const point of points) {
+      const key = `${normalize(point.label)}|${point.lat.toFixed(6)}|${point.lng.toFixed(6)}`;
+      if (!dedupe.has(key)) dedupe.set(key, point);
+    }
+    console.log(`  wikiroutes: indexed ${dedupe.size} stops around ${row.city}`);
+    return [...dedupe.values()];
+  })();
+  wikiRoutesSnapshots.set(key, promise);
+  return promise;
+}
+
+async function wikiRoutesCandidates(row, queries) {
+  const snapshot = await loadWikiRoutesSnapshot(row);
+  return snapshotCandidates('wikiroutes', row, queries, snapshot, {
+    source: 'wikiroutes',
+    rawType: 'public_transport_stop',
+    providerId: (point) => String(point.value?.stopId || point.value?.id || point.value?.stopHash1 || ''),
+    meta: (point) => ({ routes: point.value?.routes?.length ?? null }),
+  });
+}
+
+function providerStorageFlag(name) {
+  return process.env[`${name.toUpperCase()}_ALLOW_STORAGE`] === '1';
 }
 
 async function googleCandidates(row, queries) {
   const key = process.env.GOOGLE_MAPS_API_KEY;
   if (!key) return [];
+  const allowStorage = providerStorageFlag('google');
   const rows = [];
+  const cityGeo = cityBias(row);
   for (const query of queries) {
     const url = new URL('https://maps.googleapis.com/maps/api/geocode/json');
-    url.searchParams.set('address', `${query}, ${row.city}, ${COUNTRY_NAME[row.country] || row.country}`);
+    url.searchParams.set('address', row.parent ? `${query}, ${row.parent}, ${row.city}` : `${query}, ${row.city}`);
     url.searchParams.set('key', key);
     url.searchParams.set('region', row.country.toLowerCase());
+    url.searchParams.set('components', `country:${row.country}`);
+    if (cityGeo?.bbox) url.searchParams.set('bounds', `${cityGeo.bbox.south},${cityGeo.bbox.west}|${cityGeo.bbox.north},${cityGeo.bbox.east}`);
     const payload = await cachedJson('google', url.toString(), { cache: false, minDelayMs: 50 });
     for (const item of payload.results || []) {
       const point = item.geometry?.location;
@@ -452,13 +610,14 @@ async function googleCandidates(row, queries) {
       const candidate = candidateBase('google', row, query, item.formatted_address, Number(point?.lat), Number(point?.lng), {
         city: locality?.long_name || null,
         rawType: (item.types || []).join(','),
-        persistable: false,
+        persistable: allowStorage,
         source: 'google',
         providerId: item.place_id || null,
+        meta: { locationType: item.geometry?.location_type || null },
       });
       if (candidate) rows.push(candidate);
     }
-    if (rows.some((candidate) => nameScore(query, candidate.label) >= 0.95)) break;
+    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
   }
   return rows;
 }
@@ -466,15 +625,15 @@ async function googleCandidates(row, queries) {
 async function yandexCandidates(row, queries) {
   const key = process.env.YANDEX_GEOCODER_API_KEY;
   if (!key) return [];
-  const allowStorage = process.env.YANDEX_ALLOW_STORAGE === '1';
+  const allowStorage = providerStorageFlag('yandex');
   const rows = [];
   for (const query of queries) {
     const url = new URL('https://geocode-maps.yandex.ru/v1/');
     url.searchParams.set('apikey', key);
-    url.searchParams.set('geocode', `${query}, ${row.city}, ${COUNTRY_NAME[row.country] || row.country}`);
+    url.searchParams.set('geocode', row.parent ? `${query}, ${row.parent}, ${row.city}` : `${query}, ${row.city}, ${COUNTRY_NAME[row.country] || row.country}`);
     url.searchParams.set('lang', process.env.YANDEX_LANG || 'en_US');
     url.searchParams.set('format', 'json');
-    url.searchParams.set('results', '5');
+    url.searchParams.set('results', '8');
     const payload = await cachedJson('yandex', url.toString(), { cache: allowStorage, minDelayMs: 100 });
     const members = payload.response?.GeoObjectCollection?.featureMember || [];
     for (const member of members) {
@@ -482,15 +641,16 @@ async function yandexCandidates(row, queries) {
       const meta = object.metaDataProperty?.GeocoderMetaData || {};
       const [lng, lat] = String(object.Point?.pos || '').split(/\s+/).map(Number);
       const candidate = candidateBase('yandex', row, query, meta.text || object.name, lat, lng, {
+        city: meta.Address?.Components?.find((part) => /locality/i.test(part.kind || ''))?.name || null,
         rawType: meta.kind || null,
         persistable: allowStorage,
         source: 'yandex',
         providerId: object.uri || null,
-        meta: allowStorage ? { precision: meta.precision || null } : null,
+        meta: { precision: meta.precision || null },
       });
       if (candidate) rows.push(candidate);
     }
-    if (rows.some((candidate) => nameScore(query, candidate.label) >= 0.95)) break;
+    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
   }
   return rows;
 }
@@ -498,13 +658,13 @@ async function yandexCandidates(row, queries) {
 async function twoGisCandidates(row, queries) {
   const key = process.env.DGIS_API_KEY;
   if (!key) return [];
-  const allowStorage = process.env.DGIS_ALLOW_STORAGE === '1';
+  const allowStorage = providerStorageFlag('dgis');
   const rows = [];
   for (const query of queries) {
     const url = new URL('https://catalog.api.2gis.com/3.0/items/geocode');
     url.searchParams.set('q', `${query}, ${row.city}`);
     url.searchParams.set('fields', 'items.point,items.adm_div,items.geometry.centroid');
-    url.searchParams.set('page_size', '5');
+    url.searchParams.set('page_size', '8');
     url.searchParams.set('key', key);
     const payload = await cachedJson('2gis', url.toString(), { cache: allowStorage, minDelayMs: 100 });
     for (const item of payload.result?.items || []) {
@@ -519,7 +679,102 @@ async function twoGisCandidates(row, queries) {
       });
       if (candidate) rows.push(candidate);
     }
-    if (rows.some((candidate) => nameScore(query, candidate.label) >= 0.95)) break;
+    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
+  }
+  return rows;
+}
+
+async function mapTilerCandidates(row, queries) {
+  const key = process.env.MAPTILER_API_KEY;
+  if (!key) return [];
+  const allowStorage = providerStorageFlag('maptiler');
+  const rows = [];
+  const cityGeo = cityBias(row);
+  for (const query of queries) {
+    const text = row.parent ? `${query}, ${row.parent}, ${row.city}` : `${query}, ${row.city}`;
+    const url = new URL(`https://api.maptiler.com/geocoding/${encodeURIComponent(text)}.json`);
+    url.searchParams.set('key', key);
+    url.searchParams.set('limit', '8');
+    url.searchParams.set('country', row.country.toLowerCase());
+    if (cityGeo?.center) url.searchParams.set('proximity', `${cityGeo.center.lng},${cityGeo.center.lat}`);
+    if (cityGeo?.bbox) url.searchParams.set('bbox', `${cityGeo.bbox.west},${cityGeo.bbox.south},${cityGeo.bbox.east},${cityGeo.bbox.north}`);
+    const payload = await cachedJson('maptiler', url.toString(), { cache: allowStorage, minDelayMs: 75 });
+    for (const item of payload.features || []) {
+      const [lng, lat] = item.center || item.geometry?.coordinates || [];
+      const candidate = candidateBase('maptiler', row, query, item.place_name || item.text, Number(lat), Number(lng), {
+        city: item.context?.find((part) => /place|locality/i.test(part.id || ''))?.text || null,
+        rawType: (item.place_type || []).join(','),
+        persistable: allowStorage,
+        source: 'maptiler',
+        providerId: item.id || null,
+      });
+      if (candidate) rows.push(candidate);
+    }
+    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
+  }
+  return rows;
+}
+
+async function geoapifyCandidates(row, queries) {
+  const key = process.env.GEOAPIFY_API_KEY;
+  if (!key) return [];
+  const allowStorage = providerStorageFlag('geoapify');
+  const rows = [];
+  const cityGeo = cityBias(row);
+  for (const query of queries) {
+    const url = new URL('https://api.geoapify.com/v1/geocode/search');
+    url.searchParams.set('text', row.parent ? `${query}, ${row.parent}, ${row.city}` : `${query}, ${row.city}`);
+    url.searchParams.set('format', 'json');
+    url.searchParams.set('limit', '8');
+    url.searchParams.set('filter', `countrycode:${row.country.toLowerCase()}`);
+    if (cityGeo?.center) url.searchParams.set('bias', `proximity:${cityGeo.center.lng},${cityGeo.center.lat}`);
+    url.searchParams.set('apiKey', key);
+    const payload = await cachedJson('geoapify', url.toString(), { cache: allowStorage, minDelayMs: 75 });
+    for (const item of payload.results || []) {
+      const candidate = candidateBase('geoapify', row, query, item.formatted || item.address_line1 || item.name, Number(item.lat), Number(item.lon), {
+        city: item.city || item.town || item.municipality || null,
+        rawType: item.result_type || item.category || null,
+        persistable: allowStorage,
+        source: 'geoapify',
+        providerId: item.place_id || null,
+        meta: { category: item.category || null, confidence: item.rank?.confidence ?? null, datasource: item.datasource?.sourcename || null },
+      });
+      if (candidate) rows.push(candidate);
+    }
+    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
+  }
+  return rows;
+}
+
+async function mapboxCandidates(row, queries) {
+  const token = process.env.MAPBOX_ACCESS_TOKEN;
+  if (!token) return [];
+  const permanent = process.env.MAPBOX_PERMANENT === '1';
+  const rows = [];
+  const cityGeo = cityBias(row);
+  for (const query of queries) {
+    const url = new URL('https://api.mapbox.com/search/geocode/v6/forward');
+    url.searchParams.set('q', row.parent ? `${query}, ${row.parent}, ${row.city}` : `${query}, ${row.city}`);
+    url.searchParams.set('country', row.country.toLowerCase());
+    url.searchParams.set('limit', '8');
+    if (cityGeo?.center) url.searchParams.set('proximity', `${cityGeo.center.lng},${cityGeo.center.lat}`);
+    if (cityGeo?.bbox) url.searchParams.set('bbox', `${cityGeo.bbox.west},${cityGeo.bbox.south},${cityGeo.bbox.east},${cityGeo.bbox.north}`);
+    if (permanent) url.searchParams.set('permanent', 'true');
+    url.searchParams.set('access_token', token);
+    const payload = await cachedJson('mapbox', url.toString(), { cache: permanent, minDelayMs: 75 });
+    for (const item of payload.features || []) {
+      const [lng, lat] = item.geometry?.coordinates || [];
+      const props = item.properties || {};
+      const candidate = candidateBase('mapbox', row, query, props.full_address || props.name || item.place_name || item.name, Number(lat), Number(lng), {
+        city: props.context?.place?.name || props.context?.locality?.name || null,
+        rawType: item.feature_type || props.feature_type || null,
+        persistable: permanent,
+        source: 'mapbox',
+        providerId: item.id || props.mapbox_id || null,
+      });
+      if (candidate) rows.push(candidate);
+    }
+    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
   }
   return rows;
 }
@@ -527,9 +782,13 @@ async function twoGisCandidates(row, queries) {
 const PROVIDER_LOADERS = Object.freeze({
   nominatim: nominatimCandidates,
   easyway: easyWayCandidates,
+  wikiroutes: wikiRoutesCandidates,
   google: googleCandidates,
   yandex: yandexCandidates,
   '2gis': twoGisCandidates,
+  maptiler: mapTilerCandidates,
+  geoapify: geoapifyCandidates,
+  mapbox: mapboxCandidates,
 });
 
 function consensusBoost(candidate, candidates, row) {
@@ -542,8 +801,22 @@ function consensusBoost(candidate, candidates, row) {
   return { boost: Math.min(0.08, supporting.size * 0.025), supporting: [...supporting].sort() };
 }
 
+function dedupeCandidates(candidates) {
+  const dedupe = new Map();
+  for (const candidate of candidates) {
+    const osmIdentity = candidate.osm?.type && Number.isFinite(candidate.osm?.id)
+      ? `${candidate.provider}|osm:${candidate.osm.type}:${candidate.osm.id}`
+      : null;
+    const key = osmIdentity
+      || `${candidate.provider}|${candidate.providerId || ''}|${candidate.lat.toFixed(6)}|${candidate.lng.toFixed(6)}|${normalize(candidate.label)}`;
+    if (!dedupe.has(key)) dedupe.set(key, candidate);
+  }
+  return [...dedupe.values()];
+}
+
 function chooseCandidate(row, candidates, minScore) {
-  const ranked = candidates
+  const cityGeo = cityBias(row);
+  const ranked = dedupeCandidates(candidates)
     .map((candidate) => {
       const baseScore = candidateScore(row, candidate);
       const consensus = consensusBoost(candidate, candidates, row);
@@ -551,7 +824,7 @@ function chooseCandidate(row, candidates, minScore) {
     })
     .sort((a, b) => b.score - a.score);
 
-  const persistable = ranked.filter((candidate) => candidate.persistable);
+  const persistable = ranked.filter((candidate) => candidate.persistable && isAutoAcceptEligible(row, candidate, cityGeo));
   const best = persistable[0] || null;
   if (!best || best.score < minScore) return { accepted: null, ranked };
 
@@ -564,14 +837,6 @@ function chooseCandidate(row, candidates, minScore) {
 
 function sanitizeCandidate(candidate) {
   if (!candidate) return null;
-  if (!candidate.persistable) {
-    return {
-      provider: candidate.provider,
-      persistable: false,
-      verificationOnly: true,
-      ...(candidate.provider === 'google' && candidate.providerId ? { placeId: candidate.providerId } : {}),
-    };
-  }
   return {
     provider: candidate.provider,
     label: candidate.label,
@@ -581,60 +846,21 @@ function sanitizeCandidate(candidate) {
     source: candidate.source,
     osm: candidate.osm,
     providerId: candidate.providerId,
+    persistable: candidate.persistable,
+    verificationOnly: !candidate.persistable,
     score: candidate.score,
     supporting: candidate.supporting || [],
   };
 }
 
 async function discoverOverpass(country, city, center) {
-  if (!center) return [];
-  const endpoint = process.env.OVERPASS_URL || 'https://overpass-api.de/api/interpreter';
-  const query = `[out:json][timeout:70];(nwr(around:${DISCOVERY_RADIUS_M},${center.lat},${center.lng})["place"~"^(neighbourhood|suburb|quarter)$"]["name"];nwr(around:${DISCOVERY_RADIUS_M},${center.lat},${center.lng})["landuse"="residential"]["name"];nwr(around:${DISCOVERY_RADIUS_M},${center.lat},${center.lng})["boundary"="administrative"]["name"];);out center tags;`;
-  const raw = await request('overpass', endpoint, {
-    cache: true,
-    minDelayMs: 350,
-    method: 'POST',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      'user-agent': '@whiteslove/geo-catalog geo-enrichment discovery',
-    },
-    body: new URLSearchParams({ data: query }).toString(),
-    timeoutMs: 75_000,
+  return discoverOverpassScoped({
+    country,
+    city,
+    cityGeo: cityEntity(country, city),
+    center,
+    request,
   });
-  const payload = JSON.parse(raw);
-  const rows = [];
-  for (const item of payload.elements || []) {
-    const lat = Number(item.lat ?? item.center?.lat);
-    const lng = Number(item.lon ?? item.center?.lon);
-    const name = item.tags?.name;
-    if (!name || !Number.isFinite(lat) || !Number.isFinite(lng)) continue;
-    const place = item.tags?.place;
-    const typeHint = item.tags?.boundary === 'administrative'
-      ? 'district'
-      : place === 'neighbourhood' || place === 'quarter'
-        ? 'local_area'
-        : place === 'suburb'
-          ? 'suburb'
-          : 'local_area';
-    rows.push({
-      provider: 'overpass',
-      country,
-      city,
-      canonical: name,
-      typeHint,
-      lat,
-      lng,
-      source: 'osm',
-      osm: { type: item.type, id: item.id },
-      tags: {
-        place: place || null,
-        landuse: item.tags?.landuse || null,
-        boundary: item.tags?.boundary || null,
-        adminLevel: item.tags?.admin_level || null,
-      },
-    });
-  }
-  return rows;
 }
 
 function filterNewDiscoveries(discoveries, lexicon) {
@@ -655,64 +881,83 @@ function filterNewDiscoveries(discoveries, lexicon) {
 
 function providerNotes(providers) {
   const notes = [];
-  if (providers.includes('nominatim')) notes.push('Nominatim is keyless. One-time crawler uses one thread, >=1.1s between requests and caches responses; --periodic slows this to >=15s/request.');
-  if (providers.includes('easyway')) notes.push('EasyWay default path is keyless public HTTP: the city routes page provides data-route-id values and /ajax/<city>/routeScheme/<id> provides route/stop coordinates. It is verification-only in reports.');
-  if (providers.includes('google')) notes.push(process.env.GOOGLE_MAPS_API_KEY ? 'Google Geocoding is enabled as verification-only; coordinate/address content is not persisted.' : 'Google requested but GOOGLE_MAPS_API_KEY is unset; provider will be skipped.');
-  if (providers.includes('yandex')) notes.push(process.env.YANDEX_GEOCODER_API_KEY ? 'Yandex API is enabled; storage remains disabled unless YANDEX_ALLOW_STORAGE=1.' : 'Yandex requested but YANDEX_GEOCODER_API_KEY is unset; provider will be skipped.');
-  if (providers.includes('2gis')) notes.push(process.env.DGIS_API_KEY ? '2GIS API is enabled; storage remains disabled unless DGIS_ALLOW_STORAGE=1.' : '2GIS requested but DGIS_API_KEY is unset; provider will be skipped.');
+  if (providers.includes('nominatim')) notes.push('Nominatim: structured + free-form fallbacks, city bbox bias, one process-wide serialized queue, >=1.1s/request (>=15s with --periodic), cached; spatial auto-accepts require direct type/name/city evidence.');
+  if (providers.includes('easyway')) notes.push('EasyWay: all public city route schemes are indexed by default; set EASYWAY_MAX_ROUTES only when an explicit cap is needed. Verification-only.');
+  if (providers.includes('wikiroutes')) notes.push(process.env.WIKIROUTES_API_KEY || process.env.BUSMAPS_API_KEY ? 'WikiRoutes: BusMaps /v1/stopsInRadius enabled through capi-host=wikiroutes.info.' : 'WikiRoutes requested but WIKIROUTES_API_KEY/BUSMAPS_API_KEY is unset; provider will be skipped.');
+  if (providers.includes('google')) notes.push(process.env.GOOGLE_MAPS_API_KEY ? `Google enabled${providerStorageFlag('google') ? ' with storage opt-in' : ' as verification-only'}; set GOOGLE_ALLOW_STORAGE=1 only when your terms permit persistence.` : 'Google requested but GOOGLE_MAPS_API_KEY is unset; provider will be skipped.');
+  if (providers.includes('yandex')) notes.push(process.env.YANDEX_GEOCODER_API_KEY ? `Yandex enabled${providerStorageFlag('yandex') ? ' with storage opt-in' : ' as verification-only'}.` : 'Yandex requested but YANDEX_GEOCODER_API_KEY is unset; provider will be skipped.');
+  if (providers.includes('2gis')) notes.push(process.env.DGIS_API_KEY ? `2GIS enabled${providerStorageFlag('dgis') ? ' with storage opt-in' : ' as verification-only'}.` : '2GIS requested but DGIS_API_KEY is unset; provider will be skipped.');
+  if (providers.includes('maptiler')) notes.push(process.env.MAPTILER_API_KEY ? `MapTiler enabled${providerStorageFlag('maptiler') ? ' with storage opt-in' : ' as verification-only'}.` : 'MapTiler requested but MAPTILER_API_KEY is unset; provider will be skipped.');
+  if (providers.includes('geoapify')) notes.push(process.env.GEOAPIFY_API_KEY ? `Geoapify enabled${providerStorageFlag('geoapify') ? ' with storage opt-in' : ' as verification-only'}.` : 'Geoapify requested but GEOAPIFY_API_KEY is unset; provider will be skipped.');
+  if (providers.includes('mapbox')) notes.push(process.env.MAPBOX_ACCESS_TOKEN ? `Mapbox enabled${process.env.MAPBOX_PERMANENT === '1' ? ' with permanent geocoding' : ' as temporary/verification-only'}.` : 'Mapbox requested but MAPBOX_ACCESS_TOKEN is unset; provider will be skipped.');
   return notes;
 }
 
-async function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const lexicon = lexicalRows(args.country, args.city);
+async function mapWithConcurrency(items, concurrency, worker) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+
+  async function runWorker() {
+    while (true) {
+      const index = nextIndex;
+      nextIndex += 1;
+      if (index >= items.length) return;
+      results[index] = await worker(items[index], index);
+    }
+  }
+
+  const workerCount = Math.min(concurrency, items.length);
+  await Promise.all(Array.from({ length: workerCount }, () => runWorker()));
+  return results;
+}
+
+async function processCity(args, city, providers) {
+  const lexiconAvailable = Boolean(LOCATION_DICTIONARIES[args.country]?.[city]);
+  const lexicon = lexicalRows(args.country, city);
+  const bootstrapDiscovery = !lexiconAvailable;
   const unresolved = args.refresh
     ? lexicon
     : lexicon.filter((row) => !resolveLexiconGeoEntityExact({ country: row.country, city: row.city, type: row.type, canonical: row.canonical }));
+  const prefix = `[${args.country}/${city}]`;
 
-  const providers = args.providers.filter((provider) => PROVIDER_LOADERS[provider]);
-  if (!providers.length) throw new Error(`No supported providers selected. Supported: ${Object.keys(PROVIDER_LOADERS).join(', ')}`);
-
-  console.log(`Geo enrichment: ${args.country}/${args.city}; ${unresolved.length}/${lexicon.length} lexical entities to inspect.`);
-  console.log(`Providers: ${providers.join(', ')}${providers.every((provider) => DEFAULT_PROVIDERS.includes(provider)) ? ' (zero-key default)' : ''}`);
-  for (const note of providerNotes(providers)) console.log(`  policy: ${note}`);
-
+  if (bootstrapDiscovery) console.log(`${prefix} no LOCATION_DICTIONARIES city entry; running catalog-backed discovery bootstrap.`);
+  console.log(`${prefix} ${unresolved.length}/${lexicon.length} lexical entities to inspect.`);
   const results = [];
   for (let index = 0; index < unresolved.length; index += 1) {
     const row = unresolved[index];
     const queries = queryVariants(row, args.maxAliases);
     const candidates = [];
-    console.log(`[${index + 1}/${unresolved.length}] ${row.type} ${row.canonical}`);
+    console.log(`${prefix} [${index + 1}/${unresolved.length}] ${row.type} ${row.canonical}`);
 
     for (const provider of providers) {
       try {
         const providerRows = await PROVIDER_LOADERS[provider](row, queries, args);
         candidates.push(...providerRows);
-        if (providerRows.length) console.log(`  ${provider}: ${providerRows.length} candidates`);
+        if (providerRows.length) console.log(`${prefix}   ${provider}: ${providerRows.length} candidates`);
       } catch (error) {
-        console.warn(`  ${provider}: ${error?.message || error}`);
+        console.warn(`${prefix}   ${provider}: ${error?.message || error}`);
       }
     }
 
     const choice = chooseCandidate(row, candidates, args.minScore);
     const accepted = sanitizeCandidate(choice.accepted);
-    const ranked = choice.ranked.slice(0, 8).map(sanitizeCandidate);
+    const ranked = choice.ranked.slice(0, 12).map(sanitizeCandidate);
     results.push({
       entity: row,
       status: accepted ? 'accepted' : choice.ambiguous ? 'ambiguous' : candidates.length ? 'review' : 'not_found',
       accepted,
       candidates: ranked,
     });
-    if (accepted) console.log(`  accepted: ${accepted.provider} ${accepted.lat},${accepted.lng} score=${accepted.score.toFixed(3)}`);
+    if (accepted) console.log(`${prefix}   accepted: ${accepted.provider} ${accepted.lat},${accepted.lng} score=${accepted.score.toFixed(3)}`);
   }
 
   let discoveries = [];
-  if (args.discover) {
-    const center = cityEntity(args.country, args.city)?.center || null;
+  if (args.discover || bootstrapDiscovery) {
+    const center = cityEntity(args.country, city)?.center || null;
     try {
-      discoveries.push(...await discoverOverpass(args.country, args.city, center));
+      discoveries.push(...await discoverOverpass(args.country, city, center));
     } catch (error) {
-      console.warn(`overpass discovery: ${error?.message || error}`);
+      console.warn(`${prefix} overpass discovery: ${error?.message || error}`);
     }
     discoveries = filterNewDiscoveries(discoveries, lexicon);
   }
@@ -720,9 +965,11 @@ async function main() {
   const report = {
     generatedAt: new Date().toISOString(),
     country: args.country,
-    city: args.city,
+    city,
+    mode: bootstrapDiscovery ? 'discovery-bootstrap' : args.discover ? 'lexicon-and-discovery' : 'lexicon',
+    lexiconAvailable,
     providers,
-    zeroKeyDefault: providers.every((provider) => DEFAULT_PROVIDERS.includes(provider)),
+    keylessProviders: providers.filter((provider) => ZERO_KEY_PROVIDERS.includes(provider)),
     policyNotes: providerNotes(providers),
     counts: {
       lexicon: lexicon.length,
@@ -737,11 +984,53 @@ async function main() {
     discoveries,
   };
 
-  const output = args.output || path.join(DEFAULT_OUTPUT_ROOT, `${args.country.toLowerCase()}-${slug(args.city)}.json`);
+  const output = args.output || path.join(DEFAULT_OUTPUT_ROOT, `${args.country.toLowerCase()}-${slug(city)}.json`);
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
-  console.log(`Report: ${output}`);
-  console.log(`Accepted ${report.counts.accepted}; review ${report.counts.review}; ambiguous ${report.counts.ambiguous}; not found ${report.counts.notFound}; new discoveries ${report.counts.discoveries}.`);
+  console.log(`${prefix} Report: ${output}`);
+  console.log(`${prefix} Accepted ${report.counts.accepted}; review ${report.counts.review}; ambiguous ${report.counts.ambiguous}; not found ${report.counts.notFound}; new discoveries ${report.counts.discoveries}.`);
+  return report;
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const cities = args.allCities ? countryCities(args.country) : [args.city];
+  const providers = args.providers.filter((provider) => PROVIDER_LOADERS[provider]);
+  if (!providers.length) throw new Error(`No supported providers selected. Supported: ${Object.keys(PROVIDER_LOADERS).join(', ')}`);
+
+  console.log(`Geo enrichment: ${args.country}; ${cities.length} city${cities.length === 1 ? '' : 'ies'}; city concurrency=${args.allCities ? args.concurrency : 1}.`);
+  console.log(`Providers: ${providers.join(', ')}`);
+  console.log(`Keyless providers: ${providers.filter((provider) => ZERO_KEY_PROVIDERS.includes(provider)).join(', ') || 'none'}`);
+  for (const note of providerNotes(providers)) console.log(`  policy: ${note}`);
+
+  if (!args.allCities) {
+    await processCity(args, args.city, providers);
+    return;
+  }
+
+  const outcomes = await mapWithConcurrency(cities, args.concurrency, async (city) => {
+    try {
+      return { city, report: await processCity(args, city, providers), error: null };
+    } catch (error) {
+      console.error(`[${args.country}/${city}] failed: ${error?.stack || error}`);
+      return { city, report: null, error: error?.message || String(error) };
+    }
+  });
+
+  const successful = outcomes.filter((outcome) => outcome.report);
+  const failed = outcomes.filter((outcome) => outcome.error);
+  const totals = successful.reduce((acc, outcome) => {
+    for (const key of ['lexicon', 'inspected', 'accepted', 'review', 'ambiguous', 'notFound', 'discoveries']) {
+      acc[key] += outcome.report.counts[key];
+    }
+    return acc;
+  }, { lexicon: 0, inspected: 0, accepted: 0, review: 0, ambiguous: 0, notFound: 0, discoveries: 0 });
+
+  console.log(`Country run ${args.country}: ${successful.length}/${cities.length} cities completed; accepted ${totals.accepted}; review ${totals.review}; ambiguous ${totals.ambiguous}; not found ${totals.notFound}; discoveries ${totals.discoveries}.`);
+  if (failed.length) {
+    console.error(`Failed cities: ${failed.map((outcome) => `${outcome.city}: ${outcome.error}`).join('; ')}`);
+    process.exitCode = 1;
+  }
 }
 
 await main();

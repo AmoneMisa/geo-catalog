@@ -7,12 +7,9 @@ const normalize = (value) => String(value ?? '')
   .replace(/^-+|-+$/g, '');
 
 const cityNames = Object.freeze([
-  'Temirtau','Ekibastuz','Rudny','Zhezkazgan','Balkhash','Konaev','Zhanaozen','Satbayev','Kosshy','Arys',
-  'Kentau','Saryagash','Stepnogorsk','Atbasar','Shchuchinsk','Makinsk','Ereymentau','Akkol','Kaskelen','Talgar',
-  'Esik','Shelek','Uzynagash','Zharkent','Tekeli','Usharal','Saran','Shakhtinsk','Abai','Priozersk','Karkaralinsk',
-  'Aksu','Ridder','Altai','Serebryansk','Shemonaikha','Kurchatov','Ayagoz','Khromtau','Alga','Kandyagash','Shalkar',
-  'Kulsary','Dossor','Fort-Shevchenko','Lisakovsk','Arkalyk','Tobyl','Zhitikara','Aksai','Baikonur','Aral','Kazaly',
-  'Shu','Karatau','Zhanatas','Merke','Zhetysai','Lenger','Shardara',
+  'Shelek','Uzynagash',
+  'Dossor',
+  'Merke',
 ]);
 
 export const KZ_CITY_COVERAGE_GAPS = Object.freeze(cityNames.map((canonical) => Object.freeze({

@@ -9,6 +9,17 @@ import { UA_SUMY_ENTITIES } from './sumy/index.js';
 import { UA_KROPYVNYTSKYI_ENTITIES } from './kropyvnytskyi/index.js';
 import { UA_KREMENCHUK_ENTITIES } from './kremenchuk/index.js';
 import { UA_BILA_TSERKVA_ENTITIES } from './bila-tserkva/index.js';
+import { UA_UMAN_ENTITIES } from './uman/index.js';
+import { UA_KAMIANETS_PODILSKYI_ENTITIES } from './kamianets-podilskyi/index.js';
+import { UA_DROHOBYCH_ENTITIES } from './drohobych/index.js';
+import { UA_KOLOMYIA_ENTITIES } from './kolomyia/index.js';
+import { UA_KOVEL_ENTITIES } from './kovel/index.js';
+import { UA_NOVOVOLYNSK_ENTITIES } from './novovolynsk/index.js';
+import { UA_VOLODYMYR_ENTITIES } from './volodymyr/index.js';
+import { UA_NIZHYN_ENTITIES } from './nizhyn/index.js';
+import { UA_BERDIANSK_ENTITIES } from './berdiansk/index.js';
+import { UA_BERDYCHIV_ENTITIES } from './berdychiv/index.js';
+import { UA_BILHOROD_DNISTROVSKYI_ENTITIES } from './bilhorod-dnistrovskyi/index.js';
 import { UA_RIVNE_ENTITIES } from './rivne/index.js';
 import { UA_KHERSON_ENTITIES } from './kherson/index.js';
 import { UA_VINNYTSIA_ENTITIES } from './vinnytsia/index.js';
@@ -16,11 +27,18 @@ import { UA_MYKOLAIV_ENTITIES } from './mykolaiv/index.js';
 import { UA_CHERKASY_ENTITIES } from './cherkasy/index.js';
 import { UA_POLTAVA_ENTITIES } from './poltava/index.js';
 import { UA_CHERNIHIV_ENTITIES } from './chernihiv/index.js';
+import { UA_TERNOPIL_ENTITIES } from './ternopil/index.js';
+import { UA_LUTSK_ENTITIES } from './lutsk/index.js';
+import { UA_UZHHOROD_ENTITIES } from './uzhhorod/index.js';
+import { UA_IVANO_FRANKIVSK_ENTITIES } from './ivano-frankivsk/index.js';
+import { UA_MUKACHEVO_ENTITIES } from './mukachevo/index.js';
 import { UA_KHARKIV_ENTITIES } from './kharkiv/index.js';
 import { UA_DNIPRO_ENTITIES } from './dnipro/index.js';
 import { UA_LVIV_ENTITIES } from './lviv/index.js';
 import { UA_ZAPORIZHZHIA_ENTITIES } from './zaporizhzhia/index.js';
 import { UA_KRYVYI_RIH_ENTITIES } from './kryvyi-rih/index.js';
+import { UA_KRAMATORSK_ENTITIES } from './kramatorsk/index.js';
+import { UA_SLOVIANSK_ENTITIES } from './sloviansk/index.js';
 
 export const UA_ENTITIES = Object.freeze([
   ...UA_CITY_ENTITIES,
@@ -34,6 +52,17 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_KROPYVNYTSKYI_ENTITIES,
   ...UA_KREMENCHUK_ENTITIES,
   ...UA_BILA_TSERKVA_ENTITIES,
+  ...UA_UMAN_ENTITIES,
+  ...UA_KAMIANETS_PODILSKYI_ENTITIES,
+  ...UA_DROHOBYCH_ENTITIES,
+  ...UA_KOLOMYIA_ENTITIES,
+  ...UA_KOVEL_ENTITIES,
+  ...UA_NOVOVOLYNSK_ENTITIES,
+  ...UA_VOLODYMYR_ENTITIES,
+  ...UA_NIZHYN_ENTITIES,
+  ...UA_BERDIANSK_ENTITIES,
+  ...UA_BERDYCHIV_ENTITIES,
+  ...UA_BILHOROD_DNISTROVSKYI_ENTITIES,
   ...UA_RIVNE_ENTITIES,
   ...UA_KHERSON_ENTITIES,
   ...UA_VINNYTSIA_ENTITIES,
@@ -41,9 +70,16 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_CHERKASY_ENTITIES,
   ...UA_POLTAVA_ENTITIES,
   ...UA_CHERNIHIV_ENTITIES,
+  ...UA_TERNOPIL_ENTITIES,
+  ...UA_LUTSK_ENTITIES,
+  ...UA_UZHHOROD_ENTITIES,
+  ...UA_IVANO_FRANKIVSK_ENTITIES,
+  ...UA_MUKACHEVO_ENTITIES,
   ...UA_KHARKIV_ENTITIES,
   ...UA_DNIPRO_ENTITIES,
   ...UA_LVIV_ENTITIES,
   ...UA_ZAPORIZHZHIA_ENTITIES,
   ...UA_KRYVYI_RIH_ENTITIES,
+  ...UA_KRAMATORSK_ENTITIES,
+  ...UA_SLOVIANSK_ENTITIES,
 ]);

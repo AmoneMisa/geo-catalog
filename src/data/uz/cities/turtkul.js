@@ -25,5 +25,6 @@ const approximateArea = (slug, canonicalName, lat, lng, accuracyM = 1200) => ({
 
 export const TURTKUL_ENTITIES = Object.freeze([
   osmPoi('turtkul-railway-station', 'Turtkul Railway Station', 41.57057, 61.03238, 'node', 1592362133, 100, 'poi.railway_station'),
+  osmPoi('bazaar', 'Bazaar', 41.5629189, 61.0107667, 'way', 278779988, 170, 'poi.market'),
   approximateArea('railway-station-area', 'Railway Station area', 41.57057, 61.03238, 1100),
 ]);

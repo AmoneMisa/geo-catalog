@@ -25,3 +25,20 @@ test('Bekabad Railway Station area uses a conservative verified station center',
     canonical: 'Railway Station area',
   }), false);
 });
+
+test('Bekabad Syrdarya resolves to the city residential OSM way', () => {
+  const input = {
+    country: 'UZ',
+    city: 'Bekabad',
+    type: 'local_area',
+    canonical: 'Syrdarya',
+  };
+  const resolved = resolveLexiconGeoEntity(input);
+
+  assert.equal(resolved?.id, 'uz:bekabad:local-area:syrdarya');
+  assert.equal(resolved?.parentId, 'uz:bekabad');
+  assert.deepEqual(resolved?.center, { lat: 40.2250529, lng: 69.2571173 });
+  assert.deepEqual(resolved?.osm, { type: 'way', id: 333537419 });
+  assert.equal(resolved?.source, 'osm');
+  assert.equal(isUzSecondaryCoverageGap(input), false);
+});

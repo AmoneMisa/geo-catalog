@@ -1,0 +1,9 @@
+import { UA_KRAMATORSK_NEIGHBORHOOD_ENTITIES } from './neighborhoods.js';
+import { UA_KRAMATORSK_STREET_ENTITIES } from './streets.js';
+import { UA_KRAMATORSK_POI_ENTITIES } from './poi.js';
+
+export const UA_KRAMATORSK_ENTITIES = Object.freeze([
+  ...UA_KRAMATORSK_NEIGHBORHOOD_ENTITIES,
+  ...UA_KRAMATORSK_STREET_ENTITIES,
+  ...UA_KRAMATORSK_POI_ENTITIES,
+]);

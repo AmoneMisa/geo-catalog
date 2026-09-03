@@ -39,6 +39,8 @@ export const UA_SECONDARY_CITY_ENTITIES = Object.freeze([
   city('ua:boryslav', 'Boryslav', 49.28244, 23.41388, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 313246159 }) }),
   city('ua:sheptytskyi', 'Sheptytskyi', 50.394, 24.2396, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 260943265 }) }),
   city('ua:kovel', 'Kovel', 51.2121, 24.7089, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 146651245 }) }),
+  city('ua:novovolynsk', 'Novovolynsk', 50.72248, 24.16484, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 259980476 }), wikidataId: 'Q591719' }),
+  city('ua:volodymyr', 'Volodymyr', 50.84806, 24.32222, 3000, { source: 'osm', osm: Object.freeze({ type: 'relation', id: 2000000 }), wikidataId: 'Q33544' }),
   city('ua:dubno', 'Dubno', 50.41879, 25.7456, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 337522487 }) }),
   city('ua:berdychiv', 'Berdychiv', 49.894, 28.5815, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 337541446 }) }),
   city('ua:korosten', 'Korosten', 50.9491, 28.6418, 3000, { source: 'osm', osm: Object.freeze({ type: 'node', id: 337513583 }) }),

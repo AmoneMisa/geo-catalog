@@ -25,6 +25,19 @@ const osmMahalla = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 8
   osm: { type: osmType, id: osmId },
 });
 
+const osmLocalArea = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 900) => ({
+  id: `uz:nukus:local-area:${slug}`,
+  type: 'local_area',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:nukus',
+  center: { lat, lng },
+  source: 'osm',
+  accuracy: 'neighborhood',
+  accuracyM,
+  osm: { type: osmType, id: osmId },
+});
+
 const manualMahalla = (slug, canonicalName, lat, lng, accuracyM = 1000) => ({
   id: `uz:nukus:mahalla:${slug}`,
   type: 'mahalla',
@@ -65,6 +78,48 @@ export const NUKUS_ENTITIES = Object.freeze([
   osmMahalla('dosliq-guzari', 'Dosliq guzari', 42.4726019, 59.6157933, 'way', 1009066211, 760),
   osmMahalla('dosliq', 'Dosliq', 42.4540518, 59.6165278, 'way', 1009066191, 760),
   osmMahalla('jiydeli-baysin', 'Jiydeli baysin', 42.4460644, 59.5764874, 'way', 1009066206, 760),
+
+  // Verified by direct OSM MPJ / neighbourhood / suburb objects from the
+  // country enrichment run. Prefer the area object over POIs or streets that
+  // merely contain the mahalla name in their address.
+  osmMahalla('juwazshi', 'Juwazshı', 42.4338671, 59.6264742, 'way', 1009066255, 760),
+  osmMahalla('bereket', 'Bereket', 42.4407817, 59.6348024, 'way', 1009066241, 720),
+  osmMahalla('qizil-qum', 'Qizil qum', 42.3994998, 59.6322491, 'way', 1227135157, 820),
+  osmMahalla('guzar', 'Gúzar', 42.4430831, 59.6306569, 'way', 1009066204, 720),
+  osmMahalla('isbilermenler-aymagi', 'Isbilermenler aymagi', 42.4047779, 59.6504311, 'way', 1009066208, 820),
+  osmMahalla('darbent', 'Darbent', 42.4392604, 59.6301348, 'way', 1009066243, 720),
+  osmMahalla('abat-makan', 'Abat makan', 42.4929341, 59.6457493, 'way', 1227135160, 820),
+  osmMahalla('jasil-bag', "Jasil bag'", 42.5452263, 59.6039912, 'way', 1227135161, 900),
+  osmMahalla('ata-makan', 'Ata makan', 42.5172642, 59.6125841, 'way', 1009066186, 820),
+  osmMahalla('jolshilar', 'Jolshilar', 42.5077247, 59.6324158, 'way', 1009066256, 820),
+  osmMahalla('qutli-qonis', 'Qutli qonis', 42.4993806, 59.5920619, 'way', 1009066199, 820),
+  osmMahalla('aydin-jol', 'Aydin jol', 42.4786696, 59.5997821, 'way', 1009066240, 720),
+  osmMahalla('taslaq', 'Taslaq', 42.5134978, 59.6203248, 'way', 339799160, 950),
+  osmMahalla('qum-awil', 'Qum awil', 42.4719493, 59.6414198, 'way', 413793561, 900),
+  osmMahalla('qutli-makan', 'Qutli makan', 42.5278456, 59.6057122, 'way', 1009066250, 820),
+  osmMahalla('botanika-bagi', "Botanika bag'i", 42.4826965, 59.6060249, 'node', 4571573171, 760),
+  osmMahalla('shimbay-shayxana', 'Shimbay shayxana', 42.4809655, 59.6001135, 'node', 9662439527, 900),
+  osmMahalla('sarbinaz', 'Sarbinaz', 42.447601, 59.6140865, 'way', 460790124, 800),
+  osmMahalla('shayirlar-awili', 'Shayirlar awili', 42.4584029, 59.6256922, 'way', 1009066244, 720),
+  osmMahalla('tungish-qonis', 'Tungish qonis', 42.4441973, 59.6246205, 'way', 1009066246, 720),
+  osmMahalla('qurilisshi', 'Qurilisshi', 42.4538124, 59.6337598, 'way', 1009066192, 720),
+  osmMahalla('almazar', 'Almazar', 42.4482737, 59.6456909, 'way', 1009066219, 760),
+  osmMahalla('ornek', 'Ornek', 42.4490425, 59.6208685, 'way', 1009066183, 720),
+  osmMahalla('jana-zaman', 'Jana zaman', 42.4686775, 59.6634951, 'way', 1009066216, 820),
+  osmMahalla('baqshiliq', 'Baqshiliq', 42.4589318, 59.6419903, 'way', 1009066187, 720),
+  osmMahalla('tinishliq', 'Tinishliq', 42.4651458, 59.6292933, 'way', 1009066195, 720),
+  osmMahalla('xaliqlar-dosligi', 'Xaliqlar dosligi', 42.463143, 59.610171, 'way', 1009066201, 720),
+  osmMahalla('boz-awil', 'Boz awil', 42.4222722, 59.6015337, 'node', 6396972245, 900),
+  osmMahalla('jas-awlad', 'Jas awlad', 42.4725383, 59.5943003, 'way', 1265717271, 760),
+  osmMahalla('qos-bulaq', 'Qos bulaq', 42.4499089, 59.5889357, 'way', 1009066236, 760),
+  osmMahalla('aq-jagis', 'Aq jagis', 42.4601545, 59.5627023, 'way', 1009066217, 820),
+  osmMahalla('shadli-awil', 'Shadli awil', 42.3942259, 59.597638, 'way', 453532276, 900),
+  osmMahalla('tele-oray', 'Tele oray', 42.4142361, 59.6150622, 'way', 415541809, 900),
+  osmMahalla('altin-jagis', 'Altin jagis', 42.4128653, 59.6043285, 'way', 1009066194, 820),
+  osmMahalla('kok-ozek', 'Kok ozek', 42.4712297, 59.5840849, 'way', 1009066212, 800),
+  osmMahalla('qumbiz-awil', 'Qumbiz awil', 42.4844646, 59.5927597, 'way', 1009066232, 820),
+  osmMahalla('nawpir', 'Nawpir', 42.4731136, 59.5694793, 'way', 1009066200, 800),
+  osmLocalArea('qizketken', 'Qizketken', 42.3879368, 59.6306127, 'way', 339795351, 950),
 
   manualMahalla('bayterek', 'Bayterek', 42.46600, 59.59120, 1000),
   manualMahalla('aq-otaw', 'Aq otaw', 42.44765, 59.62590, 1000),

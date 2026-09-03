@@ -31,3 +31,39 @@ test('heritage-centered listing areas reuse verified POI centers conservatively'
     }), false, `${city}: ${canonical}`);
   }
 });
+
+test('Old Termez has one archaeological physical owner for POI and listing-area semantics', () => {
+  const poi = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Termez',
+    type: 'poi',
+    canonical: 'Old Termez',
+  });
+  const area = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Termez',
+    type: 'local_area',
+    canonical: 'Old Termez',
+  });
+
+  assert.equal(poi?.id, 'uz:termez:poi:old-termez');
+  assert.equal(area?.id, poi?.id);
+  assert.equal(poi?.type, 'poi.archaeological_site');
+  assert.equal(poi?.source, 'osm');
+  assert.deepEqual(poi?.center, { lat: 37.2642736, lng: 67.192273 });
+  assert.deepEqual(poi?.osm, { type: 'way', id: 499907480 });
+});
+
+test('Termez Alpomish listing area reuses the direct sports-complex way', () => {
+  const resolved = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Termez',
+    type: 'local_area',
+    canonical: 'Alpomish',
+  });
+
+  assert.equal(resolved?.id, 'uz:termez:poi:alpomish');
+  assert.equal(resolved?.type, 'poi');
+  assert.deepEqual(resolved?.center, { lat: 37.2444298, lng: 67.2861956 });
+  assert.deepEqual(resolved?.osm, { type: 'way', id: 110890449 });
+});

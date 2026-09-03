@@ -26,21 +26,20 @@ export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Namangan', 'local_area', ['Center', 'North', 'Chortoq area', 'Uychi area', 'Turaqorgon area', 'Galaba', 'Bobur', 'Navoiy', 'Islom Karimov', 'Qoqimboyshox', 'Afrosiyob', 'Boburshox', 'Ibrat', 'Nodira'], 'Lexicon local area still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Namangan', 'poi', ['Yangi Ozbekiston Park'], 'Lexicon landmark still needs a verified spatial match.'),
 
-  ...gaps('UZ', 'Andijan', 'mahalla', ['Obod', "Ma'rifat", 'Mustaqillikning 21 yilligi', "Taxtako'prik"], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('UZ', 'Andijan', 'local_area', ['Center', 'Old City', 'New City', 'Bobur', 'Navoiy', 'Mashinasozlar', 'North', 'South-West'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Andijan', 'local_area', ['Center', 'New City', 'Bobur', 'Navoiy', 'Mashinasozlar', 'South-West'], 'Lexicon local area still needs a verified standalone spatial match.'),
 
-  ...gaps('UZ', 'Fergana', 'local_area', ['Qirguli', 'Neftchi', 'Center', 'Mustaqillik', 'Margilon Road', 'Navoiy'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Fergana', 'local_area', ['Center', 'Margilon Road'], 'Lexicon local area still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Bukhara', 'mahalla', ['M. Narshaxiy', 'S. Raximov nomli 17-MFY'], 'Official lexicon mahalla; no verified standalone spatial boundary/locality object is available yet.'),
   ...gaps('UZ', 'Bukhara', 'local_area', ['Center', 'Gijduvon Road', 'Gazli Road', 'Railway Station area', 'Bukhara-1', 'Bukhara-2', 'University area', 'Namozgoh', 'Sharq'], 'Bukhara local area still needs a verified standalone spatial match.'),
 
-  ...gaps('UZ', 'Qarshi', 'mahalla', ['Navo', 'Gungon', 'Buyuk Turon'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
-  ...gaps('UZ', 'Qarshi', 'local_area', ['Center', 'Old City', 'Geolog', 'Sharq', 'Paxtazor', 'Qat', 'Xonobod', 'Jayxun'], 'Lexicon local area still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Qarshi', 'mahalla', ['Buyuk Turon'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
+  ...gaps('UZ', 'Qarshi', 'local_area', ['Center', 'Sharq', 'Jayxun'], 'Lexicon local area still needs a verified standalone spatial match.'),
 
   ...gaps('UZ', 'Nukus', 'mahalla', [
-    'Bes tobe', 'Juwazshı', 'Qarataw', 'Janabazar', 'Bereket', 'Qizil qum', 'Gúzar', 'Isbilermenler aymagi', 'Darbent', 'Nawkan baǵ', 'Abat makan', "Jasil bag'", "Shig'is", 'Allaniyaz Qaxraman', 'Ata makan', 'Jolshilar', 'Qutli qonis', 'Hawa joli', "Botanika bag'i", 'Taslaq', 'Qum awil', 'Qutli makan', 'Aydin jol', 'Shimbay shayxana', 'Sarbinaz', 'Eliabat', 'Shayirlar awili', 'Tungish qonis', 'Qurilisshi', 'Almazar', 'Ornek', 'Jana zaman', 'Qos kol', 'Baqshiliq', 'Tinishliq', 'Xaliqlar dosligi', 'Boz awil', 'Jas awlad', 'Qos bulaq', 'Aq jagis', 'Kok ozek', 'Amudarya', 'Tele oray', 'Shadli awil', 'Altin jagis', 'Qumbiz awil', 'Nawpir',
+    'Bes tobe', 'Qarataw', 'Janabazar', 'Nawkan baǵ', "Shig'is", 'Allaniyaz Qaxraman', 'Hawa joli', 'Eliabat', 'Qos kol', 'Amudarya',
   ], 'Official Nukus MFY from parsing-lexicon; verified standalone OSM neighbourhood/residential geometry still pending.'),
-  ...gaps('UZ', 'Nukus', 'local_area', ['Center', 'Dosliq', 'Beruniy area', 'Qizketken', 'Nayman', 'Turtkul Road', 'Khojeyli Road'], 'Nukus local-area alias still needs a verified standalone spatial match.'),
+  ...gaps('UZ', 'Nukus', 'local_area', ['Center', 'Beruniy area', 'Nayman', 'Turtkul Road', 'Khojeyli Road'], 'Nukus local-area alias still needs a verified standalone spatial match.'),
   ...gaps('UZ', 'Nukus', 'poi', ['Berdakh Square'], 'Lexicon landmark still needs a verified spatial match.'),
 
   ...gaps('UZ', 'Urgench', 'mahalla', ["Ma'rifat", 'Al Xorazmiy', 'Ashxobod'], 'Official Urgench mahalla; verified standalone OSM neighbourhood/residential geometry still pending.'),
