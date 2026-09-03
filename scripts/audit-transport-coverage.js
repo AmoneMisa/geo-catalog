@@ -36,7 +36,7 @@ if (map.withGeometry + map.withoutGeometry !== routes.length) {
   failures.push('map geometry buckets do not partition all routes');
 }
 if (map.variantsWithGeometry !== TRANSPORT_ROUTE_VARIANTS.filter((variant) =>
-  variant.mode === 'bus' && Boolean(variant.geometry)
+  variant.cityId === 'uz:tashkent' && variant.mode === 'bus' && Boolean(variant.geometry)
 ).length) {
   failures.push('map variant geometry count is inconsistent');
 }
