@@ -23,6 +23,10 @@ const expected = Object.freeze([
   ['kz:almaty:poi:beatles-monument', 'poi.monument', 'The Beatles Monument', 'node', 6490366185],
   ['kz:almaty:poi:auezov-home-museum', 'poi.museum', 'Auezov Home Museum', 'way', 248868009],
   ['kz:almaty:poi:almaty-national-circus', 'poi.cultural_venue', 'Almaty National Circus', 'node', 13121324233],
+  ['kz:almaty:poi:folk-musical-instruments-museum', 'poi.museum', 'Kazakh Museum of Folk Musical Instruments', 'way', 50649330],
+  ['kz:almaty:poi:first-president-park', 'poi.park', 'First President Park', 'way', 213918548],
+  ['kz:almaty:poi:almaty-central-stadium', 'poi.stadium', 'Almaty Central Stadium', 'way', 1456509345],
+  ['kz:almaty:poi:almaty-television-tower-complex', 'poi.landmark', 'Almaty Television Tower Complex', 'way', 539144120],
 ]);
 
 test('Almaty exposes verified core POIs with stable OSM identity', () => {
