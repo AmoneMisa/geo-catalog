@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-09-03T20:54:05.827Z",
+  "source": "wikiroutes",
+  "cities": 52,
+  "routes": 3478,
+  "stops": 58684,
+  "variants": 7061,
+  "shapeToleranceM": 8
+}
