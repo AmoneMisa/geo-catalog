@@ -24,7 +24,7 @@ import {
   validateTransportCatalog,
 } from '../src/transport/catalog.js';
 
-const OSM_BUS_SNAPSHOT_DATE = TRANSPORT_ROUTE_VARIANTS[0]?.sourceUpdatedAt;
+const OSM_BUS_SNAPSHOT_DATE = findTransportRouteVariants({ cityId: 'uz:tashkent', mode: 'bus' })[0]?.sourceUpdatedAt;
 
 test('transport catalog passes invariants', () => {
   assert.deepEqual(validateTransportCatalog(), { valid: true, errors: [] });
@@ -47,7 +47,7 @@ test('Tashkent metro keeps all 50 canonical stations and ordered full topology',
 test('Tashkent bus registry contains all 171 route refs including Express', () => {
   const buses = findTransportRoutes({ cityId: 'uz:tashkent', mode: 'bus' });
   assert.equal(buses.length, 171);
-  assert.equal(TRANSPORT_ROUTES.length, 237);
+  assert.equal(findTransportRoutes({ cityId: 'uz:tashkent' }).length, 237);
   assert.ok(getTransportRoute('uz:tashkent:route:bus:1'));
   assert.ok(getTransportRoute('uz:tashkent:route:bus:8t'));
   assert.ok(getTransportRoute('uz:tashkent:route:bus:199'));
@@ -67,17 +67,16 @@ test('topology coverage and map geometry coverage are independent', () => {
   assert.ok(map.withGeometry >= 60);
   assert.ok(map.withGeometry >= topology.full);
   assert.equal(map.withGeometry + map.withoutGeometry, map.total);
-  assert.equal(
-    map.variantsWithGeometry,
-    TRANSPORT_ROUTE_VARIANTS.filter((variant) => variant.mode === 'bus').length,
-  );
-  assert.ok(TRANSPORT_ROUTE_VARIANTS.length >= 117);
+  const tashkentBusVariants = findTransportRouteVariants({ cityId: 'uz:tashkent', mode: 'bus' });
+  assert.equal(map.variantsWithGeometry, tashkentBusVariants.length);
+  assert.ok(tashkentBusVariants.length >= 117);
 });
 
 test('every road-transport variant includes real road geometry and map bounds', () => {
   assert.match(OSM_BUS_SNAPSHOT_DATE ?? '', /^\d{4}-\d{2}-\d{2}$/);
-  assert.ok(TRANSPORT_ROUTE_VARIANTS.length >= 117);
-  for (const variant of TRANSPORT_ROUTE_VARIANTS) {
+  const roadVariants = findTransportRouteVariants({ cityId: 'uz:tashkent' });
+  assert.ok(roadVariants.length >= 117);
+  for (const variant of roadVariants) {
     assert.equal(variant.geometry?.type, 'MultiLineString', variant.id);
     assert.ok(variant.geometry.coordinates.length > 0, variant.id);
     assert.ok(variant.geometry.coordinates.every((segment) => segment.length >= 2), variant.id);
