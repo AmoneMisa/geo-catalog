@@ -45,7 +45,7 @@ export const TASHKENT_BUS_OSM_STOPS = Object.freeze(STOP_ROWS.map((row) => {
     mode: 'bus',
     country: 'UZ',
     cityId: 'uz:tashkent',
-    canonicalName: canonicalName || `OSM bus platform ${osmId}`,
+    canonicalName: canonicalName || 'Bus stop',
     center: Object.freeze({ lat, lng }),
     source: 'osm',
     sourceUpdatedAt: OSM_SNAPSHOT_DATE,
