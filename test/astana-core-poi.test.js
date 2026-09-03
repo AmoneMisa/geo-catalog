@@ -9,6 +9,9 @@ const expected = Object.freeze([
   ['kz:astana:poi:palace-of-peace-and-reconciliation', 'poi.cultural_venue', 'Palace of Peace and Reconciliation', 'node', 5130027840],
   ['kz:astana:poi:astana-nurly-zhol-station', 'poi.railway_station', 'Astana-Nurly Zhol Railway Station', 'way', 424980293],
   ['kz:astana:poi:astana-international-airport', 'poi.airport', 'Astana International Airport', 'way', 507841374],
+  ['kz:astana:poi:hazrat-sultan-mosque', 'poi.mosque', 'Hazrat Sultan Mosque', 'way', 240860325],
+  ['kz:astana:poi:astana-opera', 'poi.cultural_venue', 'Astana Opera', 'way', 917478479],
+  ['kz:astana:poi:city-circus', 'poi.cultural_venue', 'City Circus', 'node', 5126825313],
 ]);
 
 test('Astana exposes verified core POIs with stable OSM identity', () => {
