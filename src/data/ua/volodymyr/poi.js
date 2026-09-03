@@ -28,4 +28,15 @@ export const VOLODYMYR_POIS = Object.freeze([
     osm: Object.freeze({ type: 'node', id: 10814228359 }),
     wikidataId: 'Q65172296',
   }),
+  poi(
+    'joachim-and-anne-church',
+    'Костел святих Йоакима та Анни',
+    50.8470547,
+    24.3195355,
+    50,
+    {
+      source: 'manual',
+      sourceUrl: 'https://zabytki.in.ua/service/uk/location/object/718',
+    },
+  ),
 ]);
