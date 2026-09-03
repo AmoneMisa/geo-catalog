@@ -13,6 +13,11 @@ const expected = Object.freeze([
   ['kz:almaty:poi:central-park', 'poi.park', 'Central Park', 'way', 232715414],
   ['kz:almaty:poi:ascension-cathedral', 'poi.cathedral', 'Ascension Cathedral', 'way', 50648292],
   ['kz:almaty:poi:almaty-zoo', 'poi.zoo', 'Almaty Zoo', 'way', 222624434],
+  ['kz:almaty:poi:green-bazaar', 'poi.market', 'Green Bazaar', 'relation', 20040804],
+  ['kz:almaty:poi:palace-of-the-republic', 'poi.cultural_venue', 'Palace of the Republic', 'way', 53280121],
+  ['kz:almaty:poi:central-mosque', 'poi.mosque', 'Central Mosque', 'way', 1458254422],
+  ['kz:almaty:poi:botanical-garden', 'poi.botanical_garden', 'Almaty Botanical Garden', 'way', 307056816],
+  ['kz:almaty:poi:mega-alma-ata', 'poi.shopping_mall', 'MEGA Alma-Ata', 'way', 207798752],
 ]);
 
 test('Almaty exposes verified core POIs with stable OSM identity', () => {
