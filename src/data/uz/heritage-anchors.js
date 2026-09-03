@@ -41,6 +41,7 @@ export const UZ_HERITAGE_ANCHORS = Object.freeze([
   wikidataPoi('kokand', 'khudayar-khan-palace', 'Khudoyar Khan Palace', 'poi.palace', 40.538333, 70.937500, 'Q7126242', { osm: { type: 'way', id: 174718684 }, accuracyM: 100 }),
   wikidataPoi('kokand', 'jami-mosque', 'Jami Mosque', 'poi.mosque', 40.532642, 70.949230, 'Q20536410', { accuracyM: 120 }),
   wikidataPoi('kokand', 'norbutabiy-madrasa', 'Norbutabiy Madrasa', 'poi.madrasa', 40.538660, 70.952389, 'Q20536332', { accuracyM: 100 }),
+  osmPoi('termez', 'old-termez', 'Old Termez', 'poi.archaeological_site', 37.2642736, 67.1922730, 'way', 499907480, 220),
   wikidataPoi('termez', 'fayoztepa', 'Fayoztepa', 'poi.archaeological_site', 37.28622, 67.18796, 'Q25523471', { osm: { type: 'way', id: 244130562 }, accuracyM: 180 }),
   wikidataPoi('termez', 'karatepa', 'Karatepa', 'poi.archaeological_site', 37.27884, 67.18315, 'Q4213429', { osm: { type: 'way', id: 493758365 }, accuracyM: 180 }),
   wikidataPoi('termez', 'sultan-saodat', 'Sultan Saodat', 'poi.religious_complex', 37.26311, 67.30940, 'Q7636738', { osm: { type: 'way', id: 448234922 }, accuracyM: 180 }),
