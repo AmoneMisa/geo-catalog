@@ -31,6 +31,12 @@ export const UA_SUMY_POI_ENTITIES = Object.freeze([
     sourceUrl: 'https://novobudovy.com/torhovi-tsentry-sum/evrobazar',
     officialUrl: 'https://visit.sumy.ua/evrobazar/',
   }),
+  poi('sumy-meat-processing-plant', 'poi.landmark', 'Сумський м\'ясокомбінат', 50.89667591992915, 34.83235390647599, 120, {
+    source: 'manual',
+    sourceUrl: 'https://maps.visicom.ua/i/ADR3KD1GXZKYUUTE1S',
+    registryUrl: 'https://opendatabot.ua/c/05496017',
+    address: 'вул. Харківська, 103',
+  }),
   poi('sumy-airport', 'poi.airport', 'Sumy Airport', 50.8583333, 34.7625, 120, {
     source: 'manual',
     sourceUrl: 'https://avia.gov.ua/placemarks/oblasne-komunalne-pidpriyemstvo-aeroport-sumi/',
