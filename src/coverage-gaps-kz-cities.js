@@ -7,7 +7,7 @@ const normalize = (value) => String(value ?? '')
   .replace(/^-+|-+$/g, '');
 
 const cityNames = Object.freeze([
-  'Shelek','Uzynagash','Shakhtinsk','Abai','Priozersk','Karkaralinsk','Aksu','Ridder','Altai','Serebryansk','Shemonaikha','Kurchatov','Ayagoz',
+  'Shelek','Uzynagash','Ridder','Altai','Serebryansk','Shemonaikha','Kurchatov','Ayagoz',
   'Khromtau','Alga','Kandyagash','Shalkar','Kulsary','Dossor','Fort-Shevchenko','Lisakovsk','Arkalyk','Tobyl','Zhitikara',
   'Aksai','Baikonur','Aral','Kazaly','Shu','Karatau','Zhanatas','Merke','Zhetysai','Lenger','Shardara',
 ]);
