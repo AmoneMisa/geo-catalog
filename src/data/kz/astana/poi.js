@@ -22,4 +22,7 @@ export const KZ_ASTANA_POI_ENTITIES = Object.freeze([
   osmPoi('hazrat-sultan-mosque', 'poi.mosque', 'Hazrat Sultan Mosque', 51.12543, 71.47219, 'way', 240860325, 350, 'Q4494668'),
   osmPoi('astana-opera', 'poi.cultural_venue', 'Astana Opera', 51.13545, 71.41075, 'way', 917478479, 260, 'Q21371563'),
   osmPoi('city-circus', 'poi.cultural_venue', 'City Circus', 51.14507, 71.41891, 'node', 5126825313, 180),
+  osmPoi('astana-arena', 'poi.stadium', 'Astana Arena', 51.10821, 71.40264, 'way', 1460088073, 260, 'Q746559'),
+  osmPoi('barys-arena', 'poi.stadium', 'Barys Arena', 51.10925, 71.39463, 'way', 663143306, 260, 'Q16632800'),
+  osmPoi('botanical-garden', 'poi.botanical_garden', 'Astana Botanical Garden', 51.10617, 71.41657, 'way', 1196402246, 1200, 'Q104866948'),
 ]);
