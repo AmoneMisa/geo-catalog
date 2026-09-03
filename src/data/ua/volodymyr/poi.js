@@ -1,0 +1,31 @@
+const poi = (slug, canonicalName, lat, lng, accuracyM, extra = {}) => Object.freeze({
+  id: `ua:volodymyr:poi:${slug}`,
+  type: 'poi.landmark',
+  country: 'UA',
+  canonicalName,
+  parentId: 'ua:volodymyr',
+  center: Object.freeze({ lat, lng }),
+  source: extra.source ?? (extra.osm ? 'osm' : 'manual'),
+  accuracy: 'poi',
+  accuracyM,
+  ...extra,
+});
+
+export const VOLODYMYR_POIS = Object.freeze([
+  poi(
+    'historical-museum',
+    'Володимирський історичний музей імені Омеляна Дверницького',
+    50.848072,
+    24.318605,
+    100,
+    {
+      source: 'manual',
+      sourceUrl: 'https://www.coe.int/en/web/cultural-routes/-/history-museum-of-volodymyr-volynskyi',
+    },
+  ),
+  poi('dytynets', 'Volodymyr dytynets', 50.84332, 24.31772, 100, {
+    source: 'osm',
+    osm: Object.freeze({ type: 'node', id: 10814228359 }),
+    wikidataId: 'Q65172296',
+  }),
+]);
