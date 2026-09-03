@@ -33,4 +33,8 @@ export const KZ_ALMATY_POI_ENTITIES = Object.freeze([
   osmPoi('beatles-monument', 'poi.monument', 'The Beatles Monument', 43.23305, 76.97604, 'node', 6490366185, 50, 'Q4342994'),
   osmPoi('auezov-home-museum', 'poi.museum', 'Auezov Home Museum', 43.24339, 76.94956, 'way', 248868009, 120, 'Q258173'),
   osmPoi('almaty-national-circus', 'poi.cultural_venue', 'Almaty National Circus', 43.23911, 76.91727, 'node', 13121324233, 120, 'Q205932'),
+  osmPoi('folk-musical-instruments-museum', 'poi.museum', 'Kazakh Museum of Folk Musical Instruments', 43.25946, 76.95686, 'way', 50649330, 120, 'Q2498214'),
+  osmPoi('first-president-park', 'poi.park', 'First President Park', 43.18676, 76.88618, 'way', 213918548, 1000, 'Q16684909'),
+  osmPoi('almaty-central-stadium', 'poi.stadium', 'Almaty Central Stadium', 43.23833, 76.92435, 'way', 1456509345, 220, 'Q190788'),
+  osmPoi('almaty-television-tower-complex', 'poi.landmark', 'Almaty Television Tower Complex', 43.2287, 76.97652, 'way', 539144120, 220, 'Q960515'),
 ]);
