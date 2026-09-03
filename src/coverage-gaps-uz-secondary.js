@@ -18,7 +18,7 @@ export const UZ_SECONDARY_COVERAGE_GAPS = Object.freeze([
 
   ...gaps('Termez', 'mahalla', ['Farxod'], 'Official lexicon mahalla; verified standalone spatial boundary/locality object still pending.'),
   ...gaps('Termez', 'local_area', ['Center','Old Termez','Northern Gate','Alpomish',"Navro'z",'Qiziljar'], 'Termez local-area alias still needs a verified standalone spatial match.'),
-  ...gaps('Termez', 'poi', ['Old Termez','Amu Darya'], 'Termez landmark still needs a verified spatial match or natural-feature hierarchy.'),
+  ...gaps('Termez', 'poi', ['Amu Darya'], 'Termez landmark still needs a verified spatial match or natural-feature hierarchy.'),
 
   ...gaps('Gulistan', 'local_area', ['Center'], 'Gulistan local-area alias still needs a verified standalone spatial match.'),
 
