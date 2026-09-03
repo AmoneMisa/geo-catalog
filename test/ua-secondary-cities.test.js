@@ -4,7 +4,7 @@ import { findGeoEntities, getGeoEntity } from '../src/index.js';
 
 test('all Ukrainian city entities are OSM-backed', () => {
   const cities = findGeoEntities({ country: 'UA', type: 'city' });
-  assert.equal(cities.length, 90);
+  assert.equal(cities.length, 91);
   assert.ok(cities.every((city) => city.source === 'osm' && city.osm), 'every UA city must have explicit OSM provenance');
 });
 
@@ -78,4 +78,43 @@ test('all secondary Ukrainian city centers use verified OSM named-place nodes', 
     assert.deepEqual(city?.center, center, id);
     assert.deepEqual(city?.osm, { type: 'node', id: nodeId }, id);
   }
+});
+
+test('Uman lexicon report owners are present', () => {
+  assert.ok(getGeoEntity('ua:uman'));
+  assert.ok(getGeoEntity('ua:uman:microdistrict:obolon'));
+  assert.ok(getGeoEntity('ua:uman:poi:sofiyivka'));
+  assert.ok(getGeoEntity('ua:uman:poi:central-market'));
+});
+
+test('Kramatorsk report preserves real areas and street semantics', () => {
+  assert.equal(getGeoEntity('ua:kramatorsk:microdistrict:lazurnyi')?.type, 'microdistrict');
+  assert.equal(getGeoEntity('ua:kramatorsk:microdistrict:novyi-svit')?.type, 'microdistrict');
+  assert.equal(getGeoEntity('ua:kramatorsk:street:akademichna')?.type, 'street');
+  assert.equal(getGeoEntity('ua:kramatorsk:microdistrict:stara-chastyna'), null);
+});
+
+test('Sloviansk report owners keep resort-area semantics separate from POIs', () => {
+  assert.equal(getGeoEntity('ua:sloviansk:microdistrict:slovianskyi-kurort')?.type, 'microdistrict');
+  assert.ok(getGeoEntity('ua:sloviansk:poi:slovianskyi-kurort-railway-station'));
+  assert.equal(getGeoEntity('ua:sloviansk:microdistrict:sobolevka'), null);
+});
+
+test('Berdiansk report-derived owners resolve without POI substitution', () => {
+  assert.ok(getGeoEntity('ua:berdiansk:microdistrict:koloniia'));
+  assert.ok(getGeoEntity('ua:berdiansk:microdistrict:verkhova'));
+  assert.ok(getGeoEntity('ua:berdiansk:poi:central-market'));
+  assert.ok(getGeoEntity('ua:berdiansk:poi:railway-station'));
+  assert.equal(getGeoEntity('ua:berdiansk:microdistrict:azmol'), null);
+});
+
+test('Berdychiv keeps street, neighborhood, and monastery owners distinct', () => {
+  assert.ok(getGeoEntity('ua:berdychiv:microdistrict:zagrebellia'));
+  assert.ok(getGeoEntity('ua:berdychiv:street:yevropiska'));
+  assert.ok(getGeoEntity('ua:berdychiv:poi:discalced-carmelites-monastery'));
+});
+
+test('Bilhorod-Dnistrovskyi retains street and exact landmark owners', () => {
+  assert.ok(getGeoEntity('ua:bilhorod-dnistrovskyi:street:nezalezhnosti'));
+  assert.ok(getGeoEntity('ua:bilhorod-dnistrovskyi:poi:akkerman-fortress'));
 });
