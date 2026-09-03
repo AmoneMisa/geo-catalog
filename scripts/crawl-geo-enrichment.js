@@ -5,8 +5,12 @@ import path from 'node:path';
 import { LOCATION_DICTIONARIES } from '@whiteslove/parsing-lexicon/locations';
 import { GEO_ENTITIES } from '../src/catalog.js';
 import { resolveLexiconGeoEntityExact } from '../src/lexicon-bridge.js';
-import { discoverOverpassScoped } from './geo-enrichment-discovery.js';
-import { isAutoAcceptEligible } from './geo-enrichment-match.js';
+import { discoverOverpassScoped, overpassPayload } from './geo-enrichment-discovery.js';
+import {
+  candidateScore as matchCandidateScore,
+  isAutoAcceptEligible,
+  nameScore as matchNameScore,
+} from './geo-enrichment-match.js';
 
 const TYPE_BY_KEY = Object.freeze({
   districts: 'district',
@@ -41,15 +45,22 @@ const EASYWAY_PUBLIC_HOST = Object.freeze({
 const DEFAULT_PROVIDERS = Object.freeze([
   'nominatim',
   'easyway',
+  'photon',
+  'overpass',
   'wikiroutes',
   'google',
   'yandex',
-  '2gis',
   'maptiler',
   'geoapify',
   'mapbox',
 ]);
-const ZERO_KEY_PROVIDERS = Object.freeze(['nominatim', 'easyway']);
+const ZERO_KEY_PROVIDERS = Object.freeze(['nominatim', 'easyway', 'photon', 'overpass']);
+const OVERPASS_CANDIDATE_RADIUS_M = Object.freeze({
+  street: 6_000,
+  poi: 6_000,
+  metro: 6_000,
+});
+const DEFAULT_OVERPASS_CANDIDATE_RADIUS_M = 15_000;
 const DEFAULT_OUTPUT_ROOT = '.cache/geo-enrichment';
 const DEFAULT_TIMEOUT_MS = 12_000;
 const DEFAULT_CITY_CONCURRENCY = 4;
@@ -117,23 +128,8 @@ function slug(value) {
   return normalize(value).replace(/\s+/g, '-');
 }
 
-function tokenDice(a, b) {
-  const left = new Set(normalize(a).split(' ').filter(Boolean));
-  const right = new Set(normalize(b).split(' ').filter(Boolean));
-  if (!left.size || !right.size) return 0;
-  let common = 0;
-  for (const token of left) if (right.has(token)) common += 1;
-  return (2 * common) / (left.size + right.size);
-}
-
 function nameScore(query, label) {
-  const a = normalize(query);
-  const b = normalize(label);
-  if (!a || !b) return 0;
-  if (a === b) return 1;
-  if (b.startsWith(`${a} `) || b.endsWith(` ${a}`)) return 0.95;
-  if (b.includes(a) || a.includes(b)) return 0.9;
-  return tokenDice(a, b);
+  return matchNameScore(query, label);
 }
 
 function haversineM(a, b) {
@@ -292,26 +288,8 @@ function candidateBase(provider, row, query, label, lat, lng, extra = {}) {
   };
 }
 
-function providerTypeScore(row, candidate) {
-  const type = `${candidate.rawType || ''} ${candidate.meta?.category || ''}`.toLowerCase();
-  if (row.type === 'street') return /road|street|highway/.test(type) ? 1 : 0.45;
-  if (row.type === 'metro') return /station|subway|railway|public_transport|stop|transit/.test(type) ? 1 : 0.45;
-  if (row.type === 'poi') return /amenity|tourism|shop|leisure|building|historic|office|place|stop|poi/.test(type) ? 0.9 : 0.55;
-  if (['district', 'microdistrict', 'mahalla', 'local_area', 'suburb', 'settlement', 'development_area'].includes(row.type)) {
-    return /administrative|neighbou?rhood|suburb|quarter|residential|place|district|locality|stop/.test(type) ? 1 : 0.55;
-  }
-  return 0.65;
-}
-
 function candidateScore(row, candidate) {
-  const n = nameScore(candidate.query, candidate.label);
-  const cityText = normalize(`${candidate.city || ''} ${candidate.label || ''}`);
-  const city = cityText.includes(normalize(row.city)) ? 1 : 0.45;
-  const parent = row.parent
-    ? (normalize(candidate.label).includes(normalize(row.parent)) ? 1 : 0.55)
-    : 0.75;
-  const type = providerTypeScore(row, candidate);
-  return Math.min(1, n * 0.68 + city * 0.17 + type * 0.10 + parent * 0.05);
+  return matchCandidateScore(row, candidate, cityBias(row));
 }
 
 function cityBias(row) {
@@ -405,6 +383,97 @@ async function nominatimCandidates(row, queries, args) {
         }
       }
       if (current.some((candidate) => isStrongCandidate(row, candidate))) break;
+    }
+    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
+  }
+  return rows;
+}
+
+function osmTypeFromAbbreviation(value) {
+  if (value === 'N') return 'node';
+  if (value === 'W') return 'way';
+  if (value === 'R') return 'relation';
+  return null;
+}
+
+async function photonCandidates(row, queries) {
+  const endpoint = process.env.PHOTON_URL || 'https://photon.komoot.io/api/';
+  const cityGeo = cityBias(row);
+  const rows = [];
+  for (const query of queries) {
+    const url = new URL(endpoint);
+    url.searchParams.set('q', row.parent ? `${query}, ${row.parent}, ${row.city}` : `${query}, ${row.city}`);
+    url.searchParams.set('limit', '8');
+    url.searchParams.set('lang', process.env.PHOTON_LANG || 'en');
+    if (cityGeo?.center) {
+      url.searchParams.set('lat', String(cityGeo.center.lat));
+      url.searchParams.set('lon', String(cityGeo.center.lng));
+    }
+    const payload = await cachedJson('photon', url.toString(), {
+      cache: true,
+      minDelayMs: 400,
+      headers: { 'user-agent': '@whiteslove/geo-catalog geo-enrichment (+https://github.com/AmoneMisa/geo-catalog)' },
+    });
+    for (const feature of payload.features || []) {
+      const [lng, lat] = feature.geometry?.coordinates || [];
+      const props = feature.properties || {};
+      const label = [props.name, props.street, props.district, props.city, props.county, props.state, props.country]
+        .filter(Boolean)
+        .join(', ');
+      const candidate = candidateBase('photon', row, query, label || props.name, Number(lat), Number(lng), {
+        city: props.city || props.district || props.county || null,
+        rawType: [props.osm_key, props.osm_value].filter(Boolean).join('='),
+        persistable: true,
+        source: 'osm',
+        osm: osmTypeFromAbbreviation(props.osm_type) && Number.isFinite(Number(props.osm_id))
+          ? { type: osmTypeFromAbbreviation(props.osm_type), id: Number(props.osm_id) }
+          : null,
+        providerId: props.osm_id != null ? String(props.osm_id) : null,
+        meta: { category: props.osm_key || null },
+      });
+      if (candidate) rows.push(candidate);
+    }
+    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
+  }
+  return rows;
+}
+
+function overpassNameEscape(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\"]/g, '\\$&');
+}
+
+function overpassCandidateRawType(tags) {
+  return [
+    tags.amenity, tags.tourism, tags.leisure, tags.shop, tags.highway,
+    tags.railway, tags.public_transport, tags.boundary, tags.place, tags.landuse,
+  ].filter(Boolean).join(' ');
+}
+
+async function overpassCandidates(row, queries) {
+  const cityGeo = cityBias(row);
+  if (!cityGeo?.center) return [];
+  const endpoint = process.env.OVERPASS_URL || 'https://overpass-api.de/api/interpreter';
+  const radiusM = OVERPASS_CANDIDATE_RADIUS_M[row.type] || DEFAULT_OVERPASS_CANDIDATE_RADIUS_M;
+  const rows = [];
+  for (const query of queries) {
+    const pattern = overpassNameEscape(query);
+    const ql = `[out:json][timeout:30];nwr["name"~"${pattern}",i](around:${radiusM},${cityGeo.center.lat},${cityGeo.center.lng});out center tags;`;
+    const payload = await overpassPayload(request, endpoint, ql);
+    for (const item of payload.elements || []) {
+      const lat = Number(item.lat ?? item.center?.lat);
+      const lng = Number(item.lon ?? item.center?.lon);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+      const tags = item.tags || {};
+      const candidate = candidateBase('overpass', row, query, tags.name, lat, lng, {
+        city: row.city,
+        rawType: overpassCandidateRawType(tags) || null,
+        persistable: true,
+        source: 'osm',
+        osm: { type: item.type, id: item.id },
+        providerId: String(item.id),
+        meta: { category: tags.amenity || tags.tourism || tags.shop || tags.leisure || null },
+      });
+      if (candidate) rows.push(candidate);
     }
     if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
   }
@@ -655,35 +724,6 @@ async function yandexCandidates(row, queries) {
   return rows;
 }
 
-async function twoGisCandidates(row, queries) {
-  const key = process.env.DGIS_API_KEY;
-  if (!key) return [];
-  const allowStorage = providerStorageFlag('dgis');
-  const rows = [];
-  for (const query of queries) {
-    const url = new URL('https://catalog.api.2gis.com/3.0/items/geocode');
-    url.searchParams.set('q', `${query}, ${row.city}`);
-    url.searchParams.set('fields', 'items.point,items.adm_div,items.geometry.centroid');
-    url.searchParams.set('page_size', '8');
-    url.searchParams.set('key', key);
-    const payload = await cachedJson('2gis', url.toString(), { cache: allowStorage, minDelayMs: 100 });
-    for (const item of payload.result?.items || []) {
-      const point = item.point || item.geometry?.centroid;
-      const city = (item.adm_div || []).find((part) => /city|locality/i.test(part.type || ''))?.name || null;
-      const candidate = candidateBase('2gis', row, query, item.full_name || item.name || item.address_name, Number(point?.lat), Number(point?.lon), {
-        city,
-        rawType: item.type || null,
-        persistable: allowStorage,
-        source: '2gis',
-        providerId: item.id || null,
-      });
-      if (candidate) rows.push(candidate);
-    }
-    if (rows.some((candidate) => isStrongCandidate(row, candidate))) break;
-  }
-  return rows;
-}
-
 async function mapTilerCandidates(row, queries) {
   const key = process.env.MAPTILER_API_KEY;
   if (!key) return [];
@@ -782,10 +822,11 @@ async function mapboxCandidates(row, queries) {
 const PROVIDER_LOADERS = Object.freeze({
   nominatim: nominatimCandidates,
   easyway: easyWayCandidates,
+  photon: photonCandidates,
+  overpass: overpassCandidates,
   wikiroutes: wikiRoutesCandidates,
   google: googleCandidates,
   yandex: yandexCandidates,
-  '2gis': twoGisCandidates,
   maptiler: mapTilerCandidates,
   geoapify: geoapifyCandidates,
   mapbox: mapboxCandidates,
@@ -883,10 +924,11 @@ function providerNotes(providers) {
   const notes = [];
   if (providers.includes('nominatim')) notes.push('Nominatim: structured + free-form fallbacks, city bbox bias, one process-wide serialized queue, >=1.1s/request (>=15s with --periodic), cached; spatial auto-accepts require direct type/name/city evidence.');
   if (providers.includes('easyway')) notes.push('EasyWay: all public city route schemes are indexed by default; set EASYWAY_MAX_ROUTES only when an explicit cap is needed. Verification-only.');
+  if (providers.includes('photon')) notes.push('Photon: keyless komoot.info geocoder (OSM-derived), cached, no credentials required.');
+  if (providers.includes('overpass')) notes.push('Overpass: keyless name search around the city center (radius depends on entity type), cached, no credentials required.');
   if (providers.includes('wikiroutes')) notes.push(process.env.WIKIROUTES_API_KEY || process.env.BUSMAPS_API_KEY ? 'WikiRoutes: BusMaps /v1/stopsInRadius enabled through capi-host=wikiroutes.info.' : 'WikiRoutes requested but WIKIROUTES_API_KEY/BUSMAPS_API_KEY is unset; provider will be skipped.');
   if (providers.includes('google')) notes.push(process.env.GOOGLE_MAPS_API_KEY ? `Google enabled${providerStorageFlag('google') ? ' with storage opt-in' : ' as verification-only'}; set GOOGLE_ALLOW_STORAGE=1 only when your terms permit persistence.` : 'Google requested but GOOGLE_MAPS_API_KEY is unset; provider will be skipped.');
   if (providers.includes('yandex')) notes.push(process.env.YANDEX_GEOCODER_API_KEY ? `Yandex enabled${providerStorageFlag('yandex') ? ' with storage opt-in' : ' as verification-only'}.` : 'Yandex requested but YANDEX_GEOCODER_API_KEY is unset; provider will be skipped.');
-  if (providers.includes('2gis')) notes.push(process.env.DGIS_API_KEY ? `2GIS enabled${providerStorageFlag('dgis') ? ' with storage opt-in' : ' as verification-only'}.` : '2GIS requested but DGIS_API_KEY is unset; provider will be skipped.');
   if (providers.includes('maptiler')) notes.push(process.env.MAPTILER_API_KEY ? `MapTiler enabled${providerStorageFlag('maptiler') ? ' with storage opt-in' : ' as verification-only'}.` : 'MapTiler requested but MAPTILER_API_KEY is unset; provider will be skipped.');
   if (providers.includes('geoapify')) notes.push(process.env.GEOAPIFY_API_KEY ? `Geoapify enabled${providerStorageFlag('geoapify') ? ' with storage opt-in' : ' as verification-only'}.` : 'Geoapify requested but GEOAPIFY_API_KEY is unset; provider will be skipped.');
   if (providers.includes('mapbox')) notes.push(process.env.MAPBOX_ACCESS_TOKEN ? `Mapbox enabled${process.env.MAPBOX_PERMANENT === '1' ? ' with permanent geocoding' : ' as temporary/verification-only'}.` : 'Mapbox requested but MAPBOX_ACCESS_TOKEN is unset; provider will be skipped.');
