@@ -48,6 +48,7 @@ export const QARSHI_ENTITIES = Object.freeze([
   osmPoi('qarshi-railway-station', 'Qarshi Railway Station', 'poi.railway_station', 38.82158, 65.77723, 'way', 367775504, 120),
   osmPoi('nasaf-stadium', 'Nasaf Stadium', 'poi.stadium', 38.83880, 65.81366, 'way', 335384821, 160),
   osmMahalla('nasaf', 'Nasaf', 38.86914, 65.79576, 'way', 1027629334, 750),
+  osmMahalla('geolog', 'Geolog', 38.8643623, 65.7873010, 'way', 1027632001, 750),
   osmMahalla('navo', 'Navo', 38.8331188, 65.7748733, 'way', 1027278316, 700),
   osmMahalla('gungon', 'Gungon', 38.8226311, 65.8104819, 'way', 1027317833, 700),
   osmMahalla('qat', 'Qat', 38.8216925, 65.7982117, 'way', 1027317118, 700),

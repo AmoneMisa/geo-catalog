@@ -357,7 +357,6 @@ test('Taraqqiyot mahalla remains distinct from its numbered local areas', () => 
     assert.notEqual(resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical })?.id, mahalla?.id, canonical);
   }
 });
-
 test('C-7, Chuqursoy and Shimoliy Olmazor resolve to distinct OSM residential polygons', () => {
   const expected = new Map([
     ['C-7', ['uz:tashkent:local-area:c-7', 'uz:tashkent:mirobod', 182164644]],
@@ -480,7 +479,7 @@ test('same-name streets remain independent from resolved area identities', () =>
     assert.notEqual(area?.id, `uz:tashkent:street:${canonical.toLowerCase()}`, canonical);
   }
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Asalobod' }), false);
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Shifokorlar' }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: 'Shifokorlar' }), false);
 });
 
 test('Tashkent City has a development-area identity instead of a local-area identity', () => {

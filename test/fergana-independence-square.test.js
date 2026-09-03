@@ -32,7 +32,7 @@ test('Fergana Neftchi area reuses the direct sports-complex OSM way', () => {
   });
 
   assert.equal(resolved?.id, 'uz:fergana:poi:neftchi');
-  assert.equal(resolved?.type, 'poi');
+  assert.equal(resolved?.type, 'poi.stadium');
   assert.deepEqual(resolved?.center, { lat: 40.4463051, lng: 71.7670633 });
   assert.deepEqual(resolved?.osm, { type: 'way', id: 206681927 });
 });

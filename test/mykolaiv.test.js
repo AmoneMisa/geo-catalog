@@ -6,8 +6,8 @@ import { isUaMykolaivCoverageGap } from '../src/coverage-gaps-ua-mykolaiv.js';
 test('Mykolaiv verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:mykolaiv');
   assert.equal(children.filter((entity) => entity.type === 'district').length, 4);
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 8);
-  assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 4);
+  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 18);
+  assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 5);
 
   const expected = [
     [{ type: 'district', canonical: 'Tsentralnyi' }, 'ua:mykolaiv:district:tsentralnyi'],
@@ -49,15 +49,11 @@ test('Mykolaiv named areas use verified OSM points even when legacy bridge type 
 test('Mykolaiv unresolved and alias-sensitive candidates remain explicit gaps', () => {
   const gaps = [
     ['microdistrict', 'Tsentr'],
-    ['microdistrict', 'Lisky'],
     ['microdistrict', 'PTZ'],
     ['microdistrict', 'YuTZ'],
-    ['microdistrict', 'Novyi Vodopii'],
-    ['residential_complex', 'Riviera'],
     ['residential_complex', 'Admiral'],
     ['poi', 'Flotskyi Boulevard'],
     ['poi', 'Embankment'],
-    ['poi', 'Inhulskyi Bridge'],
   ];
 
   for (const [type, canonical] of gaps) {

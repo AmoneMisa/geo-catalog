@@ -7,7 +7,7 @@ const ENTITY_TYPES = new Set([
 
 const POI_TYPES = new Set([
   'park', 'recreation_area', 'island', 'square', 'street', 'landmark', 'monument', 'fortress',
-  'embankment', 'lake', 'cathedral', 'stadium', 'cultural_venue', 'exhibition_center', 'zoo',
+  'embankment', 'lake', 'natural_feature', 'cathedral', 'stadium', 'cultural_venue', 'exhibition_center', 'zoo',
   'shopping_mall', 'market', 'beach', 'memorial', 'university', 'botanical_garden',
   'airport', 'railway_station', 'bus_station', 'mosque', 'museum', 'observatory', 'school',
   'hospital', 'clinic', 'supermarket', 'amusement_park', 'archaeological_site', 'palace', 'mausoleum',

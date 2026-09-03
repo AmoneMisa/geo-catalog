@@ -6,7 +6,7 @@ import { isUaCherkasyCoverageGap } from '../src/coverage-gaps-ua-cherkasy.js';
 test('Cherkasy verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:cherkasy');
   assert.equal(children.filter((entity) => entity.type === 'district').length, 2);
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 5);
+  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 8);
   assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 6);
 
   const expected = [
@@ -32,8 +32,6 @@ test('Cherkasy verified lexicon geography resolves by city and type', () => {
 
 test('Cherkasy unresolved candidates remain explicit gaps', () => {
   const gaps = [
-    ['microdistrict', 'Tsentr'],
-    ['microdistrict', 'Khimpaselyshche'],
     ['microdistrict', '700-richchia'],
     ['residential_complex', 'Symfonia'],
     ['residential_complex', 'European'],

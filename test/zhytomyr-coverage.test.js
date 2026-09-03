@@ -32,7 +32,7 @@ test('Zhytomyr coverage snapshot stays explicit', () => {
     };
   }, { spatial: 0, gaps: 0 });
 
-  assert.deepEqual(count('microdistricts', 'microdistrict'), { spatial: 4, gaps: 13 });
+  assert.deepEqual(count('microdistricts', 'microdistrict'), { spatial: 10, gaps: 7 });
   assert.deepEqual(count('residentialComplexes', 'residential_complex'), { spatial: 0, gaps: 8 });
   assert.deepEqual(count('landmarks', 'poi'), { spatial: 6, gaps: 2 });
 });

@@ -11,7 +11,7 @@ const gaps = (type, canonicals, reason) => canonicals.map((canonical) => Object.
 }));
 
 export const UA_KHERSON_COVERAGE_GAPS = Object.freeze([
-  ...gaps('microdistrict', ['Tsentr','Tavriiskyi-1','KhBK'], 'The Kherson locality is attested, but its current standalone locality center/object reference was not recovered with sufficient confidence in this pass.'),
+  ...gaps('microdistrict', ['Tavriiskyi-1',], 'The Kherson locality is attested, but its current standalone locality center/object reference was not recovered with sufficient confidence in this pass.'),
   Object.freeze({
     country: 'UA', city: 'Kherson', type: 'microdistrict', canonical: 'Korabel',
     reason: 'Current OSM treats Ostriv as also known as Korabel; creating a second spatial entity would duplicate the same physical locality and requires alias/duplicate policy first.',
@@ -25,7 +25,7 @@ export const UA_KHERSON_COVERAGE_GAPS = Object.freeze([
     country: 'UA', city: 'Kherson', type: 'microdistrict', canonical: 'Naftohavan',
     reason: 'No independently verified standalone locality center is available yet; do not conflate Naftohavan with similarly named oil-workers settlements or industrial facilities.',
   }),
-  ...gaps('residential_complex', ['Admiral','Parus','Dniprovskyi','Tavriiskyi','Suvorovskyi','Raiduzhnyi','European'], 'No current independently verified representative center for this Kherson residential-complex canonical was established in this pass.'),
+  ...gaps('residential_complex', ['Admiral','Parus','Dniprovskyi','Tavriiskyi','Suvorovskyi','Raiduzhnyi',], 'No current independently verified representative center for this Kherson residential-complex canonical was established in this pass.'),
   Object.freeze({
     country: 'UA', city: 'Kherson', type: 'poi', canonical: 'Potemkin Square',
     reason: 'The imperial-era canonical is affected by current naming/decolonization ambiguity; no stale historical label is anchored without an explicit current spatial alias mapping.',

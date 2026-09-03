@@ -70,6 +70,14 @@ export const NUKUS_ENTITIES = Object.freeze([
   osmMahalla('garezsizlik', 'Garezsizlik', 42.45888, 59.61367, 'way', 1009066221, 700),
   osmMahalla('kattagar', 'Kattagar', 42.45975, 59.57662, 'way', 1009066235, 820),
   osmMahalla('vatanparvar', 'Vatanparvar', 42.47505, 59.65597, 'way', 1009066245, 800),
+  osmMahalla('nurli-bostan', 'Nurli bostan', 42.4640335, 59.6709091, 'way', 1009066254, 800),
+  osmMahalla('jeke-terek', 'Jeke terek', 42.4357143, 59.6104776, 'way', 1009066249, 760),
+  osmMahalla('uzin-kol', 'Uzin kol', 42.4973825, 59.6000763, 'way', 1009066252, 820),
+  osmMahalla('amanliq-guzari', 'Amanliq guzari', 42.5087718, 59.6176302, 'way', 1009066239, 850),
+  osmMahalla('shimbay-guzari', 'Shimbay guzari', 42.5333217, 59.6303280, 'way', 1009066193, 850),
+  osmMahalla('dosliq-guzari', 'Dosliq guzari', 42.4726019, 59.6157933, 'way', 1009066211, 760),
+  osmMahalla('dosliq', 'Dosliq', 42.4540518, 59.6165278, 'way', 1009066191, 760),
+  osmMahalla('jiydeli-baysin', 'Jiydeli baysin', 42.4460644, 59.5764874, 'way', 1009066206, 760),
 
   // Verified by direct OSM MPJ / neighbourhood / suburb objects from the
   // country enrichment run. Prefer the area object over POIs or streets that
@@ -99,7 +107,6 @@ export const NUKUS_ENTITIES = Object.freeze([
   osmMahalla('ornek', 'Ornek', 42.4490425, 59.6208685, 'way', 1009066183, 720),
   osmMahalla('jana-zaman', 'Jana zaman', 42.4686775, 59.6634951, 'way', 1009066216, 820),
   osmMahalla('baqshiliq', 'Baqshiliq', 42.4589318, 59.6419903, 'way', 1009066187, 720),
-  osmMahalla('dosliq', 'Dosliq', 42.4540518, 59.6165278, 'way', 1009066191, 720),
   osmMahalla('tinishliq', 'Tinishliq', 42.4651458, 59.6292933, 'way', 1009066195, 720),
   osmMahalla('xaliqlar-dosligi', 'Xaliqlar dosligi', 42.463143, 59.610171, 'way', 1009066201, 720),
   osmMahalla('boz-awil', 'Boz awil', 42.4222722, 59.6015337, 'node', 6396972245, 900),

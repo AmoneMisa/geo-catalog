@@ -8,7 +8,7 @@ import { isUaRegionalCoverageGap } from '../src/coverage-gaps-ua-regional.js';
 
 test('Bila Tserkva verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:bila-tserkva');
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 4);
+  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 9);
   assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 5);
 
   const expected = [
@@ -31,11 +31,7 @@ test('Bila Tserkva verified lexicon geography resolves by city and type', () => 
 test('Bila Tserkva unresolved parser canonicals remain explicit coverage gaps', () => {
   const gaps = [
     ['microdistrict', 'Tsentr'],
-    ['microdistrict', 'Vokzalna'],
-    ['microdistrict', 'Zarichchia'],
-    ['microdistrict', 'DNS'],
     ['microdistrict', 'Pionerska'],
-    ['microdistrict', '4 microdistrict'],
     ['microdistrict', '5 microdistrict'],
     ['microdistrict', '6 microdistrict'],
     ['poi', 'Ros River'],

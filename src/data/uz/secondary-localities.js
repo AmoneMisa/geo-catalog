@@ -20,7 +20,7 @@ export const UZ_SECONDARY_LOCALITY_ENTITIES = Object.freeze([
     center: { lat: 40.1103511, lng: 67.8293821 },
     source: 'osm',
     accuracy: 'neighborhood',
-    accuracyM: 750,
+    accuracyM: 700,
     osm: { type: 'way', id: 316353350 },
   },
   {

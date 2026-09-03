@@ -19,8 +19,8 @@ const GENERIC_AREA_NAMES = new Set([
 const CITY_CENTER_FALLBACK_RADIUS_M = 15_000;
 const EXPLICIT_CITY_FALLBACK_RADIUS_M = 8_000;
 const SAME_CITY_NAME_MAX_DISTANCE_M = 45_000;
-const AREA_MARKER_RE = /\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|neighbou?rhood|suburb|quarter|rayon|tumani|район|махалла|массив|квартал|микрорайон|мкр|ықшамаудан|шағын\s+аудан)\b/iu;
-const NUMBERED_AREA_MARKER_RE = /\b(?:microdistrict|mikrorayon|mavze(?:si)?|massiv|massivi|daha(?:si)?|quarter|микрорайон|мкр|массив|квартал|ықшамаудан|шағын\s+аудан)\b/iu;
+const AREA_MARKER_RE = /(?<!\p{L})(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|neighbou?rhood|suburb|quarter|rayon|tumani|район|махалла|массив|квартал|микрорайон|мкр|ықшамаудан|шағын\s+аудан)(?!\p{L})/iu;
+const NUMBERED_AREA_MARKER_RE = /(?<!\p{L})(?:microdistrict|mikrorayon|mavze(?:si)?|massiv|massivi|daha(?:si)?|quarter|микрорайон|мкр|массив|квартал|ықшамаудан|шағын\s+аудан)(?!\p{L})/iu;
 const AREA_CATEGORY_RE = /\b(?:boundary|place|landuse|administrative|district|neighbou?rhood|suburb|quarter|locality|residential)\b/i;
 const NON_AREA_CATEGORY_RE = /\b(?:highway|amenity|shop|tourism|leisure|office|craft|building|historic|railway|public_transport|aeroway)\b/i;
 const NON_AREA_RAW_TYPE_RE = /\b(?:cemetery|graveyard|hospital|clinic|doctors|dentist|pharmacy|cafe|restaurant|fast_food|school|college|university|kindergarten|hotel|hostel|guest_house|supermarket|mall|marketplace|shop|office|sports_centre|swimming_pool|attraction|monument|memorial|museum|place_of_worship|mosque|church|cathedral|ruins|construction)\b/i;
@@ -65,11 +65,11 @@ export function normalizeGeoText(value) {
     .toLowerCase()
     .replace(/\p{M}+/gu, '')
     .replace(/ı/g, 'i')
-    .replace(/(\d+)а\b/gu, '$1a')
+    .replace(/(\d+)а(?![\p{L}\p{N}])/gu, '$1a')
     .replace(/[’ʻʼ‘`´]/g, "'")
-    .replace(/\b(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|street|ko'chasi|ko‘chasi|koshesi|улица|ул|ықшамаудан|шағын\s+аудан)\b/giu, ' ')
+    .replace(/(?<!\p{L})(?:mahalla(?:si)?|mfy|mpj|mavze(?:si)?|massiv|massivi|daha(?:si)?|mikrorayon|microdistrict|district|rayon|район|махалла|массив|квартал|микрора(?:й|и)он|street|ko'chasi|ko‘chasi|koshesi|улица|ул|ықшамаудан|шағын\s+аудан)(?!\p{L})/giu, ' ')
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
-    .replace(/\b(\d+)\s+[aа]\b/gu, '$1a')
+    .replace(/(?<![\p{L}\p{N}])(\d+)\s+[aа](?![\p{L}\p{N}])/gu, '$1a')
     .trim()
     .replace(/\s+/g, ' ');
 }
