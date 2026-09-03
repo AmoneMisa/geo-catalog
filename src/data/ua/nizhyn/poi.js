@@ -35,4 +35,10 @@ export const UA_NIZHYN_POI_ENTITIES = Object.freeze([
     sourceUrl: 'https://discover.ua/locations/kartinna-galerea-nizinskogo-derzavnogo-universitetu-imeni-mikoli-gogola',
     officialUrl: 'https://www.ndu.edu.ua/index.php/ua/yniversutet/about-univer',
   }),
+  poi('st-nicholas-cathedral', 'Свято-Миколаївський кафедральний собор', 51.04806, 31.88709, 80, {
+    osm: Object.freeze({ type: 'way', id: 723396207 }),
+    wikidataId: 'Q4320534',
+    sourceUrl: 'https://www.openstreetmap.org/way/723396207',
+    officialUrl: 'https://nizhin-sob.church.ua/kontakty/',
+  }),
 ]);
