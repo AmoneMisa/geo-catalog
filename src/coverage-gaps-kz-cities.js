@@ -8,7 +8,7 @@ const normalize = (value) => String(value ?? '')
 
 const cityNames = Object.freeze([
   'Shelek','Uzynagash',
-  'Kulsary','Dossor','Fort-Shevchenko','Lisakovsk','Arkalyk','Tobyl','Zhitikara',
+  'Dossor','Zhitikara',
   'Aksai','Baikonur','Aral','Kazaly','Shu','Karatau','Zhanatas','Merke','Zhetysai','Lenger','Shardara',
 ]);
 
