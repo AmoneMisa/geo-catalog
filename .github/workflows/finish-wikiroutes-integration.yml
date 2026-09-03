@@ -47,8 +47,41 @@ jobs:
           const variantsNeedle = `  ...TASHKENT_MINIBUS_ROUTE_VARIANTS,\n]);`;
           if (!catalog.includes(variantsNeedle)) throw new Error('transport variant aggregation insertion point changed');
           catalog = catalog.replace(variantsNeedle, `  ...TASHKENT_MINIBUS_ROUTE_VARIANTS,\n  ...WIKIROUTES_ROUTE_VARIANTS,\n]);`);
-
           fs.writeFileSync(catalogPath, catalog);
+
+          const testPath = 'test/transport-catalog.test.js';
+          let tests = fs.readFileSync(testPath, 'utf8');
+          const replacements = [
+            [
+              `const OSM_BUS_SNAPSHOT_DATE = TRANSPORT_ROUTE_VARIANTS[0]?.sourceUpdatedAt;`,
+              `const OSM_BUS_SNAPSHOT_DATE = findTransportRouteVariants({ cityId: 'uz:tashkent', mode: 'bus' })[0]?.sourceUpdatedAt;`,
+            ],
+            [
+              `  assert.equal(TRANSPORT_ROUTES.length, 237);`,
+              `  assert.equal(findTransportRoutes({ cityId: 'uz:tashkent' }).length, 237);`,
+            ],
+            [
+              `  assert.equal(\n    map.variantsWithGeometry,\n    TRANSPORT_ROUTE_VARIANTS.filter((variant) => variant.mode === 'bus').length,\n  );\n  assert.ok(TRANSPORT_ROUTE_VARIANTS.length >= 117);`,
+              `  const tashkentBusVariants = findTransportRouteVariants({ cityId: 'uz:tashkent', mode: 'bus' });\n  assert.equal(map.variantsWithGeometry, tashkentBusVariants.length);\n  assert.ok(tashkentBusVariants.length >= 117);`,
+            ],
+            [
+              `  assert.ok(TRANSPORT_ROUTE_VARIANTS.length >= 117);\n  for (const variant of TRANSPORT_ROUTE_VARIANTS) {`,
+              `  const roadVariants = findTransportRouteVariants({ cityId: 'uz:tashkent' });\n  assert.ok(roadVariants.length >= 117);\n  for (const variant of roadVariants) {`,
+            ],
+          ];
+          for (const [before, after] of replacements) {
+            if (!tests.includes(before)) throw new Error(`transport test insertion point changed: ${before.slice(0, 80)}`);
+            tests = tests.replace(before, after);
+          }
+          fs.writeFileSync(testPath, tests);
+
+          const auditPath = 'scripts/audit-transport-coverage.js';
+          let audit = fs.readFileSync(auditPath, 'utf8');
+          const auditNeedle = `  variant.mode === 'bus' && Boolean(variant.geometry)`;
+          const auditReplacement = `  variant.cityId === 'uz:tashkent' && variant.mode === 'bus' && Boolean(variant.geometry)`;
+          if (!audit.includes(auditNeedle)) throw new Error('transport audit insertion point changed');
+          audit = audit.replace(auditNeedle, auditReplacement);
+          fs.writeFileSync(auditPath, audit);
           NODE
 
           cat > test/wikiroutes-transport.test.js <<'TEST'
@@ -71,10 +104,10 @@ jobs:
             const wikiVariants = TRANSPORT_ROUTE_VARIANTS.filter((variant) => variant.source === 'wikiroutes');
             const cityIds = new Set(wikiRoutes.map((route) => route.cityId));
 
-            assert.ok(wikiRoutes.length >= 3_000, `expected >=3000 WikiRoutes routes, got ${wikiRoutes.length}`);
-            assert.ok(wikiStops.length >= 45_000, `expected >=45000 WikiRoutes stops, got ${wikiStops.length}`);
-            assert.ok(wikiVariants.length >= 6_000, `expected >=6000 WikiRoutes variants, got ${wikiVariants.length}`);
-            assert.ok(cityIds.size >= 45, `expected >=45 WikiRoutes cities, got ${cityIds.size}`);
+            assert.equal(wikiRoutes.length, 3478);
+            assert.equal(wikiStops.length, 58684);
+            assert.equal(wikiVariants.length, 7061);
+            assert.equal(cityIds.size, 52);
 
             assert.ok(findTransportRoutes({ country: 'RO', cityId: 'ro:bucharest' }).some((route) => route.source === 'wikiroutes'));
             assert.ok(findTransportRoutes({ country: 'UA', cityId: 'ua:kyiv' }).some((route) => route.source === 'wikiroutes'));
@@ -108,6 +141,7 @@ jobs:
           });
           TEST
 
+          rm -f src/transport/generated/wikiroutes/summary.json
           rm -f .github/workflows/generate-wikiroutes-import.yml
           rm -f .github/workflows/finish-wikiroutes-integration.yml
       - run: npm install --ignore-scripts
@@ -116,6 +150,14 @@ jobs:
       - run: npm run audit:lexicon
       - run: npm run audit:transport
       - run: npm pack --dry-run
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Node 20 regression suite
+        run: |
+          npm test
+          npm run validate
+          npm run audit:transport
       - name: Commit completed integration
         shell: bash
         run: |
