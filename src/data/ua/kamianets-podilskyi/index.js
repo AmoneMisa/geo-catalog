@@ -1,0 +1,5 @@
+import { UA_KAMIANETS_PODILSKYI_POI_ENTITIES } from './poi.js';
+
+export const UA_KAMIANETS_PODILSKYI_ENTITIES = Object.freeze([
+  ...UA_KAMIANETS_PODILSKYI_POI_ENTITIES,
+]);

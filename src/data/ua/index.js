@@ -10,6 +10,13 @@ import { UA_KROPYVNYTSKYI_ENTITIES } from './kropyvnytskyi/index.js';
 import { UA_KREMENCHUK_ENTITIES } from './kremenchuk/index.js';
 import { UA_BILA_TSERKVA_ENTITIES } from './bila-tserkva/index.js';
 import { UA_UMAN_ENTITIES } from './uman/index.js';
+import { UA_KAMIANETS_PODILSKYI_ENTITIES } from './kamianets-podilskyi/index.js';
+import { UA_DROHOBYCH_ENTITIES } from './drohobych/index.js';
+import { UA_KOLOMYIA_ENTITIES } from './kolomyia/index.js';
+import { UA_KOVEL_ENTITIES } from './kovel/index.js';
+import { UA_NOVOVOLYNSK_ENTITIES } from './novovolynsk/index.js';
+import { UA_VOLODYMYR_ENTITIES } from './volodymyr/index.js';
+import { UA_NIZHYN_ENTITIES } from './nizhyn/index.js';
 import { UA_BERDIANSK_ENTITIES } from './berdiansk/index.js';
 import { UA_BERDYCHIV_ENTITIES } from './berdychiv/index.js';
 import { UA_BILHOROD_DNISTROVSKYI_ENTITIES } from './bilhorod-dnistrovskyi/index.js';
@@ -46,6 +53,13 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_KREMENCHUK_ENTITIES,
   ...UA_BILA_TSERKVA_ENTITIES,
   ...UA_UMAN_ENTITIES,
+  ...UA_KAMIANETS_PODILSKYI_ENTITIES,
+  ...UA_DROHOBYCH_ENTITIES,
+  ...UA_KOLOMYIA_ENTITIES,
+  ...UA_KOVEL_ENTITIES,
+  ...UA_NOVOVOLYNSK_ENTITIES,
+  ...UA_VOLODYMYR_ENTITIES,
+  ...UA_NIZHYN_ENTITIES,
   ...UA_BERDIANSK_ENTITIES,
   ...UA_BERDYCHIV_ENTITIES,
   ...UA_BILHOROD_DNISTROVSKYI_ENTITIES,
