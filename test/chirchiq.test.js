@@ -69,7 +69,7 @@ test('Chirchiq River resolves to the river segment adjacent to the city', () => 
   });
 
   assert.equal(resolved?.id, 'uz:chirchiq:poi:chirchiq-river');
-  assert.equal(resolved?.type, 'poi');
+  assert.equal(resolved?.type, 'poi.natural_feature');
   assert.equal(resolved?.parentId, 'uz:chirchiq');
   assert.deepEqual(resolved?.center, { lat: 41.472377, lng: 69.6052702 });
   assert.deepEqual(resolved?.osm, { type: 'way', id: 216918327 });
