@@ -18,7 +18,7 @@ export const UA_PRYLUKY_POI_ENTITIES = Object.freeze([
   }),
   poi('local-history-museum', 'Прилуцький краєзнавчий музей імені В. І. Маслова', 50.5957, 32.3819, 150, {
     source: 'manual',
-    sourceUrl: 'https://museumpryluky.org.ua/contacts.html',
+    sourceUrl: 'https://travels.in.ua/%2C/object/1295/krayeznavchyy-muzey-imeni-vasylya-maslova',
     officialUrl: 'https://museumpryluky.org.ua/',
   }),
   poi('nativity-theotokos-cathedral', 'Собор Різдва Пресвятої Богородиці', 50.59663, 32.38722, 80, {
