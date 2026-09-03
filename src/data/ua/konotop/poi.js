@@ -28,4 +28,10 @@ export const UA_KONOTOP_POI_ENTITIES = Object.freeze([
     sourceUrl: 'https://www.openstreetmap.org/way/547643913',
     officialUrl: 'https://konotop-rada.gov.ua/875-2011-04-12-11-08-43/',
   }),
+  poi('aviation-museum', 'Конотопський музей авіації', 51.23786, 33.16047, 80, {
+    osm: Object.freeze({ type: 'way', id: 806081200 }),
+    wikidataId: 'Q4231188',
+    sourceUrl: 'https://www.openstreetmap.org/way/806081200',
+    officialUrl: 'https://konotop-rada.gov.ua/875-2011-04-12-11-08-43/',
+  }),
 ]);
