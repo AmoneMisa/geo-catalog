@@ -11,12 +11,12 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 260) 
   accuracyM,
 });
 
-const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 260) => Object.freeze({
+const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 260, parentId = 'kg:bishkek') => Object.freeze({
   id: `kg:bishkek:residential:${slug}`,
   type: 'residential_complex',
   country: 'KG',
   canonicalName,
-  parentId: 'kg:bishkek',
+  parentId,
   center: Object.freeze({ lat, lng }),
   source: 'osm',
   sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
@@ -58,4 +58,18 @@ export const KG_BISHKEK_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("anka-tower", "Anka Tower", 42.841915000, 74.562441000, "https://yandex.com/maps/10309/bishkek/house/Y00YcwFiTUEGQFpofXR1cHViYA%3D%3D/", 320),
   residential("urpak", "УРПАК", 42.865201000, 74.527188000, "https://www.house.kg/index.php/jilie-kompleksy/urpak", 420),
   osmResidential('french-quarter', 'Французский квартал', 42.8165999, 74.615194, 1098776335, 360),
+  osmResidential('akkula', 'ЖК «Аккула»', 42.8615695, 74.5602919, 1462256028, 260, 'kg:bishkek:district:leninsky'),
+  osmResidential('altyn-bulak', 'ЖК «Алтын Булак»', 42.8454084, 74.5692072, 321495846, 260, 'kg:bishkek:district:leninsky'),
+  osmResidential('botanicheskiy-sad', 'ЖК «Ботанический сад»', 42.8627687, 74.5881382, 1049851520, 260, 'kg:bishkek:district:pervomaisky'),
+  osmResidential('flagman', 'Жилой комплекс "Флагман"', 42.8324951, 74.6296131, 48997060, 260, 'kg:bishkek:district:oktyabrsky'),
+  osmResidential('khan-tengiri', 'ЖК "Хан-Теңири"', 42.8274153, 74.589811, 1396676940, 260, 'kg:bishkek:district:oktyabrsky'),
+  osmResidential('kudaybergen', 'ЖК «Кудайберген»', 42.8829674, 74.5341624, 357399246, 260, 'kg:bishkek:district:pervomaisky'),
+  osmResidential('panorama', 'Жилой Комплекс "Панорама"', 42.8560906, 74.6062559, 170094567, 260, 'kg:bishkek:district:pervomaisky'),
+  osmResidential('panorama-2', 'Жилой комплекс "Панорама 2"', 42.8564836, 74.6061393, 167822953, 260, 'kg:bishkek:district:pervomaisky'),
+  osmResidential('seytek', 'Жилой комплекс Сейтек', 42.8150995, 74.6470254, 752913180, 260, 'kg:bishkek:district:oktyabrsky'),
+  osmResidential('symbat-classic', 'Жилой комплекс "Сымбат Classic"', 42.8390947, 74.584419, 163710815, 260, 'kg:bishkek:district:leninsky'),
+  osmResidential('tyan-shan-bermeti', 'ЖК «Тянь-Шань бермети»', 42.8839201, 74.6108039, 159060274, 260, 'kg:bishkek:district:pervomaisky'),
+  osmResidential('yuzhnyy', 'Жилой комплекс "Южный"', 42.8160474, 74.635195, 169829010, 260, 'kg:bishkek:district:oktyabrsky'),
+  osmResidential('legenda', 'ЖК «Легенда»', 42.852144, 74.5884422, 106765553, 260, 'kg:bishkek:district:pervomaisky'),
+  osmResidential('meridian', 'ЖК «Meridian»', 42.8380958, 74.6092152, 1347484675, 260, 'kg:bishkek:district:oktyabrsky'),
 ]);
