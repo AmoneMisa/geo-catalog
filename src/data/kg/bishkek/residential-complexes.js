@@ -70,4 +70,6 @@ export const KG_BISHKEK_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   osmResidential('symbat-classic', 'Жилой комплекс "Сымбат Classic"', 42.8390947, 74.584419, 163710815, 260, 'kg:bishkek:district:leninsky'),
   osmResidential('tyan-shan-bermeti', 'ЖК «Тянь-Шань бермети»', 42.8839201, 74.6108039, 159060274, 260, 'kg:bishkek:district:pervomaisky'),
   osmResidential('yuzhnyy', 'Жилой комплекс "Южный"', 42.8160474, 74.635195, 169829010, 260, 'kg:bishkek:district:oktyabrsky'),
+  osmResidential('legenda', 'ЖК «Легенда»', 42.852144, 74.5884422, 106765553, 260, 'kg:bishkek:district:pervomaisky'),
+  osmResidential('meridian', 'ЖК «Meridian»', 42.8380958, 74.6092152, 1347484675, 260, 'kg:bishkek:district:oktyabrsky'),
 ]);

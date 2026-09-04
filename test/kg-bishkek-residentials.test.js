@@ -27,6 +27,8 @@ const reviewed = Object.freeze([
   ['kg:bishkek:residential:symbat-classic', 'Жилой комплекс "Сымбат Classic"', 'kg:bishkek:district:leninsky', 163710815],
   ['kg:bishkek:residential:tyan-shan-bermeti', 'ЖК «Тянь-Шань бермети»', 'kg:bishkek:district:pervomaisky', 159060274],
   ['kg:bishkek:residential:yuzhnyy', 'Жилой комплекс "Южный"', 'kg:bishkek:district:oktyabrsky', 169829010],
+  ['kg:bishkek:residential:legenda', 'ЖК «Легенда»', 'kg:bishkek:district:pervomaisky', 106765553],
+  ['kg:bishkek:residential:meridian', 'ЖК «Meridian»', 'kg:bishkek:district:oktyabrsky', 1347484675],
 ]);
 
 test('Bishkek residential enrichment exposes verified spatial anchors', () => {
