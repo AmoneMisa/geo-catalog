@@ -18,4 +18,7 @@ export const RO_CLUJ_NAPOCA_LOCAL_AREA_ENTITIES = Object.freeze([
   wikidataArea('marasti', 'Mărăști', 46.78131963055556, 23.61266485, 'Q281611', 1800),
   wikidataArea('gheorgheni', 'Gheorgheni', 46.765, 23.61861111111111, 'Q590050', 1900, ['Györgyfalvi-negyed']),
   wikidataArea('grigorescu', 'Grigorescu', 46.77017, 23.5624, 'Q715962', 1800, ['Donath', 'Donátnegyed']),
+  wikidataArea('zorilor', 'Zorilor', 46.75361111111111, 23.586666666666666, 'Q1032736', 1700, ['Hajnalnegyed']),
+  wikidataArea('gruia', 'Gruia', 46.77780555555556, 23.57611111111111, 'Q3118185', 1600),
+  wikidataArea('andrei-muresanu', 'Andrei Mureșanu', 46.76164194444444, 23.601346944444443, 'Q2846500', 1500, ['Tisztviselőtelep']),
 ]);
