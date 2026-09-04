@@ -11,7 +11,6 @@ const expected = Object.freeze([
   ['kz:shymkent:residential:asar-city', 'residential_complex', 'kz:shymkent', 'KZ'],
   ['kz:taraz:street:prospekt-zhambyla', 'street', 'kz:taraz', 'KZ'],
   ['kg:bishkek:microdistrict:asanbai', 'microdistrict', 'kg:bishkek', 'KG'],
-  ['ua:chernihiv:residential:masani', 'residential_complex', 'ua:chernihiv', 'UA'],
 ]);
 
 test('cleaned scrape import exposes representative canonical geo entities', () => {
@@ -24,4 +23,9 @@ test('cleaned scrape import exposes representative canonical geo entities', () =
     assert.ok(Number.isFinite(entity.center.lat));
     assert.ok(Number.isFinite(entity.center.lng));
   }
+});
+
+test('cleaned scrape import does not duplicate known Chernihiv Masany as a residential complex', () => {
+  assert.equal(getGeoEntity('ua:chernihiv:residential:masani'), null);
+  assert.equal(getGeoEntity('ua:chernihiv:microdistrict:masany')?.canonicalName, 'Masany');
 });
