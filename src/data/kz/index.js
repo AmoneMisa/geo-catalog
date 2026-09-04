@@ -6,6 +6,8 @@ import { KZ_AKTOBE_ENTITIES } from './aktobe/index.js';
 import { KZ_AKTAU_ENTITIES } from './aktau/index.js';
 import { KZ_KARAGANDA_ENTITIES } from './karaganda/index.js';
 import { KZ_TARAZ_ENTITIES } from './taraz/index.js';
+import { KZ_KOSTANAY_ENTITIES } from './kostanay/index.js';
+import { KZ_PAVLODAR_ENTITIES } from './pavlodar/index.js';
 
 export const KZ_ENTITIES = Object.freeze([
   ...KZ_CITY_ENTITIES,
@@ -16,4 +18,6 @@ export const KZ_ENTITIES = Object.freeze([
   ...KZ_AKTAU_ENTITIES,
   ...KZ_KARAGANDA_ENTITIES,
   ...KZ_TARAZ_ENTITIES,
+  ...KZ_KOSTANAY_ENTITIES,
+  ...KZ_PAVLODAR_ENTITIES,
 ]);
