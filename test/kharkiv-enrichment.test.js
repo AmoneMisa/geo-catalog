@@ -28,6 +28,12 @@ const residential = [
   'ua:kharkiv:residential:videnskyi-dim',
 ];
 
+const microdistricts = [
+  'ua:kharkiv:microdistrict:337-microdistrict',
+  'ua:kharkiv:microdistrict:339-microdistrict',
+  'ua:kharkiv:microdistrict:524-microdistrict',
+];
+
 test('Kharkiv enrichment exposes current canonical streets with nonzero coordinates', () => {
   for (const id of streets) {
     const entity = getGeoEntity(id);
@@ -50,6 +56,21 @@ test('Kharkiv enrichment exposes verified residential complexes', () => {
     assert.equal(entity.country, 'UA');
     assert.equal(entity.parentId, 'ua:kharkiv');
     assert.equal(entity.type, 'residential_complex');
+    assert.ok(Number.isFinite(entity.center?.lat), `${id} lat`);
+    assert.ok(Number.isFinite(entity.center?.lng), `${id} lng`);
+    assert.notEqual(entity.center.lat, 0);
+    assert.notEqual(entity.center.lng, 0);
+    assert.ok(entity.sourceUrl, `${id} sourceUrl`);
+  }
+});
+
+test('Kharkiv enrichment exposes verified numbered microdistricts', () => {
+  for (const id of microdistricts) {
+    const entity = getGeoEntity(id);
+    assert.ok(entity, `${id} should exist`);
+    assert.equal(entity.country, 'UA');
+    assert.equal(entity.parentId, 'ua:kharkiv');
+    assert.equal(entity.type, 'microdistrict');
     assert.ok(Number.isFinite(entity.center?.lat), `${id} lat`);
     assert.ok(Number.isFinite(entity.center?.lng), `${id} lng`);
     assert.notEqual(entity.center.lat, 0);
