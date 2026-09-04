@@ -12,7 +12,7 @@ const localArea = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze({
 });
 
 export const KG_BISHKEK_LOCAL_AREA_ENTITIES = Object.freeze([
-  localArea("ak-ordo", "Ак-Ордо", 42.827464108, 74.485501408, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Bishkek"),
-  localArea("ala-too-3", "Ала-Тоо 3", 42.837929417, 74.487041364, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Bishkek"),
-  localArea("kirgiziya-1", "Киргизия-1", 42.811815014, 74.580575434, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20Bishkek"),
+  localArea("ak-ordo", "Ак-Ордо", 42.827464108, 74.485501408, "https://www.bishkek.gov.kg/ru/post/21046"),
+  localArea("ala-too-3", "Ала-Тоо 3", 42.837929417, 74.487041364, "https://www.bishkek.gov.kg/ru/post/12424"),
+  localArea("kirgiziya-1", "Киргизия-1", 42.811815014, 74.580575434, "https://www.bishkek.gov.kg/ru/post/32716"),
 ]);
