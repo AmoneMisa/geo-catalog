@@ -11,12 +11,12 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 260) 
   accuracyM,
 });
 
-const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 260) => Object.freeze({
+const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 260, parentId = 'kg:bishkek') => Object.freeze({
   id: `kg:bishkek:residential:${slug}`,
   type: 'residential_complex',
   country: 'KG',
   canonicalName,
-  parentId: 'kg:bishkek',
+  parentId,
   center: Object.freeze({ lat, lng }),
   source: 'osm',
   sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
@@ -58,4 +58,10 @@ export const KG_BISHKEK_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("anka-tower", "Anka Tower", 42.841915000, 74.562441000, "https://yandex.com/maps/10309/bishkek/house/Y00YcwFiTUEGQFpofXR1cHViYA%3D%3D/", 320),
   residential("urpak", "УРПАК", 42.865201000, 74.527188000, "https://www.house.kg/index.php/jilie-kompleksy/urpak", 420),
   osmResidential('french-quarter', 'Французский квартал', 42.8165999, 74.615194, 1098776335, 360),
+  osmResidential('akkula', 'ЖК «Аккула»', 42.8615695, 74.5602919, 1462256028, 260, 'kg:bishkek:district:leninsky'),
+  osmResidential('altyn-bulak', 'ЖК «Алтын Булак»', 42.8454084, 74.5692072, 321495846, 260, 'kg:bishkek:district:leninsky'),
+  osmResidential('botanicheskiy-sad', 'ЖК «Ботанический сад»', 42.8627687, 74.5881382, 1049851520, 260, 'kg:bishkek:district:pervomaisky'),
+  osmResidential('flagman', 'Жилой комплекс "Флагман"', 42.8324951, 74.6296131, 48997060, 260, 'kg:bishkek:district:oktyabrsky'),
+  osmResidential('khan-tengiri', 'ЖК "Хан-Теңири"', 42.8274153, 74.589811, 1396676940, 260, 'kg:bishkek:district:oktyabrsky'),
+  osmResidential('kudaybergen', 'ЖК «Кудайберген»', 42.8829674, 74.5341624, 357399246, 260, 'kg:bishkek:district:pervomaisky'),
 ]);
