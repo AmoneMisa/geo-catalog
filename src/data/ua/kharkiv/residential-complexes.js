@@ -43,4 +43,9 @@ export const UA_KHARKIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('makiivska', 'Makiivska', 49.953117, 36.254140, 'https://novobudovy.com/ru/arkhiv/novostroy-makeevskaya', 220),
   residential('manhattan', 'Manhattan', 49.991039, 36.263272, 'https://novobudovy.com/ru/novobudovy-kharkova/moskovskij-harkov', 220),
   residential('river-town', 'River Town', 50.016955, 36.205893, 'https://novobudovy.com/novobudovy-kharkova/zhk-naberezhnij-kvartal-m-harkiv-vul-vesela', 220),
+  residential('oleksiivski-akvareli', 'Oleksiivski Akvareli', 50.021781, 36.203930, 'https://korter.ua/ru/%D0%B6%D0%BA-%D0%B0%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B5%D0%B2%D1%81%D0%BA%D0%B8%D0%B5-%D0%B0%D0%BA%D0%B2%D0%B0%D1%80%D0%B5%D0%BB%D0%B8-%D1%85%D0%B0%D1%80%D1%8C%D0%BA%D0%BE%D0%B2', 260),
+  residential('nauchnyi', 'Nauchnyi', 50.015415, 36.231865, 'https://kn.ua/ru/%D0%B6%D0%BA-%D0%BD%D0%B0%D1%83%D1%87%D0%BD%D1%8B%D0%B9', 220),
+  residential('5th-avenue', '5th Avenue', 50.027389, 36.224546, 'https://stroyobzor.ua/ru/kharkov/estate/zhk-5th-avenue', 320),
+  residential('metalist', 'Metalist', 49.977715, 36.264592, 'https://lun.ua/new/kharkiv/metalist/ru', 260),
+  residential('videnskyi-dim', 'Videnskyi Dim', 50.041038, 36.342746, 'https://dom.ria.com/uk/novostroyka-zhk-venskyi-dom-6374/', 260),
 ]);
