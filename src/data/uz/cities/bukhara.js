@@ -38,6 +38,19 @@ const osmLocalArea = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM =
   osm: { type: osmType, id: osmId },
 });
 
+const osmMicrodistrict = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 700) => ({
+  id: `uz:bukhara:microdistrict:${slug}`,
+  type: 'microdistrict',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:bukhara',
+  center: { lat, lng },
+  source: 'osm',
+  accuracy: 'neighborhood',
+  accuracyM,
+  osm: { type: osmType, id: osmId },
+});
+
 const officialLocalArea = (slug, canonicalName, lat, lng, accuracyM = 1400) => ({
   id: `uz:bukhara:local-area:${slug}`,
   type: 'local_area',
@@ -54,6 +67,7 @@ export const BUKHARA_ENTITIES = Object.freeze([
   officialLocalArea('old-city', 'Old City', 39.77472, 64.42861, 1200),
   osmLocalArea('sharq', 'Sharq', 39.7650927, 64.454781, 'node', 3593630431, 850),
   osmLocalArea('railway-station-area', 'Railway Station area', 39.7721907, 64.4313289, 'node', 11804786229, 650),
+  osmMicrodistrict('1-i-mikroraion', '1-й микрорайон', 39.7655498, 64.4290221, 'node', 3593587407),
   wikidataPoi('bukhara-ark', 'Bukhara Ark', 'poi.fortress', 39.777778, 64.410278, 'Q4069358', 160),
   wikidataPoi('poi-kalon', 'Poi Kalon', 'poi.religious_complex', 39.776001, 64.414244, 'Q4368936', 140, { type: 'way', id: 1446270185 }),
   osmPoi('lyabi-hauz', 'Lyabi Hauz', 'poi.square', 39.77311, 64.42026, 'way', 67412309, 140),
