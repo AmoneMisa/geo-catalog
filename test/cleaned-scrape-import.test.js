@@ -4,6 +4,13 @@ import assert from 'node:assert/strict';
 import { getGeoEntity } from '../src/catalog.js';
 
 const expected = Object.freeze([
+  ['uz:tashkent:residential:eco-dream', 'residential_complex', 'uz:tashkent:yunusabad', 'UZ'],
+  ['uz:tashkent:residential:bobur-residence', 'residential_complex', 'uz:tashkent:yakkasaray', 'UZ'],
+  ['uz:tashkent:residential:minor-river', 'residential_complex', 'uz:tashkent:shaykhantahur', 'UZ'],
+  ['uz:tashkent:residential:obi-hayot', 'residential_complex', 'uz:tashkent:yashnobod', 'UZ'],
+  ['uz:tashkent:residential:askiya-city', 'residential_complex', 'uz:tashkent', 'UZ'],
+  ['uz:tashkent:residential:wiston', 'residential_complex', 'uz:tashkent', 'UZ'],
+  ['uz:tashkent:residential:zaytunli', 'residential_complex', 'uz:tashkent', 'UZ'],
   ['kz:almaty:residential:esentai-city', 'residential_complex', 'kz:almaty', 'KZ'],
   ['kz:astana:residential:grand-opera', 'residential_complex', 'kz:astana', 'KZ'],
   ['kz:aktobe:microdistrict:11-i-mikroraion', 'microdistrict', 'kz:aktobe', 'KZ'],
@@ -54,4 +61,9 @@ test('cleaned Kyiv import keeps surrounding settlements outside Kyiv residential
   assert.equal(getGeoEntity('ua:kyiv:residential:petropavlivskyi-posad'), null);
   assert.equal(getGeoEntity('ua:kyiv:residential:avia-kvartal'), null);
   assert.equal(getGeoEntity('ua:kyiv:residential:country-townhouse'), null);
+});
+
+test('cleaned Tashkent import excludes unnamed and unstable scrape-only identities', () => {
+  assert.equal(getGeoEntity('uz:tashkent:residential:zhiloi-kompleks'), null);
+  assert.equal(getGeoEntity('uz:tashkent:residential:premierhouse-uz'), null);
 });
