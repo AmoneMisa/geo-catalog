@@ -11,6 +11,18 @@ const street = (slug, canonicalName, lat, lng, accuracyM, extra = {}) => Object.
   ...extra,
 });
 
+const yandexStreet = (slug, canonicalName, lat, lng, queryName, accuracyM = 3200) => street(
+  slug,
+  canonicalName,
+  lat,
+  lng,
+  accuracyM,
+  {
+    source: 'manual',
+    sourceUrl: `https://yandex.com/maps/?text=${encodeURIComponent(`${queryName}, Kharkiv`)}`,
+  },
+);
+
 export const UA_KHARKIV_STREET_ENTITIES = Object.freeze([
   street('sumska', 'Sumska Street', 50.012008, 36.242666, 2200, {
     wikidataId: 'Q4446038',
@@ -79,5 +91,31 @@ export const UA_KHARKIV_STREET_ENTITIES = Object.freeze([
     source: 'manual',
     sourceUrl: 'https://maps.visicom.ua/c/36.35777%2C50.03417%2C14/f/STR3KEVMFVHQ?lang=uk',
     bbox: Object.freeze({ south: 50.031605747785, west: 36.34591904048198, north: 50.03674003079843, east: 36.36962288588404 }),
+  }),
+  yandexStreet('natalii-uzhvii', 'Natalii Uzhvii Street', 50.044566, 36.352739, 'вулиця Наталії Ужвій', 3000),
+  yandexStreet('lesia-serdiuka', 'Lesia Serdiuka Street', 50.0407725, 36.3498935, 'вулиця Леся Сердюка', 3400),
+  yandexStreet('vladyslava-zubenka', 'Vladyslava Zubenka Street', 50.0028465, 36.3460155, 'вулиця Владислава Зубенка', 3200),
+  yandexStreet('vasylia-stusa', 'Vasylia Stusa Street', 49.999920, 36.340367, 'вулиця Василя Стуса', 3000),
+  yandexStreet('romashova', 'Romashova Street', 50.033565, 36.343283, 'вулиця Ромашова', 2800),
+  yandexStreet('poznanska', 'Poznanska Street', 50.0216325, 36.3425855, 'вулиця Познанська', 3000),
+  street('buchmy', 'Buchmy Street', 50.027663, 36.3536005, 3300, {
+    source: 'manual',
+    sourceUrl: 'https://reestr.kharkiv.rocks/644875',
+  }),
+  street('tarasa-redkina', 'Tarasa Redkina Street', 50.013124, 36.325231, 2500, {
+    source: 'manual',
+    sourceUrl: 'https://city.kharkiv.ua/documents/gromadski-sluxannia/perelik-pereimenuvan-objektiv-toponimiki-mxarkova',
+  }),
+  yandexStreet('haribaldi', 'Haribaldi Street', 50.007744, 36.357285, 'вулиця Гарібальді', 2200),
+  yandexStreet('drahomanova', 'Drahomanova Street', 49.991206, 36.362643, 'вулиця Драгоманова', 3000),
+  street('neskorenykh', 'Neskorenykh Street', 50.0211675, 36.348017, 5200, {
+    source: 'manual',
+    sourceUrl: 'https://kharkivoda.gov.ua/news/127625',
+  }),
+  yandexStreet('svitla', 'Svitla Street', 50.016500, 36.366509, 'вулиця Світла', 3000),
+  yandexStreet('ruslana-plokhodka', 'Ruslana Plokhodka Street', 49.989945, 36.351499, 'вулиця Руслана Плоходька', 3000),
+  street('yany-chervonoi', 'Yany Chervonoi Street', 50.031483, 36.3569425, 2600, {
+    source: 'manual',
+    sourceUrl: 'https://ukrpohliad.org/national-memory/u-harkovi-perejmenuvaly-367-toponimiv-novi-nazvy-vulycz.html',
   }),
 ]);
