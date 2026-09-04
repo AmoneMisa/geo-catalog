@@ -18,4 +18,5 @@ export const UA_CHERKASY_POI_ENTITIES = Object.freeze([
   poi('chemists-park', 'poi.park', 'Chemists Park', 49.4068, 32.05087, 700, { osm: Object.freeze({ type: 'way', id: 103630841 }), wikidataId: 'Q16711012' }),
   poi('hill-of-glory', 'poi.memorial', 'Hill of Glory', 49.446708, 32.061996, 300, { source: 'manual', sourceUrl: 'https://discover.ua/trips/pdf/neobychnye-cherkassy' }),
   poi('cherkasy-zoo', 'poi.zoo', 'Cherkasy Zoo', 49.41595, 32.02196, 500, { osm: Object.freeze({ type: 'way', id: 454235298 }), wikidataId: 'Q10698900' }),
+  poi('cherkasy-railway-station', 'poi.railway_station', 'Cherkasy Railway Station', 49.42601, 32.04991, 80, { osm: Object.freeze({ type: 'node', id: 1970581474 }), wikidataId: 'Q1771041' }),
 ]);
