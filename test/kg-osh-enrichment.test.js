@@ -11,7 +11,10 @@ const expected = Object.freeze([
   ['kg:osh:settlement:pyatiletka', 'settlement', 'Пятилетка'],
   ['kg:osh:settlement:teeke', 'settlement', 'Тээке'],
   ['kg:osh:settlement:uchar', 'settlement', 'Учар'],
+  ['kg:osh:settlement:ak-buura-2', 'settlement', 'Ак-Буура-2'],
+  ['kg:osh:settlement:ak-buura-3', 'settlement', 'Ак-Буура-3'],
   ['kg:osh:residential:asman-residence-1', 'residential_complex', 'Asman Residence 1'],
+  ['kg:osh:residential:mon-paris', 'residential_complex', 'Mon Paris'],
 ]);
 
 test('Osh enrichment exposes verified city-administered settlements and housing', () => {
