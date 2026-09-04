@@ -41,4 +41,6 @@ export const KG_BISHKEK_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("akademiya", "Академия", 42.880455000, 74.579850000, "https://www.house.kg/jilie-kompleksy/zhiloi-kompleks-akademija"),
   residential("eliseiskie-polya", "Елисейские поля", 42.815635000, 74.622297000, "https://avangardstyle.kg/builds/polya", 500),
   residential("tianshan-1", "TIANSHAN-1", 42.826734000, 74.586579000, "https://tianshan-1.com/", 320),
+  residential("anka-tower", "Anka Tower", 42.841915000, 74.562441000, "https://yandex.com/maps/10309/bishkek/house/Y00YcwFiTUEGQFpofXR1cHViYA%3D%3D/", 320),
+  residential("urpak", "УРПАК", 42.865201000, 74.527188000, "https://www.house.kg/index.php/jilie-kompleksy/urpak", 420),
 ]);
