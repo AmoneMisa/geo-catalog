@@ -2,6 +2,7 @@ import { KZ_KARAGANDA_DISTRICT_ENTITIES } from './districts.js';
 import { KZ_KARAGANDA_NEIGHBORHOOD_ENTITIES } from './neighborhoods.js';
 import { KZ_KARAGANDA_POI_ENTITIES } from './poi.js';
 import { KZ_KARAGANDA_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes.js';
+import { KZ_KARAGANDA_SOUTHEAST_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes-southeast.js';
 import { KZ_KARAGANDA_STREET_ENTITIES } from './streets.js';
 
 export const KZ_KARAGANDA_ENTITIES = Object.freeze([
@@ -9,5 +10,6 @@ export const KZ_KARAGANDA_ENTITIES = Object.freeze([
   ...KZ_KARAGANDA_NEIGHBORHOOD_ENTITIES,
   ...KZ_KARAGANDA_POI_ENTITIES,
   ...KZ_KARAGANDA_RESIDENTIAL_COMPLEX_ENTITIES,
+  ...KZ_KARAGANDA_SOUTHEAST_RESIDENTIAL_COMPLEX_ENTITIES,
   ...KZ_KARAGANDA_STREET_ENTITIES,
 ]);

@@ -12,11 +12,10 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl, parentId = 'uz:ta
 });
 
 /**
- * Strong city-proper anchors promoted from the cleaned page-scrape batch.
- * Generic unnamed search results and entities without a stable complex identity
- * remain excluded.
+ * Citywide residential anchors with stable identities and source URLs.
+ * Generic unnamed search results remain excluded.
  */
-export const TASHKENT_CLEANED_RESIDENTIAL_ENTITIES = Object.freeze([
+export const TASHKENT_CITYWIDE_RESIDENTIAL_ENTITIES = Object.freeze([
   residential(
     'eco-dream',
     'Eco Dream',

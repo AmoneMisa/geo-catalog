@@ -23,4 +23,7 @@ export const KZ_SHYMKENT_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict('sever', 'Север', 42.338934815, 69.638336208, 900, 'https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent'),
   microdistrict('sportivnyi', 'Спортивный', 42.332094803, 69.598852544, 900, 'https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Shymkent'),
   microdistrict('shymsiti', 'Шымсити', 42.41155951, 69.614180439, 900, 'https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20%D0%A8%D1%8B%D0%BC%D0%BA%D0%B5%D0%BD%D1%82'),
+  microdistrict('8-i-mikroraion', '8-й микрорайон', 42.3219765, 69.5787247, 700, 'https://www.openstreetmap.org/way/112174234', { type: 'way', id: 112174234 }),
+  microdistrict('15-i-mikroraion', '15-й микрорайон', 42.3320047, 69.6352536, 700, 'https://www.openstreetmap.org/way/111573531', { type: 'way', id: 111573531 }),
+  microdistrict('nursat', 'Нурсат', 42.3616655, 69.6286885, 900, 'https://www.openstreetmap.org/way/560311711', { type: 'way', id: 560311711 }),
 ]);
