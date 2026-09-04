@@ -24,4 +24,5 @@ export const UA_CHERKASY_POI_ENTITIES = Object.freeze([
   poi('cherkasy-bus-station-3', 'poi.bus_station', 'Cherkasy Bus Station No. 3', 49.438147, 32.065858, 80, { source: 'manual', sourceUrl: 'https://www.blablacar.com.ua/bus/stations/avtostantsiia-cherkasy-3', address: 'вул. Гоголя, 293' }),
   poi('cherkasy-autoexpress-bus-station', 'poi.bus_station', 'Cherkasy Autoexpress Bus Station', 49.438522, 32.071464, 80, { source: 'manual', sourceUrl: 'https://www.blablacar.com.ua/bus/stations/avtovokzal-avtoekspres-cherkasy', address: 'вул. Митницька, 7/2' }),
   poi('dnipro-plaza', 'poi.shopping_mall', 'Dnipro Plaza', 49.4345542, 32.0911583, 90, { source: 'manual', sourceUrl: 'https://dniproplaza.com/arenda.html', officialUrl: 'https://dniproplaza.com/', address: 'вул. Припортова, 34' }),
+  poi('depot-center', 'poi.shopping_mall', "DEPO't Center", 49.424326, 32.096051, 90, { source: 'manual', sourceUrl: 'https://yandex.com/maps/10363/cherkasy/house/bulvar_tarasa_shevchenka_385/Z0sYdg5mSUAGQFpjfXhzdX9hYg%3D%3D/', officialUrl: 'https://depotcenter.com.ua/', address: 'бульвар Шевченка, 385' }),
 ]);
