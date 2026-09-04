@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { getGeoChildren } from '../src/index.js';
+
+test('Cherkasy exposes verified main bus station', () => {
+  const children = getGeoChildren('ua:cherkasy');
+  const station = children.find((entity) => entity.id === 'ua:cherkasy:poi:cherkasy-bus-station-1');
+
+  assert.ok(station);
+  assert.equal(station.type, 'poi.bus_station');
+  assert.equal(station.canonicalName, 'Cherkasy Bus Station No. 1');
+  assert.equal(station.parentId, 'ua:cherkasy');
+  assert.deepEqual(station.center, { lat: 49.40614, lng: 32.017105 });
+  assert.equal(station.address, 'вул. Смілянська, 166А');
+  assert.equal(station.sourceUrl, 'https://www.blablacar.com.ua/bus/stations/avtovokzal-novyi-cherkasy');
+});
