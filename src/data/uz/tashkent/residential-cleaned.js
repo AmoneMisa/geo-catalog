@@ -109,4 +109,26 @@ export const TASHKENT_CLEANED_RESIDENTIAL_ENTITIES = Object.freeze([
     'https://urbo.uz/new-buildings/olmosresidence',
     'uz:tashkent:yashnobod',
   ),
+  residential(
+    'yangi-shahar',
+    'Yangi Shahar',
+    41.323325,
+    69.213586,
+    'https://yandex.com/maps/org/zhk_yangi_shahar/115051691859/',
+  ),
+  residential(
+    'yashnabod',
+    'Yashnabod',
+    41.283032,
+    69.336782,
+    'https://yandex.com/maps/org/zhk_yashnabod/227604028023/',
+    'uz:tashkent:yashnobod',
+  ),
+  residential(
+    'turkiston',
+    'Turkiston',
+    41.384198,
+    69.315877,
+    'https://yandex.com/maps/org/zhk_turkiston/87124059765/',
+  ),
 ]);
