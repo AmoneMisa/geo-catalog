@@ -11,6 +11,10 @@ const expected = Object.freeze([
   ['kz:shymkent:residential:asar-city', 'residential_complex', 'kz:shymkent', 'KZ'],
   ['kz:taraz:street:prospekt-zhambyla', 'street', 'kz:taraz', 'KZ'],
   ['kg:bishkek:microdistrict:asanbai', 'microdistrict', 'kg:bishkek', 'KG'],
+  ['ua:dnipro:residential-complex:pikhtovyi', 'residential_complex', 'ua:dnipro', 'UA'],
+  ['ua:dnipro:residential-complex:atlant', 'residential_complex', 'ua:dnipro', 'UA'],
+  ['ua:dnipro:residential-complex:lighthouse', 'residential_complex', 'ua:dnipro', 'UA'],
+  ['ua:dnipro:residential-complex:ptakhy', 'residential_complex', 'ua:dnipro', 'UA'],
 ]);
 
 test('cleaned scrape import exposes representative canonical geo entities', () => {
