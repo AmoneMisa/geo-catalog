@@ -25,4 +25,7 @@ export const KZ_ALMATY_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict('orbita-2', 'Орбита-2', 43.196954, 76.884649, 800, 'https://yandex.kz/maps/ru/162/almaty/geo/orbita_2_shaghyn_audany/53183064/'),
   microdistrict('orbita-4', 'Орбита-4', 43.196481, 76.877795, 800, 'https://yandex.kz/maps/ru/162/almaty/geo/orbita_4_shaghyn_audany/53183066/'),
   microdistrict('mamyr-1', 'Мамыр-1', 43.211247, 76.845707, 800, 'https://yandex.kz/maps/ru/162/almaty/geo/mamyr_1_shaghyn_audany/53183054/'),
+  microdistrict('3-i-mikroraion', '3-й микрорайон', 43.220477694, 76.852740886, 800, 'https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Almaty'),
+  microdistrict('sayaly', 'Саялы', 43.305503376, 76.837638068, 800, 'https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Almaty'),
+  microdistrict('nur-alatau', 'Нур Алатау', 43.155431579, 76.895066291, 800, 'https://yandex.com/maps/?text=%D0%B6%D0%B8%D0%BB%D0%BE%D0%B9%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81%2C%20Almaty'),
 ]);

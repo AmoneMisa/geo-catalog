@@ -1,0 +1,33 @@
+const residential = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze({
+  id: `kz:shymkent:residential:${slug}`,
+  type: "residential_complex",
+  country: "KZ",
+  canonicalName,
+  parentId: "kz:shymkent",
+  center: Object.freeze({ lat, lng }),
+  source: 'manual',
+  sourceUrl,
+  accuracy: "building",
+  accuracyM: 260,
+});
+
+export const KZ_SHYMKENT_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
+  residential("asar-house-iii", "Asar House III", 42.419028000, 69.624847000, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20%D0%A8%D1%8B%D0%BC%D0%BA%D0%B5%D0%BD%D1%82"),
+  residential("asar-house-plus", "Asar house plus", 42.418192000, 69.624933000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
+  residential("asar-city", "Asar-City", 42.414733071, 69.623929684, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
+  residential("capital-residence", "Capital Residence", 42.329727000, 69.600750000, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Shymkent"),
+  residential("gagarin-park", "Gagarin park", 42.307604000, 69.571778000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
+  residential("grand-park", "Grand Park", 42.374629695, 69.620978382, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Shymkent"),
+  residential("sauran", "Sauran", 42.411506266, 69.614673431, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Shymkent"),
+  residential("smart", "Smart", 42.390647000, 69.628463000, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20%D0%A8%D1%8B%D0%BC%D0%BA%D0%B5%D0%BD%D1%82"),
+  residential("standard-city", "Standard City", 42.364228000, 69.676971000, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20%D0%A8%D1%8B%D0%BC%D0%BA%D0%B5%D0%BD%D1%82"),
+  residential("sultan", "Sultan", 42.351761000, 69.654809000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
+  residential("tamerlan-residence", "Tamerlan Residence", 42.359550000, 69.638469000, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Shymkent"),
+  residential("abat", "Абат", 42.357271000, 69.680484000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
+  residential("atameken", "Атамекен", 42.337152000, 69.628579000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
+  residential("kapital-siti", "Капитал сити", 42.404580390, 69.632000418, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Shymkent"),
+  residential("kausar", "Каусар", 42.396624861, 69.656788996, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
+  residential("kok-zhailau", "Кок-Жайлау", 42.379466718, 69.597051401, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
+  residential("tang-shuaq", "Таң-шуақ", 42.335643000, 69.651174000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
+  residential("uly-shangyraq", "Ұлы Шаңырақ", 42.365949000, 69.668012000, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Shymkent"),
+]);

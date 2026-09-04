@@ -1,0 +1,31 @@
+const street = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze({
+  id: `kz:astana:street:${slug}`,
+  type: "street",
+  country: "KZ",
+  canonicalName,
+  parentId: "kz:astana",
+  center: Object.freeze({ lat, lng }),
+  source: 'manual',
+  sourceUrl,
+  accuracy: "street",
+  accuracyM: 2500,
+});
+
+export const KZ_ASTANA_STREET_ENTITIES = Object.freeze([
+  street("prospekt-al-farabi", "Проспект Аль-Фараби", 51.102900625, 71.453425448, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20%D0%90%D1%81%D1%82%D0%B0%D0%BD%D0%B0"),
+  street("ulitsa-aiteke-bi", "Улица Айтеке Би", 51.141115165, 71.382008875, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-alikhana-bokeikhana", "Улица Алихана Бокейхана", 51.099682641, 71.431100466, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-anet-baba", "Улица Анет Баба", 51.140349255, 71.386498856, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-anyrakai", "Улица Аныракай", 51.094193215, 71.482070554, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20%D0%90%D1%81%D1%82%D0%B0%D0%BD%D0%B0"),
+  street("ulitsa-domalak-ana", "Улица Домалак Ана", 51.139231407, 71.392937993, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-elubaya-taibekova", "Улица Елубая Тайбекова", 51.136074992, 71.418918587, "https://yandex.com/maps/?text=%D0%B6%D0%B8%D0%BB%D0%BE%D0%B9%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81%2C%20%D0%90%D1%81%D1%82%D0%B0%D0%BD%D0%B0"),
+  street("ulitsa-karakat", "Улица Каракат", 51.089273222, 71.439718083, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-karshyga-akhmediyarova", "Улица Каршыга Ахмедиярова", 51.109111299, 71.508895563, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-kenesary", "Улица Кенесары", 51.162045447, 71.407966763, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-konstitutsii", "Улица Конституции", 51.197558261, 71.388211543, "https://yandex.com/maps/?text=%D0%B6%D0%B8%D0%BB%D0%BE%D0%B9%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81%2C%20%D0%90%D1%81%D1%82%D0%B0%D0%BD%D0%B0"),
+  street("ulitsa-oralkhan-bokei", "Улица Оралхан Бокей", 51.109573033, 71.503356276, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Astana"),
+  street("ulitsa-sembinova", "Улица Сембинова", 51.167025840, 71.449439704, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-syrdariya", "Улица Сырдария", 51.170630350, 71.447056187, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-tole-bi", "Улица Толе Би", 51.121775722, 71.393901380, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+  street("ulitsa-turkestan", "Улица Туркестан", 51.100201688, 71.425416764, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Astana"),
+]);
