@@ -23,4 +23,5 @@ export const KG_OSH_SETTLEMENT_ENTITIES = Object.freeze([
   settlement('teeke', 'Тээке', 40.4726848, 72.7129986, 'way', 448298172, 1200),
   settlement('uchar', 'Учар', 40.4739583, 72.7765615, 'way', 448298182, 1200),
   settlement('ak-buura-2', 'Ак-Буура-2', 40.4907787, 72.7773582, 'way', 448298181, 1000),
+  settlement('ak-buura-3', 'Ак-Буура-3', 40.5101500, 72.7780300, 'node', 12798433809, 900),
 ]);
