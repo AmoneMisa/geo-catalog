@@ -12,6 +12,20 @@ const microdistrict = (slug, canonicalName, lat, lng, accuracyM, sourceUrl, osm 
   ...(osm ? { osm: Object.freeze(osm) } : {}),
 });
 
+const osmMicrodistrict = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 900) => Object.freeze({
+  id: `kz:shymkent:microdistrict:${slug}`,
+  type: 'microdistrict',
+  country: 'KZ',
+  canonicalName,
+  parentId: 'kz:shymkent',
+  center: Object.freeze({ lat, lng }),
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'neighborhood',
+  accuracyM,
+  osm: Object.freeze({ type: 'way', id: osmWayId }),
+});
+
 export const KZ_SHYMKENT_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict('qaytpas-1', 'Қайтпас-1', 42.37547, 69.6422, 900, 'https://mapcarta.com/N1496101427', { type: 'node', id: 1496101427 }),
   microdistrict('samal-3', 'Самал-3', 42.373844, 69.552762, 1100, 'https://yandex.kz/maps/ru/221/chimkent/geo/samal_3_yqsham_audany/1957850119/'),
@@ -26,4 +40,5 @@ export const KZ_SHYMKENT_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict('8-i-mikroraion', '8-й микрорайон', 42.3219765, 69.5787247, 700, 'https://www.openstreetmap.org/way/112174234', { type: 'way', id: 112174234 }),
   microdistrict('15-i-mikroraion', '15-й микрорайон', 42.3320047, 69.6352536, 700, 'https://www.openstreetmap.org/way/111573531', { type: 'way', id: 111573531 }),
   microdistrict('nursat', 'Нурсат', 42.3616655, 69.6286885, 900, 'https://www.openstreetmap.org/way/560311711', { type: 'way', id: 560311711 }),
+  osmMicrodistrict('11-i-mikroraion', '11-й микрорайон', 42.3229445, 69.6386518, 117484137),
 ]);

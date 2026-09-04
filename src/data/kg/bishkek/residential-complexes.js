@@ -11,6 +11,20 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 260) 
   accuracyM,
 });
 
+const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 260) => Object.freeze({
+  id: `kg:bishkek:residential:${slug}`,
+  type: 'residential_complex',
+  country: 'KG',
+  canonicalName,
+  parentId: 'kg:bishkek',
+  center: Object.freeze({ lat, lng }),
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'building',
+  accuracyM,
+  osm: Object.freeze({ type: 'way', id: osmWayId }),
+});
+
 export const KG_BISHKEK_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("dastan-city", "Dastan City", 42.817801000, 74.635432000, "https://www.dastancity.kg/"),
   residential("diamond-park", "Diamond park", 42.844260000, 74.569040000, "https://dp.kg/home/"),
@@ -43,4 +57,5 @@ export const KG_BISHKEK_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("tianshan-1", "TIANSHAN-1", 42.826734000, 74.586579000, "https://tianshan-1.com/", 320),
   residential("anka-tower", "Anka Tower", 42.841915000, 74.562441000, "https://yandex.com/maps/10309/bishkek/house/Y00YcwFiTUEGQFpofXR1cHViYA%3D%3D/", 320),
   residential("urpak", "УРПАК", 42.865201000, 74.527188000, "https://www.house.kg/index.php/jilie-kompleksy/urpak", 420),
+  osmResidential('french-quarter', 'Французский квартал', 42.8165999, 74.615194, 1098776335, 360),
 ]);

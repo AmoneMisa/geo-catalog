@@ -11,6 +11,20 @@ const microdistrict = (slug, canonicalName, lat, lng, accuracyM, sourceUrl) => O
   accuracyM,
 });
 
+const osmMicrodistrict = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 800) => Object.freeze({
+  id: `kz:almaty:microdistrict:${slug}`,
+  type: 'microdistrict',
+  country: 'KZ',
+  canonicalName,
+  parentId: 'kz:almaty',
+  center: Object.freeze({ lat, lng }),
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'neighborhood',
+  accuracyM,
+  osm: Object.freeze({ type: 'way', id: osmWayId }),
+});
+
 export const KZ_ALMATY_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict('samal-1', 'Самал-1', 43.235731, 76.953963, 700, 'https://yandex.kz/maps/ru/162/almaty/geo/samal_1_shaghyn_audany/53183069/'),
   microdistrict('samal-2', 'Самал-2', 43.231291, 76.954808, 700, 'https://yandex.kz/maps/ru/162/almaty/geo/samal_2_shaghyn_audany/53183070/'),
@@ -28,4 +42,7 @@ export const KZ_ALMATY_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict('3-i-mikroraion', '3-й микрорайон', 43.220477694, 76.852740886, 800, 'https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Almaty'),
   microdistrict('sayaly', 'Саялы', 43.305503376, 76.837638068, 800, 'https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Almaty'),
   microdistrict('nur-alatau', 'Нур Алатау', 43.155431579, 76.895066291, 800, 'https://yandex.com/maps/?text=%D0%B6%D0%B8%D0%BB%D0%BE%D0%B9%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81%2C%20Almaty'),
+  osmMicrodistrict('1-i-mikroraion', '1-й микрорайон', 43.2302084, 76.8497304, 241963591),
+  osmMicrodistrict('6-i-mikroraion', '6-й микрорайон', 43.2198606, 76.8560323, 299577482),
+  osmMicrodistrict('12-i-mikroraion', '12-й микрорайон', 43.2207965, 76.8645436, 491332050),
 ]);
