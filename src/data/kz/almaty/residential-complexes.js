@@ -77,5 +77,4 @@ export const KZ_ALMATY_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("shugyla", "Шугыла", 43.210221829, 76.789979053, "https://yandex.kz/maps/ru/162/almaty/geo/shughyla_turghyn_uy_kesheni/3362263555/"),
   residential("yubileinyi", "Юбилейный", 43.201343000, 76.982871000, "https://yandex.kz/maps/ru/org/zhk_yubileynyy/217800209148/"),
   osmResidential('premiera', 'Премьера', 43.2218182, 76.7947073, 1466980447),
-  osmResidential('terracotta', 'Terracotta', 43.2364222, 76.879906, 1430348605),
 ]);

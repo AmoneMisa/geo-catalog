@@ -42,5 +42,4 @@ export const KZ_KARAGANDA_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("krylova", "Крылова", 49.803621000, 73.062812000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
   residential("novyi-stepnoi", "Новый Степной", 49.784085000, 73.153222000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
   residential("etalon", "Эталон", 49.805114000, 73.058894000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
-  osmResidential('trilistnik', 'Трилистник', 49.7984653, 73.1474285, 1328329016),
 ]);

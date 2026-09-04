@@ -31,7 +31,7 @@ const residential = [
 const microdistricts = [
   'ua:kharkiv:microdistrict:337-microdistrict',
   'ua:kharkiv:microdistrict:339-microdistrict',
-  'ua:kharkiv:microdistrict:524-microdistrict',
+  'ua:kharkiv:microdistrict:524-mikroraion',
 ];
 
 test('Kharkiv enrichment exposes current canonical streets with nonzero coordinates', () => {

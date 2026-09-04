@@ -51,10 +51,6 @@ export const UA_KHARKIV_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('520-microdistrict', '520 microdistrict', 50.01195, 36.33236, 12215617088, 500),
   wikimapiaMicrodistrict('521-microdistrict', '521 microdistrict', 50.018611, 36.338611, 700),
   wikimapiaMicrodistrict('522-microdistrict', '522 microdistrict', 50.022417, 36.326900, 650),
-  microdistrict('524-microdistrict', '524 microdistrict', 50.024677, 36.351250, 800, {
-    source: 'manual',
-    sourceUrl: 'https://gt.kh.ua/ru/tram/27',
-  }),
   wikimapiaMicrodistrict('531-microdistrict', '531 microdistrict', 50.024020, 36.358125, 650),
   wikimapiaMicrodistrict('533-microdistrict', '533 microdistrict', 50.020768, 36.369651, 650),
   microdistrict('535a', '535A', 50.006539, 36.350041, 650, {

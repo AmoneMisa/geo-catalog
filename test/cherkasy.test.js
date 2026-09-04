@@ -7,7 +7,7 @@ test('Cherkasy verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:cherkasy');
   assert.equal(children.filter((entity) => entity.type === 'district').length, 2);
   assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 8);
-  assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 12);
+  assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 13);
 
   const expected = [
     [{ type: 'district', canonical: 'Prydniprovskyi' }, 'ua:cherkasy:district:prydniprovskyi'],
