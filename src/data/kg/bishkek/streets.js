@@ -11,6 +11,15 @@ const street = (slug, canonicalName, lat, lng, accuracyM, sourceUrl) => Object.f
   accuracyM,
 });
 
+const yandexStreet = (slug, canonicalName, lat, lng, queryName, accuracyM = 3500) => street(
+  slug,
+  canonicalName,
+  lat,
+  lng,
+  accuracyM,
+  `https://yandex.com/maps/?text=${encodeURIComponent(`${queryName}, Bishkek`)}`,
+);
+
 export const KG_BISHKEK_STREET_ENTITIES = Object.freeze([
   street('chyngyz-aytmatov-avenue', 'Chyngyz Aytmatov Avenue', 42.828606, 74.583830, 4200, 'https://yandex.com/maps/10309/bishkek/house/Y00Ycw9jQUYHQFpofXRzeXpjYg%3D%3D/'),
   street('aaly-tokombayev-avenue', 'Aaly Tokombayev Avenue', 42.819978, 74.618577, 3000, 'https://yandex.com/maps/10309/bishkek/house/Y00YcAZoTEIAQFpofXRweHVkYw%3D%3D/inside/'),
@@ -22,4 +31,22 @@ export const KG_BISHKEK_STREET_ENTITIES = Object.freeze([
   street('toktogul', 'Toktogul Street', 42.872059, 74.602102, 4200, 'https://yandex.com/maps/10309/bishkek/house/Y00YcAdiSEUFQFpofXR2c3xmbA%3D%3D/'),
   street('joomart-bokonbayev', 'Joomart Bokonbayev Street', 42.867255, 74.591080, 4200, 'https://yandex.com/maps/10309/bishkek/house/Y00Ycw5hSU0HQFpofXR3dn5mYA%3D%3D/inside/'),
   street('jusup-abdrakhmanov', 'Jusup Abdrakhmanov Street', 42.871721, 74.611121, 3600, 'https://yandex.com/maps/10309/bishkek/house/Y00YcAZhSEcGQFpofXR2cHthZQ%3D%3D/inside/'),
+  yandexStreet('shopokov', 'Shopokov Street', 42.884044175, 74.615151779, 'Улица Шопокова'),
+  yandexStreet('jibek-jolu-avenue', 'Jibek Jolu Avenue', 42.884674698, 74.604683659, 'Проспект Жибек-Жолу', 5000),
+  yandexStreet('usenbaev', 'Usenbaev Street', 42.890148636, 74.614986438, 'Улица Усенбаева'),
+  yandexStreet('yunusaliev', 'Yunusaliev Street', 42.842377484, 74.621827656, 'Улица Юнусалиева', 4200),
+  yandexStreet('erkindik-boulevard', 'Erkindik Boulevard', 42.869507998, 74.607388810, 'Бульвар Эркиндик', 4200),
+  yandexStreet('moskovskaya', 'Moskovskaya Street', 42.868561028, 74.611135883, 'Московская улица', 4200),
+  yandexStreet('bakaev', 'Bakaev Street', 42.836466811, 74.575813269, 'Улица Бакаева', 4200),
+  yandexStreet('jantoshev', 'Jantoshev Street', 42.844676477, 74.608842428, 'Улица Джантошева', 4200),
+  yandexStreet('sukhe-bator', 'Sukhe Bator Street', 42.821497075, 74.618667681, 'Улица Сухэ-Батора', 3200),
+  yandexStreet('pavlov', 'Pavlov Street', 42.880236382, 74.567919497, 'Улица Павлова', 3200),
+  yandexStreet('zhukeev-pudovkin', 'Zhukeev-Pudovkin Street', 42.852087804, 74.615423045, 'Улица Жукеева-Пудовкина', 4200),
+  yandexStreet('gorky', 'Gorky Street', 42.856788291, 74.611554381, 'Улица Горького', 4200),
+  yandexStreet('orozbekov', 'Orozbekov Street', 42.872299378, 74.603102505, 'Улица Орозбекова', 3500),
+  yandexStreet('kievskaya', 'Kievskaya Street', 42.874589666, 74.610535009, 'Киевская улица', 4200),
+  yandexStreet('panfilov', 'Panfilov Street', 42.867197051, 74.601422743, 'Улица Панфилова', 4200),
+  yandexStreet('togolok-moldo', 'Togolok Moldo Street', 42.876433685, 74.594429571, 'Улица Тоголока Молдо', 4200),
+  yandexStreet('umetaliev', 'Umetaliev Street', 42.874956279, 74.581157720, 'Улица Уметалиева', 3500),
+  yandexStreet('molodaya-gvardiya-boulevard', 'Molodaya Gvardiya Boulevard', 42.877986581, 74.576272888, 'Бульвар Молодой Гвардии', 4200),
 ]);
