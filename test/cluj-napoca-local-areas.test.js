@@ -7,6 +7,9 @@ const expected = Object.freeze([
   { id: 'ro:cluj-napoca:local-area:marasti', canonicalName: 'Mărăști', wikidataId: 'Q281611', lat: 46.78131963055556, lng: 23.61266485 },
   { id: 'ro:cluj-napoca:local-area:gheorgheni', canonicalName: 'Gheorgheni', wikidataId: 'Q590050', lat: 46.765, lng: 23.61861111111111 },
   { id: 'ro:cluj-napoca:local-area:grigorescu', canonicalName: 'Grigorescu', wikidataId: 'Q715962', lat: 46.77017, lng: 23.5624 },
+  { id: 'ro:cluj-napoca:local-area:zorilor', canonicalName: 'Zorilor', wikidataId: 'Q1032736', lat: 46.75361111111111, lng: 23.586666666666666 },
+  { id: 'ro:cluj-napoca:local-area:gruia', canonicalName: 'Gruia', wikidataId: 'Q3118185', lat: 46.77780555555556, lng: 23.57611111111111 },
+  { id: 'ro:cluj-napoca:local-area:andrei-muresanu', canonicalName: 'Andrei Mureșanu', wikidataId: 'Q2846500', lat: 46.76164194444444, lng: 23.601346944444443 },
 ]);
 
 test('Cluj-Napoca exposes verified local areas with stable Wikidata identities', () => {
