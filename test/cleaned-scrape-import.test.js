@@ -11,6 +11,10 @@ const expected = Object.freeze([
   ['kz:shymkent:residential:asar-city', 'residential_complex', 'kz:shymkent', 'KZ'],
   ['kz:taraz:street:prospekt-zhambyla', 'street', 'kz:taraz', 'KZ'],
   ['kg:bishkek:microdistrict:asanbai', 'microdistrict', 'kg:bishkek', 'KG'],
+  ['ua:kyiv:residential:krister-hrad', 'residential_complex', 'ua:kyiv', 'UA'],
+  ['ua:kyiv:residential:edelweiss-house', 'residential_complex', 'ua:kyiv', 'UA'],
+  ['ua:kyiv:residential:nyvky-plaza', 'residential_complex', 'ua:kyiv', 'UA'],
+  ['ua:kyiv:residential:parkova-vezha', 'residential_complex', 'ua:kyiv', 'UA'],
   ['ua:dnipro:residential-complex:pikhtovyi', 'residential_complex', 'ua:dnipro', 'UA'],
   ['ua:dnipro:residential-complex:atlant', 'residential_complex', 'ua:dnipro', 'UA'],
   ['ua:dnipro:residential-complex:lighthouse', 'residential_complex', 'ua:dnipro', 'UA'],
@@ -42,4 +46,12 @@ test('cleaned Odesa import does not force surrounding settlements into Odesa res
   assert.equal(getGeoEntity('ua:odesa:residential-complex:green-cape'), null);
   assert.equal(getGeoEntity('ua:odesa:residential-complex:21-pearl'), null);
   assert.equal(getGeoEntity('ua:odesa:residential-complex:columbus'), null);
+});
+
+test('cleaned Kyiv import keeps surrounding settlements outside Kyiv residential scope', () => {
+  assert.equal(getGeoEntity('ua:kyiv:residential:desna-residence'), null);
+  assert.equal(getGeoEntity('ua:kyiv:residential:sofia-residence'), null);
+  assert.equal(getGeoEntity('ua:kyiv:residential:petropavlivskyi-posad'), null);
+  assert.equal(getGeoEntity('ua:kyiv:residential:avia-kvartal'), null);
+  assert.equal(getGeoEntity('ua:kyiv:residential:country-townhouse'), null);
 });
