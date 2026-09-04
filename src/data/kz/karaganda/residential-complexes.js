@@ -1,0 +1,31 @@
+const residential = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze({
+  id: `kz:karaganda:residential:${slug}`,
+  type: "residential_complex",
+  country: "KZ",
+  canonicalName,
+  parentId: "kz:karaganda",
+  center: Object.freeze({ lat, lng }),
+  source: 'manual',
+  sourceUrl,
+  accuracy: "building",
+  accuracyM: 260,
+});
+
+export const KZ_KARAGANDA_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
+  residential("central-city", "Central City", 49.794302000, 73.075228000, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20Karaganda"),
+  residential("central-park", "Central Park", 49.773610000, 73.149726000, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20Karaganda"),
+  residential("dream-house", "Dream House", 49.792673000, 73.151961000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("keruen-blok-a", "Keruen Блок А", 49.769689000, 73.160881000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("otbasy-village", "Otbasy Village", 49.778442000, 73.059323000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("pride-residence", "Pride Residence", 49.799382000, 73.066692000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("tulpar-residence", "Tulpar Residence", 49.774609000, 73.154573000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("tumar", "Tumar", 49.792614000, 73.160168000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("zaman-2", "Zaman 2", 49.795829000, 73.140588000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("altyn-blok-a", "Алтын Блок А", 49.810456000, 73.106623000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("gulder", "Гулдер", 49.790543000, 73.155500000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("dom-na-tattimbeta", "Дом на Таттимбета", 49.793800000, 73.158056000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("komissarova", "Комиссарова", 49.802295000, 73.096966000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("krylova", "Крылова", 49.803621000, 73.062812000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("novyi-stepnoi", "Новый Степной", 49.784085000, 73.153222000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  residential("etalon", "Эталон", 49.805114000, 73.058894000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+]);

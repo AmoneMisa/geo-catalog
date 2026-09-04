@@ -1,5 +1,11 @@
 import { KZ_SHYMKENT_DISTRICT_ENTITIES } from './districts.js';
+import { KZ_SHYMKENT_NEIGHBORHOOD_ENTITIES } from './neighborhoods.js';
+import { KZ_SHYMKENT_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes.js';
+import { KZ_SHYMKENT_STREET_ENTITIES } from './streets.js';
 
 export const KZ_SHYMKENT_ENTITIES = Object.freeze([
   ...KZ_SHYMKENT_DISTRICT_ENTITIES,
+  ...KZ_SHYMKENT_NEIGHBORHOOD_ENTITIES,
+  ...KZ_SHYMKENT_RESIDENTIAL_COMPLEX_ENTITIES,
+  ...KZ_SHYMKENT_STREET_ENTITIES,
 ]);
