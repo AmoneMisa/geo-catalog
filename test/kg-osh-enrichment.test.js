@@ -3,9 +3,8 @@ import assert from 'node:assert/strict';
 
 import { getGeoEntity } from '../src/catalog.js';
 
-const expected = Object.freeze([
+const cityScoped = Object.freeze([
   ['kg:osh:settlement:kenesh', 'settlement', 'Кеңеш'],
-  ['kg:osh:settlement:kerme-too', 'settlement', 'Керме-Тоо'],
   ['kg:osh:settlement:ozgur', 'settlement', 'Озгур'],
   ['kg:osh:settlement:orke', 'settlement', 'Орке'],
   ['kg:osh:settlement:pyatiletka', 'settlement', 'Пятилетка'],
@@ -18,7 +17,7 @@ const expected = Object.freeze([
 ]);
 
 test('Osh enrichment exposes verified city-administered settlements and housing', () => {
-  for (const [id, type, canonicalName] of expected) {
+  for (const [id, type, canonicalName] of cityScoped) {
     const entity = getGeoEntity(id);
     assert.ok(entity, `${id} should exist`);
     assert.equal(entity.country, 'KG');
@@ -29,6 +28,37 @@ test('Osh enrichment exposes verified city-administered settlements and housing'
     assert.ok(Number.isFinite(entity.center.lng));
     assert.notEqual(entity.center.lat, 0);
     assert.notEqual(entity.center.lng, 0);
+  }
+});
+
+test('Kerme-Too owns Kulatov through the current Osh municipal hierarchy', () => {
+  const kermeToo = getGeoEntity('kg:osh:district:kerme-too');
+  assert.ok(kermeToo);
+  assert.equal(kermeToo.type, 'district');
+  assert.equal(kermeToo.country, 'KG');
+  assert.equal(kermeToo.parentId, 'kg:osh');
+  assert.equal(kermeToo.canonicalName, 'Керме-Тоо');
+  assert.equal(kermeToo.source, 'osm');
+  assert.deepEqual(kermeToo.osm, { type: 'relation', id: 19062465 });
+
+  const kulatov = getGeoEntity('kg:osh:microdistrict:kulatov');
+  assert.ok(kulatov);
+  assert.equal(kulatov.type, 'microdistrict');
+  assert.equal(kulatov.country, 'KG');
+  assert.equal(kulatov.parentId, 'kg:osh:district:kerme-too');
+  assert.equal(kulatov.canonicalName, 'Кулатов');
+  assert.equal(kulatov.source, 'osm');
+  assert.deepEqual(kulatov.osm, { type: 'way', id: 452186589 });
+
+  assert.equal(getGeoEntity('kg:osh:settlement:kerme-too'), null);
+});
+
+test('Osh scrape-backed microdistricts retain truthful OSM provenance', () => {
+  for (const id of ['kg:osh:microdistrict:anar', 'kg:osh:microdistrict:tuleyken']) {
+    const entity = getGeoEntity(id);
+    assert.ok(entity);
+    assert.equal(entity.source, 'osm');
+    assert.equal(entity.osm?.type, 'way');
   }
 });
 

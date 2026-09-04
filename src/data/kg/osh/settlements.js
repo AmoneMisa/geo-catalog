@@ -16,7 +16,6 @@ const settlement = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 1
 // territorial structure. OSM is retained as the spatial source for their centers.
 export const KG_OSH_SETTLEMENT_ENTITIES = Object.freeze([
   settlement('kenesh', 'Кеңеш', 40.4913586, 72.7085400, 'relation', 19062463, 1300),
-  settlement('kerme-too', 'Керме-Тоо', 40.5105276, 72.7152939, 'relation', 19062465, 1300),
   settlement('ozgur', 'Озгур', 40.4503384, 72.8545544, 'relation', 19062572, 1400),
   settlement('orke', 'Орке', 40.4834323, 72.7287003, 'way', 448298178, 1100),
   settlement('pyatiletka', 'Пятилетка', 40.4903266, 72.8124640, 'node', 7054522032, 1200),
