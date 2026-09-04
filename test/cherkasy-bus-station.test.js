@@ -27,3 +27,16 @@ test('Cherkasy exposes verified bus station No. 2 beside the railway station', (
   assert.equal(station.address, 'вул. Володимира Ложешнікова, 7');
   assert.equal(station.sourceUrl, 'https://autofort.net/directions/cherkasi-lodz');
 });
+
+test('Cherkasy exposes verified bus station No. 3', () => {
+  const children = getGeoChildren('ua:cherkasy');
+  const station = children.find((entity) => entity.id === 'ua:cherkasy:poi:cherkasy-bus-station-3');
+
+  assert.ok(station);
+  assert.equal(station.type, 'poi.bus_station');
+  assert.equal(station.canonicalName, 'Cherkasy Bus Station No. 3');
+  assert.equal(station.parentId, 'ua:cherkasy');
+  assert.deepEqual(station.center, { lat: 49.438147, lng: 32.065858 });
+  assert.equal(station.address, 'вул. Гоголя, 293');
+  assert.equal(station.sourceUrl, 'https://www.blablacar.com.ua/bus/stations/avtostantsiia-cherkasy-3');
+});
