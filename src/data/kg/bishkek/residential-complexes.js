@@ -1,4 +1,4 @@
-const residential = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze({
+const residential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 260) => Object.freeze({
   id: `kg:bishkek:residential:${slug}`,
   type: "residential_complex",
   country: "KG",
@@ -8,7 +8,7 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze(
   source: 'manual',
   sourceUrl,
   accuracy: "building",
-  accuracyM: 260,
+  accuracyM,
 });
 
 export const KG_BISHKEK_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
@@ -33,4 +33,12 @@ export const KG_BISHKEK_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("ispanskiy-dom", "Испанский дом", 42.829080000, 74.622009000, "https://www.house.kg/index.php/jilie-kompleksy/ispanskii-dom"),
   residential("brooklyn", "Brooklyn", 42.851763000, 74.614606000, "https://royal.kg/object.html?object_id=3909fd19-6ccb-473d-973a-e41c3892a227"),
   residential("barcelona", "Barcelona", 42.813158000, 74.614759000, "https://barcelona.kg/"),
+  residential("senator", "Senator", 42.820036000, 74.614184000, "https://www.house.kg/jilie-kompleksy/senator-senator"),
+  residential("muras-nuru", "Muras Nuru", 42.810056000, 74.609504000, "https://nurzaman.kg/", 500),
+  residential("mansara", "Mansara", 42.819288000, 74.605270000, "https://mansara.icon.kg/", 340),
+  residential("regency", "Regency", 42.819787000, 74.613648000, "https://www.house.kg/index.php/jilie-kompleksy/zhiloy-dom-regency"),
+  residential("ilim-plus", "Илим Плюс", 42.878850000, 74.581315000, "https://korter.kg/%D0%B6%D0%BA-%D0%B8%D0%BB%D0%B8%D0%BC-%D0%BF%D0%BB%D1%8E%D1%81-%D0%B1%D0%B8%D1%88%D0%BA%D0%B5%D0%BA"),
+  residential("akademiya", "Академия", 42.880455000, 74.579850000, "https://www.house.kg/jilie-kompleksy/zhiloi-kompleks-akademija"),
+  residential("eliseiskie-polya", "Елисейские поля", 42.815635000, 74.622297000, "https://avangardstyle.kg/builds/polya", 500),
+  residential("tianshan-1", "TIANSHAN-1", 42.826734000, 74.586579000, "https://tianshan-1.com/", 320),
 ]);
