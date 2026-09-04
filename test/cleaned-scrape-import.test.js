@@ -15,6 +15,10 @@ const expected = Object.freeze([
   ['ua:dnipro:residential-complex:atlant', 'residential_complex', 'ua:dnipro', 'UA'],
   ['ua:dnipro:residential-complex:lighthouse', 'residential_complex', 'ua:dnipro', 'UA'],
   ['ua:dnipro:residential-complex:ptakhy', 'residential_complex', 'ua:dnipro', 'UA'],
+  ['ua:odesa:residential-complex:arc-palace', 'residential_complex', 'ua:odesa', 'UA'],
+  ['ua:odesa:residential-complex:club-marine', 'residential_complex', 'ua:odesa', 'UA'],
+  ['ua:odesa:residential-complex:7-pearl', 'residential_complex', 'ua:odesa', 'UA'],
+  ['ua:odesa:residential-complex:8-pearl', 'residential_complex', 'ua:odesa', 'UA'],
 ]);
 
 test('cleaned scrape import exposes representative canonical geo entities', () => {
@@ -32,4 +36,10 @@ test('cleaned scrape import exposes representative canonical geo entities', () =
 test('cleaned scrape import does not duplicate known Chernihiv Masany as a residential complex', () => {
   assert.equal(getGeoEntity('ua:chernihiv:residential:masani'), null);
   assert.equal(getGeoEntity('ua:chernihiv:microdistrict:masany')?.canonicalName, 'Masany');
+});
+
+test('cleaned Odesa import does not force surrounding settlements into Odesa residential scope', () => {
+  assert.equal(getGeoEntity('ua:odesa:residential-complex:green-cape'), null);
+  assert.equal(getGeoEntity('ua:odesa:residential-complex:21-pearl'), null);
+  assert.equal(getGeoEntity('ua:odesa:residential-complex:columbus'), null);
 });
