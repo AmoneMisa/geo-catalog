@@ -46,4 +46,7 @@ export const SAMARKAND_AREA_ENTITIES = Object.freeze([
   // Yandex maps Samarqand Street inside that MFY; use its mapped center only as
   // a broad neighborhood anchor, not as a claimed cadastral centroid.
   mappedSpatial('chilquduq', 'Chilquduq', 'mahalla', 39.635549, 66.889913, 1800, 'https://yandex.com/maps/105810/samarqand-province/geo/4606273793/', 'uz:samarkand:settlement:xishrov'),
+  mappedSpatial('dostlik', "Do'stlik", 'mahalla', 39.681783, 66.880985, 1200, 'https://2gis.uz/samarkand/geo/70030076993188459'),
+  mappedSpatial('yangi-hayot', 'Yangi Hayot', 'mahalla', 39.594251, 66.944997, 1000, 'https://yandex.com/maps/10334/samarkand/geo/3763627870/'),
+  mappedSpatial('orta-xojasoat', "O'rta Xo'jasoat", 'mahalla', 39.647416, 66.912451, 1200, 'https://saylov.uz/storage/cec-decisions/February2024/3rjqVZ4f9tAnxuhJ7JP7.pdf'),
 ]);
