@@ -13,12 +13,7 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze(
 
 const YANDEX_ODESA_RESIDENTIAL_SEARCH = 'https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20Odesa';
 
-/**
- * Strong page-scrape anchors that are inside Odesa proper. Results whose
- * addresses resolve to Kryzhanivka, Fontanka or Limanka stay out of this city
- * collection and are not force-parented to Odesa.
- */
-export const UA_ODESA_CLEANED_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
+export const UA_ODESA_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('arc-palace', 'Arc Palace', 46.438772, 30.758746, YANDEX_ODESA_RESIDENTIAL_SEARCH),
   residential('synia-ptakh', 'Synia Ptakh', 46.47375, 30.759286, YANDEX_ODESA_RESIDENTIAL_SEARCH),
   residential('favorit', 'Favorit', 46.447069, 30.734267, YANDEX_ODESA_RESIDENTIAL_SEARCH),

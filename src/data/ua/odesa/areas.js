@@ -1,4 +1,4 @@
-export const UA_ODESA_VERIFIED_AREA_ENTITIES = Object.freeze([
+export const UA_ODESA_AREA_ENTITIES = Object.freeze([
   Object.freeze({
     id: 'ua:odesa:local-area:historical-center',
     type: 'local_area',

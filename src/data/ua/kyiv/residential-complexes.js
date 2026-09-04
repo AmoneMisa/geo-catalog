@@ -63,7 +63,6 @@ export const UA_KYIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   sourcedResidential('crystal-park', 'Crystal Park', 50.455971, 30.452176, 'https://www.stsophia.ua/en/crystal-park/', 180),
   sourcedResidential('crystal-park-tower', 'Crystal Park Tower', 50.453898, 30.451997, 'https://www.stsophia.ua/en/crystal-park-tower/house1/section1/floor5/', 150),
   sourcedResidential('zarichnyi', 'Zarichnyi', 50.39635, 30.6047, 'https://korter.ua/uk/%D0%B6%D0%BA-%D0%B7%D0%B0%D1%80%D1%96%D1%87%D0%BD%D0%B8%D0%B9-%D0%BA%D0%B8%D1%97%D0%B2', 320),
-
   sourcedResidential('varshavskyi', 'Varshavskyi', 50.502219, 30.426362, 'https://maps.visicom.ua/c/30.42642%2C50.50221%2C17/f/ADR3K0MXUATSB1X0HB?lang=uk', 420),
   sourcedResidential('warszawski-plus', 'Warszawski Plus', 50.504284, 30.407785, 'https://maps.visicom.ua/c/30.40781%2C50.50412%2C17/f/ADR3K0MXUA5W2EJX7E?lang=uk', 420),
   sourcedResidential('varshavskyi-2', 'Varshavskyi 2', 50.497866, 30.424801, 'https://maps.visicom.ua/c/30.42483%2C50.49788%2C17/f/ADR3K0MXVJ4NG163WV?lang=uk', 420),
@@ -83,4 +82,12 @@ export const UA_KYIV_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   sourcedResidential('navigator-2', 'Navigator 2', 50.509049, 30.465114, 'https://maps.visicom.ua/c/30.46516%2C50.50906%2C17/f/ADR3K0MXUAEHZZ3U1C?lang=uk', 380),
   sourcedResidential('ministerskyi', 'Ministerskyi', 50.526886, 30.455588, 'https://maps.visicom.ua/c/30.45556%2C50.52688%2C17/f/ADR3K0MXUAEF0VR124?lang=uk', 500),
   sourcedResidential('henesi-house', 'Henesi House', 50.473104, 30.482125, 'https://maps.visicom.ua/c/30.48206%2C50.47308%2C17/f/ADR3K0MXUACD07WWWK?lang=uk', 180),
+  sourcedResidential('krister-hrad', 'Krister Hrad', 50.498764, 30.427008, 'https://korter.ua/ru/new/kyiv/krister-hrad', 280),
+  sourcedResidential('edelweiss-house', 'Edelweiss House', 50.404430, 30.555826, 'https://edelweiss.house/', 220),
+  sourcedResidential('nyvky-plaza', 'Nyvky Plaza', 50.490699, 30.405259, 'https://dom.ria.com/novostroyka-zhk-nyvky-plaza-5798/', 240),
+  sourcedResidential('stolychni-kashtany', 'Stolychni Kashtany', 50.433667, 30.373369, 'https://nerukhomi.ua/ukr/n-zhk-stolichni-kashtani-kiiv/', 240),
+  sourcedResidential('smart-house', 'SmartHouse', 50.449636, 30.421611, 'https://yandex.com/maps/org/zhk_smarthouse/86764276720/', 220),
+  sourcedResidential('parkova-vezha', 'Parkova Vezha', 50.510519, 30.444775, 'https://dom.ria.com/uk/novostroyka-zhk-parkova-vezha-3498/', 240),
+  sourcedResidential('hillside', 'HillSide', 50.464933, 30.505386, 'https://korter.ua/uk/%D0%BA%D0%BB%D1%83%D0%B1%D0%BD%D0%B8%D0%B9-%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA-hillside-%D0%BA%D0%B8%D1%97%D0%B2', 220),
+  sourcedResidential('struetinsky', 'Struetinsky', 50.419338, 30.552858, 'https://meget.kiev.ua/novostroyki/2068-zk-struetinsky', 220),
 ]);
