@@ -7,6 +7,7 @@ test('Chernihiv verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:chernihiv');
   assert.equal(children.filter((entity) => entity.type === 'district').length, 2);
   assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 5);
+  assert.equal(children.filter((entity) => entity.type === 'residential_complex').length, 1);
   assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 6);
 
   const expected = [
@@ -17,6 +18,7 @@ test('Chernihiv verified lexicon geography resolves by city and type', () => {
     [{ type: 'microdistrict', canonical: 'Sherstianka' }, 'ua:chernihiv:microdistrict:sherstianka'],
     [{ type: 'microdistrict', canonical: 'Liskovytsia' }, 'ua:chernihiv:microdistrict:liskovytsia'],
     [{ type: 'microdistrict', canonical: 'Koty' }, 'ua:chernihiv:microdistrict:koty'],
+    [{ type: 'residential_complex', canonical: 'Masany' }, 'ua:chernihiv:residential:masany'],
     [{ type: 'poi', canonical: 'Boldyni Hory' }, 'ua:chernihiv:poi:boldyni-hory'],
     [{ type: 'poi', canonical: 'Krasna Square' }, 'ua:chernihiv:poi:krasna-square'],
     [{ type: 'poi', canonical: 'Yalivshchyna' }, 'ua:chernihiv:poi:yalivshchyna'],
@@ -35,7 +37,6 @@ test('Chernihiv ambiguous and unresolved candidates remain explicit gaps', () =>
     ['microdistrict', 'Tsentr'],
     ['microdistrict', 'Podusivka'],
     ['microdistrict', 'Oleksandrivka'],
-    ['residential_complex', 'Masany'],
     ['residential_complex', 'Panorama'],
     ['poi', 'Chernihiv Val'],
     ['poi', 'Central Park'],
