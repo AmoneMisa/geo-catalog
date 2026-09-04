@@ -14,4 +14,7 @@ const residential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 260) =
 
 export const KZ_KOSTANAY_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential('altyn-arman', 'Алтын Арман', 53.2404075, 63.6092745, 485106107),
+  residential('keremet', 'Керемет', 53.2445466, 63.6904425, 162579427),
+  residential('marsel', 'Марсель', 53.2436571, 63.6892017, 1096343113),
+  residential('rakhat', 'Rakhat', 53.2361345, 63.5894273, 1476561045),
 ]);

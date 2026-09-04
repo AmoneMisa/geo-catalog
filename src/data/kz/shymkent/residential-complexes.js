@@ -11,6 +11,20 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze(
   accuracyM: 260,
 });
 
+const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 260) => Object.freeze({
+  id: `kz:shymkent:residential:${slug}`,
+  type: 'residential_complex',
+  country: 'KZ',
+  canonicalName,
+  parentId: 'kz:shymkent',
+  center: Object.freeze({ lat, lng }),
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'building',
+  accuracyM,
+  osm: Object.freeze({ type: 'way', id: osmWayId }),
+});
+
 export const KZ_SHYMKENT_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("asar-house-iii", "Asar House III", 42.419028000, 69.624847000, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20%D0%A8%D1%8B%D0%BC%D0%BA%D0%B5%D0%BD%D1%82"),
   residential("asar-house-plus", "Asar house plus", 42.418192000, 69.624933000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
@@ -30,4 +44,5 @@ export const KZ_SHYMKENT_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("kok-zhailau", "Кок-Жайлау", 42.379466718, 69.597051401, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
   residential("tang-shuaq", "Таң-шуақ", 42.335643000, 69.651174000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Shymkent"),
   residential("uly-shangyraq", "Ұлы Шаңырақ", 42.365949000, 69.668012000, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Shymkent"),
+  osmResidential('biik', 'Биик', 42.3447856, 69.6093253, 1450097175),
 ]);

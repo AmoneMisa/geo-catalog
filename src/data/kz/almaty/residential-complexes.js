@@ -11,6 +11,20 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze(
   accuracyM: 260,
 });
 
+const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 260) => Object.freeze({
+  id: `kz:almaty:residential:${slug}`,
+  type: 'residential_complex',
+  country: 'KZ',
+  canonicalName,
+  parentId: 'kz:almaty',
+  center: Object.freeze({ lat, lng }),
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'building',
+  accuracyM,
+  osm: Object.freeze({ type: 'way', id: osmWayId }),
+});
+
 export const KZ_ALMATY_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("alma-city", "Alma City", 43.220654947, 76.782415867, "https://yandex.com/maps/?text=%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%2C%20Almaty"),
   residential("alma-city-4", "Alma City 4", 43.229253410, 76.777941095, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Almaty"),
@@ -62,4 +76,6 @@ export const KZ_ALMATY_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("shakhristan", "Шахристан", 43.206730000, 76.885069000, "https://yandex.kz/maps/ru/org/shakhristan_turghyn_uy_kesheni/141550956424/"),
   residential("shugyla", "Шугыла", 43.210221829, 76.789979053, "https://yandex.kz/maps/ru/162/almaty/geo/shughyla_turghyn_uy_kesheni/3362263555/"),
   residential("yubileinyi", "Юбилейный", 43.201343000, 76.982871000, "https://yandex.kz/maps/ru/org/zhk_yubileynyy/217800209148/"),
+  osmResidential('premiera', 'Премьера', 43.2218182, 76.7947073, 1466980447),
+  osmResidential('terracotta', 'Terracotta', 43.2364222, 76.879906, 1430348605),
 ]);

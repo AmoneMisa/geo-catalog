@@ -11,6 +11,20 @@ const microdistrict = (slug, canonicalName, lat, lng, sourceUrl) => Object.freez
   accuracyM: 800,
 });
 
+const osmMicrodistrict = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 800) => Object.freeze({
+  id: `kz:karaganda:microdistrict:${slug}`,
+  type: 'microdistrict',
+  country: 'KZ',
+  canonicalName,
+  parentId: 'kz:karaganda',
+  center: Object.freeze({ lat, lng }),
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'neighborhood',
+  accuracyM,
+  osm: Object.freeze({ type: 'way', id: osmWayId }),
+});
+
 export const KZ_KARAGANDA_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict("12-i-mikroraion", "12-й микрорайон", 49.894281445, 73.200096411, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
   microdistrict("14-i-mikroraion", "14-й микрорайон", 49.892902675, 73.215118938, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
@@ -25,4 +39,6 @@ export const KZ_KARAGANDA_NEIGHBORHOOD_ENTITIES = Object.freeze([
   microdistrict("stepnoi-2", "Степной-2", 49.787081549, 73.144841050, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
   microdistrict("stepnoi-3", "Степной-3", 49.789684964, 73.148910115, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
   microdistrict("16-i-mikroraion", "16-й микрорайон", 49.8909363, 73.1914307, "https://www.openstreetmap.org/way/110019754"),
+  osmMicrodistrict('15-i-mikroraion', '15-й микрорайон', 49.8988917, 73.1943544, 110019551),
+  osmMicrodistrict('19-i-mikroraion', '19-й микрорайон', 49.8670834, 73.1958714, 733530343),
 ]);

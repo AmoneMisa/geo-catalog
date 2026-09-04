@@ -11,6 +11,20 @@ const residential = (slug, canonicalName, lat, lng, sourceUrl) => Object.freeze(
   accuracyM: 260,
 });
 
+const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 260) => Object.freeze({
+  id: `kz:karaganda:residential:${slug}`,
+  type: 'residential_complex',
+  country: 'KZ',
+  canonicalName,
+  parentId: 'kz:karaganda',
+  center: Object.freeze({ lat, lng }),
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'building',
+  accuracyM,
+  osm: Object.freeze({ type: 'way', id: osmWayId }),
+});
+
 export const KZ_KARAGANDA_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("central-city", "Central City", 49.794302000, 73.075228000, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20Karaganda"),
   residential("central-park", "Central Park", 49.773610000, 73.149726000, "https://yandex.com/maps/?text=%D0%96%D0%9A%2C%20Karaganda"),
@@ -28,4 +42,5 @@ export const KZ_KARAGANDA_RESIDENTIAL_COMPLEX_ENTITIES = Object.freeze([
   residential("krylova", "Крылова", 49.803621000, 73.062812000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
   residential("novyi-stepnoi", "Новый Степной", 49.784085000, 73.153222000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
   residential("etalon", "Эталон", 49.805114000, 73.058894000, "https://yandex.com/maps/?text=%D1%82%D2%B1%D1%80%D2%93%D1%8B%D0%BD%20%D2%AF%D0%B9%20%D0%BA%D0%B5%D1%88%D0%B5%D0%BD%D1%96%2C%20Karaganda"),
+  osmResidential('trilistnik', 'Трилистник', 49.7984653, 73.1474285, 1328329016),
 ]);

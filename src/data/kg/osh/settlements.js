@@ -7,7 +7,7 @@ const settlement = (slug, canonicalName, lat, lng, osmType, osmId, accuracyM = 1
   center: Object.freeze({ lat, lng }),
   source: 'osm',
   sourceUrl: `https://www.openstreetmap.org/${osmType}/${osmId}`,
-  accuracy: 'settlement',
+  accuracy: 'neighborhood',
   accuracyM,
   osm: Object.freeze({ type: osmType, id: osmId }),
 });

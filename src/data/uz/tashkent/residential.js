@@ -115,6 +115,7 @@ export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
     180,
     'uz:tashkent:mirzo-ulugbek',
   ),
+  osmResidential('karasaray', 'Karasaray', 41.3456252, 69.2344392, 32721279, 220),
   Object.freeze({
     id: 'uz:tashkent:residential:olmazor-city',
     type: 'residential_complex',
