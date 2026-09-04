@@ -40,6 +40,9 @@ const manualPoi = (slug, canonicalName, type, lat, lng, accuracy = 'building', a
 
 export const SAMARKAND_POI_ENTITIES = Object.freeze([
   wikidataPoi('registan-square', 'Registan Square', 'poi.square', 39.654722, 66.975556, 'Q1373583', 120, { type: 'relation', id: 17141748 }),
+  wikidataPoi('ulugh-beg-madrasa', 'Ulugh Beg Madrasa', 'poi.madrasa', 39.654722, 66.974672, 'Q492144', 90),
+  wikidataPoi('sherdar-madrasa', 'Sherdar Madrasa', 'poi.madrasa', 39.654883, 66.976336, 'Q2278212', 90),
+  wikidataPoi('hazrat-hyzr-mosque', 'Hazrat-Hyzr Mosque', 'poi.mosque', 39.663453, 66.983256, 'Q4292369', 100),
   wikidataPoi('gur-e-amir', 'Gur-e Amir', 'poi.mausoleum', 39.648333, 66.968889, 'Q1256223', 100),
   wikidataPoi('shohi-zinda', 'Shohi Zinda', 'poi.religious_complex', 39.662620, 66.987878, 'Q671935', 140),
   wikidataPoi('bibi-khanym', 'Bibi-Khanym', 'poi.mosque', 39.660556, 66.979722, 'Q679218', 100),
