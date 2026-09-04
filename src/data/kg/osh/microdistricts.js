@@ -1,9 +1,9 @@
-const osmMicrodistrict = (slug, canonicalName, lat, lng, osmWayId, parentId = 'kg:osh') => Object.freeze({
+const osmMicrodistrict = (slug, canonicalName, lat, lng, osmWayId) => Object.freeze({
   id: `kg:osh:microdistrict:${slug}`,
   type: 'microdistrict',
   country: 'KG',
   canonicalName,
-  parentId,
+  parentId: 'kg:osh',
   center: Object.freeze({ lat, lng }),
   source: 'osm',
   sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
@@ -15,5 +15,4 @@ const osmMicrodistrict = (slug, canonicalName, lat, lng, osmWayId, parentId = 'k
 export const KG_OSH_MICRODISTRICT_ENTITIES = Object.freeze([
   osmMicrodistrict('anar', 'Anar', 40.513245910405294, 72.81458115024875, 218603042),
   osmMicrodistrict('tuleyken', 'Tuleyken', 40.49496911801717, 72.81947115636904, 970988142),
-  osmMicrodistrict('kulatov', 'Кулатов', 40.5177032, 72.7605313, 452186589, 'kg:osh:district:kerme-too'),
 ]);

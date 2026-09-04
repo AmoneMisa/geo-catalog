@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 
 import { getGeoEntity } from '../src/catalog.js';
 
-const cityScoped = Object.freeze([
+const expected = Object.freeze([
   ['kg:osh:settlement:kenesh', 'settlement', 'Кеңеш'],
+  ['kg:osh:settlement:kerme-too', 'settlement', 'Керме-Тоо'],
   ['kg:osh:settlement:ozgur', 'settlement', 'Озгур'],
   ['kg:osh:settlement:orke', 'settlement', 'Орке'],
   ['kg:osh:settlement:pyatiletka', 'settlement', 'Пятилетка'],
@@ -17,7 +18,7 @@ const cityScoped = Object.freeze([
 ]);
 
 test('Osh enrichment exposes verified city-administered settlements and housing', () => {
-  for (const [id, type, canonicalName] of cityScoped) {
+  for (const [id, type, canonicalName] of expected) {
     const entity = getGeoEntity(id);
     assert.ok(entity, `${id} should exist`);
     assert.equal(entity.country, 'KG');
@@ -31,26 +32,14 @@ test('Osh enrichment exposes verified city-administered settlements and housing'
   }
 });
 
-test('Kerme-Too owns Kulatov through the current Osh municipal hierarchy', () => {
-  const kermeToo = getGeoEntity('kg:osh:district:kerme-too');
-  assert.ok(kermeToo);
-  assert.equal(kermeToo.type, 'district');
-  assert.equal(kermeToo.country, 'KG');
-  assert.equal(kermeToo.parentId, 'kg:osh');
-  assert.equal(kermeToo.canonicalName, 'Керме-Тоо');
-  assert.equal(kermeToo.source, 'osm');
-  assert.deepEqual(kermeToo.osm, { type: 'relation', id: 19062465 });
+test('Osh does not reuse the Kerme-Too village geometry as a municipal territory', () => {
+  assert.equal(getGeoEntity('kg:osh:district:kerme-too'), null);
+  assert.equal(getGeoEntity('kg:osh:microdistrict:kulatov'), null);
 
-  const kulatov = getGeoEntity('kg:osh:microdistrict:kulatov');
-  assert.ok(kulatov);
-  assert.equal(kulatov.type, 'microdistrict');
-  assert.equal(kulatov.country, 'KG');
-  assert.equal(kulatov.parentId, 'kg:osh:district:kerme-too');
-  assert.equal(kulatov.canonicalName, 'Кулатов');
-  assert.equal(kulatov.source, 'osm');
-  assert.deepEqual(kulatov.osm, { type: 'way', id: 452186589 });
-
-  assert.equal(getGeoEntity('kg:osh:settlement:kerme-too'), null);
+  const village = getGeoEntity('kg:osh:settlement:kerme-too');
+  assert.ok(village);
+  assert.equal(village.source, 'osm');
+  assert.deepEqual(village.osm, { type: 'relation', id: 19062465 });
 });
 
 test('Osh scrape-backed microdistricts retain truthful OSM provenance', () => {
