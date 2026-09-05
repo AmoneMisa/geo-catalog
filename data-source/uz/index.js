@@ -8,6 +8,7 @@ import { ANDIJAN_REVIEWED_STREET_ENTITIES } from './cities/andijan-reviewed-stre
 import { FERGANA_ENTITIES } from './cities/fergana.js';
 import { FERGANA_REVIEWED_STREET_ENTITIES } from './cities/fergana-reviewed-streets.js';
 import { BUKHARA_ENTITIES } from './cities/bukhara.js';
+import { BUKHARA_REVIEWED_AREA_ENTITIES } from './cities/bukhara-reviewed-areas.js';
 import { QARSHI_ENTITIES } from './cities/qarshi.js';
 import { QARSHI_REVIEWED_STREET_ENTITIES } from './cities/qarshi-reviewed-streets.js';
 import { NUKUS_ENTITIES } from './cities/nukus.js';
@@ -32,6 +33,7 @@ export const UZ_ENTITIES = Object.freeze([
   ...FERGANA_ENTITIES,
   ...FERGANA_REVIEWED_STREET_ENTITIES,
   ...BUKHARA_ENTITIES,
+  ...BUKHARA_REVIEWED_AREA_ENTITIES,
   ...QARSHI_ENTITIES,
   ...QARSHI_REVIEWED_STREET_ENTITIES,
   ...NUKUS_ENTITIES,
