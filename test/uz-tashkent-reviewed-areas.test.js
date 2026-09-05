@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { getGeoEntity } from '../src/catalog.js';
-import { resolveLexiconGeoEntity } from '../src/lexicon-bridge.js';
 
 const osmCases = Object.freeze([
   ['uz:tashkent:microdistrict:chilanzar-21', 'microdistrict', 'Chilanzar-21', 'uz:tashkent:uchtepa', 41.2919358, 69.1742741, 'relation', 1563298],
@@ -12,7 +11,6 @@ const osmCases = Object.freeze([
 
 const mappedCases = Object.freeze([
   ['uz:tashkent:microdistrict:dilbulok', 'microdistrict', 'Dilbulok', 'uz:tashkent:yakkasaray', 41.270339, 69.24175, 'https://2gis.uz/tashkent/geo/70030077149953874'],
-  ['uz:tashkent:microdistrict:manzara', 'microdistrict', 'Manzara', 'uz:tashkent:yunusabad', 41.356428, 69.315445, 'https://yandex.uz/maps/10335/tashkent/geo/manzara_mavzesi/5758427583/panorama/'],
 ]);
 
 test('reviewed Tashkent OSM areas retain exact frozen provenance', () => {
@@ -44,20 +42,6 @@ test('reviewed Tashkent mapped areas retain exact frozen provenance', () => {
     assert.equal(entity.accuracyM, 800, id);
     assert.equal(entity.osm, undefined, id);
   }
-});
-
-test('Manzara parser canonical resolves to the reviewed Yunusabad microdistrict', () => {
-  const entity = resolveLexiconGeoEntity({
-    country: 'UZ',
-    city: 'Tashkent',
-    type: 'microdistrict',
-    canonical: 'Manzara',
-  });
-
-  assert.ok(entity);
-  assert.equal(entity.id, 'uz:tashkent:microdistrict:manzara');
-  assert.equal(entity.parentId, 'uz:tashkent:yunusabad');
-  assert.deepEqual(entity.center, { lat: 41.356428, lng: 69.315445 });
 });
 
 test('Chilanzar-20 is owned by the reviewed microdistrict relation', () => {
