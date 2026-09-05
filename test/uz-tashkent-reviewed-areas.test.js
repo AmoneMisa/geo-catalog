@@ -55,6 +55,11 @@ test('misclassified Tashkent review candidates do not create duplicate spatial o
     ['uz:tashkent:district:yoldosh-16', 'uz:tashkent:local-area:yoldosh-16'],
     ['uz:tashkent:local-area:yangi-tashkent', 'uz:tashkent:mahalla:yangi-tashkent'],
     ['uz:tashkent:local-area:abu-ali-ibn-sina-2', 'uz:tashkent:local-area:ibn-sino-2'],
+    ['uz:tashkent:district:yuldosh-sputnik-2', 'uz:tashkent:local-area:yoldosh-2'],
+    ['uz:tashkent:district:yuldosh-sputnik-9', 'uz:tashkent:local-area:yoldosh-9'],
+    ['uz:tashkent:district:yuldosh-sputnik-16', 'uz:tashkent:local-area:yoldosh-16'],
+    ['uz:tashkent:district:yuldosh-sputnik-17', 'uz:tashkent:local-area:yoldosh-17'],
+    ['uz:tashkent:district:yuldosh-sputnik-ts2', 'uz:tashkent:local-area:yoldosh-c2'],
   ];
 
   for (const [falseId, ownerId] of pairs) {

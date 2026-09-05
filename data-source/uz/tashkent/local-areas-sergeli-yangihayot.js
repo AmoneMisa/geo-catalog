@@ -32,8 +32,8 @@ export const TASHKENT_SERGELI_YANGIHAYOT_LOCAL_AREA_ENTITIES = Object.freeze([
   manualLocalArea('sugdiyona', "Sug'diyona", 'uz:tashkent:sergeli', 41.223284, 69.235013, 1500),
 
   // Current Yo'ldosh (Sputnik) residential dahas. Prefer explicit residential
-  // relations from the enrichment discovery; use the direct neighbourhood node
-  // only where the report did not expose a separate area relation.
+  // area owners from the enrichment discovery; use the direct neighbourhood node
+  // only where the report did not expose a separate area object.
   osmLocalArea('yoldosh-1', "Yo'ldosh-1", YANGIHAYOT, 41.2009563, 69.2143167, 'relation', 1866494, 520),
   osmLocalArea('yoldosh-2', "Yo'ldosh-2", YANGIHAYOT, 41.203734, 69.2210467, 'relation', 1866492, 520),
   osmLocalArea('yoldosh-3', "Yo'ldosh-3", YANGIHAYOT, 41.2055862, 69.2255331, 'relation', 1959145, 520),
@@ -49,9 +49,9 @@ export const TASHKENT_SERGELI_YANGIHAYOT_LOCAL_AREA_ENTITIES = Object.freeze([
   osmLocalArea('yoldosh-13', "Yo'ldosh-13", YANGIHAYOT, 41.193661, 69.2239153, 'relation', 1959345, 520),
   osmLocalArea('yoldosh-14', "Yo'ldosh-14", YANGIHAYOT, 41.1950438, 69.2272923, 'relation', 1959346, 520),
   osmLocalArea('yoldosh-15', "Yo'ldosh-15", YANGIHAYOT, 41.1931674, 69.2160924, 'node', 13241688708, 650),
-  osmLocalArea('yoldosh-16', "Yo'ldosh-16", YANGIHAYOT, 41.1991891, 69.2095847, 'node', 1868248364, 650),
+  osmLocalArea('yoldosh-16', "Yo'ldosh-16", YANGIHAYOT, 41.1982439, 69.2091423, 'way', 169301465, 520),
   osmLocalArea('yoldosh-16a', "Yo'ldosh-16A", YANGIHAYOT, 41.1964697, 69.2049969, 'node', 13241688680, 650),
-  osmLocalArea('yoldosh-17', "Yo'ldosh-17", YANGIHAYOT, 41.1963243, 69.2116236, 'node', 1868248368, 650),
+  osmLocalArea('yoldosh-17', "Yo'ldosh-17", YANGIHAYOT, 41.1963243, 69.2116236, 'way', 169301466, 520),
   osmLocalArea('yoldosh-c1', "Yo'ldosh-C1", YANGIHAYOT, 41.2023375, 69.2176894, 'relation', 1959347, 520),
   osmLocalArea('yoldosh-c2', "Yo'ldosh-C2", YANGIHAYOT, 41.1996599, 69.2209183, 'relation', 1959348, 520),
   osmLocalArea('yoldosh-c3', "Yo'ldosh-C3", YANGIHAYOT, 41.1960268, 69.2222363, 'relation', 1959349, 520),
