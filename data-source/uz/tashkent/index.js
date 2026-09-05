@@ -27,6 +27,7 @@ import { TASHKENT_RESIDENTIAL_ENTITIES } from './residential.js';
 import { TASHKENT_CITYWIDE_RESIDENTIAL_ENTITIES } from './residential-citywide.js';
 import { TASHKENT_REVIEWED_RESIDENTIAL_ENTITIES } from './reviewed-residential.js';
 import { TASHKENT_STREET_ADDRESS_ENTITIES } from './streets-addresses.js';
+import { TASHKENT_REVIEWED_STREET_ENTITIES } from './reviewed-streets.js';
 
 export const UZ_TASHKENT_ENTITIES = Object.freeze([
   ...TASHKENT_ENTITIES,
@@ -58,4 +59,5 @@ export const UZ_TASHKENT_ENTITIES = Object.freeze([
   ...TASHKENT_CITYWIDE_RESIDENTIAL_ENTITIES,
   ...TASHKENT_REVIEWED_RESIDENTIAL_ENTITIES,
   ...TASHKENT_STREET_ADDRESS_ENTITIES,
+  ...TASHKENT_REVIEWED_STREET_ENTITIES,
 ]);
