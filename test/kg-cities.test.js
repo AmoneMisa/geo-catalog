@@ -6,7 +6,7 @@ import { getGeoEntity } from '../src/catalog.js';
 const cities = Object.freeze([
   ['kg:bishkek', 'Bishkek'],
   ['kg:osh', 'Osh'],
-  ['kg:jalal-abad', 'Jalal-Abad'],
+  ['kg:jalal-abad', 'Manas'],
   ['kg:karakol', 'Karakol'],
   ['kg:tokmok', 'Tokmok'],
   ['kg:naryn', 'Naryn'],
