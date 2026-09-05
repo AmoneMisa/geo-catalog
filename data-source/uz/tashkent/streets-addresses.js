@@ -158,4 +158,16 @@ export const TASHKENT_STREET_ADDRESS_ENTITIES = Object.freeze([
     accuracy: 'building',
     accuracyM: 25,
   }),
+  Object.freeze({
+    id: 'uz:tashkent:address:shifokorlar-street-6',
+    type: 'address',
+    country: 'UZ',
+    canonicalName: '6 Shifokorlar Street',
+    parentId: 'uz:tashkent:street:shifokorlar',
+    center: Object.freeze({ lat: 41.356367, lng: 69.184192 }),
+    source: 'manual',
+    sourceUrl: 'https://yandex.ru/maps/10335/tashkent/house/YkAYdwBpQEIHQFprfX93c39jZg==/',
+    accuracy: 'building',
+    accuracyM: 25,
+  }),
 ]);
