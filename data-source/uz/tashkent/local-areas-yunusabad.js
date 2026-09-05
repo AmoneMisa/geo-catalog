@@ -25,6 +25,7 @@ export const TASHKENT_YUNUSABAD_LOCAL_AREA_ENTITIES = Object.freeze([
     parentId: 'uz:tashkent:yunusabad',
     center: { lat: 41.356428, lng: 69.315445 },
     source: 'manual',
+    sourceUrl: 'https://yandex.uz/maps/10335/tashkent/geo/manzara_mavzesi/5758427583/panorama/',
     accuracy: 'approximate',
     accuracyM: 500,
   },
