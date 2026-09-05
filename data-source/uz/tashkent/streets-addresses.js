@@ -146,4 +146,16 @@ export const TASHKENT_STREET_ADDRESS_ENTITIES = Object.freeze([
     accuracy: 'building',
     accuracyM: 50,
   }),
+  Object.freeze({
+    id: 'uz:tashkent:address:shimoliy-olmazor-street-1',
+    type: 'address',
+    country: 'UZ',
+    canonicalName: '1 Shimoliy Olmazor Street',
+    parentId: 'uz:tashkent:local-area:shimoliy-olmazor',
+    center: Object.freeze({ lat: 41.341975, lng: 69.250793 }),
+    source: 'manual',
+    sourceUrl: 'https://yandex.ru/maps/10335/tashkent/house/YkAYdAJgTkwEQFprfX91cHVkYQ==/',
+    accuracy: 'building',
+    accuracyM: 25,
+  }),
 ]);
