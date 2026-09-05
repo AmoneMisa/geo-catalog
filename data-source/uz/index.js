@@ -7,6 +7,7 @@ import { FERGANA_ENTITIES } from './cities/fergana.js';
 import { BUKHARA_ENTITIES } from './cities/bukhara.js';
 import { QARSHI_ENTITIES } from './cities/qarshi.js';
 import { NUKUS_ENTITIES } from './cities/nukus.js';
+import { NUKUS_REVIEWED_STREET_ENTITIES } from './cities/nukus-reviewed-streets.js';
 import { URGENCH_ENTITIES } from './cities/urgench.js';
 import { TURTKUL_ENTITIES } from './cities/turtkul.js';
 import { UZ_SECONDARY_CITY_ANCHORS } from './secondary-city-anchors.js';
@@ -26,6 +27,7 @@ export const UZ_ENTITIES = Object.freeze([
   ...BUKHARA_ENTITIES,
   ...QARSHI_ENTITIES,
   ...NUKUS_ENTITIES,
+  ...NUKUS_REVIEWED_STREET_ENTITIES,
   ...URGENCH_ENTITIES,
   ...TURTKUL_ENTITIES,
   ...UZ_SECONDARY_CITY_ANCHORS,
