@@ -1,0 +1,30 @@
+const osmStreet = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 850) => ({
+  id: `uz:andijan:street:${slug}`,
+  type: 'street',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:andijan',
+  center: { lat, lng },
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'street',
+  accuracyM,
+  osm: { type: 'way', id: osmWayId },
+});
+
+export const ANDIJAN_REVIEWED_STREET_ENTITIES = Object.freeze([
+  osmStreet('abdulaziza-yuldasheva', 'улица Абдулазиза Юлдашева', 40.7480376, 72.3237085, 27635565),
+  osmStreet('tinchlik', 'Тинчлик улица', 40.7655951, 72.3383246, 123632275),
+  osmStreet('atabekova', 'улица Атабекова', 40.8113274, 72.321776, 853545426),
+  osmStreet('t-keldieva', 'улица Т. Келдиева', 40.7890042, 72.3245108, 123632874),
+  osmStreet('shabnam', 'улица Шабнам', 40.7539627, 72.3488442, 343902025),
+  osmStreet('toklik', 'улица Токлик', 40.7892982, 72.3363177, 1218935280),
+  osmStreet('abduraufa-fitrata', 'улица Абдурауфа Фитрата', 40.7759645, 72.3508932, 27154544),
+  osmStreet('obikhayot', 'улица Обихаёт', 40.7838467, 72.3617989, 123632268),
+  osmStreet('damarik', 'улица Дамарик', 40.7954394, 72.3664466, 1354614424),
+  osmStreet('khursandlik', 'улица Хурсандлик', 40.762625, 72.3266841, 1532186712),
+  osmStreet('iftikhor', 'улица Ифтихор', 40.7640507, 72.3400438, 123632717),
+  osmStreet('bakhouddina-nakshbandi', 'улица Бахоуддина Накшбанди', 40.7506781, 72.364144, 1123713897),
+  osmStreet('sarbontеpa', 'Сарбонтепа улица', 40.7765684, 72.3148511, 1532166195),
+  osmStreet('saidy-zunnunovoy', 'улица Саиды Зуннуновой', 40.7735815, 72.3131705, 123635130),
+]);
