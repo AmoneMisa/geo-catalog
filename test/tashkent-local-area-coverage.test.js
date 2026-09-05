@@ -108,16 +108,8 @@ test('Manzara keeps one canonical territorial owner with reviewed provenance', (
 });
 
 test('same-name Tashkent mahallas remain independent spatial identities', () => {
-  for (const canonical of ["Bog'bon"]) {
-    assert.equal(
-      isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical }),
-      true,
-      canonical,
-    );
-  }
-
   for (const canonical of [
-    'Humoyun', 'Asalobod', 'Gulobod', 'Qalqon', 'Olimpiya', 'Sebzor', "Bog'ko'cha", 'Shifokorlar',
+    "Bog'bon", 'Humoyun', 'Asalobod', 'Gulobod', 'Qalqon', 'Olimpiya', 'Sebzor', "Bog'ko'cha", 'Shifokorlar',
   ]) {
     assert.equal(
       isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical }),
@@ -125,6 +117,21 @@ test('same-name Tashkent mahallas remain independent spatial identities', () => 
       canonical,
     );
   }
+
+  const bogbonMahalla = resolveLexiconGeoEntity({
+    country: 'UZ',
+    city: 'Tashkent',
+    type: 'mahalla',
+    canonical: "Bog'bon",
+  });
+  const bogbonArea = getGeoEntity('uz:tashkent:local-area:bogbon');
+  assert.equal(bogbonMahalla?.id, 'uz:tashkent:mahalla:bogbon');
+  assert.equal(bogbonMahalla?.parentId, 'uz:tashkent:yashnobod');
+  assert.deepEqual(bogbonMahalla?.center, { lat: 41.282304, lng: 69.384642 });
+  assert.equal(bogbonMahalla?.source, 'manual');
+  assert.equal(bogbonMahalla?.osm, undefined);
+  assert.deepEqual(bogbonArea?.osm, { type: 'way', id: 557224880 });
+  assert.notEqual(bogbonMahalla?.id, bogbonArea?.id);
 
   assert.deepEqual(getGeoEntity('uz:tashkent:mahalla:bogkocha')?.osm, { type: 'relation', id: 2336787 });
   assert.deepEqual(getGeoEntity('uz:tashkent:mahalla:shifokorlar')?.osm, { type: 'way', id: 1123281625 });
