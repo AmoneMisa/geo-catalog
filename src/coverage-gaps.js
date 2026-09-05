@@ -9,6 +9,7 @@ const normalize = (value) => String(value ?? '')
 const gaps = (country, city, type, canonicals, reason) => canonicals.map((canonical) => ({ country, city, type, canonical, reason }));
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
+  ...gaps('UZ', 'Tashkent', 'microdistrict', ['Manzara'], 'The verified Manzara mavzesi point is owned by local_area; keep a distinct microdistrict identity unresolved until an independent spatial owner is verified.'),
   ...gaps('UZ', 'Tashkent', 'mahalla', [ "Bog'bon",
   ], 'Official mahalla name from the lexicon; no independently verified spatial object or boundary is available yet.'),
   ...gaps('UZ', 'Tashkent', 'local_area', [
