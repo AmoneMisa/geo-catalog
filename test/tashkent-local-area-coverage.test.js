@@ -90,17 +90,16 @@ test('verified approximate Tashkent local-area centers remain explicitly non-OSM
   }
 });
 
-test('Manzara local area and reviewed microdistrict remain distinct identities', () => {
+test('Manzara keeps one canonical territorial owner with reviewed provenance', () => {
   const area = getGeoEntity('uz:tashkent:local-area:manzara');
-  const microdistrict = getGeoEntity('uz:tashkent:microdistrict:manzara');
   assert.equal(area?.type, 'local_area');
   assert.equal(area?.parentId, 'uz:tashkent:yunusabad');
-  assert.equal(microdistrict?.type, 'microdistrict');
-  assert.equal(microdistrict?.parentId, 'uz:tashkent:yunusabad');
-  assert.notEqual(area?.id, microdistrict?.id);
+  assert.deepEqual(area?.center, { lat: 41.356428, lng: 69.315445 });
+  assert.equal(area?.sourceUrl, 'https://yandex.uz/maps/10335/tashkent/geo/manzara_mavzesi/5758427583/panorama/');
+  assert.equal(getGeoEntity('uz:tashkent:microdistrict:manzara'), null);
   assert.equal(
-    isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'microdistrict', canonical: 'Manzara' }),
-    false,
+    resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Manzara' })?.id,
+    area?.id,
   );
   assert.equal(
     isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Manzara' }),
