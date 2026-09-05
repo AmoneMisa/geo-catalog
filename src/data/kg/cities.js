@@ -16,7 +16,7 @@ const geonames = (name) => `https://www.geonames.org/advanced-search.html?countr
 export const KG_CITY_ENTITIES = Object.freeze([
   city('kg:bishkek', 'Bishkek', 42.87, 74.59, geonames('Bishkek')),
   city('kg:osh', 'Osh', 40.53, 72.80, geonames('Osh')),
-  city('kg:jalal-abad', 'Jalal-Abad', 40.93, 73.00, geonames('Jalal-Abad')),
+  city('kg:jalal-abad', 'Manas', 40.94498117, 72.99313177, geonames('Manas')),
   city('kg:karakol', 'Karakol', 42.49, 78.39, geonames('Karakol')),
   city('kg:tokmok', 'Tokmok', 42.84, 75.30, geonames('Tokmok')),
   city('kg:naryn', 'Naryn', 41.43, 75.99, geonames('Naryn')),
