@@ -27,17 +27,6 @@ const mappedArea = (idType, type, slug, canonicalName, parentId, lat, lng, sourc
 
 export const TASHKENT_REVIEWED_AREA_ENTITIES = Object.freeze([
   osmArea(
-    'local-area',
-    'local_area',
-    'abu-ali-ibn-sina-2',
-    'Abu Ali ibn Sina-2',
-    'uz:tashkent:shaykhantahur',
-    41.3373461,
-    69.1711307,
-    'way',
-    149989839,
-  ),
-  osmArea(
     'microdistrict',
     'microdistrict',
     'chilanzar-21',
@@ -79,15 +68,5 @@ export const TASHKENT_REVIEWED_AREA_ENTITIES = Object.freeze([
     41.270339,
     69.24175,
     'https://2gis.uz/tashkent/geo/70030077149953874',
-  ),
-  mappedArea(
-    'mahalla',
-    'mahalla',
-    'toshkent',
-    'Toshkent mahallasi',
-    'uz:tashkent:yangihayot',
-    41.173696,
-    69.204985,
-    'https://2gis.uz/tashkent/geo/70030076273161955',
   ),
 ]);
