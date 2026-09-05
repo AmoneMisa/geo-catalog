@@ -1,0 +1,33 @@
+const osmStreet = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 850) => ({
+  id: `uz:qarshi:street:${slug}`,
+  type: 'street',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:qarshi',
+  center: { lat, lng },
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'street',
+  accuracyM,
+  osm: { type: 'way', id: osmWayId },
+});
+
+export const QARSHI_REVIEWED_STREET_ENTITIES = Object.freeze([
+  osmStreet('sheroziy', 'улица Шерозий', 38.841864, 65.8296104, 235629407),
+  osmStreet('bunyodkor', 'улица Бунёдкор', 38.8461957, 65.7708107, 155762174),
+  osmStreet('uzumzor', 'улица Узумзор', 38.8562318, 65.7712083, 230400140),
+  osmStreet('mukumiy', 'улица Мукумий', 38.8637099, 65.8063091, 285017303),
+  osmStreet('kum-kishlak', 'Кум Кишлак улица', 38.8473074, 65.8146891, 228236280),
+  osmStreet('khalklar-dustligi', 'улица Халклар Дустлиги', 38.8493128, 65.832376, 559995933),
+  osmStreet('koratepa', 'Коратепа улица', 38.8607177, 65.7751227, 316190401),
+  osmStreet('korlugbogot', 'улица Корлугбогот', 38.8582066, 65.7886725, 1547224219),
+  osmStreet('nuriston', 'улица Нуристон', 38.8416782, 65.7654283, 307314024),
+  osmStreet('khusniobod', 'улица Хусниобод', 38.8548072, 65.8020941, 228236287),
+  osmStreet('turkiston', 'улица Туркистон', 38.8637851, 65.801607, 228200961),
+  osmStreet('buyuk-turan', 'Буюк Туран улица', 38.8265024, 65.7663884, 663960224),
+  osmStreet('zhukovskogo', 'улица Жуковского', 38.8265898, 65.7774498, 239032070),
+  osmStreet('margilon', 'улица Маргилон', 38.8843704, 65.7968895, 570289850),
+  osmStreet('kurgantepa', 'улица Кургантепа', 38.8534636, 65.8284497, 293962886),
+  osmStreet('khuzhabog', 'улица Хужабог', 38.8502161, 65.8001487, 243025782),
+  osmStreet('zarafshon', 'улица Зарафшон', 38.8794209, 65.8014891, 307314687),
+]);
