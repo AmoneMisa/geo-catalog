@@ -448,12 +448,17 @@ test("Bog'bon Street remains distinct from Yashnobod mahalla and resolved local 
   assert.equal(street?.parentId, 'uz:tashkent:yunusabad');
   assert.deepEqual(street?.osm, { type: 'way', id: 105705400 });
 
+  const mahalla = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: "Bog'bon" });
+  assert.equal(mahalla?.id, 'uz:tashkent:mahalla:bogbon');
+  assert.equal(mahalla?.parentId, 'uz:tashkent:yashnobod');
+  assert.deepEqual(mahalla?.center, { lat: 41.282304, lng: 69.384642 });
+
   const area = resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Bog'bon" });
   assert.equal(area?.id, 'uz:tashkent:local-area:bogbon');
   assert.equal(area?.parentId, 'uz:tashkent:yashnobod');
   assert.deepEqual(area?.osm, { type: 'way', id: 557224880 });
 
-  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: "Bog'bon" }), true);
+  assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'mahalla', canonical: "Bog'bon" }), false);
   assert.equal(isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: "Bog'bon" }), false);
 });
 
