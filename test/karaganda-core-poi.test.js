@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { KZ_KARAGANDA_ENTITIES } from '../src/data/kz/karaganda/index.js';
+import { KZ_KARAGANDA_ENTITIES } from '../data-source/kz/karaganda/index.js';
 
 const expected = Object.freeze([
   { id: 'kz:karaganda:poi:karaganda-railway-station', type: 'poi.railway_station', canonicalName: 'Qarağandı Railway Station', source: 'wikidata', wikidataId: 'Q12574833', lat: 49.789722, lng: 73.098056 },

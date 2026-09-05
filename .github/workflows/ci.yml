@@ -14,6 +14,8 @@ jobs:
     strategy:
       matrix:
         node-version: [20, 22]
+    env:
+      GEO_CATALOG_DECRYPTION_KEY: ${{ secrets.GEO_CATALOG_DECRYPTION_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

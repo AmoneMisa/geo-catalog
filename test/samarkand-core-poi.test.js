@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { UZ_SAMARKAND_ENTITIES } from '../src/data/uz/samarkand/index.js';
+import { UZ_SAMARKAND_ENTITIES } from '../data-source/uz/samarkand/index.js';
 
 const expectedHeritagePoi = Object.freeze([
   { id: 'uz:samarkand:poi:ulugh-beg-madrasa', type: 'poi.madrasa', canonicalName: 'Ulugh Beg Madrasa', wikidataId: 'Q492144', lat: 39.654722, lng: 66.974672, source: 'wikidata' },

@@ -2,10 +2,10 @@
 
 ## Directory layout
 
-Country-specific data lives under `src/data/<country>/` using lowercase ISO alpha-2 codes:
+Country-specific data lives under `data-source/<country>/` using lowercase ISO alpha-2 codes:
 
 ```text
-src/data/
+data-source/
   ua/
     index.js
     cities.js
@@ -56,7 +56,7 @@ The default coverage order is:
 - Preferred names: `cities.js`, `districts.js`, `neighborhoods.js`, `microdistricts.js`, `local-areas.js`, `mahallas.js`, `metro.js`, `poi.js`, `residential-complexes.js`.
 - Do not create `*-extra.js`, `*-part-2.js`, `*-new.js`, or similarly chronological data modules.
 - If an existing category becomes large, split it by stable domain/geography, e.g. `microdistricts-chilanzar.js`, not `microdistricts-extra.js`.
-- CI enforces the `*-extra.js` prohibition under `src/data`.
+- CI enforces the `*-extra.js` prohibition under `data-source`.
 
 ## Exports
 
@@ -72,7 +72,7 @@ Do not introduce new `*_ANCHORS` export names. Existing ones are legacy-compatib
 ## Aggregation rules
 
 - `src/catalog.js` imports country aggregators only, plus truly global datasets.
-- `src/data/<country>/index.js` owns the order of all entities for that country.
+- `data-source/<country>/index.js` owns the order of all entities for that country.
 - City `index.js` files own the order of subject modules inside that city.
 - A leaf data module must not import another city's data.
 - Moving or splitting files must preserve entity IDs, coordinates, metadata, and aggregation order unless the change explicitly intends to modify data.

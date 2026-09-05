@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { KZ_ASTANA_ENTITIES } from '../src/data/kz/astana/index.js';
+import { KZ_ASTANA_ENTITIES } from '../data-source/kz/astana/index.js';
 
 const expected = Object.freeze([
   ['kz:astana:poi:bayterek', 'poi.monument', 'Bayterek', 'way', 230401645],

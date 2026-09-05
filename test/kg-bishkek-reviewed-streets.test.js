@@ -2,7 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { getGeoEntity } from '../src/catalog.js';
-import { KG_BISHKEK_STREET_ENTITIES } from '../src/data/kg/bishkek/streets.js';
+import { KG_BISHKEK_STREET_ENTITIES } from '../data-source/kg/bishkek/streets.js';
+import { KG_BISHKEK_REVIEWED_STREET_ENTITIES } from '../data-source/kg/bishkek/reviewed-streets.js';
+
+const allStreets = Object.freeze([...KG_BISHKEK_STREET_ENTITIES, ...KG_BISHKEK_REVIEWED_STREET_ENTITIES]);
 
 const reviewed = Object.freeze([
   ['kg:bishkek:street:bishkek-1', 'Бишкек-1 улица', 'https://2gis.kg/bishkek/geo/70030077109339684'],
@@ -42,7 +45,7 @@ test('existing Ibraimov street remains the sole physical owner', () => {
   const owner = getGeoEntity('kg:bishkek:street:ibraimov');
   assert.ok(owner);
   assert.equal(owner.canonicalName, 'Ibraimov Street');
-  assert.equal(KG_BISHKEK_STREET_ENTITIES.filter((entity) => entity.canonicalName === 'Ibraimov Street').length, 1);
+  assert.equal(allStreets.filter((entity) => entity.canonicalName === 'Ibraimov Street').length, 1);
 });
 
 test('ambiguous, stale and out-of-city street candidates are not promoted', () => {
@@ -56,6 +59,6 @@ test('ambiguous, stale and out-of-city street candidates are not promoted', () =
     'Улица СЭЗ Бишкек',
   ];
   for (const canonicalName of rejectedNames) {
-    assert.equal(KG_BISHKEK_STREET_ENTITIES.some((entity) => entity.canonicalName === canonicalName), false, canonicalName);
+    assert.equal(allStreets.some((entity) => entity.canonicalName === canonicalName), false, canonicalName);
   }
 });

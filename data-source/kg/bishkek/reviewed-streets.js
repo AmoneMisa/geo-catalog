@@ -1,0 +1,30 @@
+const street = (slug, canonicalName, lat, lng, sourceUrl, accuracyM = 1600) => Object.freeze({
+  id: `kg:bishkek:street:${slug}`,
+  type: 'street',
+  country: 'KG',
+  canonicalName,
+  parentId: 'kg:bishkek',
+  center: Object.freeze({ lat, lng }),
+  source: 'manual',
+  sourceUrl,
+  accuracy: 'street',
+  accuracyM,
+});
+
+export const KG_BISHKEK_REVIEWED_STREET_ENTITIES = Object.freeze([
+  street('bishkek-1', 'Бишкек-1 улица', 42.831163, 74.482518, 'https://2gis.kg/bishkek/geo/70030077109339684'),
+  street('bishkek-2', 'Бишкек-2 улица', 42.831706, 74.48301, 'https://2gis.kg/bishkek/geo/70030077109347845'),
+  street('bishkek-3', 'Бишкек-3 улица', 42.832348, 74.482775, 'https://2gis.kg/bishkek/geo/70030077109388562'),
+  street('bishkek-4', 'Бишкек-4 улица', 42.833251, 74.484021, 'https://2gis.kg/bishkek/geo/70030077109401190'),
+  street('bishkek-5', 'Бишкек-5 улица', 42.833126, 74.485702, 'https://2gis.kg/bishkek/geo/70030077112282747'),
+  street('bishkek-6', 'Бишкек-6 улица', 42.832505, 74.48639, 'https://2gis.kg/bishkek/geo/70030077112283379'),
+  street('bishkek-7', 'Бишкек-7 улица', 42.831699, 74.486347, 'https://2gis.kg/bishkek/geo/70030077004288775'),
+  street('bishkek-8', 'Бишкек-8 улица', 42.831061, 74.487438, 'https://2gis.kg/bishkek/geo/70030077004287880'),
+  street('bishkek-9', 'Улица Бишкек-9', 42.830866, 74.488363, 'https://2gis.kg/bishkek/geo/70030076317057400'),
+  street('abdumomunova', 'Улица Абдумомунова', 42.880579, 74.587949, 'https://2gis.kg/bishkek/geo/15763337430171734'),
+  street('baygazak-arpachieva', 'Улица Байгазак Арпачиева', 42.809397, 74.656418, 'https://2gis.kg/bishkek/geo/15763337430178623'),
+  street('kvartal-kirova', 'Улица квартал Кирова', 42.862704, 74.49481, 'https://2gis.kg/bishkek/geo/70030077065414085'),
+  street('parkovaya', 'Парковая улица', 42.866375, 74.62466, 'https://2gis.kg/bishkek/geo/70030076194656195'),
+  street('tunguch', 'Улица Тунгуч', 42.86115, 74.667827, 'https://2gis.kg/bishkek/geo/15763337430171998'),
+  street('turusbekova', 'Улица Турусбекова', 42.877553, 74.586081, 'https://2gis.kg/bishkek/geo/15763337430171886'),
+]);

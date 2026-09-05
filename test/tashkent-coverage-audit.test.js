@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { UZ_TASHKENT_ENTITIES } from '../src/data/uz/tashkent/index.js';
+import { UZ_TASHKENT_ENTITIES } from '../data-source/uz/tashkent/index.js';
 import { validateGeoCatalog } from '../src/validate.js';
 
 const SUPPORTED_SOURCES = new Set(['osm', 'wikidata', 'official', 'manual', 'geonames']);

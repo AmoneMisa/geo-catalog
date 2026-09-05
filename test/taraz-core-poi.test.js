@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { KZ_TARAZ_ENTITIES } from '../src/data/kz/taraz/index.js';
+import { KZ_TARAZ_ENTITIES } from '../data-source/kz/taraz/index.js';
 
 const expected = Object.freeze([
   { id: 'kz:taraz:poi:taraz-airport', type: 'poi.airport', canonicalName: 'Taraz Airport', wikidataId: 'Q1433007', lat: 42.853611, lng: 71.303611 },

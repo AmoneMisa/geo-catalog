@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { KZ_SHYMKENT_ENTITIES } from '../src/data/kz/shymkent/index.js';
+import { KZ_SHYMKENT_ENTITIES } from '../data-source/kz/shymkent/index.js';
 
 const expected = Object.freeze([
   ['kz:shymkent:microdistrict:qaytpas-1', 'Қайтпас-1', 42.37547, 69.6422],

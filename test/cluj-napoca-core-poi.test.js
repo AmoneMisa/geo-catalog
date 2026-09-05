@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { RO_CLUJ_NAPOCA_ENTITIES } from '../src/data/ro/cluj-napoca/index.js';
+import { RO_CLUJ_NAPOCA_ENTITIES } from '../data-source/ro/cluj-napoca/index.js';
 
 const expected = Object.freeze([
   { id: 'ro:cluj-napoca:poi:avram-iancu-international-airport', type: 'poi.airport', canonicalName: 'Aeroportul Internațional „Avram Iancu” Cluj', wikidataId: 'Q1068685', lat: 46.785091666666666, lng: 23.686119444444444, osm: { type: 'way', id: 84575461 } },

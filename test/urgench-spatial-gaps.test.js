@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { URGENCH_ENTITIES } from '../src/data/uz/cities/urgench.js';
+import { URGENCH_ENTITIES } from '../data-source/uz/cities/urgench.js';
 import { isGeoCoverageGap } from '../src/coverage-gaps.js';
 
 const byCanonical = new Map(URGENCH_ENTITIES.map((entity) => [entity.canonicalName, entity]));

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TASHKENT_STREET_ADDRESS_ENTITIES } from '../src/data/uz/tashkent/streets-addresses.js';
+import { TASHKENT_STREET_ADDRESS_ENTITIES } from '../data-source/uz/tashkent/streets-addresses.js';
 
 const EXPECTED = Object.freeze(new Map([
   ['Afrosiyob Street', 88477637],
