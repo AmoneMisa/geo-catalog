@@ -51,6 +51,33 @@ const osmMicrodistrict = (slug, canonicalName, lat, lng, osmType, osmId, accurac
   osm: { type: osmType, id: osmId },
 });
 
+const osmStreet = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 700) => ({
+  id: `uz:bukhara:street:${slug}`,
+  type: 'street',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:bukhara',
+  center: { lat, lng },
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'street',
+  accuracyM,
+  osm: { type: 'way', id: osmWayId },
+});
+
+const mappedStreet = (slug, canonicalName, lat, lng, providerId, accuracyM = 650) => ({
+  id: `uz:bukhara:street:${slug}`,
+  type: 'street',
+  country: 'UZ',
+  canonicalName,
+  parentId: 'uz:bukhara',
+  center: { lat, lng },
+  source: 'manual',
+  sourceUrl: `https://2gis.uz/bukhara/geo/${providerId}`,
+  accuracy: 'street',
+  accuracyM,
+});
+
 const officialLocalArea = (slug, canonicalName, lat, lng, accuracyM = 1400) => ({
   id: `uz:bukhara:local-area:${slug}`,
   type: 'local_area',
@@ -73,6 +100,20 @@ export const BUKHARA_ENTITIES = Object.freeze([
   osmMicrodistrict('4-i-mikroraion', '4-й микрорайон', 39.7523475, 64.4303106, 'node', 3593587410),
   osmMicrodistrict('5a-mikroraion', '5А микрорайон', 39.7443596, 64.4194459, 'node', 3593587412),
   osmMicrodistrict('7-i-mikroraion', '7-й микрорайон', 39.7411183, 64.4041393, 'node', 6535785795),
+
+  mappedStreet('1-y-povorot-ulitsy-makhtumkuli', '1-й поворот улицы Махтумкули улица', 39.816222, 64.443509, '70030077005738328'),
+  mappedStreet('1-y-ulitsy-muborak', 'Улица 1-й улицы Муборак', 39.805897, 64.417944, '70030076847253265'),
+  mappedStreet('1-ya-ulitsa-khavzi-bodom', '1-я улица Хавзи Бодом', 39.774168, 64.401637, '70030076717674903'),
+  mappedStreet('1-ya-ulitsa-sheykhon', '1-я улица Шейхон', 39.815035, 64.42407, '70030076857236113'),
+  mappedStreet('2-ya-ulitsa-khavzi-bodom', '2-я улица Хавзи Бодом', 39.774694, 64.400623, '70030076717672474'),
+  osmStreet('chashmai-ayub', 'Чашмаи Аюб улица', 39.7789153, 64.4046196, 205823326),
+  osmStreet('khafiza-sheraziya', 'улица Хафиза Шеразия', 39.7895839, 64.4023258, 201149195),
+  osmStreet('marata-karimova', 'улица Марата Каримова', 39.7796663, 64.4059189, 1290035089),
+  osmStreet('mirdustim', 'Мирдустим улица', 39.7743533, 64.4067019, 609341309),
+  osmStreet('mukhtara-ashrafi', 'Мухтара Ашрафи улица', 39.777369, 64.4052448, 110280618),
+  osmStreet('otabaya-eshanova', 'Отабая Эшанова улица', 39.7702272, 64.427349, 8151512),
+  osmStreet('pistashikanon', 'Писташиканон улица', 39.7791802, 64.4038534, 113591052),
+
   wikidataPoi('bukhara-ark', 'Bukhara Ark', 'poi.fortress', 39.777778, 64.410278, 'Q4069358', 160),
   wikidataPoi('poi-kalon', 'Poi Kalon', 'poi.religious_complex', 39.776001, 64.414244, 'Q4368936', 140, { type: 'way', id: 1446270185 }),
   osmPoi('lyabi-hauz', 'Lyabi Hauz', 'poi.square', 39.77311, 64.42026, 'way', 67412309, 140),
