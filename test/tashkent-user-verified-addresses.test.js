@@ -27,6 +27,17 @@ test('Shimoliy Olmazor Street 1 remains a building anchor, not a fake area cente
   );
 });
 
+test('Shifokorlar Street 6 remains a building anchor, not a fake numbered mavze center', () => {
+  const address = getGeoEntity('uz:tashkent:address:shifokorlar-street-6');
+  assert.ok(address);
+  assert.equal(address.type, 'address');
+  assert.equal(address.parentId, 'uz:tashkent:street:shifokorlar');
+  assert.deepEqual(address.center, { lat: 41.356367, lng: 69.184192 });
+  assert.equal(address.accuracy, 'building');
+  assert.equal(address.accuracyM, 25);
+  assert.equal(address.sourceUrl, 'https://yandex.ru/maps/10335/tashkent/house/YkAYdwBpQEIHQFprfX93c39jZg==/');
+});
+
 test('Shifokorlar evidence does not collapse numbered mavzes onto street or house points', () => {
   const street = getGeoEntity('uz:tashkent:street:shifokorlar');
   const medgorodok = resolveLexiconGeoEntity({
