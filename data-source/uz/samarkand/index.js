@@ -1,11 +1,13 @@
 import { SAMARKAND_POI_ENTITIES } from './poi.js';
 import { SAMARKAND_AREA_ENTITIES } from './areas.js';
 import { SAMARKAND_STREET_ENTITIES } from './streets.js';
+import { SAMARKAND_REVIEWED_STREET_ENTITIES } from './reviewed-streets.js';
 import { SAMARKAND_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes.js';
 
 export const UZ_SAMARKAND_ENTITIES = Object.freeze([
   ...SAMARKAND_POI_ENTITIES,
   ...SAMARKAND_AREA_ENTITIES,
   ...SAMARKAND_STREET_ENTITIES,
+  ...SAMARKAND_REVIEWED_STREET_ENTITIES,
   ...SAMARKAND_RESIDENTIAL_COMPLEX_ENTITIES,
 ]);
