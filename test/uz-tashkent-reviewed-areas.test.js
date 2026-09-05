@@ -43,12 +43,25 @@ test('reviewed Tashkent 2GIS areas retain exact frozen provenance', () => {
   }
 });
 
+test('Chilanzar-20 is owned by the reviewed microdistrict relation', () => {
+  const entity = getGeoEntity('uz:tashkent:microdistrict:chilanzar-20');
+  assert.ok(entity);
+  assert.equal(entity.type, 'microdistrict');
+  assert.equal(entity.country, 'UZ');
+  assert.equal(entity.canonicalName, 'Chilanzar-20');
+  assert.equal(entity.parentId, 'uz:tashkent:chilanzar');
+  assert.deepEqual(entity.center, { lat: 41.2665051, lng: 69.1798855 });
+  assert.equal(entity.source, 'osm');
+  assert.deepEqual(entity.osm, { type: 'relation', id: 1850375 });
+});
+
 test('misclassified Tashkent review candidates do not create duplicate spatial owners', () => {
   const pairs = [
     ['uz:tashkent:district:aviasozlar-2', 'uz:tashkent:local-area:aviasozlar-2'],
     ['uz:tashkent:district:aviasozlar-3', 'uz:tashkent:local-area:aviasozlar-3'],
     ['uz:tashkent:district:chilanzar-6', 'uz:tashkent:microdistrict:chilanzar-6'],
     ['uz:tashkent:district:chilanzar-14', 'uz:tashkent:microdistrict:chilanzar-14'],
+    ['uz:tashkent:district:chilanzar-20', 'uz:tashkent:microdistrict:chilanzar-20'],
     ['uz:tashkent:district:feruza-3', 'uz:tashkent:local-area:feruza-3'],
     ['uz:tashkent:district:tuzel-2', 'uz:tashkent:local-area:tuzel-2'],
     ['uz:tashkent:district:yoldosh-2', 'uz:tashkent:local-area:yoldosh-2'],
