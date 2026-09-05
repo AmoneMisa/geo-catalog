@@ -1,0 +1,46 @@
+const osmStreet = (slug, canonicalName, lat, lng, osmWayId, parentId = 'kg:osh', accuracyM = 1600) => Object.freeze({
+  id: `kg:osh:street:${slug}`,
+  type: 'street',
+  country: 'KG',
+  canonicalName,
+  parentId,
+  center: Object.freeze({ lat, lng }),
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'street',
+  accuracyM,
+  osm: Object.freeze({ type: 'way', id: osmWayId }),
+});
+
+const mappedStreet = (slug, canonicalName, lat, lng, sourceUrl, parentId = 'kg:osh', accuracyM = 1600) => Object.freeze({
+  id: `kg:osh:street:${slug}`,
+  type: 'street',
+  country: 'KG',
+  canonicalName,
+  parentId,
+  center: Object.freeze({ lat, lng }),
+  source: 'manual',
+  sourceUrl,
+  accuracy: 'street',
+  accuracyM,
+});
+
+export const KG_OSH_STREET_ENTITIES = Object.freeze([
+  osmStreet('askar-shakirov-kochosu', 'Аскар Шакиров көчөсү', 40.509234, 72.8212092, 71032627),
+  osmStreet('asrankulov-kochosu', 'Асранкулов көчөсү', 40.513853, 72.8038431, 175843374),
+  osmStreet('iminov-kochosu', 'Иминов көчөсү', 40.4972501, 72.8215118, 71185333),
+  osmStreet('kelechek-kochosu', 'Келечек көчөсү', 40.4946396, 72.8213776, 70952002),
+  mappedStreet('khan-ordo', 'Улица Хан-Ордо', 40.513596, 72.742817, 'https://2gis.kg/osh/geo/70030076149147361'),
+  mappedStreet('kochkonova-turdali', 'Улица Кочконова Турдали', 40.536863, 72.722688, 'https://2gis.kg/osh/geo/70030076149717306'),
+  osmStreet('kulatov-kochosu', 'Кулатов көчөсү', 40.490346, 72.8163436, 448916343, 'kg:osh:settlement:pyatiletka'),
+  mappedStreet('kurmanzhan-datka', 'Улица Курманжан датка', 40.524702, 72.7972, 'https://2gis.kg/osh/geo/70030076147380956'),
+  mappedStreet('mamyrova', 'Улица Мамырова', 40.495939, 72.770559, 'https://2gis.kg/osh/geo/70030076147438479'),
+  mappedStreet('monueva', 'Улица Монуева', 40.534358, 72.803657, 'https://2gis.kg/osh/geo/70030076149201605'),
+  mappedStreet('nasirdinova', 'Улица Насирдинова', 40.58493, 72.822942, 'https://2gis.kg/osh/geo/70030076147447879'),
+  mappedStreet('oshskaya', 'Ошская улица', 40.547391, 72.788982, 'https://2gis.kg/osh/geo/70030076147381151'),
+  mappedStreet('raimbekova', 'Улица Раимбекова', 40.543133, 72.801579, 'https://2gis.kg/osh/geo/70030076147383821'),
+  osmStreet('sargalchaev-kochosu', 'Саргалчаев көчөсү', 40.4897361, 72.8188356, 448916346, 'kg:osh:settlement:pyatiletka'),
+  osmStreet('tashmamata-dzhumabaeva', 'Ташмамата Джумабаева улица', 40.5199541, 72.817578, 70904799),
+  osmStreet('togolok-moldo-kochosu', 'Тоголок Молдо көчөсү', 40.5125156, 72.7893385, 70899877, 'kg:osh:settlement:ak-buura-3'),
+  osmStreet('torobek-abakir-uulu-kochosu', 'Төрөбек Абакир уулу көчөсү', 40.4955976, 72.828624, 74095916),
+]);
