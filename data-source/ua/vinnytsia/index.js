@@ -1,7 +1,9 @@
 import { UA_VINNYTSIA_NEIGHBORHOOD_ENTITIES } from './neighborhoods.js';
 import { UA_VINNYTSIA_POI_ENTITIES } from './poi.js';
+import { UA_VINNYTSIA_REVIEWED_STREET_ENTITIES } from './reviewed-streets.js';
 
 export const UA_VINNYTSIA_ENTITIES = Object.freeze([
   ...UA_VINNYTSIA_NEIGHBORHOOD_ENTITIES,
+  ...UA_VINNYTSIA_REVIEWED_STREET_ENTITIES,
   ...UA_VINNYTSIA_POI_ENTITIES,
 ]);
