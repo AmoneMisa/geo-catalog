@@ -2,6 +2,7 @@ import { UZ_CITY_ENTITIES } from './cities.js';
 import { UZ_TASHKENT_ENTITIES } from './tashkent/index.js';
 import { UZ_SAMARKAND_ENTITIES } from './samarkand/index.js';
 import { NAMANGAN_ENTITIES } from './cities/namangan.js';
+import { NAMANGAN_REVIEWED_STREET_ENTITIES } from './cities/namangan-reviewed-streets.js';
 import { ANDIJAN_ENTITIES } from './cities/andijan.js';
 import { FERGANA_ENTITIES } from './cities/fergana.js';
 import { BUKHARA_ENTITIES } from './cities/bukhara.js';
@@ -22,6 +23,7 @@ export const UZ_ENTITIES = Object.freeze([
   ...UZ_TASHKENT_ENTITIES,
   ...UZ_SAMARKAND_ENTITIES,
   ...NAMANGAN_ENTITIES,
+  ...NAMANGAN_REVIEWED_STREET_ENTITIES,
   ...ANDIJAN_ENTITIES,
   ...FERGANA_ENTITIES,
   ...BUKHARA_ENTITIES,
