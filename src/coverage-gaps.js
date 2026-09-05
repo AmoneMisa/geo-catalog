@@ -10,8 +10,6 @@ const gaps = (country, city, type, canonicals, reason) => canonicals.map((canoni
 
 export const GEO_COVERAGE_GAPS = Object.freeze([
   ...gaps('UZ', 'Tashkent', 'microdistrict', ['Manzara'], 'The verified Manzara mavzesi point is owned by local_area; keep a distinct microdistrict identity unresolved until an independent spatial owner is verified.'),
-  ...gaps('UZ', 'Tashkent', 'mahalla', [ "Bog'bon",
-  ], 'Official mahalla name from the lexicon; no independently verified spatial object or boundary is available yet.'),
   ...gaps('UZ', 'Tashkent', 'local_area', [
     'Shimoliy Olmazor-1', 'Shifokorlar-5', 'Shifokorlar-6',
   ], 'Lexicon area name remains unresolved until a standalone owner or defensible map center can be verified; a same-name street, stop, mahalla, or isolated building address is not sufficient.'),
