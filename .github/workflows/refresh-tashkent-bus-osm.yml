@@ -40,6 +40,8 @@ jobs:
         with:
           node-version: 22
       - run: npm install --ignore-scripts
+      - name: Build encrypted geo catalog
+        run: npm run build:catalog
       - name: Discover current OSM bus topology
         run: node ./scripts/refresh-tashkent-bus-osm.js
       - name: Refresh OSM bus route geometry
