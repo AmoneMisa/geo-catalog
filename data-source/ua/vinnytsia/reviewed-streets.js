@@ -1,0 +1,37 @@
+const street = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 2200) => Object.freeze({
+  id: `ua:vinnytsia:street:${slug}`,
+  type: 'street',
+  country: 'UA',
+  canonicalName,
+  parentId: 'ua:vinnytsia',
+  center: Object.freeze({ lat, lng }),
+  source: 'osm',
+  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  accuracy: 'street',
+  accuracyM,
+  osm: Object.freeze({ type: 'way', id: osmWayId }),
+});
+
+export const UA_VINNYTSIA_REVIEWED_STREET_ENTITIES = Object.freeze([
+  street('svobody-boulevard', 'Свободы бульвар', 49.2207163, 28.4486408, 131723484, 3000),
+  street('marko-vovchok-boulevard', 'Марко Вовчок бульвар', 49.2604742, 28.5216432, 106361517, 2800),
+  // Retyped from a boulevard search hit: the OSM way itself is explicitly a lane.
+  street('ivana-svitlychnoho-lane', 'провулок Івана Світличного', 49.2604782, 28.523814, 106361488),
+  street('ulasa-samchuka', 'вулиця Уласа Самчука', 49.2547389, 28.4584711, 46340383),
+  street('olgi-kobylyanskoy', 'Ольги Кобылянской улица', 49.2564397, 28.4597217, 35283026),
+  street('marii-gavrish', 'Марии Гавриш улица', 49.2553198, 28.4596428, 360986264),
+  street('avgustovskaya', 'Августовская улица', 49.2577248, 28.4454393, 108094437),
+  street('dneprovskaya', 'Днепровская улица', 49.258109, 28.4634672, 44216381),
+  street('yunosti-avenue', 'Юности проспект', 49.2235825, 28.4112052, 164792110, 3800),
+  street('kosmonavtiv-avenue', 'проспект Космонавтів', 49.2224067, 28.4201193, 164792105, 3600),
+  street('kotsyubinskogo-avenue', 'Коцюбинского проспект', 49.2392096, 28.4970295, 1530540145, 3800),
+  street('2-tetyany-yablonskoi-lane', '2-й провулок Тетяни Яблонської', 49.20932, 28.5023829, 65624100),
+  street('1-tetyany-yablonskoi-lane', '1-й провулок Тетяни Яблонської', 49.2092859, 28.5014575, 409532274),
+  street('1-vostochnyy-lane', '1-й Восточный переулок', 49.2516112, 28.5563482, 136997523),
+  street('privokzalnyy-lane', 'Привокзальный переулок', 49.2181382, 28.5044008, 151337106),
+  street('1-botanicheskiy-lane', '1-й Ботанический переулок', 49.2542062, 28.4517901, 108094417),
+  street('3-rudanskogo-lane', '3-й Руданского переулок', 49.2529192, 28.4550007, 47422314),
+  street('igorya-savchenko-lane', 'Игоря Савченко переулок', 49.2537871, 28.5556362, 500415456),
+  street('2-botanicheskiy-lane', '2-й Ботанический переулок', 49.2521897, 28.4566807, 47422312),
+  street('2-odesskiy-lane', '2-й Одесский переулок', 49.2099559, 28.5049616, 65624123),
+]);
