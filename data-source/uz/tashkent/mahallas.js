@@ -77,6 +77,8 @@ export const TASHKENT_MAHALLA_ENTITIES = Object.freeze([
   manualMahalla('qalqon', 'Qalqon', 'uz:tashkent:yashnobod', 41.280806, 69.371535, 800, 'https://yandex.uz/maps/10335/tashkent/geo/6108686495/'),
   manualMahalla('humoyun', 'Humoyun', 'uz:tashkent:mirzo-ulugbek', 41.343891, 69.388055, 900, 'https://yandex.com/maps/org/makhallinskiy_komitet_khumayun/207044096096/'),
   manualMahalla('asalobod', 'Asalobod', 'uz:tashkent:yashnobod', 41.2818125, 69.3364375, 900, 'https://www.waze.com/live-map/directions/uz/tashkent/tashkent/asalobod-mahalla-fuqarolar-yigin?to=place.ChIJTTJOMgD1rjgRyo47q8sSICo'),
+  // User-verified against Yandex Maps. Keep the mahalla center separate from the same-name local-area OSM way.
+  manualMahalla('bogbon', "Bog'bon", 'uz:tashkent:yashnobod', 41.282304, 69.384642, 800),
 
   // Direct city-scoped OSM residential owners from the geo-enrichment report.
   // Keep them as mahallas only when the OSM object is not already the physical
