@@ -25,6 +25,6 @@ export const ANDIJAN_REVIEWED_STREET_ENTITIES = Object.freeze([
   osmStreet('khursandlik', 'улица Хурсандлик', 40.762625, 72.3266841, 1532186712),
   osmStreet('iftikhor', 'улица Ифтихор', 40.7640507, 72.3400438, 123632717),
   osmStreet('bakhouddina-nakshbandi', 'улица Бахоуддина Накшбанди', 40.7506781, 72.364144, 1123713897),
-  osmStreet('sarbontеpa', 'Сарбонтепа улица', 40.7765684, 72.3148511, 1532166195),
+  osmStreet('sarbontepa', 'Сарбонтепа улица', 40.7765684, 72.3148511, 1532166195),
   osmStreet('saidy-zunnunovoy', 'улица Саиды Зуннуновой', 40.7735815, 72.3131705, 123635130),
 ]);
