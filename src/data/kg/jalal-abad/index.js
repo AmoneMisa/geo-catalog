@@ -1,5 +1,9 @@
 import { KG_JALAL_ABAD_MICRODISTRICT_ENTITIES } from './microdistricts.js';
+import { KG_JALAL_ABAD_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes.js';
+import { KG_JALAL_ABAD_STREET_ENTITIES } from './streets.js';
 
 export const KG_JALAL_ABAD_ENTITIES = Object.freeze([
   ...KG_JALAL_ABAD_MICRODISTRICT_ENTITIES,
+  ...KG_JALAL_ABAD_RESIDENTIAL_COMPLEX_ENTITIES,
+  ...KG_JALAL_ABAD_STREET_ENTITIES,
 ]);
