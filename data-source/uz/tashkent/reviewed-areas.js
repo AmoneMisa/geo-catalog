@@ -69,14 +69,4 @@ export const TASHKENT_REVIEWED_AREA_ENTITIES = Object.freeze([
     69.24175,
     'https://2gis.uz/tashkent/geo/70030077149953874',
   ),
-  mappedArea(
-    'microdistrict',
-    'microdistrict',
-    'manzara',
-    'Manzara',
-    'uz:tashkent:yunusabad',
-    41.356428,
-    69.315445,
-    'https://yandex.uz/maps/10335/tashkent/geo/manzara_mavzesi/5758427583/panorama/',
-  ),
 ]);
