@@ -1,19 +1,21 @@
-import { UZ_ENTITIES } from './data/uz/index.js';
-import { KZ_ENTITIES } from './data/kz/index.js';
-import { KG_ENTITIES } from './data/kg/index.js';
-import { RO_ENTITIES } from './data/ro/index.js';
-import { UA_ENTITIES } from './data/ua/index.js';
-import { LEARNED_ADDRESS_ENTITIES } from './data/learned-addresses.js';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { validateGeoCatalog } from './validate.js';
+import { getDecryptionKey } from './config.js';
+import { decryptPayload } from './crypto.js';
 
-const entities = [
-  ...UZ_ENTITIES,
-  ...KZ_ENTITIES,
-  ...KG_ENTITIES,
-  ...RO_ENTITIES,
-  ...UA_ENTITIES,
-  ...LEARNED_ADDRESS_ENTITIES,
-];
+function loadEntities() {
+  try {
+    const artifactPath = fileURLToPath(new URL('./data/catalog.enc.json', import.meta.url));
+    const artifact = JSON.parse(readFileSync(artifactPath, 'utf8'));
+    const key = getDecryptionKey();
+    return JSON.parse(decryptPayload(artifact, key).toString('utf8'));
+  } catch (err) {
+    throw new Error(`Failed to load encrypted geo catalog: ${err.message}`);
+  }
+}
+
+const entities = loadEntities();
 
 const validation = validateGeoCatalog(entities);
 if (!validation.valid) {

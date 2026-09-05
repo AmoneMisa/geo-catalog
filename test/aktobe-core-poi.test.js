@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { KZ_AKTOBE_ENTITIES } from '../src/data/kz/aktobe/index.js';
+import { KZ_AKTOBE_ENTITIES } from '../data-source/kz/aktobe/index.js';
 
 const expected = Object.freeze([
   { id: 'kz:aktobe:poi:aktobe-international-airport', type: 'poi.airport', canonicalName: 'Aktobe International Airport', source: 'osm', wikidataId: 'Q1430836', lat: 50.245, lng: 57.203331, osm: { type: 'way', id: 235315612 } },

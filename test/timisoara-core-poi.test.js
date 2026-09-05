@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { RO_TIMISOARA_ENTITIES } from '../src/data/ro/timisoara/index.js';
+import { RO_TIMISOARA_ENTITIES } from '../data-source/ro/timisoara/index.js';
 
 const expected = Object.freeze([
   { id: 'ro:timisoara:poi:traian-vuia-international-airport', type: 'poi.airport', canonicalName: 'Aeroportul Internațional Timișoara „Traian Vuia”', source: 'osm', wikidataId: 'Q1417736', lat: 45.81, lng: 21.338055555555556, osm: { type: 'way', id: 197252927 } },

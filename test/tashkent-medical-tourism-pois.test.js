@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { TASHKENT_POI_ENTITIES } from '../src/data/uz/tashkent/poi.js';
+import { TASHKENT_POI_ENTITIES } from '../data-source/uz/tashkent/poi.js';
 
 const byName = new Map(TASHKENT_POI_ENTITIES.map((entry) => [entry.canonicalName, entry]));
 

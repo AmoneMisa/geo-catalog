@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TURTKUL_ENTITIES } from '../src/data/uz/cities/turtkul.js';
+import { TURTKUL_ENTITIES } from '../data-source/uz/cities/turtkul.js';
 import { isUzTailCoverageGap } from '../src/coverage-gaps-uz-tail.js';
 
 const byCanonical = new Map(TURTKUL_ENTITIES.map((entity) => [entity.canonicalName, entity]));

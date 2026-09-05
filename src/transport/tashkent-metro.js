@@ -1,5 +1,7 @@
-import { TASHKENT_METRO_ENTITIES } from '../data/uz/tashkent/metro.js';
+import { getGeoChildren } from '../catalog.js';
 import metroShapeRows from './generated/tashkent-metro-osm-shapes.js';
+
+const TASHKENT_METRO_ENTITIES = getGeoChildren('uz:tashkent', { type: 'metro' });
 
 const stopId = (stationId) => stationId.replace(':metro:', ':stop:metro:');
 

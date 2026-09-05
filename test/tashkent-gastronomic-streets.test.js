@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { TASHKENT_STREET_ADDRESS_ENTITIES } from '../src/data/uz/tashkent/streets-addresses.js';
+import { TASHKENT_STREET_ADDRESS_ENTITIES } from '../data-source/uz/tashkent/streets-addresses.js';
 
 const streets = TASHKENT_STREET_ADDRESS_ENTITIES.filter((entry) => entry.type === 'street');
 const byName = new Map(streets.map((entry) => [entry.canonicalName, entry]));

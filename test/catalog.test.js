@@ -22,7 +22,7 @@ test('catalog passes invariants', () => {
 });
 
 test('data modules use stable domain/geography names instead of *-extra.js', () => {
-  const files = readdirSync(new URL('../src/data/', import.meta.url), { recursive: true });
+  const files = readdirSync(new URL('../data-source/', import.meta.url), { recursive: true });
   assert.deepEqual(files.filter((file) => /(?:^|[/\\])[^/\\]*-extra\.js$/.test(file)), []);
 });
 

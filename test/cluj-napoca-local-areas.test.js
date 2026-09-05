@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { RO_CLUJ_NAPOCA_ENTITIES } from '../src/data/ro/cluj-napoca/index.js';
+import { RO_CLUJ_NAPOCA_ENTITIES } from '../data-source/ro/cluj-napoca/index.js';
 
 const expected = Object.freeze([
   { id: 'ro:cluj-napoca:local-area:manastur', canonicalName: 'Mănăștur', wikidataId: 'Q368523', lat: 46.7558861, lng: 23.5521778 },

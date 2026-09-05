@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { KZ_SHYMKENT_ENTITIES } from '../src/data/kz/shymkent/index.js';
+import { KZ_SHYMKENT_ENTITIES } from '../data-source/kz/shymkent/index.js';
 
 const expected = Object.freeze([
   ['kz:shymkent:poi:shymkent-zoo', 'poi.zoo', 'Shymkent Zoo', 'way', 164667870],

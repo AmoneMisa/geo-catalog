@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { KZ_ALMATY_ENTITIES } from '../src/data/kz/almaty/index.js';
+import { KZ_ALMATY_ENTITIES } from '../data-source/kz/almaty/index.js';
 
 const expected = Object.freeze([
   ['kz:almaty:poi:medeu-ice-rink', 'poi.stadium', 'Medeu Ice Rink', 'way', 171504550],

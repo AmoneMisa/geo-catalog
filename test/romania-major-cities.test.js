@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { RO_CITY_ENTITIES } from '../src/data/ro/cities.js';
+import { RO_CITY_ENTITIES } from '../data-source/ro/cities.js';
 
 const EXPECTED = Object.freeze([
   ['ro:bucharest', 'Bucharest', 44.43225, 26.10626, '683506'],

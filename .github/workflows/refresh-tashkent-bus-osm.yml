@@ -20,6 +20,8 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      GEO_CATALOG_DECRYPTION_KEY: ${{ secrets.GEO_CATALOG_DECRYPTION_KEY }}
     steps:
       # Generated OSM snapshots are reviewed through data branches; never write them straight to the protected branch.
       - name: Refuse protected branches

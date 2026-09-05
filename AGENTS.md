@@ -73,17 +73,17 @@ For large areas or multi-building complexes, use a representative centroid/point
 
 ## Data ownership and directory structure
 
-Country-specific data belongs under `src/data/<country>/` using lowercase ISO alpha-2 directory names.
+Country-specific data belongs under `data-source/<country>/` using lowercase ISO alpha-2 directory names.
 
 Country aggregators own country order:
 
-- `src/data/ua/index.js` -> `UA_ENTITIES`
-- `src/data/uz/index.js` -> `UZ_ENTITIES`
-- `src/data/kz/index.js` -> `KZ_ENTITIES`
+- `data-source/ua/index.js` -> `UA_ENTITIES`
+- `data-source/uz/index.js` -> `UZ_ENTITIES`
+- `data-source/kz/index.js` -> `KZ_ENTITIES`
 
 A city with multiple subject modules should have a city directory, for example:
 
-`src/data/ua/kyiv/`
+`data-source/ua/kyiv/`
 
 City `index.js` files aggregate semantic subject modules such as:
 
@@ -231,7 +231,7 @@ If compatibility exports are retained, they should reference canonical data rath
 
 `src/catalog.js` imports country aggregators only, plus truly global datasets such as learned addresses.
 
-`src/data/<country>/index.js` owns country aggregation order.
+`data-source/<country>/index.js` owns country aggregation order.
 
 City `index.js` files own subject-module aggregation order inside that city.
 
@@ -290,4 +290,4 @@ If the answer reveals a conflict with this file, preserve the architecture and d
 
 When the repository architecture or package ownership boundary is intentionally changed, update `AGENTS.md` in the same PR so future AI agents and contributors follow the new canonical structure.
 
-Keep `src/data/README.md` consistent with this document. `AGENTS.md` defines contributor/agent rules; `src/data/README.md` defines concrete data-module conventions.
+Keep `data-source/README.md` consistent with this document. `AGENTS.md` defines contributor/agent rules; `data-source/README.md` defines concrete data-module conventions.

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { RO_TIMISOARA_ENTITIES } from '../src/data/ro/timisoara/index.js';
+import { RO_TIMISOARA_ENTITIES } from '../data-source/ro/timisoara/index.js';
 
 const expected = Object.freeze([
   { id: 'ro:timisoara:local-area:cetate', canonicalName: 'Cetate', wikidataId: 'Q18538871', lat: 45.75611111111111, lng: 21.229444444444443 },
