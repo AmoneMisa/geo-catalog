@@ -1,4 +1,4 @@
-const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 120) => Object.freeze({
+const osmResidential = (slug, canonicalName, lat, lng, osmId, accuracyM = 120, osmType = 'way') => Object.freeze({
   id: `uz:tashkent:residential:${slug}`,
   type: 'residential_complex',
   country: 'UZ',
@@ -6,10 +6,10 @@ const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 120
   parentId: 'uz:tashkent',
   center: Object.freeze({ lat, lng }),
   source: 'osm',
-  sourceUrl: `https://www.openstreetmap.org/way/${osmWayId}`,
+  sourceUrl: `https://www.openstreetmap.org/${osmType}/${osmId}`,
   accuracy: 'building',
   accuracyM,
-  osm: Object.freeze({ type: 'way', id: osmWayId }),
+  osm: Object.freeze({ type: osmType, id: osmId }),
 });
 
 /**
@@ -17,6 +17,8 @@ const osmResidential = (slug, canonicalName, lat, lng, osmWayId, accuracyM = 120
  * Ambiguous cross-city and non-OSM candidates remain outside the promoted catalog.
  */
 export const TASHKENT_REVIEWED_RESIDENTIAL_ENTITIES = Object.freeze([
+  osmResidential('aktepa-sohil-buyi', 'ЖК "Актепа Сохил буйи"', 41.2993234, 69.2043403, 15651367, 120, 'relation'),
+  osmResidential('btgi-shamol', 'ЖК "Бтги Шамол"', 41.3541233, 69.3358364, 1104602117),
   osmResidential('elegant', 'Жилой комплекс Elegant', 41.2827449, 69.2628378, 180910482),
   osmResidential('green-city-drovoseki', 'ЖК "Грин Сити" (Дровосеки)', 41.286188, 69.2142619, 407533014),
   osmResidential('gulsaray', 'жилой комплекс Гульсарай', 41.3622476, 69.2329138, 141919402),
