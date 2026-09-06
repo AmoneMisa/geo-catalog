@@ -7,11 +7,11 @@ import {
   resolveLexiconGeoEntity,
 } from '../src/index.js';
 
-test('Shimoliy Olmazor Street 1 remains a building anchor, not a fake area center', () => {
+test('Shimoliy Olmazor Street 1 remains a district-scoped building anchor, not a fake area center', () => {
   const address = getGeoEntity('uz:tashkent:address:shimoliy-olmazor-street-1');
   assert.ok(address);
   assert.equal(address.type, 'address');
-  assert.equal(address.parentId, 'uz:tashkent:local-area:shimoliy-olmazor');
+  assert.equal(address.parentId, 'uz:tashkent:almazar');
   assert.deepEqual(address.center, { lat: 41.341975, lng: 69.250793 });
   assert.equal(address.accuracy, 'building');
   assert.equal(address.sourceUrl, 'https://yandex.ru/maps/10335/tashkent/house/YkAYdAJgTkwEQFprfX91cHVkYQ==/');
