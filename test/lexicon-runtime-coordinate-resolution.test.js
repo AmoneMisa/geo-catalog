@@ -25,7 +25,7 @@ const runtimeCases = Object.freeze([
       type: 'residentialComplexes',
       name: 'ЖК "Ness City"',
     },
-    id: 'uz:tashkent:residential_complex:ness-city',
+    id: 'uz:tashkent:residential:ness-city',
     type: 'residential_complex',
   },
   {
