@@ -38,7 +38,7 @@ test('Shifokorlar Street 6 remains a building anchor, not a fake numbered mavze 
   assert.equal(address.sourceUrl, 'https://yandex.ru/maps/10335/tashkent/house/YkAYdwBpQEIHQFprfX93c39jZg==/');
 });
 
-test('Shifokorlar evidence does not collapse numbered mavzes onto street or house points', () => {
+test('Shifokorlar street evidence does not reintroduce numbered local-area identities', () => {
   const street = getGeoEntity('uz:tashkent:street:shifokorlar');
   const medgorodok = resolveLexiconGeoEntity({
     country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Medgorodok',
@@ -54,15 +54,8 @@ test('Shifokorlar evidence does not collapse numbered mavzes onto street or hous
   assert.equal(mahalla?.parentId, 'uz:tashkent:almazar');
 
   for (const canonical of ['Shifokorlar-5', 'Shifokorlar-6']) {
-    assert.equal(
-      isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }),
-      true,
-      canonical,
-    );
-    assert.equal(
-      resolveLexiconGeoEntity({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical }),
-      null,
-      canonical,
-    );
+    const input = { country: 'UZ', city: 'Tashkent', type: 'local_area', canonical };
+    assert.equal(isGeoCoverageGap(input), false, canonical);
+    assert.equal(resolveLexiconGeoEntity(input), null, canonical);
   }
 });
