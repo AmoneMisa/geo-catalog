@@ -28,7 +28,7 @@
     },
     "./lexicon-bridge": {
       "types": "./index.d.ts",
-      "import": "./src/lexicon-bridge.js"
+      "import": "./src/lexicon-runtime-bridge.js"
     },
     "./lookup-key": {
       "types": "./index.d.ts",
