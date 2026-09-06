@@ -8,10 +8,10 @@
   },
   "type": "module",
   "main": "./src/index.js",
-  "types": "./index.d.ts",
+  "types": "./runtime-index.d.ts",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
+      "types": "./runtime-index.d.ts",
       "import": "./src/index.js"
     },
     "./catalog": {
@@ -27,7 +27,7 @@
       "import": "./src/validate.js"
     },
     "./lexicon-bridge": {
-      "types": "./index.d.ts",
+      "types": "./runtime-index.d.ts",
       "import": "./src/lexicon-runtime-bridge.js"
     },
     "./lookup-key": {
@@ -42,6 +42,7 @@
   "files": [
     "src",
     "index.d.ts",
+    "runtime-index.d.ts",
     "transport.d.ts",
     "README.md",
     "LICENSE"
