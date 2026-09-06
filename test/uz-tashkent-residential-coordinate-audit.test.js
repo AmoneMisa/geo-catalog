@@ -5,11 +5,6 @@ import { getGeoEntity } from '../src/catalog.js';
 
 const audited = Object.freeze([
   {
-    id: 'uz:tashkent:residential:manzara',
-    center: { lat: 41.356525, lng: 69.314691 },
-    sourceUrl: 'https://2gis.uz/tashkent/geo/70030076815801369',
-  },
-  {
     id: 'uz:tashkent:residential:nrg-oybek',
     center: { lat: 41.293185, lng: 69.281641 },
     sourceUrl: 'https://2gis.uz/tashkent/geo/70030076393567169',
@@ -56,5 +51,9 @@ test('known-good curated anchors are not replaced by weaker scrape-only alternat
   assert.deepEqual(
     getGeoEntity('uz:tashkent:residential:assalom-sohil')?.center,
     { lat: 41.282995, lng: 69.30842 },
+  );
+  assert.deepEqual(
+    getGeoEntity('uz:tashkent:residential:manzara')?.center,
+    { lat: 41.356109, lng: 69.314573 },
   );
 });
