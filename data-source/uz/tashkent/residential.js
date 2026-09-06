@@ -38,17 +38,15 @@ const sourcedResidential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM 
 });
 
 export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
-  Object.freeze({
-    id: 'uz:tashkent:residential:manzara',
-    type: 'residential_complex',
-    country: 'UZ',
-    canonicalName: 'Manzara',
-    parentId: 'uz:tashkent:yunusabad',
-    center: Object.freeze({ lat: 41.356109, lng: 69.314573 }),
-    source: 'manual',
-    accuracy: 'building',
-    accuracyM: 80,
-  }),
+  sourcedResidential(
+    'manzara',
+    'Manzara',
+    41.356525,
+    69.314691,
+    'https://2gis.uz/tashkent/geo/70030076815801369',
+    100,
+    'uz:tashkent:yunusabad',
+  ),
   Object.freeze({
     id: 'uz:tashkent:residential:dostlar',
     type: 'residential_complex',
@@ -89,9 +87,23 @@ export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
   sourcedResidential('mehribon', 'MEHRIBON', 41.356167, 69.31278, 'https://uysot.uz/', 120),
   wikidataResidential('nest-one', 'Nest One', 41.3121000, 69.2519000, 'Q97658661', 80),
   osmResidential('nrg-u-tower', 'NRG U-Tower', 41.31104, 69.23932, 1075340743, 90),
-  osmResidential('nrg-oybek', 'NRG Oybek', 41.29354, 69.28185, 1126838984, 90),
+  sourcedResidential(
+    'nrg-oybek',
+    'NRG Oybek',
+    41.293185,
+    69.281641,
+    'https://2gis.uz/tashkent/geo/70030076393567169',
+    120,
+  ),
   sourcedResidential('gardens-residence', 'Gardens Residence', 41.3199950, 69.2467130, 'https://www.ehotelsreviews.com/gardens-residence-8635294-ru', 220),
-  sourcedResidential('boulevard', 'Boulevard', 41.3158190, 69.2440140, 'https://www.ehotelsreviews.com/boulevard-residence-8865047-en', 220),
+  sourcedResidential(
+    'boulevard',
+    'Boulevard',
+    41.316212,
+    69.244075,
+    'https://2gis.uz/tashkent/geo/70030077107380510',
+    120,
+  ),
   sourcedResidential('mirabad-avenue', 'Mirabad Avenue', 41.2914990, 69.2715170, 'https://yandex.com/maps/10335/tashkent/geo/3287591157/', 180),
   sourcedResidential('darkhan-residence', 'Darkhan Residence', 41.3318190, 69.3106570, 'https://yandex.com/maps/10335/tashkent/geo/5491604117/', 150),
   sourcedResidential(
@@ -124,7 +136,14 @@ export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
     180,
     'uz:tashkent:mirzo-ulugbek',
   ),
-  osmResidential('karasaray', 'Karasaray', 41.3456252, 69.2344392, 32721279, 220),
+  sourcedResidential(
+    'karasaray',
+    'Karasaray',
+    41.345333,
+    69.23418,
+    'https://2gis.uz/tashkent/geo/70030076283055927',
+    150,
+  ),
   Object.freeze({
     id: 'uz:tashkent:residential:olmazor-city',
     type: 'residential_complex',
