@@ -135,6 +135,22 @@ export const TASHKENT_STREET_ADDRESS_ENTITIES = Object.freeze([
   manualStreet('farhod', 'Farhod Street', 41.2851148, 69.1882192),
   manualStreet('sogdiyona', 'Sogdiyona Street', 41.220733, 69.2281374),
 
+  // OSM-derived street directories confirm the named road, but an exact stable way owner
+  // was not recovered. Use a verified building on the street only as a conservative
+  // representative anchor; do not conflate the road with the same-named dahasi.
+  Object.freeze({
+    id: 'uz:tashkent:street:shimoliy-olmazor',
+    type: 'street',
+    country: 'UZ',
+    canonicalName: 'Shimoliy Olmazor Street',
+    parentId: 'uz:tashkent:almazar',
+    center: Object.freeze({ lat: 41.34266, lng: 69.250901 }),
+    source: 'manual',
+    sourceUrl: 'https://yandex.com/maps/10335/tashkent/house/YkAYdAJgQEUGQFprfX91c3pmbQ%3D%3D/panorama/',
+    accuracy: 'street',
+    accuracyM: 1500,
+  }),
+
   Object.freeze({
     id: 'uz:tashkent:address:bagichinar-mahallah-citizens-assembly',
     type: 'address',
@@ -146,14 +162,12 @@ export const TASHKENT_STREET_ADDRESS_ENTITIES = Object.freeze([
     accuracy: 'building',
     accuracyM: 50,
   }),
-  // The verified building point is outside the distinct same-named dahasi boundary,
-  // so keep the address district-scoped until a verified street owner is modeled.
   Object.freeze({
     id: 'uz:tashkent:address:shimoliy-olmazor-street-1',
     type: 'address',
     country: 'UZ',
     canonicalName: '1 Shimoliy Olmazor Street',
-    parentId: 'uz:tashkent:almazar',
+    parentId: 'uz:tashkent:street:shimoliy-olmazor',
     center: Object.freeze({ lat: 41.341975, lng: 69.250793 }),
     source: 'manual',
     sourceUrl: 'https://yandex.ru/maps/10335/tashkent/house/YkAYdAJgTkwEQFprfX91cHVkYQ==/',
