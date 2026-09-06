@@ -68,8 +68,8 @@ export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
   sourcedResidential(
     'yangi-sergeli',
     'Yangi Sergeli',
-    41.221894,
-    69.225708,
+    41.222096,
+    69.224966,
     'https://yandex.com/maps/10335/tashkent/geo/yangi_sergeli_turar_joy_majmuasi/3094469731/',
     140,
     'uz:tashkent:sergeli',
