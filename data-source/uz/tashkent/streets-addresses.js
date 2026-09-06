@@ -146,12 +146,14 @@ export const TASHKENT_STREET_ADDRESS_ENTITIES = Object.freeze([
     accuracy: 'building',
     accuracyM: 50,
   }),
+  // The verified building point is outside the distinct same-named dahasi boundary,
+  // so keep the address district-scoped until a verified street owner is modeled.
   Object.freeze({
     id: 'uz:tashkent:address:shimoliy-olmazor-street-1',
     type: 'address',
     country: 'UZ',
     canonicalName: '1 Shimoliy Olmazor Street',
-    parentId: 'uz:tashkent:local-area:shimoliy-olmazor',
+    parentId: 'uz:tashkent:almazar',
     center: Object.freeze({ lat: 41.341975, lng: 69.250793 }),
     source: 'manual',
     sourceUrl: 'https://yandex.ru/maps/10335/tashkent/house/YkAYdAJgTkwEQFprfX91cHVkYQ==/',
