@@ -38,15 +38,17 @@ const sourcedResidential = (slug, canonicalName, lat, lng, sourceUrl, accuracyM 
 });
 
 export const TASHKENT_RESIDENTIAL_ENTITIES = Object.freeze([
-  sourcedResidential(
-    'manzara',
-    'Manzara',
-    41.356525,
-    69.314691,
-    'https://2gis.uz/tashkent/geo/70030076815801369',
-    100,
-    'uz:tashkent:yunusabad',
-  ),
+  Object.freeze({
+    id: 'uz:tashkent:residential:manzara',
+    type: 'residential_complex',
+    country: 'UZ',
+    canonicalName: 'Manzara',
+    parentId: 'uz:tashkent:yunusabad',
+    center: Object.freeze({ lat: 41.356109, lng: 69.314573 }),
+    source: 'manual',
+    accuracy: 'building',
+    accuracyM: 80,
+  }),
   Object.freeze({
     id: 'uz:tashkent:residential:dostlar',
     type: 'residential_complex',
