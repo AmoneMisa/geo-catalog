@@ -7,11 +7,21 @@ import {
   resolveLexiconGeoEntity,
 } from '../src/index.js';
 
-test('Shimoliy Olmazor Street 1 remains a district-scoped building anchor, not a fake area center', () => {
+test('Shimoliy Olmazor street remains distinct from the same-named area and owns address 1', () => {
+  const street = resolveLexiconGeoEntity({
+    country: 'UZ', city: 'Tashkent', type: 'street', canonical: 'Shimoliy Olmazor Street',
+  });
+  assert.equal(street?.id, 'uz:tashkent:street:shimoliy-olmazor');
+  assert.equal(street?.parentId, 'uz:tashkent:almazar');
+  assert.deepEqual(street?.center, { lat: 41.34266, lng: 69.250901 });
+  assert.equal(street?.accuracy, 'street');
+  assert.equal(street?.accuracyM, 1500);
+  assert.equal(street?.sourceUrl, 'https://yandex.com/maps/10335/tashkent/house/YkAYdAJgQEUGQFprfX91c3pmbQ%3D%3D/panorama/');
+
   const address = getGeoEntity('uz:tashkent:address:shimoliy-olmazor-street-1');
   assert.ok(address);
   assert.equal(address.type, 'address');
-  assert.equal(address.parentId, 'uz:tashkent:almazar');
+  assert.equal(address.parentId, 'uz:tashkent:street:shimoliy-olmazor');
   assert.deepEqual(address.center, { lat: 41.341975, lng: 69.250793 });
   assert.equal(address.accuracy, 'building');
   assert.equal(address.sourceUrl, 'https://yandex.ru/maps/10335/tashkent/house/YkAYdAJgTkwEQFprfX91cHVkYQ==/');
@@ -20,6 +30,7 @@ test('Shimoliy Olmazor Street 1 remains a district-scoped building anchor, not a
     country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Shimoliy Olmazor',
   });
   assert.equal(area?.id, 'uz:tashkent:local-area:shimoliy-olmazor');
+  assert.notDeepEqual(area?.center, street?.center);
   assert.notDeepEqual(area?.center, address.center);
   assert.equal(
     isGeoCoverageGap({ country: 'UZ', city: 'Tashkent', type: 'local_area', canonical: 'Shimoliy Olmazor-1' }),
