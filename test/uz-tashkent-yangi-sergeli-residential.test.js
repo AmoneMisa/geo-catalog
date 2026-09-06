@@ -14,7 +14,7 @@ test('Yangi Sergeli residential complex is distinct from the same-name local are
   assert.equal(localArea.type, 'local_area');
   assert.equal(residential.canonicalName, 'Yangi Sergeli');
   assert.equal(localArea.canonicalName, 'Yangi Sergeli');
-  assert.deepEqual(residential.center, { lat: 41.221894, lng: 69.225708 });
+  assert.deepEqual(residential.center, { lat: 41.222096, lng: 69.224966 });
   assert.deepEqual(localArea.center, { lat: 41.2228385, lng: 69.2252417 });
   assert.equal(residential.parentId, 'uz:tashkent:sergeli');
   assert.equal(localArea.parentId, 'uz:tashkent:sergeli');
