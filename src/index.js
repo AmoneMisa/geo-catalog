@@ -2,7 +2,7 @@ export { GEO_ENTITIES, getGeoEntity, getGeoEntityByLookupKey, hasGeoEntity, find
 export { GEO_COVERAGE_GAPS, isGeoCoverageGap } from './coverage-gaps.js';
 export { isValidCoordinate, containsPoint, distanceKm, convexHullPositions, nearestGeoEntity } from './spatial.js';
 export { validateGeoCatalog } from './validate.js';
-export { geoEntityKey, resolveLexiconGeoEntity, geoIdForLexiconEntity, hasLexiconGeoEntity } from './lexicon-bridge.js';
+export { geoEntityKey, resolveLexiconGeoEntity, geoIdForLexiconEntity, hasLexiconGeoEntity } from './lexicon-runtime-bridge.js';
 export {
   nearestGeoEntityToMetro,
   nearestMetroToGeoEntity,
