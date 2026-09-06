@@ -49,9 +49,11 @@ test('Shifokorlar-1..4 retain distinct spatial identities', () => {
   assert.deepEqual(getGeoEntity('uz:tashkent:local-area:shifokorlar-4')?.osm, { type: 'way', id: 142245652 });
 });
 
-test('Shifokorlar-5 and Shifokorlar-6 stay unresolved until G-30 can be mapped to a numbered mavze', () => {
+test('Shifokorlar-5 and Shifokorlar-6 are not local-area identities or coverage gaps', () => {
   for (const canonical of ['Shifokorlar-5', 'Shifokorlar-6']) {
-    assert.equal(isGeoCoverageGap(localAreaInput(canonical)), true, canonical);
+    const input = localAreaInput(canonical);
+    assert.equal(isGeoCoverageGap(input), false, canonical);
+    assert.equal(resolveLexiconGeoEntity(input), null, canonical);
     assert.equal(getGeoEntity(`uz:tashkent:local-area:${canonical.toLowerCase()}`), null, canonical);
   }
 });
