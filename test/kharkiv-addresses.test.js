@@ -12,6 +12,14 @@ const expected = new Map([
   ['ua:kharkiv:address:sobornosti-ukrainy-259', ['ua:kharkiv:street:sobornosti-ukrainy', { lat: 50.0330555556, lng: 36.3641666667 }]],
 ]);
 
+test('Poltavskyi Shliakh 171 retains its verified OSM building coordinate', () => {
+  const entity = getGeoEntity('ua:kharkiv:address:poltavskyi-shliakh-171');
+  assert.equal(entity?.parentId, 'ua:kharkiv:street:poltavskyi-shliakh');
+  assert.equal(entity?.source, 'osm');
+  assert.equal(entity?.accuracyM, 55);
+  assert.deepEqual(entity?.center, { lat: 49.9796491, lng: 36.1751794 });
+});
+
 test('Kharkiv verified addresses are building-level children of canonical streets', () => {
   for (const [id, [parentId, center]] of expected) {
     const entity = getGeoEntity(id);
