@@ -86,18 +86,59 @@ function normalizedCityName(value) {
   return String(value ?? '').normalize('NFKD').replace(/\p{M}/gu, '').toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 }
 
+function cityIdFor(country, canonicalName) {
+  const slug = normalizedCityName(canonicalName).replace(/\s+/gu, '-');
+  return `${country.toLocaleLowerCase()}:${slug}`;
+}
+
 function boundaryNamesFor(city) {
   const lexical = (CITIES_BY_COUNTRY[city.country] || []).find((entry) => normalizedCityName(entry.canonical) === normalizedCityName(city.canonicalName));
   const aliases = lexical ? Object.values(lexical.aliases || {}).flat() : [];
   return [...new Set([city.canonicalName, ...aliases].map((name) => String(name).trim()).filter(Boolean))];
 }
 
-function selectedCities(options) {
-  const all = GEO_ENTITIES.filter((entity) => entity.country === options.country && entity.type === 'city' && entity.center)
-    .sort((left, right) => left.id.localeCompare(right.id));
-  if (options.allCities) return all;
+function cityNames(city) {
+  return boundaryNamesFor(city).map(normalizedCityName);
+}
+
+async function fillMissingCityCenters(cities, options) {
+  const missing = cities.filter((city) => !city.center);
+  if (!missing.length) return cities;
+  const output = join('.cache', 'geo-enrichment', `${options.country.toLowerCase()}-city-centers.json`);
+  await runNode('import-geofabrik-pbf.js', [
+    '--input', options.input, '--country', options.country,
+    ...missing.flatMap((city) => cityNames(city).map((name) => ['--locate-city', name])).flat(),
+    '--output', output,
+  ]);
+  const collection = JSON.parse(await readFile(output, 'utf8'));
+  const candidates = Array.isArray(collection.candidates) ? collection.candidates : [];
+  return cities.map((city) => {
+    if (city.center) return city;
+    const names = new Set(cityNames(city));
+    const matches = candidates.filter((candidate) => Object.values(candidate.names || {})
+      .flatMap((value) => String(value).split(';'))
+      .some((name) => names.has(normalizedCityName(name))));
+    // A single named OSM city/town node is defensible offline source evidence.
+    // Ambiguous matches are deliberately left for review rather than guessing.
+    if (matches.length !== 1) return { ...city, centerCandidates: matches };
+    return { ...city, center: matches[0].center, osm: matches[0].osm, source: 'osm' };
+  });
+}
+
+async function selectedCities(options) {
+  const anchored = GEO_ENTITIES.filter((entity) => entity.country === options.country && entity.type === 'city' && entity.center);
+  const anchoredByName = new Map(anchored.map((city) => [normalizedCityName(city.canonicalName), city]));
+  const all = (CITIES_BY_COUNTRY[options.country] || []).map((city) => anchoredByName.get(normalizedCityName(city.canonical)) || ({
+    id: cityIdFor(options.country, city.canonical),
+    country: options.country,
+    type: 'city',
+    canonicalName: city.canonical,
+    center: null,
+  })).sort((left, right) => left.id.localeCompare(right.id));
+  const resolved = await fillMissingCityCenters(all, options);
+  if (options.allCities) return resolved;
   const requested = new Set(options.cities.map((value) => value.toLocaleLowerCase()));
-  const result = all.filter((city) => requested.has(city.id.toLocaleLowerCase()) || requested.has(city.canonicalName.toLocaleLowerCase()));
+  const result = resolved.filter((city) => requested.has(city.id.toLocaleLowerCase()) || requested.has(city.canonicalName.toLocaleLowerCase()));
   if (result.length !== requested.size) {
     const resolved = new Set(result.flatMap((city) => [city.id.toLocaleLowerCase(), city.canonicalName.toLocaleLowerCase()]));
     fail(`unknown city selection: ${[...requested].filter((value) => !resolved.has(value)).join(', ')}`);
@@ -165,9 +206,11 @@ async function processCity(city, options) {
     cityId: city.id,
     canonical: city.canonicalName,
     boundaryNames: boundaryNamesFor(city),
-    bbox: bboxAround(city.center, options.radiusKm),
+    bbox: city.center ? bboxAround(city.center, options.radiusKm) : null,
     cityOwner: await exists(indexPath),
   };
+
+  if (!city.center) return { ...base, status: 'needs-city-center', centerCandidates: city.centerCandidates?.length || 0 };
 
   try {
     const importOutput = await runNode('import-geofabrik-pbf.js', [
@@ -198,7 +241,7 @@ await loadLocalCatalogKey();
 ({ CITIES_BY_COUNTRY } = await import('@whiteslove/parsing-lexicon/geography'));
 
 const options = parseArgs(process.argv.slice(2));
-const cities = selectedCities(options);
+const cities = await selectedCities(options);
 const results = [];
 for (const [index, city] of cities.entries()) {
   console.log(`[${index + 1}/${cities.length}] ${city.id}`);

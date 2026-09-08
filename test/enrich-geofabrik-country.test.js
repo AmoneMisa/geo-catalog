@@ -6,6 +6,8 @@ test('country PBF orchestrator remains catalog-driven and review-gated', async (
   const source = await readFile(new URL('../scripts/enrich-geofabrik-country.js', import.meta.url), 'utf8');
   assert.match(source, /GEO_ENTITIES/);
   assert.match(source, /CITIES_BY_COUNTRY/);
+  assert.match(source, /fillMissingCityCenters/);
+  assert.match(source, /needs-city-center/);
   assert.match(source, /boundaryNamesFor/);
   assert.match(source, /loadLocalCatalogKey/);
   assert.match(source, /GEO_CATALOG_DECRYPTION_KEY=/);

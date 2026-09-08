@@ -6,7 +6,9 @@ test('Geofabrik importer stays dependency-free and writes only to its requested 
   const source = await readFile(new URL('../scripts/import-geofabrik-pbf.js', import.meta.url), 'utf8');
   assert.match(source, /inflateSync/);
   assert.match(source, /osmPoiCategory/);
-  assert.match(source, /--input --country --city --parent-id --bbox and --output/);
+  assert.match(source, /expected --input --country and --output/);
+  assert.match(source, /--locate-city/);
+  assert.match(source, /CityCenterCollection/);
   assert.match(source, /boundary-relation/);
   assert.match(source, /boundaryNames/);
   assert.match(source, /place !== 'city'/);
