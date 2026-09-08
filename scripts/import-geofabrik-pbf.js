@@ -301,7 +301,12 @@ function normalizedName(value) {
 function relationHasBoundaryName(relation, requestedName) {
   // Regions often carry a translated short name identical to their capital.
   // A city-bound POI import must require the OSM city-place marker as well.
-  if (!requestedName || relation.tags.boundary !== 'administrative' || relation.tags.place !== 'city') return false;
+  // Some well-mapped city extents (for example Odesa) are a place=city
+  // multipolygon rather than an administrative boundary relation. Both are
+  // valid closed city areas; retaining the city marker keeps region aliases
+  // and arbitrary same-name POIs out of the import scope.
+  if (!requestedName || relation.tags.place !== 'city'
+    || !['administrative', 'multipolygon'].includes(relation.tags.boundary || relation.tags.type)) return false;
   const wanted = normalizedName(requestedName);
   return Object.entries(relation.tags)
     .filter(([key]) => key === 'name' || key.startsWith('name:') || key === 'official_name')
@@ -377,7 +382,9 @@ await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
   },
 }));
 
-if ((args.boundaryRelation || args.boundaryName) && !boundaryWayRoles.size) fail(`could not find outer/inner ways for requested city boundary`);
+if ((args.boundaryRelation || args.boundaryName) && !boundaryWayRoles.size) {
+  fail(`could not find outer/inner ways for requested city boundary${resolvedBoundaryRelation === null ? '' : ` (${resolvedBoundaryRelation})`}`);
+}
 
 const boundarySegments = { outer: [], inner: [] };
 if (boundaryWayRoles.size) {

@@ -3,6 +3,7 @@ import { UA_ODESA_MICRODISTRICT_ENTITIES } from './microdistricts.js';
 import { UA_ODESA_CORE_ENTITIES } from './anchors.js';
 import { UA_ODESA_AREA_ENTITIES } from './areas.js';
 import { UA_ODESA_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes.js';
+import { UA_ODESA_OSM_POI_ENTITIES } from './osm-poi.js';
 
 export const UA_ODESA_ENTITIES = Object.freeze([
   ...UA_ODESA_DISTRICT_ENTITIES,
@@ -10,4 +11,5 @@ export const UA_ODESA_ENTITIES = Object.freeze([
   ...UA_ODESA_CORE_ENTITIES,
   ...UA_ODESA_AREA_ENTITIES,
   ...UA_ODESA_RESIDENTIAL_COMPLEX_ENTITIES,
+  ...UA_ODESA_OSM_POI_ENTITIES,
 ]);

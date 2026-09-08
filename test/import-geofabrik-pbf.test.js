@@ -8,6 +8,8 @@ test('Geofabrik importer stays dependency-free and writes only to its requested 
   assert.match(source, /osmPoiCategory/);
   assert.match(source, /--input --country --city --parent-id --bbox and --output/);
   assert.match(source, /boundary-relation/);
+  assert.match(source, /place !== 'city'/);
+  assert.match(source, /'multipolygon'/);
   assert.match(source, /could not assemble an outer ring/);
   assert.doesNotMatch(source, /from ['\"](?:osmium|gdal|@mapbox|protobufjs)/);
 });
