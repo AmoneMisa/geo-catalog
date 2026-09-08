@@ -14,14 +14,26 @@ import { dirname, join } from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-import { GEO_ENTITIES } from '../src/catalog.js';
-import { extractOsmPoiCandidates, mergeOsmPoiCandidates } from '../src/osm-poi-import.js';
-
 const SCRIPT_DIRECTORY = dirname(fileURLToPath(import.meta.url));
 const DEFAULT_RADIUS_KM = 30;
+let GEO_ENTITIES;
+let extractOsmPoiCandidates;
+let mergeOsmPoiCandidates;
 
 function fail(message) {
   throw new Error(`Geofabrik country enrichment: ${message}`);
+}
+
+async function loadLocalCatalogKey() {
+  if (process.env.GEO_CATALOG_DECRYPTION_KEY) return;
+  try {
+    const env = await readFile(join(SCRIPT_DIRECTORY, '..', '.env'), 'utf8');
+    const line = env.split(/\r?\n/u).find((item) => item.startsWith('GEO_CATALOG_DECRYPTION_KEY='));
+    const value = line?.slice('GEO_CATALOG_DECRYPTION_KEY='.length).trim();
+    if (value) process.env.GEO_CATALOG_DECRYPTION_KEY = value;
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
 }
 
 function parseArgs(argv) {
@@ -161,6 +173,10 @@ async function processCity(city, options) {
     return { ...base, status: 'failed', error: error.message };
   }
 }
+
+await loadLocalCatalogKey();
+({ GEO_ENTITIES } = await import('../src/catalog.js'));
+({ extractOsmPoiCandidates, mergeOsmPoiCandidates } = await import('../src/osm-poi-import.js'));
 
 const options = parseArgs(process.argv.slice(2));
 const cities = selectedCities(options);

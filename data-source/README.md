@@ -40,6 +40,12 @@ Country `.osm.pbf` extracts from [Geofabrik](https://download.geofabrik.de/) are
 
 `scripts/enrich-geofabrik-country.js` orchestrates a country extract from canonical city anchors. Use `--all-cities --report-only` to scan every city and write an ignored conflict/coverage report. `--apply-reviewed` requires explicit `--city` selections, an existing city-local `index.js`, and writes only the corresponding generated `osm-poi.js` plus its canonical index registration. It never bulk-applies all cities.
 
+In PowerShell, run it on one line (or use a PowerShell backtick for continuation, not `\\`). The script loads `GEO_CATALOG_DECRYPTION_KEY` from the ignored repository `.env` when it is not already set:
+
+```powershell
+npm run enrich:geofabrik -- --country UA --input .cache/geofabrik/ukraine-latest.osm.pbf --all-cities --report-only
+```
+
 Generated entities retain their OSM object identity, multilingual source names, and representative center. The normalizer must not replace reviewed entities, must not introduce an OSM identity already present in a city or district, and must retain one canonical entity for repeated node/way source representations.
 
 OpenStreetMap data is © OpenStreetMap contributors and is available under the [Open Database License](https://www.openstreetmap.org/copyright). Keep this attribution in distributed catalog documentation and account for ODbL terms when publishing a materially derived database.
