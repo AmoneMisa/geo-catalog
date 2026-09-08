@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/geo-catalog",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "Structured geographic catalog for cities, districts, neighborhoods, residential complexes, transit and POIs with coordinates, bounds and OSM metadata.",
   "repository": {
     "type": "git",
@@ -62,7 +62,7 @@
     "prepack": "npm test && npm run validate"
   },
   "devDependencies": {
-    "@whiteslove/parsing-lexicon": "0.6.17"
+    "@whiteslove/parsing-lexicon": "^0.7.3"
   },
   "keywords": [
     "geography",
