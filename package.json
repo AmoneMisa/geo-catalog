@@ -58,6 +58,7 @@
     "validate": "node ./scripts/validate-catalog.js",
     "audit:lexicon": "node ./scripts/audit-lexicon-coverage.js",
     "audit:transport": "node ./scripts/audit-transport-coverage.js",
+    "enrich:geofabrik": "node ./scripts/enrich-geofabrik-country.js",
     "prepack": "npm test && npm run validate"
   },
   "devDependencies": {
