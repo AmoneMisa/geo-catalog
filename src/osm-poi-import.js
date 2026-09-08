@@ -73,26 +73,41 @@ export function extractOsmPoiCandidates(features, { country, city, parentId } = 
     candidates.push({
       id: `${country.toLowerCase()}:${normalize(city)}:poi:${normalize(canonicalName)}-${osmType[0]}${osmId}`,
       type, country: country.toUpperCase(), canonicalName, parentId, center,
-      source: 'osm', accuracy: 'poi', osm: { type: osmType, id: osmId },
+      source: 'osm', accuracy: 'poi',
+      // Points are mapped positions; a polygon/way center is a representative
+      // centroid and should be described less precisely.
+      accuracyM: osmType === 'node' ? 30 : osmType === 'way' ? 150 : 300,
+      osm: { type: osmType, id: osmId },
       concordances: { osm: [{ type: osmType, id: osmId }], ...(tags.wikidata ? { wikidata: tags.wikidata } : {}) },
       ...(tags.wikidata ? { wikidataId: tags.wikidata } : {}),
       ...(Object.keys(sourceNames(tags)).length ? { sourceNames: sourceNames(tags) } : {}),
     });
   }
-  return candidates.sort((a, b) => a.id.localeCompare(b.id));
+  const geometryRank = { way: 0, relation: 1, node: 2 };
+  return candidates.sort((a, b) => normalize(a.canonicalName).localeCompare(normalize(b.canonicalName))
+    || a.type.localeCompare(b.type)
+    || geometryRank[a.osm.type] - geometryRank[b.osm.type]
+    || a.osm.id - b.osm.id);
 }
 
 /** Preserves reviewed records and folds OSM node/way/relation duplicates into one logical POI. */
 export function mergeOsmPoiCandidates(candidates, reviewed = []) {
+  // Import refreshes must never mutate the reviewed catalog objects supplied by
+  // callers. The generated module decides whether to accept an enrichment.
   const result = [...reviewed];
   for (const candidate of candidates) {
-    const existing = result.find((entity) => entity.country === candidate.country && entity.parentId === candidate.parentId
+    const existingIndex = result.findIndex((entity) => entity.country === candidate.country && entity.parentId === candidate.parentId
       && entity.type === candidate.type && ((candidate.wikidataId && entity.wikidataId === candidate.wikidataId)
-        || (normalize(entity.canonicalName) === normalize(candidate.canonicalName) && distanceMeters(entity.center, candidate.center) <= 250)));
+        // The catalog intentionally has a semantic uniqueness invariant. An
+        // unreviewed second feature with the same city/type/name therefore
+        // enriches the first candidate instead of creating an invalid duplicate.
+        || normalize(entity.canonicalName) === normalize(candidate.canonicalName)));
+    const existing = existingIndex >= 0 ? result[existingIndex] : null;
     if (existing) {
       if (existing.source === 'manual') continue;
-      const osm = [...new Map([...(existing.concordances?.osm || existing.osm ? [existing.osm] : []), ...(candidate.concordances.osm || [])].filter(Boolean).map((item) => [`${item.type}:${item.id}`, item])).values()];
-      existing.concordances = { ...(existing.concordances || {}), osm };
+      const existingOsm = existing.concordances?.osm || (existing.osm ? [existing.osm] : []);
+      const osm = [...new Map([...existingOsm, ...(candidate.concordances.osm || [])].filter(Boolean).map((item) => [`${item.type}:${item.id}`, item])).values()];
+      result[existingIndex] = { ...existing, concordances: { ...(existing.concordances || {}), osm } };
       continue;
     }
     result.push(candidate);

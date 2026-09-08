@@ -23,6 +23,7 @@ import { TASHKENT_MIRZO_ULUGBEK_MAHALLA_ENTITIES } from './mahallas-mirzo-ulugbe
 import { TASHKENT_YANGIHAYOT_MAHALLA_ENTITIES } from './mahallas-yangihayot.js';
 import { TASHKENT_REVIEWED_AREA_ENTITIES } from './reviewed-areas.js';
 import { TASHKENT_POI_ENTITIES } from './poi.js';
+import { UZ_TASHKENT_OSM_POI_ENTITIES } from './osm-poi.js';
 import { TASHKENT_RESIDENTIAL_ENTITIES } from './residential.js';
 import { TASHKENT_CITYWIDE_RESIDENTIAL_ENTITIES } from './residential-citywide.js';
 import { TASHKENT_REVIEWED_RESIDENTIAL_ENTITIES } from './reviewed-residential.js';
@@ -55,6 +56,7 @@ export const UZ_TASHKENT_ENTITIES = Object.freeze([
   ...TASHKENT_YANGIHAYOT_MAHALLA_ENTITIES,
   ...TASHKENT_REVIEWED_AREA_ENTITIES,
   ...TASHKENT_POI_ENTITIES,
+  ...UZ_TASHKENT_OSM_POI_ENTITIES,
   ...TASHKENT_RESIDENTIAL_ENTITIES,
   ...TASHKENT_CITYWIDE_RESIDENTIAL_ENTITIES,
   ...TASHKENT_REVIEWED_RESIDENTIAL_ENTITIES,

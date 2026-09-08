@@ -23,3 +23,22 @@ test('merges node and polygon representations while preserving reviewed entries'
   const manual = { ...node, source: 'manual', canonicalName: 'Reviewed Hospital' };
   assert.equal(mergeOsmPoiCandidates([way], [manual])[0].canonicalName, 'Reviewed Hospital');
 });
+
+test('does not mutate an existing catalog record while building a refresh result', () => {
+  const [node] = extractOsmPoiCandidates([feature('node', 1, { name: 'Example Hospital', amenity: 'hospital', wikidata: 'Q1' })], { country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent' });
+  const [way] = extractOsmPoiCandidates([feature('way', 2, { name: 'Example Hospital', amenity: 'hospital', wikidata: 'Q1' })], { country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent' });
+  const reviewed = { ...node };
+  const merged = mergeOsmPoiCandidates([way], [reviewed]);
+  assert.equal(reviewed.concordances.osm.length, 1);
+  assert.equal(merged[0].concordances.osm.length, 2);
+});
+
+test('keeps one canonical candidate for repeated source features with the same city/type/name', () => {
+  const candidates = extractOsmPoiCandidates([
+    feature('node', 1, { name: 'School 42', amenity: 'school' }),
+    feature('way', 2, { name: 'School 42', amenity: 'school' }),
+  ], { country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent' });
+  const merged = mergeOsmPoiCandidates(candidates);
+  assert.equal(merged.length, 1);
+  assert.equal(merged[0].osm.type, 'way');
+});
