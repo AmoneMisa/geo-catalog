@@ -154,6 +154,9 @@ export function geoPoiCategory(type: GeoEntityType | string): GeoPoiCategory | n
 export function extractOsmPoiCandidates(features: readonly unknown[], context: { country: string; city: string; parentId: string }): readonly GeoEntity[];
 export function mergeOsmPoiCandidates(candidates: readonly GeoEntity[], reviewed?: readonly GeoEntity[]): readonly GeoEntity[];
 export function osmPoiCategory(feature: unknown): GeoPoiCategory | null;
+export interface GeoCatalogCandidateResolverInput { country: string; city?: string; query: string; types?: readonly GeoEntityType[] }
+/** Exact country/city/type scoped resolver suitable for parsing-lexicon injection; never returns coordinates. */
+export function resolveGeoCatalogCandidates(input: GeoCatalogCandidateResolverInput): readonly Readonly<Pick<GeoEntity, 'id' | 'canonicalName' | 'type' | 'country' | 'parentId'>>[];
 export function getGeoChildren(
   parentId: string,
   filters?: Pick<GeoEntityFilters, 'country' | 'type'>,

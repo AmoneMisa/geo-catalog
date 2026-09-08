@@ -4,6 +4,7 @@ export { isValidCoordinate, containsPoint, distanceKm, convexHullPositions, near
 export { validateGeoCatalog } from './validate.js';
 export { GEO_POI_CATEGORIES, GEO_POI_SUBTYPES, geoPoiCategory } from './poi-taxonomy.js';
 export { extractOsmPoiCandidates, mergeOsmPoiCandidates, osmPoiCategory } from './osm-poi-import.js';
+export { resolveGeoCatalogCandidates } from './candidate-resolver.js';
 export { geoEntityKey, resolveLexiconGeoEntity, geoIdForLexiconEntity, hasLexiconGeoEntity } from './lexicon-runtime-bridge.js';
 export {
   nearestGeoEntityToMetro,
