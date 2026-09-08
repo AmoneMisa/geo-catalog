@@ -5,6 +5,7 @@ import { KG_BISHKEK_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes
 import { KG_BISHKEK_STREET_ENTITIES } from './streets.js';
 import { KG_BISHKEK_REVIEWED_RESIDENTIAL_ENTITIES } from './reviewed-residential-complexes.js';
 import { KG_BISHKEK_REVIEWED_STREET_ENTITIES } from './reviewed-streets.js';
+import { KG_BISHKEK_OSM_POI_ENTITIES } from './osm-poi.js';
 
 export const KG_BISHKEK_ENTITIES = Object.freeze([
   ...KG_BISHKEK_DISTRICT_ENTITIES,
@@ -14,4 +15,5 @@ export const KG_BISHKEK_ENTITIES = Object.freeze([
   ...KG_BISHKEK_REVIEWED_RESIDENTIAL_ENTITIES,
   ...KG_BISHKEK_STREET_ENTITIES,
   ...KG_BISHKEK_REVIEWED_STREET_ENTITIES,
+  ...KG_BISHKEK_OSM_POI_ENTITIES,
 ]);

@@ -4,6 +4,7 @@ import { KZ_ALMATY_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes.
 import { KZ_ALMATY_BOSTANDYK_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes-bostandyk.js';
 import { KZ_ALMATY_STREET_ENTITIES } from './streets.js';
 import { KZ_ALMATY_POI_ENTITIES } from './poi.js';
+import { KZ_ALMATY_OSM_POI_ENTITIES } from './osm-poi.js';
 
 export const KZ_ALMATY_ENTITIES = Object.freeze([
   ...KZ_ALMATY_DISTRICT_ENTITIES,
@@ -12,4 +13,5 @@ export const KZ_ALMATY_ENTITIES = Object.freeze([
   ...KZ_ALMATY_BOSTANDYK_RESIDENTIAL_COMPLEX_ENTITIES,
   ...KZ_ALMATY_STREET_ENTITIES,
   ...KZ_ALMATY_POI_ENTITIES,
+  ...KZ_ALMATY_OSM_POI_ENTITIES,
 ]);

@@ -8,6 +8,7 @@
  * Usage:
  *   node scripts/import-geofabrik-pbf.js --input country.osm.pbf --country UZ \
  *     --city Tashkent --parent-id uz:tashkent --bbox 41.15,69.12,41.43,69.53 \
+ *     --boundary-relation 2216724 --boundary-name Tashkent \
  *     --output .cache/geo-enrichment/uz-tashkent-poi.json
  */
 import { open, mkdir, writeFile } from 'node:fs/promises';
@@ -170,6 +171,33 @@ function parseWay(message, strings) {
   return { id, refs: refs.map((delta) => (ref += delta)), tags: tagsFromIndexes(keys, values, strings) };
 }
 
+function parseRelation(message, strings) {
+  let id;
+  const keys = [];
+  const values = [];
+  const roles = [];
+  const memberIds = [];
+  const memberTypes = [];
+  readFields(message, (field, wire, value) => {
+    if (field === 1 && wire === 0) id = value;
+    if (field === 2 && wire === 2) keys.push(...packedVarints(value));
+    if (field === 3 && wire === 2) values.push(...packedVarints(value));
+    if (field === 8 && wire === 2) roles.push(...packedVarints(value));
+    if (field === 9 && wire === 2) memberIds.push(...packedVarints(value, { zigZag: true }));
+    if (field === 10 && wire === 2) memberTypes.push(...packedVarints(value));
+  });
+  if (!Number.isSafeInteger(id)) return null;
+  let memberId = 0;
+  return {
+    id,
+    tags: tagsFromIndexes(keys, values, strings),
+    members: memberIds.map((delta, index) => {
+      memberId += delta;
+      return { id: memberId, type: memberTypes[index], role: strings[roles[index]] || '' };
+    }),
+  };
+}
+
 function parsePrimitiveBlock(message, visitor) {
   const strings = [];
   const groups = [];
@@ -196,6 +224,10 @@ function parsePrimitiveBlock(message, visitor) {
       if (field === 3 && wire === 2) {
         const way = parseWay(value, strings);
         if (way) visitor.way(way);
+      }
+      if (field === 4 && wire === 2) {
+        const relation = parseRelation(value, strings);
+        if (relation && visitor.relation) visitor.relation(relation);
       }
     });
   }
@@ -250,14 +282,67 @@ function parseArgs(argv) {
     values[key.slice(2)] = value;
   }
   const bbox = String(values.bbox || '').split(',').map(Number);
-  if (!values.input || !/^[A-Z]{2}$/i.test(values.country || '') || !values.city || !values['parent-id'] || !values.output || bbox.length !== 4 || bbox.some((value) => !Number.isFinite(value))) {
+  const boundaryRelation = values['boundary-relation'] === undefined ? null : Number(values['boundary-relation']);
+  const boundaryName = values['boundary-name']?.trim() || null;
+  if (!values.input || !/^[A-Z]{2}$/i.test(values.country || '') || !values.city || !values['parent-id'] || !values.output || bbox.length !== 4 || bbox.some((value) => !Number.isFinite(value)) || (boundaryRelation !== null && (!Number.isInteger(boundaryRelation) || boundaryRelation <= 0))) {
     fail('invalid arguments');
   }
-  return { ...values, country: values.country.toUpperCase(), bbox: { south: bbox[0], west: bbox[1], north: bbox[2], east: bbox[3] } };
+  return { ...values, country: values.country.toUpperCase(), boundaryName, boundaryRelation, bbox: { south: bbox[0], west: bbox[1], north: bbox[2], east: bbox[3] } };
 }
 
 function insideBbox(center, bbox) {
   return center.lat >= bbox.south && center.lat <= bbox.north && center.lng >= bbox.west && center.lng <= bbox.east;
+}
+
+function normalizedName(value) {
+  return String(value ?? '').normalize('NFKC').trim().toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ');
+}
+
+function relationHasBoundaryName(relation, requestedName) {
+  // Regions often carry a translated short name identical to their capital.
+  // A city-bound POI import must require the OSM city-place marker as well.
+  if (!requestedName || relation.tags.boundary !== 'administrative' || relation.tags.place !== 'city') return false;
+  const wanted = normalizedName(requestedName);
+  return Object.entries(relation.tags)
+    .filter(([key]) => key === 'name' || key.startsWith('name:') || key === 'official_name')
+    .some(([, value]) => normalizedName(value) === wanted);
+}
+
+function stitchRings(segments) {
+  const pending = segments.filter((segment) => segment.length > 1).map((segment) => [...segment]);
+  const rings = [];
+  while (pending.length) {
+    const ring = pending.pop();
+    let joined = true;
+    while (joined && ring[0] !== ring.at(-1)) {
+      joined = false;
+      const first = ring[0];
+      const last = ring.at(-1);
+      const index = pending.findIndex((segment) => segment[0] === last || segment.at(-1) === last || segment[0] === first || segment.at(-1) === first);
+      if (index < 0) continue;
+      const segment = pending.splice(index, 1)[0];
+      if (segment[0] === last) ring.push(...segment.slice(1));
+      else if (segment.at(-1) === last) ring.push(...segment.toReversed().slice(1));
+      else if (segment.at(-1) === first) ring.unshift(...segment.slice(0, -1));
+      else ring.unshift(...segment.toReversed().slice(0, -1));
+      joined = true;
+    }
+    if (ring.length >= 4 && ring[0] === ring.at(-1)) rings.push(ring);
+  }
+  return rings;
+}
+
+function pointInRing(center, ring, nodes) {
+  let inside = false;
+  for (let index = 0, previous = ring.length - 1; index < ring.length; previous = index++) {
+    const a = nodes.get(ring[index]);
+    const b = nodes.get(ring[previous]);
+    if (!a || !b) continue;
+    const intersects = (a.lat > center.lat) !== (b.lat > center.lat)
+      && center.lng < (b.lng - a.lng) * (center.lat - a.lat) / (b.lat - a.lat) + a.lng;
+    if (intersects) inside = !inside;
+  }
+  return inside;
 }
 
 function feature(osmType, osmId, tags, center) {
@@ -268,6 +353,8 @@ const args = parseArgs(process.argv.slice(2));
 const nodeFeatures = [];
 const ways = [];
 const wantedNodeIds = new Set();
+const boundaryWayRoles = new Map();
+let resolvedBoundaryRelation = args.boundaryRelation;
 await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
   node(node) {
     if (insideBbox(node.center, args.bbox) && osmPoiCategory({ properties: { tags: node.tags } })) nodeFeatures.push(feature('node', node.id, node.tags, node.center));
@@ -278,7 +365,33 @@ await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
       for (const ref of way.refs) wantedNodeIds.add(ref);
     }
   },
+  relation(relation) {
+    const explicitMatch = relation.id === args.boundaryRelation;
+    const nameMatch = args.boundaryRelation === null && relationHasBoundaryName(relation, args.boundaryName);
+    if (!explicitMatch && !nameMatch) return;
+    if (resolvedBoundaryRelation !== null && resolvedBoundaryRelation !== relation.id) fail(`boundary name ${args.boundaryName} matches multiple relations (${resolvedBoundaryRelation}, ${relation.id})`);
+    resolvedBoundaryRelation = relation.id;
+    for (const member of relation.members) {
+      if (member.type === 1 && ['outer', 'inner'].includes(member.role)) boundaryWayRoles.set(member.id, member.role);
+    }
+  },
 }));
+
+if ((args.boundaryRelation || args.boundaryName) && !boundaryWayRoles.size) fail(`could not find outer/inner ways for requested city boundary`);
+
+const boundarySegments = { outer: [], inner: [] };
+if (boundaryWayRoles.size) {
+  await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
+    node() {},
+    relation() {},
+    way(way) {
+      const role = boundaryWayRoles.get(way.id);
+      if (!role) return;
+      boundarySegments[role].push(way.refs);
+      for (const ref of way.refs) wantedNodeIds.add(ref);
+    },
+  }));
+}
 
 const wayNodes = new Map();
 await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
@@ -286,7 +399,17 @@ await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
     if (wantedNodeIds.has(node.id)) wayNodes.set(node.id, node.center);
   },
   way() {},
+  relation() {},
 }));
+
+const boundaryRings = {
+  outer: stitchRings(boundarySegments.outer),
+  inner: stitchRings(boundarySegments.inner),
+};
+if (resolvedBoundaryRelation && !boundaryRings.outer.length) fail(`could not assemble an outer ring for boundary relation ${resolvedBoundaryRelation}`);
+const insideCity = (center) => insideBbox(center, args.bbox) && (!resolvedBoundaryRelation
+  || (boundaryRings.outer.some((ring) => pointInRing(center, ring, wayNodes))
+    && !boundaryRings.inner.some((ring) => pointInRing(center, ring, wayNodes))));
 
 const wayFeatures = [];
 for (const way of ways) {
@@ -295,10 +418,11 @@ for (const way of ways) {
   const center = points.reduce((total, point) => ({ lat: total.lat + point.lat, lng: total.lng + point.lng }), { lat: 0, lng: 0 });
   center.lat /= points.length;
   center.lng /= points.length;
-  if (insideBbox(center, args.bbox)) wayFeatures.push(feature('way', way.id, way.tags, center));
+  if (insideCity(center)) wayFeatures.push(feature('way', way.id, way.tags, center));
 }
 
-const output = [...nodeFeatures, ...wayFeatures].sort((a, b) => `${a.properties.osm_type}:${a.properties.osm_id}`.localeCompare(`${b.properties.osm_type}:${b.properties.osm_id}`));
+const output = [...nodeFeatures.filter((item) => insideCity({ lat: item.geometry.coordinates[1], lng: item.geometry.coordinates[0] })), ...wayFeatures]
+  .sort((a, b) => `${a.properties.osm_type}:${a.properties.osm_id}`.localeCompare(`${b.properties.osm_type}:${b.properties.osm_id}`));
 await mkdir(dirname(args.output), { recursive: true });
 await writeFile(args.output, `${JSON.stringify({ type: 'FeatureCollection', features: output }, null, 2)}\n`);
-console.log(`Wrote ${output.length} named POI features to ${args.output}`);
+console.log(`Wrote ${output.length} named POI features to ${args.output}${resolvedBoundaryRelation ? ` (boundary relation ${resolvedBoundaryRelation})` : ''}`);
