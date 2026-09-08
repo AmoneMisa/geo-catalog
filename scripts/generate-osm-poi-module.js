@@ -18,6 +18,11 @@ function parseArgs(argv) {
   const values = {};
   for (let index = 0; index < argv.length; index += 2) {
     const key = argv[index];
+    if (key === '--replace-generated') {
+      values.replaceGenerated = true;
+      index -= 1;
+      continue;
+    }
     const value = argv[index + 1];
     if (!key?.startsWith('--') || !value) fail('expected --input --country --city --parent-id --export and --output');
     values[key.slice(2)] = value;
@@ -40,7 +45,15 @@ if (collection?.type !== 'FeatureCollection' || !Array.isArray(collection.featur
 // districts. Both scopes protect their OSM identities from a broad PBF bbox.
 const isWithinCityScope = (entity) => entity.country === args.country
   && (entity.parentId === args['parent-id'] || entity.parentId?.startsWith(`${args['parent-id']}:`));
-const existing = GEO_ENTITIES.filter(isWithinCityScope);
+// A refresh must compare candidates against reviewed records while replacing
+// the prior output of this generator. Generated OSM candidates always retain
+// sourceNames; curated OSM records intentionally do not, so they remain a
+// protection against duplicate or lower-quality replacements.
+const isPreviousGeneratedEntity = (entity) => args.replaceGenerated
+  && entity.source === 'osm'
+  && entity.sourceNames
+  && entity.id.startsWith(`${args['parent-id']}:poi:`);
+const existing = GEO_ENTITIES.filter((entity) => isWithinCityScope(entity) && !isPreviousGeneratedEntity(entity));
 const candidates = extractOsmPoiCandidates(collection.features, { country: args.country, city: args.city, parentId: args['parent-id'] });
 const merged = mergeOsmPoiCandidates(candidates, existing);
 const existingIds = new Set(existing.map((entity) => entity.id));

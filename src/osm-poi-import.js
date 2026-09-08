@@ -66,7 +66,7 @@ export function extractOsmPoiCandidates(features, { country, city, parentId } = 
     const tags = feature?.properties?.tags || feature?.properties || {};
     const type = TAG_RULES.find(([, matches]) => matches(tags))?.[0];
     const center = pointFromGeometry(feature?.geometry);
-    const canonicalName = tags.name || tags['name:en'] || tags.official_name;
+    const canonicalName = String(tags.name || tags['name:en'] || tags.official_name || '').trim();
     const osmType = feature?.properties?.osm_type || feature?.properties?.type;
     const osmId = Number(feature?.properties?.osm_id || feature?.properties?.id);
     if (!type || !center || !canonicalName || !['node', 'way', 'relation'].includes(osmType) || !Number.isInteger(osmId)) continue;

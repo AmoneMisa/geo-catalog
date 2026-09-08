@@ -5,6 +5,7 @@ import { UA_KYIV_POI_ENTITIES } from './poi.js';
 import { UA_KYIV_METRO_ENTITIES } from './metro.js';
 import { UA_KYIV_STREET_ENTITIES } from './streets.js';
 import { UA_KYIV_REVIEWED_STREET_ENTITIES } from './reviewed-streets.js';
+import { UA_KYIV_OSM_POI_ENTITIES } from './osm-poi.js';
 
 export const UA_KYIV_ENTITIES = Object.freeze([
   ...UA_KYIV_ANCHORS,
@@ -14,4 +15,5 @@ export const UA_KYIV_ENTITIES = Object.freeze([
   ...UA_KYIV_METRO_ENTITIES,
   ...UA_KYIV_STREET_ENTITIES,
   ...UA_KYIV_REVIEWED_STREET_ENTITIES,
+  ...UA_KYIV_OSM_POI_ENTITIES,
 ]);

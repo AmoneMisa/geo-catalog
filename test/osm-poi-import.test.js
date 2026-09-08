@@ -14,6 +14,15 @@ test('normalizes valid OSM POI tag variants into explicit catalog types', () => 
   assert.deepEqual(candidates.find((item) => item.type === 'poi.college').sourceNames.ru, ['Примерный колледж']);
 });
 
+test('trims source name whitespace before creating a canonical POI identity', () => {
+  const [candidate] = extractOsmPoiCandidates([
+    feature('node', 9, { name: '  Example Clinic  ', amenity: 'clinic' }),
+  ], { country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent' });
+  assert.equal(candidate.canonicalName, 'Example Clinic');
+  assert.equal(candidate.sourceNames.canonical[0], 'Example Clinic');
+  assert.match(candidate.id, /example-clinic/);
+});
+
 test('merges node and polygon representations while preserving reviewed entries', () => {
   const [node] = extractOsmPoiCandidates([feature('node', 1, { name: 'Example Hospital', amenity: 'hospital', wikidata: 'Q1' })], { country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent' });
   const [way] = extractOsmPoiCandidates([feature('way', 2, { name: 'Example Hospital', amenity: 'hospital', wikidata: 'Q1' })], { country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent' });
