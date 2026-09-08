@@ -7,6 +7,7 @@ import { UA_KHARKIV_STREET_ENTITIES } from './streets.js';
 import { UA_KHARKIV_REVIEWED_STREET_ENTITIES } from './reviewed-streets.js';
 import { UA_KHARKIV_ADDRESS_ENTITIES } from './addresses.js';
 import { UA_KHARKIV_METRO_ENTITIES } from './metro.js';
+import { UA_KHARKIV_OSM_POI_ENTITIES } from './osm-poi.js';
 
 export const UA_KHARKIV_ENTITIES = Object.freeze([
   ...UA_KHARKIV_DISTRICT_ENTITIES,
@@ -18,4 +19,5 @@ export const UA_KHARKIV_ENTITIES = Object.freeze([
   ...UA_KHARKIV_ADDRESS_ENTITIES,
   ...UA_KHARKIV_METRO_ENTITIES,
   ...UA_KHARKIV_POI_ENTITIES,
+  ...UA_KHARKIV_OSM_POI_ENTITIES,
 ]);

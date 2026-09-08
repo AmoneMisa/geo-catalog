@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import { RO_BUCHAREST_OSM_POI_ENTITIES } from '../data-source/ro/bucharest/osm-poi.js';
 import { UA_KYIV_OSM_POI_ENTITIES } from '../data-source/ua/kyiv/osm-poi.js';
+import { UA_KHARKIV_OSM_POI_ENTITIES } from '../data-source/ua/kharkiv/osm-poi.js';
 import { UA_ODESA_OSM_POI_ENTITIES } from '../data-source/ua/odesa/osm-poi.js';
 
 function assertGeneratedCityPois(entities, { country, parentId, minimum }) {
@@ -34,6 +35,14 @@ test('Odesa Geofabrik POIs remain canonical, city-scoped OSM entities', () => {
   });
   assert.ok(UA_ODESA_OSM_POI_ENTITIES.some((entity) => entity.type === 'poi.railway_station'));
   assert.ok(UA_ODESA_OSM_POI_ENTITIES.some((entity) => entity.type === 'poi.hospital'));
+});
+
+test('Kharkiv Geofabrik POIs remain canonical, city-scoped OSM entities', () => {
+  assertGeneratedCityPois(UA_KHARKIV_OSM_POI_ENTITIES, {
+    country: 'UA', parentId: 'ua:kharkiv', minimum: 1000,
+  });
+  assert.ok(UA_KHARKIV_OSM_POI_ENTITIES.some((entity) => entity.type === 'poi.university'));
+  assert.ok(UA_KHARKIV_OSM_POI_ENTITIES.some((entity) => entity.type === 'poi.hospital'));
 });
 
 test('Bucharest Geofabrik POIs remain canonical, city-scoped OSM entities', () => {
