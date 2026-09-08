@@ -13,12 +13,11 @@ import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { createOsmPoiReview } from './geo-enrichment-review.js';
 
 const SCRIPT_DIRECTORY = dirname(fileURLToPath(import.meta.url));
 const DEFAULT_RADIUS_KM = 30;
 let GEO_ENTITIES;
-let extractOsmPoiCandidates;
-let mergeOsmPoiCandidates;
 let CITIES_BY_COUNTRY;
 
 function fail(message) {
@@ -38,13 +37,13 @@ async function loadLocalCatalogKey() {
 }
 
 function parseArgs(argv) {
-  const options = { cities: [], allCities: false, reportOnly: false, applyReviewed: false, radiusKm: DEFAULT_RADIUS_KM };
+  const options = { cities: [], allCities: false, reportOnly: false, applyReviewed: false, radiusKm: DEFAULT_RADIUS_KM, reviewDir: join('.cache', 'geo-review') };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--all-cities') options.allCities = true;
     else if (arg === '--report-only') options.reportOnly = true;
     else if (arg === '--apply-reviewed') options.applyReviewed = true;
-    else if (arg === '--country' || arg === '--input' || arg === '--output' || arg === '--city' || arg === '--radius-km') {
+    else if (arg === '--country' || arg === '--input' || arg === '--output' || arg === '--city' || arg === '--radius-km' || arg === '--review-dir') {
       const value = argv[++index];
       if (!value) fail(`${arg} requires a value`);
       if (arg === '--city') options.cities.push(value);
@@ -166,14 +165,8 @@ function currentCityEntities(city, { replacingGenerated = false } = {}) {
 
 function summarizeCandidates(collection, city, replacingGenerated) {
   const existing = currentCityEntities(city, { replacingGenerated });
-  const candidates = extractOsmPoiCandidates(collection.features, { country: city.country, city: city.canonicalName, parentId: city.id });
-  const merged = mergeOsmPoiCandidates(candidates, existing);
-  const existingIds = new Set(existing.map((entity) => entity.id));
-  const existingOsm = new Set(existing.filter((entity) => entity.osm).map((entity) => `${entity.osm.type}:${entity.osm.id}`));
-  const additions = merged.filter((entity) => !existingIds.has(entity.id)
-    && (!entity.osm || !existingOsm.has(`${entity.osm.type}:${entity.osm.id}`)));
-  const types = Object.fromEntries([...new Set(additions.map((entity) => entity.type))].sort().map((type) => [type, additions.filter((entity) => entity.type === type).length]));
-  return { sourceFeatures: collection.features.length, candidates: candidates.length, additions: additions.length, types };
+  const review = createOsmPoiReview({ collection, country: city.country, city: city.canonicalName, parentId: city.id, reviewed: existing });
+  return { review, sourceFeatures: review.summary.sourceFeatures, candidates: review.summary.candidates, additions: review.summary.additions, types: review.summary.byType };
 }
 
 async function exists(path) {
@@ -201,6 +194,7 @@ async function processCity(city, options) {
   const cityDirectory = join('data-source', city.country.toLowerCase(), slug);
   const indexPath = join(cityDirectory, 'index.js');
   const featurePath = join('.cache', 'geo-enrichment', `${city.country.toLowerCase()}-${slug}-poi.json`);
+  const reviewPath = join(options.reviewDir, city.country.toLowerCase(), slug, 'poi.json');
   const outputPath = join(cityDirectory, 'osm-poi.js');
   const base = {
     cityId: city.id,
@@ -221,7 +215,10 @@ async function processCity(city, options) {
     ]);
     const collection = JSON.parse(await readFile(featurePath, 'utf8'));
     const summary = summarizeCandidates(collection, city, await exists(outputPath));
-    if (!options.applyReviewed) return { ...base, status: base.cityOwner ? 'report-ready' : 'needs-city-owner', importOutput, ...summary };
+    await mkdir(dirname(reviewPath), { recursive: true });
+    await writeFile(reviewPath, `${JSON.stringify(summary.review, null, 2)}\n`);
+    const { review, ...reviewSummary } = summary;
+    if (!options.applyReviewed) return { ...base, status: base.cityOwner ? 'report-ready' : 'needs-city-owner', importOutput, reviewPath, ...reviewSummary };
     if (!base.cityOwner) return { ...base, status: 'not-applied-no-city-owner', importOutput, ...summary };
 
     const generatorOutput = await runNode('generate-osm-poi-module.js', [
@@ -229,7 +226,7 @@ async function processCity(city, options) {
       '--parent-id', city.id, '--export', exportName(city), '--output', outputPath,
     ]);
     await registerGeneratedModule(indexPath, exportName(city));
-    return { ...base, status: 'applied', importOutput, generatorOutput, ...summary };
+    return { ...base, status: 'applied', importOutput, reviewPath, generatorOutput, ...reviewSummary };
   } catch (error) {
     return { ...base, status: 'failed', error: error.message };
   }
@@ -237,7 +234,6 @@ async function processCity(city, options) {
 
 await loadLocalCatalogKey();
 ({ GEO_ENTITIES } = await import('../src/catalog.js'));
-({ extractOsmPoiCandidates, mergeOsmPoiCandidates } = await import('../src/osm-poi-import.js'));
 ({ CITIES_BY_COUNTRY } = await import('@whiteslove/parsing-lexicon/geography'));
 
 const options = parseArgs(process.argv.slice(2));

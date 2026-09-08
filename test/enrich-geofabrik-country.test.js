@@ -17,5 +17,7 @@ test('country PBF orchestrator remains catalog-driven and review-gated', async (
   assert.match(source, /needs-city-owner/);
   assert.match(source, /import-geofabrik-pbf\.js/);
   assert.match(source, /generate-osm-poi-module\.js/);
+  assert.match(source, /GeoCatalogOsmPoiReview|createOsmPoiReview/);
+  assert.match(source, /--review-dir/);
   assert.doesNotMatch(source, /from ['"](?:osmium|gdal|@mapbox|protobufjs)/);
 });
