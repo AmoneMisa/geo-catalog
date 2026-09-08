@@ -275,19 +275,23 @@ async function eachPbfBlock(path, visit) {
 
 function parseArgs(argv) {
   const values = {};
+  const boundaryNames = [];
   for (let index = 0; index < argv.length; index += 2) {
     const key = argv[index];
     const value = argv[index + 1];
     if (!key?.startsWith('--') || !value) fail('expected --input --country --city --parent-id --bbox and --output');
+    if (key === '--boundary-name') {
+      boundaryNames.push(value.trim());
+      continue;
+    }
     values[key.slice(2)] = value;
   }
   const bbox = String(values.bbox || '').split(',').map(Number);
   const boundaryRelation = values['boundary-relation'] === undefined ? null : Number(values['boundary-relation']);
-  const boundaryName = values['boundary-name']?.trim() || null;
   if (!values.input || !/^[A-Z]{2}$/i.test(values.country || '') || !values.city || !values['parent-id'] || !values.output || bbox.length !== 4 || bbox.some((value) => !Number.isFinite(value)) || (boundaryRelation !== null && (!Number.isInteger(boundaryRelation) || boundaryRelation <= 0))) {
     fail('invalid arguments');
   }
-  return { ...values, country: values.country.toUpperCase(), boundaryName, boundaryRelation, bbox: { south: bbox[0], west: bbox[1], north: bbox[2], east: bbox[3] } };
+  return { ...values, country: values.country.toUpperCase(), boundaryNames: [...new Set(boundaryNames.filter(Boolean))], boundaryRelation, bbox: { south: bbox[0], west: bbox[1], north: bbox[2], east: bbox[3] } };
 }
 
 function insideBbox(center, bbox) {
@@ -298,19 +302,19 @@ function normalizedName(value) {
   return String(value ?? '').normalize('NFKC').trim().toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ');
 }
 
-function relationHasBoundaryName(relation, requestedName) {
+function relationHasBoundaryName(relation, requestedNames) {
   // Regions often carry a translated short name identical to their capital.
   // A city-bound POI import must require the OSM city-place marker as well.
   // Some well-mapped city extents (for example Odesa) are a place=city
   // multipolygon rather than an administrative boundary relation. Both are
   // valid closed city areas; retaining the city marker keeps region aliases
   // and arbitrary same-name POIs out of the import scope.
-  if (!requestedName || relation.tags.place !== 'city'
+  if (!requestedNames.length || relation.tags.place !== 'city'
     || !['administrative', 'multipolygon'].includes(relation.tags.boundary || relation.tags.type)) return false;
-  const wanted = normalizedName(requestedName);
+  const wanted = new Set(requestedNames.map(normalizedName));
   return Object.entries(relation.tags)
     .filter(([key]) => key === 'name' || key.startsWith('name:') || key === 'official_name')
-    .some(([, value]) => normalizedName(value) === wanted);
+    .some(([, value]) => wanted.has(normalizedName(value)));
 }
 
 function stitchRings(segments) {
@@ -372,9 +376,9 @@ await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
   },
   relation(relation) {
     const explicitMatch = relation.id === args.boundaryRelation;
-    const nameMatch = args.boundaryRelation === null && relationHasBoundaryName(relation, args.boundaryName);
+    const nameMatch = args.boundaryRelation === null && relationHasBoundaryName(relation, args.boundaryNames);
     if (!explicitMatch && !nameMatch) return;
-    if (resolvedBoundaryRelation !== null && resolvedBoundaryRelation !== relation.id) fail(`boundary name ${args.boundaryName} matches multiple relations (${resolvedBoundaryRelation}, ${relation.id})`);
+    if (resolvedBoundaryRelation !== null && resolvedBoundaryRelation !== relation.id) fail(`boundary names ${args.boundaryNames.join(', ')} match multiple relations (${resolvedBoundaryRelation}, ${relation.id})`);
     resolvedBoundaryRelation = relation.id;
     for (const member of relation.members) {
       if (member.type === 1 && ['outer', 'inner'].includes(member.role)) boundaryWayRoles.set(member.id, member.role);
@@ -382,7 +386,7 @@ await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
   },
 }));
 
-if ((args.boundaryRelation || args.boundaryName) && !boundaryWayRoles.size) {
+if ((args.boundaryRelation || args.boundaryNames.length) && !boundaryWayRoles.size) {
   fail(`could not find outer/inner ways for requested city boundary${resolvedBoundaryRelation === null ? '' : ` (${resolvedBoundaryRelation})`}`);
 }
 

@@ -19,6 +19,7 @@ const DEFAULT_RADIUS_KM = 30;
 let GEO_ENTITIES;
 let extractOsmPoiCandidates;
 let mergeOsmPoiCandidates;
+let CITIES_BY_COUNTRY;
 
 function fail(message) {
   throw new Error(`Geofabrik country enrichment: ${message}`);
@@ -79,6 +80,16 @@ function bboxAround(center, radiusKm) {
     center.lat + latitudeDelta,
     center.lng + longitudeDelta,
   ].map((value) => Number(value.toFixed(6))).join(',');
+}
+
+function normalizedCityName(value) {
+  return String(value ?? '').normalize('NFKD').replace(/\p{M}/gu, '').toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+}
+
+function boundaryNamesFor(city) {
+  const lexical = (CITIES_BY_COUNTRY[city.country] || []).find((entry) => normalizedCityName(entry.canonical) === normalizedCityName(city.canonicalName));
+  const aliases = lexical ? Object.values(lexical.aliases || {}).flat() : [];
+  return [...new Set([city.canonicalName, ...aliases].map((name) => String(name).trim()).filter(Boolean))];
 }
 
 function selectedCities(options) {
@@ -150,12 +161,19 @@ async function processCity(city, options) {
   const indexPath = join(cityDirectory, 'index.js');
   const featurePath = join('.cache', 'geo-enrichment', `${city.country.toLowerCase()}-${slug}-poi.json`);
   const outputPath = join(cityDirectory, 'osm-poi.js');
-  const base = { cityId: city.id, canonical: city.canonicalName, bbox: bboxAround(city.center, options.radiusKm), cityOwner: await exists(indexPath) };
+  const base = {
+    cityId: city.id,
+    canonical: city.canonicalName,
+    boundaryNames: boundaryNamesFor(city),
+    bbox: bboxAround(city.center, options.radiusKm),
+    cityOwner: await exists(indexPath),
+  };
 
   try {
     const importOutput = await runNode('import-geofabrik-pbf.js', [
       '--input', options.input, '--country', city.country, '--city', city.canonicalName,
-      '--parent-id', city.id, '--bbox', base.bbox, '--boundary-name', city.canonicalName,
+      '--parent-id', city.id, '--bbox', base.bbox,
+      ...base.boundaryNames.flatMap((name) => ['--boundary-name', name]),
       '--output', featurePath,
     ]);
     const collection = JSON.parse(await readFile(featurePath, 'utf8'));
@@ -177,6 +195,7 @@ async function processCity(city, options) {
 await loadLocalCatalogKey();
 ({ GEO_ENTITIES } = await import('../src/catalog.js'));
 ({ extractOsmPoiCandidates, mergeOsmPoiCandidates } = await import('../src/osm-poi-import.js'));
+({ CITIES_BY_COUNTRY } = await import('@whiteslove/parsing-lexicon/geography'));
 
 const options = parseArgs(process.argv.slice(2));
 const cities = selectedCities(options);
