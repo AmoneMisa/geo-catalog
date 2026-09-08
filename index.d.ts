@@ -43,7 +43,18 @@ export type GeoPoiType =
   | 'poi.bank'
   | 'poi.sanatorium'
   | 'poi.madrasa'
-  | 'poi.hardware_store';
+  | 'poi.hardware_store'
+  | 'poi.college'
+  | 'poi.kindergarten'
+  | 'poi.medical_center'
+  | 'poi.airport_terminal'
+  | 'poi.railway_halt'
+  | 'poi.transport_hub'
+  | 'poi.parking'
+  | 'poi.parking_structure'
+  | 'poi.park_and_ride';
+
+export type GeoPoiCategory = 'education' | 'healthcare' | 'transport' | 'parking' | 'retail' | 'recreation' | 'residential' | 'other';
 
 export type GeoEntityType =
   | 'country'
@@ -69,6 +80,7 @@ export type GeoAccuracy = 'country' | 'region' | 'city' | 'district' | 'neighbor
 export interface GeoPoint { lat: number; lng: number }
 export interface GeoBBox { south: number; west: number; north: number; east: number }
 export interface OsmRef { type: 'node' | 'way' | 'relation'; id: number }
+export interface GeoConcordances { osm?: readonly OsmRef[]; wikidata?: string; geonames?: string }
 
 // GeoJSON RFC 7946 position order is [longitude, latitude].
 export type GeoPosition = readonly [number, number];
@@ -89,6 +101,9 @@ export interface GeoEntity {
   boundary?: GeoBoundaryGeometry;
   osm?: OsmRef;
   wikidataId?: string;
+  concordances?: GeoConcordances;
+  /** Source-language display/provenance names. Runtime lexical aliases remain in parsing-lexicon. */
+  sourceNames?: Readonly<Record<string, readonly string[]>>;
   accuracyM?: number;
   accuracy?: GeoAccuracy;
   source?: GeoSource;
@@ -100,6 +115,7 @@ export interface GeoEntityFilters {
   country?: string;
   type?: GeoEntityType;
   parentId?: string;
+  poiCategory?: GeoPoiCategory;
 }
 
 export interface LexiconGeoEntityInput {
@@ -131,6 +147,16 @@ export function getGeoEntity(id: string): Readonly<GeoEntity> | null;
 export function getGeoEntityByLookupKey(lookupKey: string): Readonly<GeoEntity> | null;
 export function hasGeoEntity(id: string): boolean;
 export function findGeoEntities(filters?: GeoEntityFilters): readonly Readonly<GeoEntity>[];
+/** Exact catalog-name lookup; aliases and fuzzy matching remain parser responsibilities. */
+export function findGeoEntitiesByName(name: string, filters?: GeoEntityFilters): readonly Readonly<GeoEntity>[];
+export const GEO_POI_CATEGORIES: readonly GeoPoiCategory[];
+export function geoPoiCategory(type: GeoEntityType | string): GeoPoiCategory | null;
+export function extractOsmPoiCandidates(features: readonly unknown[], context: { country: string; city: string; parentId: string }): readonly GeoEntity[];
+export function mergeOsmPoiCandidates(candidates: readonly GeoEntity[], reviewed?: readonly GeoEntity[]): readonly GeoEntity[];
+export function osmPoiCategory(feature: unknown): GeoPoiCategory | null;
+export interface GeoCatalogCandidateResolverInput { country: string; city?: string; query: string; types?: readonly GeoEntityType[] }
+/** Exact country/city/type scoped resolver suitable for parsing-lexicon injection; never returns coordinates. */
+export function resolveGeoCatalogCandidates(input: GeoCatalogCandidateResolverInput): readonly Readonly<Pick<GeoEntity, 'id' | 'canonicalName' | 'type' | 'country' | 'parentId'>>[];
 export function getGeoChildren(
   parentId: string,
   filters?: Pick<GeoEntityFilters, 'country' | 'type'>,

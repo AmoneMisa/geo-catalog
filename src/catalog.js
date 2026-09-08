@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { validateGeoCatalog } from './validate.js';
 import { getDecryptionKey } from './config.js';
 import { decryptPayload } from './crypto.js';
+import { geoPoiCategory } from './poi-taxonomy.js';
 
 function loadEntities() {
   try {
@@ -40,6 +41,8 @@ export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze
   ...(entity.bbox ? { bbox: Object.freeze({ ...entity.bbox }) } : {}),
   ...(entity.boundary ? { boundary: freezeBoundary(entity.boundary) } : {}),
   ...(entity.osm ? { osm: Object.freeze({ ...entity.osm }) } : {})
+  ,...(entity.concordances ? { concordances: Object.freeze({ ...entity.concordances, ...(entity.concordances.osm ? { osm: Object.freeze(entity.concordances.osm.map((item) => Object.freeze({ ...item }))) } : {}) }) } : {})
+  ,...(entity.sourceNames ? { sourceNames: Object.freeze({ ...entity.sourceNames }) } : {})
 })));
 
 const byId = new Map(GEO_ENTITIES.map((entity) => [entity.id, entity]));
@@ -48,6 +51,20 @@ const byLookupKey = new Map(
     .filter((entity) => entity.lookupKey)
     .map((entity) => [entity.lookupKey, entity]),
 );
+function normalizeEntityName(value) {
+  return String(value ?? '').normalize('NFKC').trim().toLocaleLowerCase();
+}
+const byExactName = new Map();
+for (const entity of GEO_ENTITIES) {
+  const names = [entity.canonicalName, ...Object.values(entity.sourceNames ?? {}).flat()];
+  for (const name of names) {
+    const key = normalizeEntityName(name);
+    if (!key) continue;
+    const matches = byExactName.get(key) ?? [];
+    matches.push(entity);
+    byExactName.set(key, matches);
+  }
+}
 const childrenByParent = new Map();
 for (const entity of GEO_ENTITIES) {
   if (!entity.parentId) continue;
@@ -66,8 +83,9 @@ function matchesType(entityType, requestedType) {
 }
 
 function matchesFilters(entity, filters) {
-  const { country, type } = filters;
-  return (!country || entity.country === country) && matchesType(entity.type, type);
+  const { country, type, poiCategory } = filters;
+  return (!country || entity.country === country) && matchesType(entity.type, type)
+    && (!poiCategory || geoPoiCategory(entity.type) === poiCategory);
 }
 
 export function getGeoEntity(id) {
@@ -88,6 +106,13 @@ export function findGeoEntities(filters = {}) {
     matchesFilters(entity, filters) &&
     (parentId === undefined || entity.parentId === parentId)
   );
+}
+
+/** Exact catalog-name lookup only. Alias/fuzzy interpretation belongs in parsing-lexicon. */
+export function findGeoEntitiesByName(name, filters = {}) {
+  const matches = byExactName.get(normalizeEntityName(name)) ?? [];
+  return matches.filter((entity) => matchesFilters(entity, filters)
+    && (filters.parentId === undefined || entity.parentId === filters.parentId));
 }
 
 export function getGeoChildren(parentId, filters = {}) {

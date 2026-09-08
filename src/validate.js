@@ -12,7 +12,8 @@ const POI_TYPES = new Set([
   'airport', 'railway_station', 'bus_station', 'mosque', 'museum', 'observatory', 'school',
   'hospital', 'clinic', 'supermarket', 'amusement_park', 'archaeological_site', 'palace', 'mausoleum',
   'religious_complex', 'bridge', 'factory', 'power_plant', 'company', 'bank', 'sanatorium',
-  'madrasa', 'hardware_store',
+  'madrasa', 'hardware_store', 'college', 'kindergarten', 'medical_center', 'airport_terminal',
+  'railway_halt', 'transport_hub', 'parking', 'parking_structure', 'park_and_ride',
 ]);
 
 const SOURCES = new Set(['osm', 'wikidata', 'official', 'manual', 'geonames']);
@@ -138,6 +139,17 @@ export function validateGeoCatalog(entities) {
     if (entity.source && !SOURCES.has(entity.source)) errors.push(`${entity.id}: unsupported source ${entity.source}`);
     if (entity.accuracy && !ACCURACY.has(entity.accuracy)) errors.push(`${entity.id}: unsupported accuracy ${entity.accuracy}`);
     if (entity.wikidataId && !/^Q\d+$/.test(entity.wikidataId)) errors.push(`${entity.id}: invalid Wikidata id`);
+    if (entity.concordances !== undefined) {
+      const { osm, wikidata, geonames } = entity.concordances ?? {};
+      if (osm !== undefined && (!Array.isArray(osm) || osm.some((item) => !item || !['node', 'way', 'relation'].includes(item.type) || !Number.isInteger(item.id) || item.id <= 0))) {
+        errors.push(`${entity.id}: invalid OSM concordances`);
+      }
+      if (wikidata !== undefined && !/^Q\d+$/.test(wikidata)) errors.push(`${entity.id}: invalid Wikidata concordance`);
+      if (geonames !== undefined && !/^\d+$/.test(String(geonames))) errors.push(`${entity.id}: invalid GeoNames concordance`);
+      if (entity.osm && Array.isArray(osm) && !osm.some((item) => item.type === entity.osm.type && item.id === entity.osm.id)) errors.push(`${entity.id}: primary osm must be a concordance`);
+      if (entity.wikidataId && wikidata && entity.wikidataId !== wikidata) errors.push(`${entity.id}: Wikidata concordance conflicts with wikidataId`);
+    }
+    if (entity.sourceNames !== undefined && (typeof entity.sourceNames !== 'object' || Array.isArray(entity.sourceNames))) errors.push(`${entity.id}: sourceNames must be an object`);
 
     if (entity.bbox) {
       const { south, west, north, east } = entity.bbox;

@@ -3,6 +3,7 @@ import { KZ_ASTANA_NEIGHBORHOOD_ENTITIES } from './neighborhoods.js';
 import { KZ_ASTANA_POI_ENTITIES } from './poi.js';
 import { KZ_ASTANA_RESIDENTIAL_COMPLEX_ENTITIES } from './residential-complexes.js';
 import { KZ_ASTANA_STREET_ENTITIES } from './streets.js';
+import { KZ_ASTANA_OSM_POI_ENTITIES } from './osm-poi.js';
 
 export const KZ_ASTANA_ENTITIES = Object.freeze([
   ...KZ_ASTANA_DISTRICT_ENTITIES,
@@ -10,4 +11,5 @@ export const KZ_ASTANA_ENTITIES = Object.freeze([
   ...KZ_ASTANA_POI_ENTITIES,
   ...KZ_ASTANA_RESIDENTIAL_COMPLEX_ENTITIES,
   ...KZ_ASTANA_STREET_ENTITIES,
+  ...KZ_ASTANA_OSM_POI_ENTITIES,
 ]);
