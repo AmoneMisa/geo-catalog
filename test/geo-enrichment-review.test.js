@@ -20,3 +20,12 @@ test('Geofabrik review JSON is deterministic, sorted and excludes existing physi
   assert.deepEqual(review.entities.map((entity) => entity.canonicalName), ['Zeta School']);
   assert.equal(JSON.stringify(review), JSON.stringify(createOsmPoiReview(options)));
 });
+
+test('Geofabrik review JSON retains deterministic extraction scope for manual review', () => {
+  const review = createOsmPoiReview({
+    country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent',
+    collection: { type: 'FeatureCollection', features: [feature(1, 'Alpha School', 69.1, 41.2)] },
+    extraction: { bbox: '41.1,69.0,41.4,69.4', radiusKm: 12, scope: 'bbox-fallback' },
+  });
+  assert.deepEqual(review.scope.extraction, { bbox: '41.1,69.0,41.4,69.4', radiusKm: 12, scope: 'bbox-fallback' });
+});

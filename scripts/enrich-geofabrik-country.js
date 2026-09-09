@@ -81,6 +81,30 @@ function bboxAround(center, radiusKm) {
   ].map((value) => Number(value.toFixed(6))).join(',');
 }
 
+function cityDistanceKm(left, right) {
+  const radians = Math.PI / 180;
+  const latitudeDelta = (right.lat - left.lat) * radians;
+  const longitudeDelta = (right.lng - left.lng) * radians;
+  const a = Math.sin(latitudeDelta / 2) ** 2
+    + Math.cos(left.lat * radians) * Math.cos(right.lat * radians) * Math.sin(longitudeDelta / 2) ** 2;
+  return 6371.0088 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function cityScopeRadiusKm(city, cities, configuredRadiusKm) {
+  if (!city.center) return configuredRadiusKm;
+  const nearest = cities
+    .filter((candidate) => candidate.id !== city.id && candidate.center)
+    .map((candidate) => cityDistanceKm(city.center, candidate.center))
+    .filter(Number.isFinite)
+    .sort((left, right) => left - right)[0];
+  if (!Number.isFinite(nearest)) return configuredRadiusKm;
+  // The importer uses a relation whenever OSM supplies a complete city
+  // boundary. This narrower bbox is the conservative fallback: neighboring
+  // city candidates must not leak into a report solely because the source lacks
+  // that boundary. The 45% factor keeps two fallback scopes disjoint.
+  return Number(Math.min(configuredRadiusKm, Math.max(1, nearest * 0.45)).toFixed(3));
+}
+
 function normalizedCityName(value) {
   return String(value ?? '').normalize('NFKD').replace(/\p{M}/gu, '').toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 }
@@ -163,9 +187,16 @@ function currentCityEntities(city, { replacingGenerated = false } = {}) {
     && !(replacingGenerated && entity.source === 'osm' && entity.sourceNames && entity.id.startsWith(`${city.id}:poi:`)));
 }
 
-function summarizeCandidates(collection, city, replacingGenerated) {
+function summarizeCandidates(collection, city, replacingGenerated, extraction) {
   const existing = currentCityEntities(city, { replacingGenerated });
-  const review = createOsmPoiReview({ collection, country: city.country, city: city.canonicalName, parentId: city.id, reviewed: existing });
+  const review = createOsmPoiReview({
+    collection,
+    country: city.country,
+    city: city.canonicalName,
+    parentId: city.id,
+    reviewed: existing,
+    extraction,
+  });
   return { review, sourceFeatures: review.summary.sourceFeatures, candidates: review.summary.candidates, additions: review.summary.additions, types: review.summary.byType };
 }
 
@@ -189,18 +220,20 @@ async function registerGeneratedModule(indexPath, name) {
   await writeFile(indexPath, source);
 }
 
-async function processCity(city, options) {
+async function processCity(city, cities, options) {
   const slug = citySlug(city);
   const cityDirectory = join('data-source', city.country.toLowerCase(), slug);
   const indexPath = join(cityDirectory, 'index.js');
   const featurePath = join('.cache', 'geo-enrichment', `${city.country.toLowerCase()}-${slug}-poi.json`);
   const reviewPath = join(options.reviewDir, city.country.toLowerCase(), slug, 'poi.json');
   const outputPath = join(cityDirectory, 'osm-poi.js');
+  const radiusKm = cityScopeRadiusKm(city, cities, options.radiusKm);
   const base = {
     cityId: city.id,
     canonical: city.canonicalName,
     boundaryNames: boundaryNamesFor(city),
-    bbox: city.center ? bboxAround(city.center, options.radiusKm) : null,
+    radiusKm,
+    bbox: city.center ? bboxAround(city.center, radiusKm) : null,
     cityOwner: await exists(indexPath),
   };
 
@@ -214,7 +247,12 @@ async function processCity(city, options) {
       '--output', featurePath,
     ]);
     const collection = JSON.parse(await readFile(featurePath, 'utf8'));
-    const summary = summarizeCandidates(collection, city, await exists(outputPath));
+    const extraction = {
+      bbox: base.bbox,
+      radiusKm: base.radiusKm,
+      scope: /\(boundary relation \d+\)$/u.test(importOutput) ? 'boundary' : 'bbox-fallback',
+    };
+    const summary = summarizeCandidates(collection, city, await exists(outputPath), extraction);
     await mkdir(dirname(reviewPath), { recursive: true });
     await writeFile(reviewPath, `${JSON.stringify(summary.review, null, 2)}\n`);
     const { review, ...reviewSummary } = summary;
@@ -241,7 +279,7 @@ const cities = await selectedCities(options);
 const results = [];
 for (const [index, city] of cities.entries()) {
   console.log(`[${index + 1}/${cities.length}] ${city.id}`);
-  results.push(await processCity(city, options));
+  results.push(await processCity(city, cities, options));
 }
 const report = {
   schemaVersion: 1,

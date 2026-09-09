@@ -7,6 +7,9 @@ test('country PBF orchestrator remains catalog-driven and review-gated', async (
   assert.match(source, /GEO_ENTITIES/);
   assert.match(source, /CITIES_BY_COUNTRY/);
   assert.match(source, /fillMissingCityCenters/);
+  assert.match(source, /cityScopeRadiusKm/);
+  assert.match(source, /cityDistanceKm/);
+  assert.match(source, /45% factor keeps two fallback scopes disjoint/);
   assert.match(source, /needs-city-center/);
   assert.match(source, /boundaryNamesFor/);
   assert.match(source, /loadLocalCatalogKey/);
