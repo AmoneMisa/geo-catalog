@@ -44,6 +44,9 @@ if (collection?.type !== 'FeatureCollection' && !isOsmPoiReview(collection)) fai
 if (isOsmPoiReview(collection) && (collection.scope.country !== args.country || collection.scope.city !== args.city || collection.scope.parentId !== args['parent-id'])) {
   fail('review scope must match --country --city and --parent-id');
 }
+if (isOsmPoiReview(collection) && collection.approved !== true) {
+  fail('review input must be explicitly approved before generation');
+}
 
 // City-local reviewed entities may belong directly to the city or to one of its
 // districts. Both scopes protect their OSM identities from a broad PBF bbox.

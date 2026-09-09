@@ -15,6 +15,7 @@ test('Geofabrik review JSON is deterministic, sorted and excludes existing physi
     reviewed: [{ id: 'uz:tashkent:poi:alpha-school-n1', country: 'UZ', parentId: 'uz:tashkent', type: 'poi.school', canonicalName: 'Alpha School', osm: { type: 'node', id: 1 } }],
   };
   const review = createOsmPoiReview(options);
+  assert.equal(review.approved, false);
   assert.deepEqual(review.scope, { country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent' });
   assert.equal(review.summary.additions, 1);
   assert.deepEqual(review.entities.map((entity) => entity.canonicalName), ['Zeta School']);

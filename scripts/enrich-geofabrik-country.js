@@ -52,7 +52,7 @@ function parseArgs(argv) {
     } else fail(`unknown argument ${arg}`);
   }
   options.country = String(options.country || '').toUpperCase();
-  if (!/^[A-Z]{2}$/.test(options.country) || !options.input) fail('expected --country <ISO-2> and --input <country.osm.pbf>');
+  if (!/^[A-Z]{2}$/.test(options.country) || (!options.input && !options.applyReviewed)) fail('expected --country <ISO-2> and --input <country.osm.pbf>');
   if (options.allCities === (options.cities.length > 0)) fail('use exactly one of --all-cities or one or more --city values');
   if (!Number.isFinite(options.radiusKm) || options.radiusKm < 5 || options.radiusKm > 100) fail('--radius-km must be between 5 and 100');
   if (options.reportOnly && options.applyReviewed) fail('use either --report-only or --apply-reviewed');
@@ -158,7 +158,7 @@ async function selectedCities(options) {
     canonicalName: city.canonical,
     center: null,
   })).sort((left, right) => left.id.localeCompare(right.id));
-  const resolved = await fillMissingCityCenters(all, options);
+  const resolved = options.input ? await fillMissingCityCenters(all, options) : all;
   if (options.allCities) return resolved;
   const requested = new Set(options.cities.map((value) => value.toLocaleLowerCase()));
   const result = resolved.filter((city) => requested.has(city.id.toLocaleLowerCase()) || requested.has(city.canonicalName.toLocaleLowerCase()));
@@ -237,6 +237,21 @@ async function processCity(city, cities, options) {
     cityOwner: await exists(indexPath),
   };
 
+  if (options.applyReviewed) {
+    if (!base.cityOwner) return { ...base, status: 'not-applied-no-city-owner' };
+    if (!await exists(reviewPath)) return { ...base, status: 'not-applied-no-review' };
+    try {
+      const generatorOutput = await runNode('generate-osm-poi-module.js', [
+        '--replace-generated', '--input', reviewPath, '--country', city.country, '--city', city.canonicalName,
+        '--parent-id', city.id, '--export', exportName(city), '--output', outputPath,
+      ]);
+      await registerGeneratedModule(indexPath, exportName(city));
+      return { ...base, status: 'applied', reviewPath, generatorOutput };
+    } catch (error) {
+      return { ...base, status: 'failed', reviewPath, error: error.message };
+    }
+  }
+
   if (!city.center) return { ...base, status: 'needs-city-center', centerCandidates: city.centerCandidates?.length || 0 };
 
   try {
@@ -256,15 +271,7 @@ async function processCity(city, cities, options) {
     await mkdir(dirname(reviewPath), { recursive: true });
     await writeFile(reviewPath, `${JSON.stringify(summary.review, null, 2)}\n`);
     const { review, ...reviewSummary } = summary;
-    if (!options.applyReviewed) return { ...base, status: base.cityOwner ? 'report-ready' : 'needs-city-owner', importOutput, reviewPath, ...reviewSummary };
-    if (!base.cityOwner) return { ...base, status: 'not-applied-no-city-owner', importOutput, ...summary };
-
-    const generatorOutput = await runNode('generate-osm-poi-module.js', [
-      '--replace-generated', '--input', featurePath, '--country', city.country, '--city', city.canonicalName,
-      '--parent-id', city.id, '--export', exportName(city), '--output', outputPath,
-    ]);
-    await registerGeneratedModule(indexPath, exportName(city));
-    return { ...base, status: 'applied', importOutput, reviewPath, generatorOutput, ...reviewSummary };
+    return { ...base, status: base.cityOwner ? 'report-ready' : 'needs-city-owner', importOutput, reviewPath, ...reviewSummary };
   } catch (error) {
     return { ...base, status: 'failed', error: error.message };
   }

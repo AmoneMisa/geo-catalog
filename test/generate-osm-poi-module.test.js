@@ -11,6 +11,7 @@ test('Geofabrik module generator uses the canonical catalog and existing OSM can
   assert.match(source, /--replace-generated/);
   assert.match(source, /GeoCatalogOsmPoiReview/);
   assert.match(source, /review scope must match/);
+  assert.match(source, /review input must be explicitly approved/);
   assert.match(source, /sourceNames/);
   assert.doesNotMatch(source, /from ['\"](?:osmium|gdal|@mapbox|protobufjs)/);
 });

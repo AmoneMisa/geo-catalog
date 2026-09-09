@@ -40,6 +40,10 @@ export function createOsmPoiReview({ collection, country, city, parentId, review
   return stableValue({
     schemaVersion: 1,
     type: 'GeoCatalogOsmPoiReview',
+    // A report is a candidate set, never an implicit instruction to change the
+    // catalog. A reviewer must explicitly set this to true after removing
+    // unsuitable objects before the generator accepts it.
+    approved: false,
     source: 'OpenStreetMap',
     scope: {
       country: country.toUpperCase(),
