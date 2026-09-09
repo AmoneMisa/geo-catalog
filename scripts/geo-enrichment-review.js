@@ -23,7 +23,7 @@ function sortedEntities(entities) {
  * and the generated catalog module. It is deliberately not runtime catalog
  * data: reviewers decide which candidates become canonical entities.
  */
-export function createOsmPoiReview({ collection, country, city, parentId, reviewed = [] } = {}) {
+export function createOsmPoiReview({ collection, country, city, parentId, reviewed = [], extraction = null } = {}) {
   if (collection?.type !== 'FeatureCollection' || !Array.isArray(collection.features)) {
     throw new Error('Geo enrichment review requires a GeoJSON FeatureCollection');
   }
@@ -40,8 +40,17 @@ export function createOsmPoiReview({ collection, country, city, parentId, review
   return stableValue({
     schemaVersion: 1,
     type: 'GeoCatalogOsmPoiReview',
+    // A report is a candidate set, never an implicit instruction to change the
+    // catalog. A reviewer must explicitly set this to true after removing
+    // unsuitable objects before the generator accepts it.
+    approved: false,
     source: 'OpenStreetMap',
-    scope: { country: country.toUpperCase(), city, parentId },
+    scope: {
+      country: country.toUpperCase(),
+      city,
+      parentId,
+      ...(extraction ? { extraction } : {}),
+    },
     summary: { sourceFeatures: collection.features.length, candidates: candidates.length, additions: sorted.length, byType },
     entities: sorted,
   });

@@ -406,8 +406,7 @@ if (args.locateCities.length) {
 const nodeFeatures = [];
 const ways = [];
 const wantedNodeIds = new Set();
-const boundaryWayRoles = new Map();
-let resolvedBoundaryRelation = args.boundaryRelation;
+const matchedBoundaryRelations = new Map();
 await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
   node(node) {
     if (insideBbox(node.center, args.bbox) && osmPoiCategory({ properties: { tags: node.tags } })) nodeFeatures.push(feature('node', node.id, node.tags, node.center));
@@ -422,16 +421,34 @@ await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
     const explicitMatch = relation.id === args.boundaryRelation;
     const nameMatch = args.boundaryRelation === null && relationHasBoundaryName(relation, args.boundaryNames);
     if (!explicitMatch && !nameMatch) return;
-    if (resolvedBoundaryRelation !== null && resolvedBoundaryRelation !== relation.id) fail(`boundary names ${args.boundaryNames.join(', ')} match multiple relations (${resolvedBoundaryRelation}, ${relation.id})`);
-    resolvedBoundaryRelation = relation.id;
+    const roles = new Map();
     for (const member of relation.members) {
-      if (member.type === 1 && ['outer', 'inner'].includes(member.role)) boundaryWayRoles.set(member.id, member.role);
+      if (member.type === 1 && ['outer', 'inner'].includes(member.role)) roles.set(member.id, member.role);
     }
+    matchedBoundaryRelations.set(relation.id, roles);
   },
 }));
 
-if ((args.boundaryRelation || args.boundaryNames.length) && !boundaryWayRoles.size) {
-  fail(`could not find outer/inner ways for requested city boundary${resolvedBoundaryRelation === null ? '' : ` (${resolvedBoundaryRelation})`}`);
+// City boundaries in country PBFs are inconsistent: a city may be represented
+// by a point, a relation without member ways, or several same-name relations.
+// The orchestrator always supplies a defensible city-center bbox, so an absent,
+// incomplete, or ambiguous boundary must narrow nothing rather than causing the
+// whole country review to fail. A single complete relation remains a stricter
+// scope when available.
+let resolvedBoundaryRelation = null;
+let boundaryWayRoles = new Map();
+if (args.boundaryRelation !== null) {
+  const roles = matchedBoundaryRelations.get(args.boundaryRelation);
+  if (roles?.size) {
+    resolvedBoundaryRelation = args.boundaryRelation;
+    boundaryWayRoles = roles;
+  }
+} else if (matchedBoundaryRelations.size === 1) {
+  const [relationId, roles] = matchedBoundaryRelations.entries().next().value;
+  if (roles.size) {
+    resolvedBoundaryRelation = relationId;
+    boundaryWayRoles = roles;
+  }
 }
 
 const boundarySegments = { outer: [], inner: [] };
@@ -461,7 +478,11 @@ const boundaryRings = {
   outer: stitchRings(boundarySegments.outer),
   inner: stitchRings(boundarySegments.inner),
 };
-if (resolvedBoundaryRelation && !boundaryRings.outer.length) fail(`could not assemble an outer ring for boundary relation ${resolvedBoundaryRelation}`);
+if (resolvedBoundaryRelation && !boundaryRings.outer.length) {
+  // A malformed relation is no safer than a missing one. Keep the city bbox as
+  // the deterministic scope and leave the raw result for human review.
+  resolvedBoundaryRelation = null;
+}
 const insideCity = (center) => insideBbox(center, args.bbox) && (!resolvedBoundaryRelation
   || (boundaryRings.outer.some((ring) => pointInRing(center, ring, wayNodes))
     && !boundaryRings.inner.some((ring) => pointInRing(center, ring, wayNodes))));
@@ -480,4 +501,5 @@ const output = [...nodeFeatures.filter((item) => insideCity({ lat: item.geometry
   .sort((a, b) => `${a.properties.osm_type}:${a.properties.osm_id}`.localeCompare(`${b.properties.osm_type}:${b.properties.osm_id}`));
 await mkdir(dirname(args.output), { recursive: true });
 await writeFile(args.output, `${JSON.stringify({ type: 'FeatureCollection', features: output }, null, 2)}\n`);
-console.log(`Wrote ${output.length} named POI features to ${args.output}${resolvedBoundaryRelation ? ` (boundary relation ${resolvedBoundaryRelation})` : ''}`);
+const usedBboxFallback = !resolvedBoundaryRelation && (args.boundaryRelation || args.boundaryNames.length);
+console.log(`Wrote ${output.length} named POI features to ${args.output}${resolvedBoundaryRelation ? ` (boundary relation ${resolvedBoundaryRelation})` : usedBboxFallback ? ' (bbox fallback)' : ''}`);
