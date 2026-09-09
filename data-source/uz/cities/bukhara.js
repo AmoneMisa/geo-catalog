@@ -123,4 +123,22 @@ export const BUKHARA_ENTITIES = Object.freeze([
   wikidataPoi('bukhara-international-airport', 'Bukhara International Airport', 'poi.airport', 39.775, 64.483333, 'Q978200', 260, { type: 'relation', id: 12733977 }),
   wikidataPoi('sitorai-mohi-xosa', 'Sitorai Mohi Xosa', 'poi.palace', 39.81295, 64.44123, 'Q4421152', 140, { type: 'way', id: 197708190 }),
   osmPoi('bukhara-2', 'Bukhara-2', 'poi.railway_station', 39.7511441, 64.4635355, 'node', 1588259351, 110),
+  // Reviewed from the cached Geofabrik/OSM city extract.  Do not promote
+  // unnamed platform/stop features to canonical transport entities.
+  osmPoi('tashkent-stoyanka', 'Toshkent stoyanka', 'poi.bus_station', 39.8048813, 64.427619, 'node', 4578894490, 30),
+  osmPoi('konechka', 'Konechka', 'poi.bus_station', 39.7415927, 64.4390381, 'node', 5365796726, 30),
+  osmPoi('sharq-avto-stansiyasi-qarshiga-borish', 'Sharq avto stansiyasi — Qarshiga borish', 'poi.bus_station', 39.7663129, 64.4570151, 'node', 5585308506, 30),
+  osmPoi('kolkhoz-bazaar-bus-terminal', 'Kolkhoz Bazaar Bus Terminal', 'poi.bus_station', 39.7817269, 64.403732, 'node', 6359581785, 30),
+  osmPoi('tashkent-samarkand-bus-station', 'Tashkent–Samarkand Bus Station', 'poi.bus_station', 39.8084003, 64.4303528, 'node', 6486363086, 30),
+  osmPoi('north-bus-station', 'North Bus Station', 'poi.bus_station', 39.79476694, 64.42035565, 'way', 165720933, 150),
+  osmPoi('sharq-bus-station', 'Sharq Bus Station', 'poi.bus_station', 39.7661789166667, 64.4579605, 'way', 171235458, 150),
+  osmPoi('urgench-avtobekati', 'Urgench avtobekati', 'poi.bus_station', 39.80478852, 64.42567846, 'way', 199279061, 150),
+  osmPoi('chor-bakr-minibus-station', 'Chor Bakr Minibus Station', 'poi.bus_station', 39.78128252, 64.40216799, 'way', 626548315, 150),
+  osmPoi('korzinka-parking', 'Korzinka.uz Parking', 'poi.parking', 39.77344017, 64.44181204, 'way', 521627863, 150),
+  osmPoi('61-auto-base-parking', '61 Auto Base Parking', 'poi.parking', 39.77930212, 64.45273246, 'way', 583485140, 150),
+  osmPoi('jondor-parking', 'Jondor avtoturargoh', 'poi.parking', 39.76993193, 64.38063248, 'way', 621625461, 150),
+  {
+    ...osmPoi('tir-parking', 'TIR Parking', 'poi.parking', 39.8070938, 64.41755335, 'way', 875475222, 150),
+    concordances: { osm: [{ type: 'way', id: 875475222 }, { type: 'way', id: 875475224 }] },
+  },
 ]);

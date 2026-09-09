@@ -65,4 +65,15 @@ export const RO_CITY_ENTITIES = Object.freeze([
     accuracy: 'city',
     accuracyM: 12000,
   }),
+  Object.freeze({
+    id: 'ro:otopeni',
+    type: 'city',
+    country: 'RO',
+    canonicalName: 'Otopeni',
+    center: Object.freeze({ lat: 44.55, lng: 26.07 }),
+    source: 'wikidata',
+    accuracy: 'city',
+    accuracyM: 5000,
+    wikidataId: 'Q727421',
+  }),
 ]);

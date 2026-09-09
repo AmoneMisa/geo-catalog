@@ -1,3 +1,4 @@
+import { UZ_MAP_DATA_ENTITIES } from './map-data.js';
 import { UZ_CITY_ENTITIES } from './cities.js';
 import { UZ_TASHKENT_ENTITIES } from './tashkent/index.js';
 import { UZ_SAMARKAND_ENTITIES } from './samarkand/index.js';
@@ -46,4 +47,5 @@ export const UZ_ENTITIES = Object.freeze([
   ...UZ_HERITAGE_ANCHORS,
   ...UZ_HERITAGE_TRANSPORT_ENTITIES,
   ...UZ_TASHKENT_REGION_CITY_ANCHORS,
+  ...UZ_MAP_DATA_ENTITIES,
 ]);

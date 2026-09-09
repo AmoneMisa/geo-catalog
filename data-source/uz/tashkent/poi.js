@@ -37,6 +37,19 @@ const catalogPoi = (slug, canonicalName, lat, lng, accuracyM = 100, type = 'poi.
 });
 
 export const TASHKENT_POI_ENTITIES = Object.freeze([
+  Object.freeze({
+    id: 'uz:tashkent:poi:islam-karimov-tashkent-international-airport',
+    type: 'poi.airport',
+    country: 'UZ',
+    canonicalName: 'Islam Karimov Tashkent International Airport',
+    parentId: 'uz:tashkent',
+    center: Object.freeze({ lat: 41.257861, lng: 69.2811861 }),
+    source: 'osm',
+    accuracy: 'poi',
+    accuracyM: 1800,
+    osm: Object.freeze({ type: 'relation', id: 12345328 }),
+    wikidataId: 'Q860952',
+  }),
   wikidataPoi('chorsu-bazaar', 'Chorsu Bazaar', 41.3266667, 69.2350000, 'Q13409233', 120, 'poi.market'),
   wikidataPoi('amir-timur-square', 'Amir Timur Square', 41.3113889, 69.2797194, 'Q4421686', 100, 'poi.square'),
   wikidataPoi('independence-square', 'Independence Square', 41.3111111, 69.2625000, 'Q3390317', 180, 'poi.square'),

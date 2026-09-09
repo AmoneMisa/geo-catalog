@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 /**
- * Offline, dependency-free importer for the useful named OSM POI subset in a
- * Geofabrik .osm.pbf extract.  It deliberately produces GeoJSON-like features
- * for the catalog's existing normalizer rather than placing raw OSM data in
- * the runtime package.
+ * Offline, dependency-free importer for reviewed OSM map candidates in a
+ * Geofabrik .osm.pbf extract. It deliberately produces GeoJSON-like features
+ * for a review workflow rather than placing raw OSM data in the runtime package.
  *
  * Usage:
  *   node scripts/import-geofabrik-pbf.js --input country.osm.pbf --country UZ \
@@ -295,8 +294,9 @@ function parseArgs(argv) {
   const boundaryRelation = values['boundary-relation'] === undefined ? null : Number(values['boundary-relation']);
   const locatingCities = locateCities.length > 0;
   const invalidCommon = !values.input || !/^[A-Z]{2}$/i.test(values.country || '') || !values.output;
+  const profile = values.profile || 'poi';
   const invalidPoiImport = !values.city || !values['parent-id'] || bbox.length !== 4 || bbox.some((value) => !Number.isFinite(value));
-  if (invalidCommon || (!locatingCities && invalidPoiImport) || (locatingCities && (values.city || values['parent-id'] || values.bbox || values['boundary-relation'])) || (boundaryRelation !== null && (!Number.isInteger(boundaryRelation) || boundaryRelation <= 0))) {
+  if (invalidCommon || (!locatingCities && invalidPoiImport) || (locatingCities && (values.city || values['parent-id'] || values.bbox || values['boundary-relation'] || values.profile)) || !['poi', 'map-data'].includes(profile) || (boundaryRelation !== null && (!Number.isInteger(boundaryRelation) || boundaryRelation <= 0))) {
     fail('invalid arguments');
   }
   return {
@@ -305,8 +305,28 @@ function parseArgs(argv) {
     boundaryNames: [...new Set(boundaryNames.filter(Boolean))],
     locateCities: [...new Set(locateCities.filter(Boolean))],
     boundaryRelation,
+    profile,
     bbox: locatingCities ? null : { south: bbox[0], west: bbox[1], north: bbox[2], east: bbox[3] },
   };
+}
+
+const STREET_HIGHWAYS = new Set(['motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'unclassified', 'residential', 'living_street', 'pedestrian']);
+const LOCAL_PLACE_TYPES = new Set(['neighbourhood', 'suburb', 'quarter', 'locality']);
+
+function mapDataCategory(tags) {
+  if (osmPoiCategory({ properties: { tags } })) return 'poi';
+  const name = String(tags.name || tags['name:en'] || tags.official_name || '').trim();
+  if (!name) return null;
+  if (STREET_HIGHWAYS.has(tags.highway)) return 'street';
+  if (LOCAL_PLACE_TYPES.has(tags.place)) return 'local_area';
+  if (tags.boundary === 'administrative' && Number(tags.admin_level) >= 7) return 'administrative_area';
+  if (tags.landuse === 'residential') return 'residential_area';
+  if (['apartments', 'residential'].includes(tags.building) && (tags.residential || tags['building:use'] === 'residential')) return 'residential_complex';
+  return null;
+}
+
+function shouldImport(tags, profile) {
+  return profile === 'poi' ? Boolean(osmPoiCategory({ properties: { tags } })) : Boolean(mapDataCategory(tags));
 }
 
 function insideBbox(center, bbox) {
@@ -409,10 +429,10 @@ const wantedNodeIds = new Set();
 const matchedBoundaryRelations = new Map();
 await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
   node(node) {
-    if (insideBbox(node.center, args.bbox) && osmPoiCategory({ properties: { tags: node.tags } })) nodeFeatures.push(feature('node', node.id, node.tags, node.center));
+    if (insideBbox(node.center, args.bbox) && shouldImport(node.tags, args.profile)) nodeFeatures.push(feature('node', node.id, node.tags, node.center));
   },
   way(way) {
-    if (osmPoiCategory({ properties: { tags: way.tags } })) {
+    if (shouldImport(way.tags, args.profile)) {
       ways.push(way);
       for (const ref of way.refs) wantedNodeIds.add(ref);
     }
@@ -502,4 +522,4 @@ const output = [...nodeFeatures.filter((item) => insideCity({ lat: item.geometry
 await mkdir(dirname(args.output), { recursive: true });
 await writeFile(args.output, `${JSON.stringify({ type: 'FeatureCollection', features: output }, null, 2)}\n`);
 const usedBboxFallback = !resolvedBoundaryRelation && (args.boundaryRelation || args.boundaryNames.length);
-console.log(`Wrote ${output.length} named POI features to ${args.output}${resolvedBoundaryRelation ? ` (boundary relation ${resolvedBoundaryRelation})` : usedBboxFallback ? ' (bbox fallback)' : ''}`);
+console.log(`Wrote ${output.length} ${args.profile} features to ${args.output}${resolvedBoundaryRelation ? ` (boundary relation ${resolvedBoundaryRelation})` : usedBboxFallback ? ' (bbox fallback)' : ''}`);

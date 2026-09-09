@@ -22,8 +22,53 @@ const TAG_RULES = Object.freeze([
   ['poi.park', (t) => t.leisure === 'park'],
 ]);
 
+const MAP_POI_TYPES = new Set([
+  'poi.airport', 'poi.airport_terminal', 'poi.railway_station', 'poi.railway_halt',
+  'poi.bus_station', 'poi.park_and_ride', 'poi.parking_structure', 'poi.parking',
+]);
+
+const GENERIC_PARKING_NAMES = new Set([
+  'parking', 'парковка', 'автостоянка', 'стоянка', 'car park', 'car parking',
+  'avtoturargoh', 'avtostoyanka',
+]);
+
 function normalize(value) {
   return String(value ?? '').normalize('NFKC').trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '');
+}
+
+function tagsFor(feature) {
+  return feature?.properties?.tags || feature?.properties || {};
+}
+
+function sourceName(tags) {
+  return String(tags.name || tags['name:en'] || tags.official_name || '').trim();
+}
+
+/**
+ * Narrows raw cached OSM extracts to map-useful, named POIs before review.
+ * It deliberately does not approve or import anything: the caller still
+ * receives a normal review artifact and must inspect it before generation.
+ */
+export function filterCachedOsmPoiFeatures(features, { profile = 'all' } = {}) {
+  if (!Array.isArray(features)) return [];
+  if (profile === 'all') return [...features];
+  if (profile !== 'map-poi') throw new Error(`Unsupported cached OSM profile: ${profile}`);
+
+  return features.filter((feature) => {
+    const tags = tagsFor(feature);
+    const type = TAG_RULES.find(([, matches]) => matches(tags))?.[0];
+    const name = sourceName(tags);
+    if (!MAP_POI_TYPES.has(type) || !name) return false;
+
+    // Metro/light-rail stations have dedicated city transport modules. They
+    // are not railway-station candidates for this cache-cleaning workflow.
+    if (type === 'poi.railway_station' && ['subway', 'light_rail'].includes(tags.station)) return false;
+    // Private and generic parking areas create map noise without a usable
+    // destination identity. Named public/special-purpose parking remains.
+    if (['poi.parking', 'poi.parking_structure'].includes(type)
+      && (tags.access === 'private' || GENERIC_PARKING_NAMES.has(normalize(name)))) return false;
+    return true;
+  });
 }
 
 function pointFromGeometry(geometry) {
@@ -63,10 +108,10 @@ export function extractOsmPoiCandidates(features, { country, city, parentId } = 
   if (!country || !city || !parentId || !Array.isArray(features)) return [];
   const candidates = [];
   for (const feature of features) {
-    const tags = feature?.properties?.tags || feature?.properties || {};
+    const tags = tagsFor(feature);
     const type = TAG_RULES.find(([, matches]) => matches(tags))?.[0];
     const center = pointFromGeometry(feature?.geometry);
-    const canonicalName = String(tags.name || tags['name:en'] || tags.official_name || '').trim();
+    const canonicalName = sourceName(tags);
     const osmType = feature?.properties?.osm_type || feature?.properties?.type;
     const osmId = Number(feature?.properties?.osm_id || feature?.properties?.id);
     if (!type || !center || !canonicalName || !['node', 'way', 'relation'].includes(osmType) || !Number.isInteger(osmId)) continue;

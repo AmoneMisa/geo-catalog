@@ -16,6 +16,9 @@ test('Geofabrik importer stays dependency-free and writes only to its requested 
   assert.match(source, /matchedBoundaryRelations/);
   assert.match(source, /usedBboxFallback/);
   assert.match(source, /bbox fallback/);
+  assert.match(source, /map-data/);
+  assert.match(source, /STREET_HIGHWAYS/);
+  assert.match(source, /LOCAL_PLACE_TYPES/);
   assert.doesNotMatch(source, /could not find outer\/inner ways for requested city boundary/);
   assert.doesNotMatch(source, /from ['\"](?:osmium|gdal|@mapbox|protobufjs)/);
 });

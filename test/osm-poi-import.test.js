@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { extractOsmPoiCandidates, mergeOsmPoiCandidates } from '../src/osm-poi-import.js';
+import { extractOsmPoiCandidates, filterCachedOsmPoiFeatures, mergeOsmPoiCandidates } from '../src/osm-poi-import.js';
 
 const feature = (osmType, osmId, tags) => ({ properties: { osm_type: osmType, osm_id: osmId, tags }, geometry: { type: 'Point', coordinates: [69.2, 41.3] } });
 
@@ -50,4 +50,16 @@ test('keeps one canonical candidate for repeated source features with the same c
   const merged = mergeOsmPoiCandidates(candidates);
   assert.equal(merged.length, 1);
   assert.equal(merged[0].osm.type, 'way');
+});
+
+test('map-poi cache profile keeps named transport and usable parking while removing map noise', () => {
+  const filtered = filterCachedOsmPoiFeatures([
+    feature('node', 1, { name: 'Central Bus Station', amenity: 'bus_station' }),
+    feature('node', 2, { name: 'Metro Stop', railway: 'station', station: 'subway' }),
+    feature('way', 3, { name: 'Parking', amenity: 'parking' }),
+    feature('way', 4, { name: 'Mall Parking', amenity: 'parking' }),
+    feature('way', 5, { name: 'Staff Parking', amenity: 'parking', access: 'private' }),
+    feature('node', 6, { name: 'Central Station', railway: 'station' }),
+  ], { profile: 'map-poi' });
+  assert.deepEqual(filtered.map((item) => item.properties.osm_id), [1, 4, 6]);
 });

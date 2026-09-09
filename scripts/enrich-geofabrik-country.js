@@ -37,13 +37,13 @@ async function loadLocalCatalogKey() {
 }
 
 function parseArgs(argv) {
-  const options = { cities: [], allCities: false, reportOnly: false, applyReviewed: false, radiusKm: DEFAULT_RADIUS_KM, reviewDir: join('.cache', 'geo-review') };
+  const options = { cities: [], allCities: false, reportOnly: false, applyReviewed: false, radiusKm: DEFAULT_RADIUS_KM, reviewDir: join('.cache', 'geo-review'), profile: 'poi' };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--all-cities') options.allCities = true;
     else if (arg === '--report-only') options.reportOnly = true;
     else if (arg === '--apply-reviewed') options.applyReviewed = true;
-    else if (arg === '--country' || arg === '--input' || arg === '--output' || arg === '--city' || arg === '--radius-km' || arg === '--review-dir') {
+    else if (arg === '--country' || arg === '--input' || arg === '--output' || arg === '--city' || arg === '--radius-km' || arg === '--review-dir' || arg === '--profile') {
       const value = argv[++index];
       if (!value) fail(`${arg} requires a value`);
       if (arg === '--city') options.cities.push(value);
@@ -55,6 +55,7 @@ function parseArgs(argv) {
   if (!/^[A-Z]{2}$/.test(options.country) || (!options.input && !options.applyReviewed)) fail('expected --country <ISO-2> and --input <country.osm.pbf>');
   if (options.allCities === (options.cities.length > 0)) fail('use exactly one of --all-cities or one or more --city values');
   if (!Number.isFinite(options.radiusKm) || options.radiusKm < 5 || options.radiusKm > 100) fail('--radius-km must be between 5 and 100');
+  if (!['poi', 'map-data'].includes(options.profile)) fail('--profile must be poi or map-data');
   if (options.reportOnly && options.applyReviewed) fail('use either --report-only or --apply-reviewed');
   if (!options.reportOnly && !options.applyReviewed) options.reportOnly = true;
   if (options.applyReviewed && !options.cities.length) fail('--apply-reviewed requires explicit --city values; it never applies every city at once');
@@ -224,7 +225,7 @@ async function processCity(city, cities, options) {
   const slug = citySlug(city);
   const cityDirectory = join('data-source', city.country.toLowerCase(), slug);
   const indexPath = join(cityDirectory, 'index.js');
-  const featurePath = join('.cache', 'geo-enrichment', `${city.country.toLowerCase()}-${slug}-poi.json`);
+  const featurePath = join('.cache', 'geo-enrichment', `${city.country.toLowerCase()}-${slug}-${options.profile}.json`);
   const reviewPath = join(options.reviewDir, city.country.toLowerCase(), slug, 'poi.json');
   const outputPath = join(cityDirectory, 'osm-poi.js');
   const radiusKm = cityScopeRadiusKm(city, cities, options.radiusKm);
@@ -258,6 +259,7 @@ async function processCity(city, cities, options) {
     const importOutput = await runNode('import-geofabrik-pbf.js', [
       '--input', options.input, '--country', city.country, '--city', city.canonicalName,
       '--parent-id', city.id, '--bbox', base.bbox,
+      '--profile', options.profile,
       ...base.boundaryNames.flatMap((name) => ['--boundary-name', name]),
       '--output', featurePath,
     ]);
@@ -265,6 +267,7 @@ async function processCity(city, cities, options) {
     const extraction = {
       bbox: base.bbox,
       radiusKm: base.radiusKm,
+      profile: options.profile,
       scope: /\(boundary relation \d+\)$/u.test(importOutput) ? 'boundary' : 'bbox-fallback',
     };
     const summary = summarizeCandidates(collection, city, await exists(outputPath), extraction);
@@ -294,6 +297,7 @@ const report = {
   country: options.country,
   mode: options.applyReviewed ? 'apply-reviewed' : 'report-only',
   radiusKm: options.radiusKm,
+  profile: options.profile,
   results,
 };
 await mkdir(dirname(options.output), { recursive: true });
