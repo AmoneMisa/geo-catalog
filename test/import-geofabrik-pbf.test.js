@@ -13,6 +13,9 @@ test('Geofabrik importer stays dependency-free and writes only to its requested 
   assert.match(source, /boundaryNames/);
   assert.match(source, /place !== 'city'/);
   assert.match(source, /'multipolygon'/);
-  assert.match(source, /could not assemble an outer ring/);
+  assert.match(source, /matchedBoundaryRelations/);
+  assert.match(source, /usedBboxFallback/);
+  assert.match(source, /bbox fallback/);
+  assert.doesNotMatch(source, /could not find outer\/inner ways for requested city boundary/);
   assert.doesNotMatch(source, /from ['\"](?:osmium|gdal|@mapbox|protobufjs)/);
 });
