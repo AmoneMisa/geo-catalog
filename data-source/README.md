@@ -38,13 +38,21 @@ Use a city directory when that city has multiple subject modules. Country-wide d
 
 Country `.osm.pbf` extracts from [Geofabrik](https://download.geofabrik.de/) are permitted build-time inputs, never runtime/package inputs. Keep downloaded PBFs and intermediate GeoJSON under the ignored `.cache/geofabrik/` and `.cache/geo-enrichment/` directories. `scripts/import-geofabrik-pbf.js` extracts named, city-bounded POIs using Node built-ins only; `scripts/generate-osm-poi-module.js` then deduplicates them against the canonical catalog before producing a city `osm-poi.js` module for review.
 
-`scripts/enrich-geofabrik-country.js` orchestrates a country extract from canonical city anchors. Use `--all-cities --report-only` to scan every city and write an ignored conflict/coverage report. `--apply-reviewed` requires explicit `--city` selections, an existing city-local `index.js`, and writes only the corresponding generated `osm-poi.js` plus its canonical index registration. It never bulk-applies all cities.
+`scripts/enrich-geofabrik-country.js` orchestrates a country extract from canonical city anchors. Use `--all-cities --report-only` to scan every city and write an ignored conflict/coverage report. For each city with a usable center it also writes `.cache/geo-review/<country>/<city>/poi.json`: a deterministic, sorted, normalized review artifact containing only candidates not already protected by the canonical catalog. `--review-dir <path>` places these external JSON files elsewhere. `--apply-reviewed` requires explicit `--city` selections, an existing city-local `index.js`, and writes only the corresponding generated `osm-poi.js` plus its canonical index registration. It never bulk-applies all cities.
 
 In PowerShell, run it on one line (or use a PowerShell backtick for continuation, not `\\`). The script loads `GEO_CATALOG_DECRYPTION_KEY` from the ignored repository `.env` when it is not already set:
 
 ```powershell
 npm run enrich:geofabrik -- --country UA --input .cache/geofabrik/ukraine-latest.osm.pbf --all-cities --report-only
 ```
+
+To regenerate one review JSON from an existing raw extraction, run:
+
+```powershell
+npm run review:geofabrik -- --country UA --city Odesa --parent-id ua:odesa --input .cache/geo-enrichment/ua-odesa-poi.json --output .cache/geo-review/ua/odesa/poi.json
+```
+
+Review JSON is an editable staging artifact, not runtime data. After accepting a subset, pass that JSON to `scripts/generate-osm-poi-module.js` with the same `--country`, `--city`, and `--parent-id`; the generator validates the scope and still applies the catalog's duplicate protections.
 
 Generated entities retain their OSM object identity, multilingual source names, and representative center. The normalizer must not replace reviewed entities, must not introduce an OSM identity already present in a city or district, and must retain one canonical entity for repeated node/way source representations.
 

@@ -276,22 +276,37 @@ async function eachPbfBlock(path, visit) {
 function parseArgs(argv) {
   const values = {};
   const boundaryNames = [];
+  const locateCities = [];
   for (let index = 0; index < argv.length; index += 2) {
     const key = argv[index];
     const value = argv[index + 1];
-    if (!key?.startsWith('--') || !value) fail('expected --input --country --city --parent-id --bbox and --output');
+    if (!key?.startsWith('--') || !value) fail('expected --input --country and --output');
     if (key === '--boundary-name') {
       boundaryNames.push(value.trim());
+      continue;
+    }
+    if (key === '--locate-city') {
+      locateCities.push(value.trim());
       continue;
     }
     values[key.slice(2)] = value;
   }
   const bbox = String(values.bbox || '').split(',').map(Number);
   const boundaryRelation = values['boundary-relation'] === undefined ? null : Number(values['boundary-relation']);
-  if (!values.input || !/^[A-Z]{2}$/i.test(values.country || '') || !values.city || !values['parent-id'] || !values.output || bbox.length !== 4 || bbox.some((value) => !Number.isFinite(value)) || (boundaryRelation !== null && (!Number.isInteger(boundaryRelation) || boundaryRelation <= 0))) {
+  const locatingCities = locateCities.length > 0;
+  const invalidCommon = !values.input || !/^[A-Z]{2}$/i.test(values.country || '') || !values.output;
+  const invalidPoiImport = !values.city || !values['parent-id'] || bbox.length !== 4 || bbox.some((value) => !Number.isFinite(value));
+  if (invalidCommon || (!locatingCities && invalidPoiImport) || (locatingCities && (values.city || values['parent-id'] || values.bbox || values['boundary-relation'])) || (boundaryRelation !== null && (!Number.isInteger(boundaryRelation) || boundaryRelation <= 0))) {
     fail('invalid arguments');
   }
-  return { ...values, country: values.country.toUpperCase(), boundaryNames: [...new Set(boundaryNames.filter(Boolean))], boundaryRelation, bbox: { south: bbox[0], west: bbox[1], north: bbox[2], east: bbox[3] } };
+  return {
+    ...values,
+    country: values.country.toUpperCase(),
+    boundaryNames: [...new Set(boundaryNames.filter(Boolean))],
+    locateCities: [...new Set(locateCities.filter(Boolean))],
+    boundaryRelation,
+    bbox: locatingCities ? null : { south: bbox[0], west: bbox[1], north: bbox[2], east: bbox[3] },
+  };
 }
 
 function insideBbox(center, bbox) {
@@ -359,6 +374,35 @@ function feature(osmType, osmId, tags, center) {
 }
 
 const args = parseArgs(process.argv.slice(2));
+
+if (args.locateCities.length) {
+  const wanted = new Set(args.locateCities.map(normalizedName));
+  const candidates = [];
+  await eachPbfBlock(args.input, (payload) => parsePrimitiveBlock(payload, {
+    node(node) {
+      if (!['city', 'town'].includes(node.tags.place)) return;
+      const names = Object.entries(node.tags)
+        .filter(([key]) => key === 'name' || key.startsWith('name:') || key === 'official_name' || key === 'alt_name')
+        .flatMap(([, value]) => String(value).split(';'))
+        .map(normalizedName);
+      if (!names.some((name) => wanted.has(name))) return;
+      candidates.push({
+        osm: { type: 'node', id: node.id },
+        place: node.tags.place,
+        names: Object.fromEntries(Object.entries(node.tags).filter(([key]) => key === 'name' || key.startsWith('name:') || key === 'official_name')),
+        center: node.center,
+      });
+    },
+    way() {},
+    relation() {},
+  }));
+  candidates.sort((left, right) => `${left.place}:${left.osm.id}`.localeCompare(`${right.place}:${right.osm.id}`));
+  await mkdir(dirname(args.output), { recursive: true });
+  await writeFile(args.output, `${JSON.stringify({ type: 'CityCenterCollection', candidates }, null, 2)}\n`);
+  console.log(`Wrote ${candidates.length} city-center candidates to ${args.output}`);
+  process.exit(0);
+}
+
 const nodeFeatures = [];
 const ways = [];
 const wantedNodeIds = new Set();

@@ -9,6 +9,7 @@ import { dirname } from 'node:path';
 
 import { GEO_ENTITIES } from '../src/catalog.js';
 import { extractOsmPoiCandidates, mergeOsmPoiCandidates } from '../src/osm-poi-import.js';
+import { isOsmPoiReview } from './geo-enrichment-review.js';
 
 function fail(message) {
   throw new Error(`Geofabrik POI module: ${message}`);
@@ -39,7 +40,10 @@ function quoted(value) {
 
 const args = parseArgs(process.argv.slice(2));
 const collection = JSON.parse(await readFile(args.input, 'utf8'));
-if (collection?.type !== 'FeatureCollection' || !Array.isArray(collection.features)) fail('input must be a GeoJSON FeatureCollection');
+if (collection?.type !== 'FeatureCollection' && !isOsmPoiReview(collection)) fail('input must be a GeoJSON FeatureCollection or GeoCatalogOsmPoiReview');
+if (isOsmPoiReview(collection) && (collection.scope.country !== args.country || collection.scope.city !== args.city || collection.scope.parentId !== args['parent-id'])) {
+  fail('review scope must match --country --city and --parent-id');
+}
 
 // City-local reviewed entities may belong directly to the city or to one of its
 // districts. Both scopes protect their OSM identities from a broad PBF bbox.
@@ -54,7 +58,9 @@ const isPreviousGeneratedEntity = (entity) => args.replaceGenerated
   && entity.sourceNames
   && entity.id.startsWith(`${args['parent-id']}:poi:`);
 const existing = GEO_ENTITIES.filter((entity) => isWithinCityScope(entity) && !isPreviousGeneratedEntity(entity));
-const candidates = extractOsmPoiCandidates(collection.features, { country: args.country, city: args.city, parentId: args['parent-id'] });
+const candidates = isOsmPoiReview(collection)
+  ? collection.entities
+  : extractOsmPoiCandidates(collection.features, { country: args.country, city: args.city, parentId: args['parent-id'] });
 const merged = mergeOsmPoiCandidates(candidates, existing);
 const existingIds = new Set(existing.map((entity) => entity.id));
 const existingOsm = new Set(existing.filter((entity) => entity.osm).map((entity) => `${entity.osm.type}:${entity.osm.id}`));

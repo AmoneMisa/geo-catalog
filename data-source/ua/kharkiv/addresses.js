@@ -1,17 +1,28 @@
-const address = (slug, canonicalName, parentId, lat, lng, sourceUrl, accuracyM = 40) => Object.freeze({
+const address = (slug, canonicalName, parentId, lat, lng, sourceUrl, accuracyM = 40, extra = {}) => Object.freeze({
   id: `ua:kharkiv:address:${slug}`,
   type: 'address',
   country: 'UA',
   canonicalName,
   parentId,
   center: Object.freeze({ lat, lng }),
-  source: 'manual',
+  source: extra.source ?? 'manual',
   accuracy: 'building',
   accuracyM,
   sourceUrl,
+  ...extra,
 });
 
 export const UA_KHARKIV_ADDRESS_ENTITIES = Object.freeze([
+  address(
+    'poltavskyi-shliakh-171',
+    '171 Poltavskyi Shliakh Street',
+    'ua:kharkiv:street:poltavskyi-shliakh',
+    49.9796491,
+    36.1751794,
+    'https://www.openstreetmap.org/way/104498629',
+    55,
+    { source: 'osm', osm: Object.freeze({ type: 'way', id: 104498629 }) },
+  ),
   address(
     'lva-landau-2b-1',
     '2B/1 Lva Landau Avenue',

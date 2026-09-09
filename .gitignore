@@ -4,6 +4,8 @@ node_modules/
 coverage/
 /.idea/
 .cache/geo-enrichment/
+.cache/geo-review/
+.cache/logs/
 .cache/geofabrik/
 .cache/wikiroutes/
 .env
