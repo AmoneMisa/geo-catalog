@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
+import { brotliCompressSync, constants } from 'node:zlib';
 import { UZ_ENTITIES } from '../data-source/uz/index.js';
 import { KZ_ENTITIES } from '../data-source/kz/index.js';
 import { KG_ENTITIES } from '../data-source/kg/index.js';
@@ -20,7 +21,12 @@ const entities = [
 ];
 
 const key = getDecryptionKey();
-const payload = encryptPayload(Buffer.from(JSON.stringify(entities), 'utf8'), key);
+const payload = {
+  ...encryptPayload(brotliCompressSync(Buffer.from(JSON.stringify(entities), 'utf8'), {
+    params: { [constants.BROTLI_PARAM_QUALITY]: 6 },
+  }), key),
+  compression: 'brotli',
+};
 
 const outPath = fileURLToPath(new URL('../src/data/catalog.enc.json', import.meta.url));
 await mkdir(dirname(outPath), { recursive: true });

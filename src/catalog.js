@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { brotliDecompressSync } from 'node:zlib';
 import { validateGeoCatalog } from './validate.js';
 import { getDecryptionKey } from './config.js';
 import { decryptPayload } from './crypto.js';
@@ -10,7 +11,9 @@ function loadEntities() {
     const artifactPath = fileURLToPath(new URL('./data/catalog.enc.json', import.meta.url));
     const artifact = JSON.parse(readFileSync(artifactPath, 'utf8'));
     const key = getDecryptionKey();
-    return JSON.parse(decryptPayload(artifact, key).toString('utf8'));
+    const plaintext = decryptPayload(artifact, key);
+    const json = artifact.compression === 'brotli' ? brotliDecompressSync(plaintext) : plaintext;
+    return JSON.parse(json.toString('utf8'));
   } catch (err) {
     throw new Error(`Failed to load encrypted geo catalog: ${err.message}`);
   }
