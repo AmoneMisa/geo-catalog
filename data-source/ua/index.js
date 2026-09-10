@@ -1,3 +1,4 @@
+import { UA_MAP_DATA_ENTITIES } from './map-data.js';
 import { UA_CITY_ENTITIES } from './cities.js';
 import { UA_SECONDARY_CITY_ENTITIES } from './secondary-city-anchors.js';
 import { UA_KYIV_ENTITIES } from './kyiv/index.js';
@@ -86,4 +87,5 @@ export const UA_ENTITIES = Object.freeze([
   ...UA_KRYVYI_RIH_ENTITIES,
   ...UA_KRAMATORSK_ENTITIES,
   ...UA_SLOVIANSK_ENTITIES,
+  ...UA_MAP_DATA_ENTITIES,
 ]);

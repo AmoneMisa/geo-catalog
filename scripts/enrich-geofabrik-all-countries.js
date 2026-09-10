@@ -10,27 +10,29 @@ import { fileURLToPath } from 'node:url';
 
 const SCRIPT_DIRECTORY = dirname(fileURLToPath(import.meta.url));
 const INPUTS = Object.freeze({
-  UZ: 'uzbekistan-latest.osm.pbf',
+  // UZ: 'uzbekistan-latest.osm.pbf',
   UA: 'ukraine-latest.osm.pbf',
-  KG: 'kyrgyzstan-latest.osm.pbf',
-  RO: 'romania-latest.osm.pbf',
-  KZ: 'kazakhstan-latest.osm.pbf',
+  // KG: 'kyrgyzstan-latest.osm.pbf',
+  // RO: 'romania-latest.osm.pbf',
+  // KZ: 'kazakhstan-latest.osm.pbf',
 });
 
 function fail(message) { throw new Error(`Geofabrik all-country enrichment: ${message}`); }
 
 function parseArgs(argv) {
-  const options = { inputDir: join('.cache', 'geofabrik'), profile: 'map-data', radiusKm: '30' };
+  const options = { inputDir: join('.cache', 'geofabrik'), profile: 'map-data', radiusKm: '30', concurrency: '3' };
   for (let index = 0; index < argv.length; index += 1) {
     const key = argv[index];
     const value = argv[++index];
-    if (!key?.startsWith('--') || !value) fail('expected optional --input-dir, --profile and --radius-km');
+    if (!key?.startsWith('--') || !value) fail('expected optional --input-dir, --profile, --radius-km and --concurrency');
     if (key === '--input-dir') options.inputDir = value;
     else if (key === '--profile') options.profile = value;
     else if (key === '--radius-km') options.radiusKm = value;
+    else if (key === '--concurrency') options.concurrency = value;
     else fail(`unknown argument ${key}`);
   }
   if (!['poi', 'map-data'].includes(options.profile)) fail('--profile must be poi or map-data');
+  if (!/^[1-4]$/.test(options.concurrency)) fail('--concurrency must be an integer between 1 and 4');
   return options;
 }
 
@@ -38,6 +40,7 @@ function runCountry(country, input, options) {
   return new Promise((resolve, reject) => {
     const args = [join(SCRIPT_DIRECTORY, 'enrich-geofabrik-country.js'), '--country', country, '--input', input,
       '--all-cities', '--report-only', '--profile', options.profile, '--radius-km', options.radiusKm,
+      '--concurrency', options.concurrency,
       '--output', join('.cache', 'geo-enrichment', `${country.toLowerCase()}-city-report-${options.profile}.json`)];
     const child = spawn(process.execPath, args, { stdio: 'inherit' });
     child.on('error', reject);

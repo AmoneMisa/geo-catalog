@@ -24,5 +24,8 @@ test('country PBF orchestrator remains catalog-driven and review-gated', async (
   assert.match(source, /generate-osm-poi-module\.js/);
   assert.match(source, /GeoCatalogOsmPoiReview|createOsmPoiReview/);
   assert.match(source, /--review-dir/);
+  assert.match(source, /--concurrency must be an integer between 1 and 4/);
+  assert.match(source, /Promise\.all\(Array\.from\(\{ length: Math\.min\(options\.concurrency, cities\.length\) \}, worker\)\)/);
+  assert.match(source, /const allNames = new Map\(anchored\.map/);
   assert.doesNotMatch(source, /from ['"](?:osmium|gdal|@mapbox|protobufjs)/);
 });

@@ -37,17 +37,17 @@ async function loadLocalCatalogKey() {
 }
 
 function parseArgs(argv) {
-  const options = { cities: [], allCities: false, reportOnly: false, applyReviewed: false, radiusKm: DEFAULT_RADIUS_KM, reviewDir: join('.cache', 'geo-review'), profile: 'poi' };
+  const options = { cities: [], allCities: false, reportOnly: false, applyReviewed: false, radiusKm: DEFAULT_RADIUS_KM, reviewDir: join('.cache', 'geo-review'), profile: 'poi', concurrency: 2 };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--all-cities') options.allCities = true;
     else if (arg === '--report-only') options.reportOnly = true;
     else if (arg === '--apply-reviewed') options.applyReviewed = true;
-    else if (arg === '--country' || arg === '--input' || arg === '--output' || arg === '--city' || arg === '--radius-km' || arg === '--review-dir' || arg === '--profile') {
+    else if (arg === '--country' || arg === '--input' || arg === '--output' || arg === '--city' || arg === '--radius-km' || arg === '--review-dir' || arg === '--profile' || arg === '--concurrency') {
       const value = argv[++index];
       if (!value) fail(`${arg} requires a value`);
       if (arg === '--city') options.cities.push(value);
-      else if (arg === '--radius-km') options.radiusKm = Number(value);
+      else if (arg === '--radius-km' || arg === '--concurrency') options[arg.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = Number(value);
       else options[arg.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = value;
     } else fail(`unknown argument ${arg}`);
   }
@@ -55,6 +55,7 @@ function parseArgs(argv) {
   if (!/^[A-Z]{2}$/.test(options.country) || (!options.input && !options.applyReviewed)) fail('expected --country <ISO-2> and --input <country.osm.pbf>');
   if (options.allCities === (options.cities.length > 0)) fail('use exactly one of --all-cities or one or more --city values');
   if (!Number.isFinite(options.radiusKm) || options.radiusKm < 5 || options.radiusKm > 100) fail('--radius-km must be between 5 and 100');
+  if (!Number.isInteger(options.concurrency) || options.concurrency < 1 || options.concurrency > 4) fail('--concurrency must be an integer between 1 and 4');
   if (!['poi', 'map-data'].includes(options.profile)) fail('--profile must be poi or map-data');
   if (options.reportOnly && options.applyReviewed) fail('use either --report-only or --apply-reviewed');
   if (!options.reportOnly && !options.applyReviewed) options.reportOnly = true;
@@ -152,13 +153,19 @@ async function fillMissingCityCenters(cities, options) {
 async function selectedCities(options) {
   const anchored = GEO_ENTITIES.filter((entity) => entity.country === options.country && entity.type === 'city' && entity.center);
   const anchoredByName = new Map(anchored.map((city) => [normalizedCityName(city.canonicalName), city]));
-  const all = (CITIES_BY_COUNTRY[options.country] || []).map((city) => anchoredByName.get(normalizedCityName(city.canonical)) || ({
-    id: cityIdFor(options.country, city.canonical),
-    country: options.country,
-    type: 'city',
-    canonicalName: city.canonical,
-    center: null,
-  })).sort((left, right) => left.id.localeCompare(right.id));
+  const lexicalCities = CITIES_BY_COUNTRY[options.country] || [];
+  const allNames = new Map(anchored.map((city) => [normalizedCityName(city.canonicalName), city]));
+  for (const city of lexicalCities) {
+    const name = normalizedCityName(city.canonical);
+    if (!allNames.has(name)) allNames.set(name, anchoredByName.get(name) || ({
+      id: cityIdFor(options.country, city.canonical),
+      country: options.country,
+      type: 'city',
+      canonicalName: city.canonical,
+      center: null,
+    }));
+  }
+  const all = [...allNames.values()].sort((left, right) => left.id.localeCompare(right.id));
   const resolved = options.input ? await fillMissingCityCenters(all, options) : all;
   if (options.allCities) return resolved;
   const requested = new Set(options.cities.map((value) => value.toLocaleLowerCase()));
@@ -286,11 +293,17 @@ await loadLocalCatalogKey();
 
 const options = parseArgs(process.argv.slice(2));
 const cities = await selectedCities(options);
-const results = [];
-for (const [index, city] of cities.entries()) {
-  console.log(`[${index + 1}/${cities.length}] ${city.id}`);
-  results.push(await processCity(city, cities, options));
+const results = new Array(cities.length);
+let nextIndex = 0;
+async function worker() {
+  while (nextIndex < cities.length) {
+    const index = nextIndex++;
+    const city = cities[index];
+    console.log(`[${index + 1}/${cities.length}] ${city.id}`);
+    results[index] = await processCity(city, cities, options);
+  }
 }
+await Promise.all(Array.from({ length: Math.min(options.concurrency, cities.length) }, worker));
 const report = {
   schemaVersion: 1,
   generatedAt: new Date().toISOString(),

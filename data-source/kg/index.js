@@ -1,3 +1,4 @@
+import { KG_MAP_DATA_ENTITIES } from './map-data.js';
 import { KG_CITY_ENTITIES } from './cities.js';
 import { KG_BISHKEK_ENTITIES } from './bishkek/index.js';
 import { KG_OSH_ENTITIES } from './osh/index.js';
@@ -10,4 +11,5 @@ export const KG_ENTITIES = Object.freeze([
   ...KG_OSH_ENTITIES,
   ...KG_KARAKOL_ENTITIES,
   ...KG_JALAL_ABAD_ENTITIES,
+  ...KG_MAP_DATA_ENTITIES,
 ]);

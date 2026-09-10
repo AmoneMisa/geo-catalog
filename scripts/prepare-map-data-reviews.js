@@ -71,7 +71,7 @@ function prepare(features, scope) {
 }
 
 function parseArgs(argv) {
-  const options = { country: 'UZ', inputDir: join('.cache', 'geo-enrichment'), outputDir: join('.cache', 'geo-review') };
+  const options = { country: 'UA', inputDir: join('.cache', 'geo-enrichment'), outputDir: join('.cache', 'geo-review') };
   for (let index = 0; index < argv.length; index += 1) {
     const key = argv[index]; const value = argv[++index];
     if (!key?.startsWith('--') || !value) fail('expected optional --country, --input-dir and --output-dir');

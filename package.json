@@ -63,7 +63,7 @@
     "review:cached-map-poi": "node ./scripts/prepare-geofabrik-review.js --profile map-poi",
     "enrich:geofabrik:all": "node ./scripts/enrich-geofabrik-all-countries.js",
     "review:cached-map-data": "node ./scripts/prepare-map-data-reviews.js",
-    "apply:cached-map-data": "node ./scripts/generate-map-data-module.js",
+    "apply:cached-map-data": "node ./scripts/generate-map-data-module.js --approve",
     "prepack": "npm test && npm run validate && npm run audit:lexicon"
   },
   "devDependencies": {

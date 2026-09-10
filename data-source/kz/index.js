@@ -1,3 +1,4 @@
+import { KZ_MAP_DATA_ENTITIES } from './map-data.js';
 import { KZ_CITY_ENTITIES } from './cities.js';
 import { KZ_ALMATY_ENTITIES } from './almaty/index.js';
 import { KZ_ASTANA_ENTITIES } from './astana/index.js';
@@ -22,4 +23,5 @@ export const KZ_ENTITIES = Object.freeze([
   ...KZ_KOSTANAY_ENTITIES,
   ...KZ_PAVLODAR_ENTITIES,
   ...KZ_OSKEMEN_ENTITIES,
+  ...KZ_MAP_DATA_ENTITIES,
 ]);

@@ -1,3 +1,4 @@
+import { RO_MAP_DATA_ENTITIES } from './map-data.js';
 import { RO_CITY_ENTITIES } from './cities.js';
 import { RO_BUCHAREST_ENTITIES } from './bucharest/index.js';
 import { RO_CLUJ_NAPOCA_ENTITIES } from './cluj-napoca/index.js';
@@ -10,4 +11,5 @@ export const RO_ENTITIES = Object.freeze([
   ...RO_CLUJ_NAPOCA_ENTITIES,
   ...RO_TIMISOARA_ENTITIES,
   ...RO_OTOPENI_ENTITIES,
+  ...RO_MAP_DATA_ENTITIES,
 ]);
