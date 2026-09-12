@@ -177,6 +177,8 @@ If a new canonical parser city/district is added without a matching geo entity, 
 - Text aliases and transliterations must not be duplicated here.
 - Approximate data must be marked as such instead of pretending to be precise.
 - Network geocoding is never performed during package import or lookup.
+- Canonical and source names must not mix visually identical Latin/Cyrillic letters within one word (e.g. a Cyrillic "о" inside an otherwise Latin street name). The OSM importer folds these confusables toward the name's dominant script before slugging; genuinely bilingual names (brand names, transliteration pairs) are left mixed and allow-listed in `test/catalog.test.js`.
+- A Wikidata id identifies one physical entity regardless of how the catalog types it (e.g. a reviewed `metro` station vs. an imported `poi.railway_station` candidate). `mergeOsmPoiCandidates` matches on Wikidata id across types so the same place is never kept as two entities.
 
 ## License
 
