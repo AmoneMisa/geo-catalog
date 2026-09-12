@@ -136,17 +136,20 @@ IDs are deliberately language-independent. Aliases such as `Чиланзар`, `
 
 ## Current coverage
 
-`0.2.x` synchronizes the canonical city layer used by the parser and establishes the first administrative layer:
+`0.9.x` covers five countries across administrative, locality, residential and POI layers. Snapshot as built by `npm run build:catalog` at `0.9.16`:
 
-- Uzbekistan: all 15 canonical `UZ_CITIES`;
-- Kazakhstan: all 18 canonical `KZ_CITIES`;
-- Ukraine: all 30 canonical `UA_CITIES`;
-- Tashkent: all 12 canonical administrative districts;
-- total current catalog: 75 spatial entities.
+| Country | Cities | Entities |
+| --- | ---: | ---: |
+| Ukraine (UA) | 91 | 62,487 |
+| Kazakhstan (KZ) | 75 | 29,775 |
+| Romania (RO) | 34 | 20,307 |
+| Uzbekistan (UZ) | 41 | 18,890 |
+| Kyrgyzstan (KG) | 33 | 9,614 |
+| **Total** | **274** | **141,073** |
 
-Tashkent's 12 districts include stored OSM administrative boundaries and boundary-derived representative centers. Consumers can render those polygons directly instead of approximating district extents with radius circles.
+By entity type, the catalog is dominated by street-level coverage (117,647 `street` entities) and local areas/mahallas (10,377 `local_area`, 154 `mahalla`), with the remainder spread across `microdistrict` (663), `residential_complex` (1,522), `district` (122), `metro` (89) and POI subtypes (schools, kindergartens, clinics, parks, hospitals, universities and more, each its own `poi.*` type). Tashkent's administrative districts include stored OSM boundaries and boundary-derived representative centers, so consumers can render those polygons directly instead of approximating extents with radius circles.
 
-The next spatial layers are Tashkent metro, microdistricts, mahallas, residential complexes and POIs, followed by detailed Uzbekistan, Ukraine and Kazakhstan city datasets. Those layers can be added without changing the public bridge/API.
+Run `node scripts/build-encrypted-catalog.js` (or `npm test`, which builds as a pretest step) to regenerate this snapshot from the current `data-source/` tree; entity counts grow as new cities and layers are reviewed.
 
 ## Lexicon coverage gate
 
