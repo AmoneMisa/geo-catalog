@@ -286,3 +286,52 @@ test('Stroy Gorod hardware store belongs to Paxtazor rather than Tashkent Stroyg
   assert.deepEqual(store?.center, { lat: 40.698506, lng: 68.0290325 });
   assert.equal(store?.accuracy, 'poi');
 });
+
+test('getGeoChildren applies a poiCategory-only filter', () => {
+  const parks = getGeoChildren('uz:tashkent', { poiCategory: 'recreation' });
+  const all = getGeoChildren('uz:tashkent');
+  assert.ok(parks.length > 0);
+  assert.ok(parks.length < all.length);
+  assert.equal(getGeoChildren('uz:tashkent', { poiCategory: 'no-such-category' }).length, 0);
+});
+
+test('canonical names do not mix visually identical Latin and Cyrillic letters', () => {
+  // A Cyrillic "о" inside an otherwise Latin street name (or the reverse) makes
+  // the entity unreachable by exact-name lookup and hides duplicates from the
+  // semantic uniqueness check. The importer folds these confusables; the names
+  // below are genuinely bilingual (brand names, transliteration pairs) or use a
+  // letter with no safe counterpart, so they are allowed to stay mixed.
+  const KNOWN_BILINGUAL_NAMES = new Set([
+  "uz:margilan:street:usmon-nosir-ko-chasiул-усмон-носир-w978361897",
+  "uz:namangan:street:yangiиog-13-berk-ko-chasi-w851396191",
+  "uz:urgench:local-area:kyхна-қалъа-mahalla-no23-n10292944243",
+  "uz:urgench:street:эhgu-umid-ko-chasi-1-yulak-w462192239",
+  "uz:urgench:street:эhgu-umid-ko-chasi-2-yulak-w462192237",
+  "uz:urgench:street:эhgu-umid-ko-chasi-w110266775",
+  "kz:almaty:residential:jazz-kvartal",
+  "kz:almaty:poi:керуен-medicus-n4527583922",
+  "kz:almaty:poi:лор-clinic-n13606936367",
+  "kz:almaty:street:жалантос-баhадур-көшесі-w233090166",
+  "kz:almaty:street:қаhарман-көшесі-w31298831",
+  "kz:almaty:street:мәшhүр-жүсіп-көшесі-w128500785",
+  "kz:astana:street:гауhартас-көшесі-w243769167",
+  "kz:atyrau:residential-complex:жк-өner-w1437109452",
+  "kz:taraz:street:улица-жиhангер-w469664785",
+  "kz:zhanaozen:local-area:aqtau-жилои-комплекс-w826222855",
+  "kg:bishkek:poi:меdи-лтд-n1854094395",
+  "kg:bishkek:poi:юрфа-clinic-w305835543",
+  "ua:kyiv:poi:глобалua-w34912865",
+  "ua:kyiv:poi:райon-w160581658",
+  "ua:kyiv:poi:тц-станdart-w55847060",
+  "ua:kyiv:poi:щастяkids-w319538904",
+  "ua:kyiv:poi:big-step-школа-англiйськоï-n4401439890",
+  "ua:kyiv:poi:it-школа-unit-n7987439545",
+  "ua:kyiv:poi:mazeлаб-n4906443251",
+  "ua:kyiv:poi:uniклініка-n5307052349",
+  "ua:kharkiv:poi:vip-термінал-b-w184358975",
+  "ua:dnipro:poi:студія-техно-kids-n4948576386",
+  ]);
+  const suspicious = GEO_ENTITIES.filter((entity) => !KNOWN_BILINGUAL_NAMES.has(entity.id)
+    && entity.canonicalName.split(/\s+/u).some((word) => /[a-zA-Z]/u.test(word) && /[\u0400-\u04FF]/u.test(word)));
+  assert.deepEqual(suspicious.map((entity) => entity.id), []);
+});

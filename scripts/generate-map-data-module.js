@@ -2,12 +2,15 @@
 /** Generates one country map-data module from explicitly approved review JSON. */
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { foldMixedScriptConfusables } from '../src/osm-poi-import.js';
 
 function fail(message) { throw new Error(`Map-data module generation: ${message}`); }
 // Unicode modifier letters such as U+02BB/U+02BC are letter-class characters,
 // unlike ASCII apostrophes. Treat apostrophe-like marks uniformly so a single
 // street never gains competing canonical entities solely from OSM typography.
-function slug(value) { return String(value).normalize('NFKD').replace(/[\u0027\u02BB\u02BC\u2018\u2019\u201B\u2032]/gu, "'").replace(/\p{M}/gu, '').toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, ''); }
+// Visually identical Latin/Cyrillic letters inside one word are folded first,
+// so a single street cannot gain a second canonical entity from an OSM typo.
+function slug(value) { return foldMixedScriptConfusables(String(value)).normalize('NFKD').replace(/[\u0027\u02BB\u02BC\u2018\u2019\u201B\u2032]/gu, "'").replace(/\p{M}/gu, '').toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, ''); }
 function normalize(value) { return slug(value).replace(/-/g, ' '); }
 function exportName(country) { return `${country}_MAP_DATA_ENTITIES`; }
 function cityRoot(parentId) { return String(parentId || '').split(':').slice(0, 2).join(':'); }

@@ -33,15 +33,60 @@ const GENERIC_PARKING_NAMES = new Set([
 ]);
 
 function normalize(value) {
-  return String(value ?? '').normalize('NFKC').trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '');
+  return foldMixedScriptConfusables(String(value ?? '')).normalize('NFKC').trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '');
 }
 
 function tagsFor(feature) {
   return feature?.properties?.tags || feature?.properties || {};
 }
 
+// OSM names occasionally mix visually identical Latin/Cyrillic letters inside
+// one word (e.g. Cyrillic "о" in Uzbek Latin "kо‘chasi"), which breaks exact
+// catalog-name lookups. A word is folded toward the only script that has
+// unambiguous letters in it; genuinely mixed or undecidable words are kept.
+const CYRILLIC_TO_LATIN_CONFUSABLES = Object.freeze({
+  а: 'a', е: 'e', о: 'o', р: 'p', с: 'c', у: 'y', х: 'x', і: 'i', ј: 'j', ѕ: 's',
+  к: 'k', м: 'm', т: 't',
+  А: 'A', В: 'B', Е: 'E', К: 'K', М: 'M', Н: 'H', О: 'O', Р: 'P', С: 'C', Т: 'T', Х: 'X', І: 'I', Ј: 'J', Ѕ: 'S',
+});
+const LATIN_TO_CYRILLIC_CONFUSABLES = Object.freeze(Object.fromEntries(
+  Object.entries(CYRILLIC_TO_LATIN_CONFUSABLES).map(([cyrillic, latin]) => [latin, cyrillic]),
+));
+const LATIN_LETTER_RE = /\p{Script=Latin}/u;
+const CYRILLIC_LETTER_RE = /\p{Script=Cyrillic}/u;
+// Apostrophe-like marks belong to the word (Uzbek "koʻchasi"), so they must not
+// split a token and hide the letters that identify its script.
+const WORD_RE = /[\p{L}\u0027\u02BB\u02BC\u2018\u2019\u201B\u2032\u00B4`]+/gu;
+
+function scriptOf(word) {
+  let latin = false;
+  let cyrillic = false;
+  for (const char of word) {
+    if (LATIN_LETTER_RE.test(char) && !(char in LATIN_TO_CYRILLIC_CONFUSABLES)) latin = true;
+    else if (CYRILLIC_LETTER_RE.test(char) && !(char in CYRILLIC_TO_LATIN_CONFUSABLES)) cyrillic = true;
+  }
+  if (latin === cyrillic) return null;
+  return latin ? 'latin' : 'cyrillic';
+}
+
+export function foldMixedScriptConfusables(value) {
+  const text = String(value ?? '');
+  // A word with no unambiguous letter of its own (every letter has a lookalike
+  // in the other script) inherits the script of the surrounding name, but only
+  // when the name itself is unambiguous. Genuinely bilingual names are left
+  // alone rather than forced into one script.
+  const scripts = new Set([...text.matchAll(WORD_RE)].map(([word]) => scriptOf(word)).filter(Boolean));
+  const nameScript = scripts.size === 1 ? [...scripts][0] : null;
+  return text.replace(WORD_RE, (word) => {
+    const script = scriptOf(word) ?? nameScript;
+    if (!script) return word;
+    const map = script === 'latin' ? CYRILLIC_TO_LATIN_CONFUSABLES : LATIN_TO_CYRILLIC_CONFUSABLES;
+    return [...word].map((char) => map[char] ?? char).join('');
+  });
+}
+
 function sourceName(tags) {
-  return String(tags.name || tags['name:en'] || tags.official_name || '').trim();
+  return foldMixedScriptConfusables(String(tags.name || tags['name:en'] || tags.official_name || '').replace(/\s+/gu, ' ').trim());
 }
 
 /**
@@ -93,7 +138,7 @@ function sourceNames(tags) {
   for (const [key, value] of Object.entries(tags)) {
     if (!value || !(key === 'name' || key.startsWith('name:') || ['alt_name', 'old_name', 'short_name', 'official_name', 'loc_name'].includes(key))) continue;
     const language = key === 'name' ? 'canonical' : key.slice(5) || key;
-    names[language] = [...new Set(String(value).split(';').map((item) => item.trim()).filter(Boolean))];
+    names[language] = [...new Set(String(value).split(';').map((item) => foldMixedScriptConfusables(item.replace(/\s+/gu, ' ').trim())).filter(Boolean))];
   }
   return names;
 }
@@ -142,11 +187,14 @@ export function mergeOsmPoiCandidates(candidates, reviewed = []) {
   const result = [...reviewed];
   for (const candidate of candidates) {
     const existingIndex = result.findIndex((entity) => entity.country === candidate.country && entity.parentId === candidate.parentId
-      && entity.type === candidate.type && ((candidate.wikidataId && entity.wikidataId === candidate.wikidataId)
+      // A Wikidata item identifies one physical object regardless of how the
+      // catalog types it (e.g. a reviewed `metro` station vs an OSM
+      // `railway_station` candidate), so it matches across types.
+      && ((candidate.wikidataId && entity.wikidataId === candidate.wikidataId)
         // The catalog intentionally has a semantic uniqueness invariant. An
         // unreviewed second feature with the same city/type/name therefore
         // enriches the first candidate instead of creating an invalid duplicate.
-        || normalize(entity.canonicalName) === normalize(candidate.canonicalName)));
+        || (entity.type === candidate.type && normalize(entity.canonicalName) === normalize(candidate.canonicalName))));
     const existing = existingIndex >= 0 ? result[existingIndex] : null;
     if (existing) {
       if (existing.source === 'manual') continue;

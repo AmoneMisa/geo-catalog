@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { extractOsmPoiCandidates, filterCachedOsmPoiFeatures, mergeOsmPoiCandidates } from '../src/osm-poi-import.js';
+import { extractOsmPoiCandidates, filterCachedOsmPoiFeatures, foldMixedScriptConfusables, mergeOsmPoiCandidates } from '../src/osm-poi-import.js';
 
 const feature = (osmType, osmId, tags) => ({ properties: { osm_type: osmType, osm_id: osmId, tags }, geometry: { type: 'Point', coordinates: [69.2, 41.3] } });
 
@@ -62,4 +62,50 @@ test('map-poi cache profile keeps named transport and usable parking while remov
     feature('node', 6, { name: 'Central Station', railway: 'station' }),
   ], { profile: 'map-poi' });
   assert.deepEqual(filtered.map((item) => item.properties.osm_id), [1, 4, 6]);
+});
+
+test('a Wikidata match folds an OSM candidate into a reviewed entity of another type', () => {
+  // Tashkent metro stations are reviewed as `metro`; OSM tags the same physical
+  // station as `railway_station`. Matching on type alone produced a second
+  // entity for the same Wikidata item.
+  const reviewed = [{
+    id: 'uz:tashkent:metro:chilonzor',
+    type: 'metro',
+    country: 'UZ',
+    parentId: 'uz:tashkent',
+    canonicalName: 'Chilonzor',
+    wikidataId: 'Q4515926',
+    source: 'wikidata',
+  }];
+  const candidates = extractOsmPoiCandidates([
+    feature('node', 854338154, { name: 'Chilonzor', railway: 'station', station: 'subway', wikidata: 'Q4515926' }),
+  ], { country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent' });
+  const merged = mergeOsmPoiCandidates(candidates, reviewed);
+  assert.equal(merged.length, 1);
+  assert.equal(merged[0].id, 'uz:tashkent:metro:chilonzor');
+  assert.deepEqual(merged[0].concordances.osm, [{ type: 'node', id: 854338154 }]);
+});
+
+test('imported names collapse whitespace and fold mixed-script confusables', () => {
+  const [candidate] = extractOsmPoiCandidates([
+    feature('node', 7, { name: 'Tinchlik  kо‘chasi maktabi ', amenity: 'school' }),
+  ], { country: 'UZ', city: 'Tashkent', parentId: 'uz:tashkent' });
+  assert.equal(candidate.canonicalName, "Tinchlik ko‘chasi maktabi");
+
+  // A word whose letters all have lookalikes takes the script of the name.
+  assert.equal(foldMixedScriptConfusables('Аxsi 18-berk koʼchasi'), 'Axsi 18-berk koʼchasi');
+  // Genuinely bilingual names are left alone.
+  assert.equal(foldMixedScriptConfusables('ЖК Jazz Квартал'), 'ЖК Jazz Квартал');
+  assert.equal(foldMixedScriptConfusables('Москва'), 'Москва');
+});
+
+test('confusable folding does not create a second entity for one place', () => {
+  // The second name ends in a Latin "a"; before folding the two produced
+  // separate canonical entities that broke the semantic uniqueness invariant.
+  const candidates = extractOsmPoiCandidates([
+    feature('way', 439543238, { name: 'Пахта куча', amenity: 'marketplace' }),
+    feature('way', 71455233, { name: 'Пахта кучa', amenity: 'marketplace' }),
+  ], { country: 'KG', city: 'Osh', parentId: 'kg:osh' });
+  const merged = mergeOsmPoiCandidates(candidates);
+  assert.equal(merged.length, 1);
 });

@@ -120,7 +120,7 @@ export function findGeoEntitiesByName(name, filters = {}) {
 
 export function getGeoChildren(parentId, filters = {}) {
   const children = childrenByParent.get(String(parentId || '')) ?? [];
-  if (!filters.country && !filters.type) return children;
+  if (!filters.country && !filters.type && !filters.poiCategory) return children;
   return children.filter((entity) => matchesFilters(entity, filters));
 }
 
