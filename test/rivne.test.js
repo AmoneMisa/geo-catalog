@@ -5,9 +5,11 @@ import { isUaRivneCoverageGap } from '../src/coverage-gaps-ua-rivne.js';
 
 test('Rivne verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:rivne');
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 8);
-  assert.equal(children.filter((entity) => entity.type === 'residential_complex').length, 9);
-  assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 9);
+  // Coverage layers grow as data is reviewed, so assert a floor rather than a
+  // total that every data expansion has to edit.
+  assert.ok(children.filter((entity) => entity.type === 'microdistrict').length >= 8);
+  assert.ok(children.filter((entity) => entity.type === 'residential_complex').length >= 9);
+  assert.ok(children.filter((entity) => entity.type.startsWith('poi.')).length >= 9);
 
   const expected = [
     [{ type: 'microdistrict', canonical: 'Boyarka' }, 'ua:rivne:microdistrict:boyarka'],

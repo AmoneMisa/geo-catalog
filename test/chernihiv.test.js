@@ -5,10 +5,13 @@ import { isUaChernihivCoverageGap } from '../src/coverage-gaps-ua-chernihiv.js';
 
 test('Chernihiv verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:chernihiv');
+  // District counts are exact: administrative districts are a closed, verified
+  // set. The finer layers grow as coverage is reviewed, so they assert a floor
+  // rather than a total that every data expansion has to edit.
   assert.equal(children.filter((entity) => entity.type === 'district').length, 2);
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 5);
-  assert.equal(children.filter((entity) => entity.type === 'residential_complex').length, 5);
-  assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 6);
+  assert.ok(children.filter((entity) => entity.type === 'microdistrict').length >= 5);
+  assert.ok(children.filter((entity) => entity.type === 'residential_complex').length >= 5);
+  assert.ok(children.filter((entity) => entity.type.startsWith('poi.')).length >= 6);
 
   const expected = [
     [{ type: 'district', canonical: 'Desnianskyi' }, 'ua:chernihiv:district:desnianskyi'],

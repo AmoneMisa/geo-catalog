@@ -8,10 +8,13 @@ import { isUaRegionalCoverageGap } from '../src/coverage-gaps-ua-regional.js';
 
 test('Kremenchuk verified lexicon geography resolves by city and type', () => {
   const children = getGeoChildren('ua:kremenchuk');
+  // District counts are exact: administrative districts are a closed, verified
+  // set. The finer layers grow as coverage is reviewed, so they assert a floor
+  // rather than a total that every data expansion has to edit.
   assert.equal(children.filter((entity) => entity.type === 'district').length, 2);
-  assert.equal(children.filter((entity) => entity.type === 'microdistrict').length, 10);
-  assert.equal(children.filter((entity) => entity.type === 'residential_complex').length, 1);
-  assert.equal(children.filter((entity) => entity.type.startsWith('poi.')).length, 4);
+  assert.ok(children.filter((entity) => entity.type === 'microdistrict').length >= 10);
+  assert.ok(children.filter((entity) => entity.type === 'residential_complex').length >= 1);
+  assert.ok(children.filter((entity) => entity.type.startsWith('poi.')).length >= 4);
 
   const expected = [
     [{ type: 'district', canonical: 'Avtozavodskyi' }, 'ua:kremenchuk:district:avtozavodskyi'],
