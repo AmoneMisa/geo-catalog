@@ -67,7 +67,7 @@
     "prepack": "npm test && npm run validate && npm run audit:lexicon"
   },
   "devDependencies": {
-    "@whiteslove/parsing-lexicon": "^0.9.6"
+    "@whiteslove/parsing-lexicon": "^0.9.8"
   },
   "keywords": [
     "geography",
