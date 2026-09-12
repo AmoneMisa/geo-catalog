@@ -813,7 +813,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Академіка Барабашова"
       ],
       "en": [
-        "Akademіka Barabashova"
+        "Akademika Barabashova"
       ],
       "ru": [
         "Академика Барабашова"
@@ -889,7 +889,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Академіка Павлова"
       ],
       "en": [
-        "Akademіka Pavlova"
+        "Akademika Pavlova"
       ],
       "ru": [
         "Академика Павлова"
@@ -903,7 +903,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kharkiv:poi:академія-step-n2593162504",
     "type": "poi.college",
     "country": "UA",
-    "canonicalName": "Академія \"Step\"",
+    "canonicalName": "Академія \"Ѕтер\"",
     "parentId": "ua:kharkiv",
     "center": {
       "lat": 49.982328,
@@ -926,13 +926,13 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Академія \"Step\""
+        "Академія \"Ѕтер\""
       ],
       "ru": [
-        "Академия \"Step\""
+        "Академия \"Ѕтер\""
       ],
       "uk": [
-        "Академія \"Step\""
+        "Академія \"Ѕтер\""
       ]
     }
   },
@@ -966,7 +966,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Акторська школа \"ТЕСТО\""
       ],
       "en": [
-        "Actor School \"TЕSTO\""
+        "Actor School \"TESTO\""
       ],
       "uk": [
         "Акторська школа \"ТЕСТО\""
@@ -2666,7 +2666,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Диканівка"
       ],
       "en": [
-        "Dykanіvka"
+        "Dykanivka"
       ],
       "ru": [
         "Диканевка"
@@ -11100,7 +11100,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Заклад дошкільної освіти (ясла-садок) №4"
       ],
       "ial_name": [
-        "Kомунальний заклад Заклад дошкільної освіти (ясла-садок) №4 Харківської міської ради"
+        "Комунальний заклад Заклад дошкільної освіти (ясла-садок) №4 Харківської міської ради"
       ]
     }
   },
@@ -12886,7 +12886,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Ім. О.С. Масельського"
       ],
       "en": [
-        "іm. O.S. Maselskoho"
+        "im. O.S. Maselskoho"
       ],
       "ru": [
         "им. А.С. Масельского"
@@ -13581,7 +13581,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Інститут терапії ім. Л. Малої"
       ],
       "ial_name": [
-        "Державна установа “Нацiональний iнститут терапії iменi Л. Т. Малої Національної академії медичних наук України”"
+        "Державна установа “Національний інститут терапії імені Л. Т. Малої Національної академії медичних наук України”"
       ]
     }
   },
@@ -15699,7 +15699,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Медичний коледж Харківського національного медичного університету"
       ],
       "ial_name": [
-        "Медичний фаховий коледж Харкiвського нацiонального медичного унiверситету"
+        "Медичний фаховий коледж Харківського національного медичного університету"
       ]
     }
   },
@@ -15936,7 +15936,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kharkiv:poi:медичний-центр-панацея-xxi-вік-n13883680345",
     "type": "poi.clinic",
     "country": "UA",
-    "canonicalName": "Медичний центр \"Панацея XXI вік\"",
+    "canonicalName": "Медичний центр \"Панацея ХХІ вік\"",
     "parentId": "ua:kharkiv",
     "center": {
       "lat": 49.988233,
@@ -15959,7 +15959,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Медичний центр \"Панацея XXI вік\""
+        "Медичний центр \"Панацея ХХІ вік\""
       ]
     }
   },
@@ -16197,7 +16197,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "ame": [
-        "Cерце матері"
+        "Серце матері"
       ],
       "canonical": [
         "Меморіальний комплекс Слави"
@@ -18901,7 +18901,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Nowa Bawarija"
       ],
       "en": [
-        "Nova Bavarіia"
+        "Nova Bavariia"
       ],
       "ru": [
         "Новая Бавария"
@@ -19354,7 +19354,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kharkiv:poi:обласний-кардiологiчний-центр-n13479673672",
     "type": "poi.hospital",
     "country": "UA",
-    "canonicalName": "Обласний кардiологiчний центр",
+    "canonicalName": "Обласний кардіологічний центр",
     "parentId": "ua:kharkiv",
     "center": {
       "lat": 50.023676200000004,
@@ -19377,7 +19377,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Обласний кардiологiчний центр"
+        "Обласний кардіологічний центр"
       ],
       "en": [
         "Regional cardiology center"
@@ -19386,7 +19386,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Областной кардиологический центр"
       ],
       "uk": [
-        "Обласний кардiологiчний центр"
+        "Обласний кардіологічний центр"
       ]
     }
   },
@@ -21063,7 +21063,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kharkiv:poi:пасажирський-термінал-a-w177636406",
     "type": "poi.airport_terminal",
     "country": "UA",
-    "canonicalName": "Пасажирський термінал A",
+    "canonicalName": "Пасажирський термінал А",
     "parentId": "ua:kharkiv",
     "center": {
       "lat": 49.92182545,
@@ -21086,16 +21086,16 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Пасажирський термінал A"
+        "Пасажирський термінал А"
       ],
       "en": [
         "Passenger Terminal A"
       ],
       "ru": [
-        "Пассажирский терминал A"
+        "Пассажирский терминал А"
       ],
       "uk": [
-        "Пасажирський термінал A"
+        "Пасажирський термінал А"
       ]
     }
   },
@@ -22089,7 +22089,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kharkiv:poi:початкова-школа-i-ст-w1552250822",
     "type": "poi.school",
     "country": "UA",
-    "canonicalName": "початкова школа (I ст.)",
+    "canonicalName": "початкова школа (І ст.)",
     "parentId": "ua:kharkiv",
     "center": {
       "lat": 49.93580773333333,
@@ -22112,7 +22112,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "початкова школа (I ст.)"
+        "початкова школа (І ст.)"
       ]
     }
   },
@@ -27055,7 +27055,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Charkiw-Paßashyrskyj"
       ],
       "en": [
-        "Kharkіv-Pasazhyrsky"
+        "Kharkiv-Pasazhyrsky"
       ],
       "fr": [
         "Kharkiv-Pasajyrskyy"
@@ -27115,7 +27115,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Charkiw-Slobidskyj"
       ],
       "en": [
-        "Kharkіv-Slobidskyi"
+        "Kharkiv-Slobidskyi"
       ],
       "ru": [
         "Харьков-Слободской"
@@ -27160,7 +27160,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Харків-Сортувальний"
       ],
       "en": [
-        "Kharkіv-Sortuvalny"
+        "Kharkiv-Sortuvalny"
       ],
       "ru": [
         "Харьков-Сортировочный"
@@ -27277,7 +27277,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Харківська гімназія № 63"
       ],
       "ial_name": [
-        "Специализированная школа I-III ступеней №63"
+        "Специализированная школа І-ІІІ ступеней №63"
       ]
     }
   },
@@ -28510,7 +28510,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Харківська гімназія №79"
       ],
       "ial_name": [
-        "Харківська загальноосвітня школа I-II ступенів №79"
+        "Харківська загальноосвітня школа І-ІІ ступенів №79"
       ]
     }
   },
@@ -30290,7 +30290,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Харківське вище професійне училище будівництва"
       ],
       "ial_name": [
-        "Державний професiйно-техничний навчальний заклад Харківське вище професійне училище будівництва"
+        "Державний професійно-техничний навчальний заклад Харківське вище професійне училище будівництва"
       ]
     }
   },
@@ -33033,7 +33033,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Харківський ліцей №153"
       ],
       "ial_name": [
-        "Харківська загальноосвітня школа I-III ступенів №153"
+        "Харківська загальноосвітня школа І-ІІІ ступенів №153"
       ]
     }
   },
@@ -33995,7 +33995,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Харківський ліцей №3"
       ],
       "ial_name": [
-        "Харківська спеціалізована школа I-III ступеню №3"
+        "Харківська спеціалізована школа І-ІІІ ступеню №3"
       ]
     }
   },
@@ -34186,7 +34186,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
         "Харківський ліцей №37"
       ],
       "ial_name": [
-        "Харківська загальноосвітня школа І-ІII cтупенів №37 Харківської міської ради харківської області"
+        "Харківська загальноосвітня школа І-ІІІ ступенів №37 Харківської міської ради харківської області"
       ],
       "_name": [
         "ХЗОШ №37"
@@ -36750,7 +36750,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kharkiv:poi:харківський-обласний-центр-профілактики-і-боротьби-зі-снiдом-w87203479",
     "type": "poi.hospital",
     "country": "UA",
-    "canonicalName": "Харківський обласний центр профілактики і боротьби зі СНIДом",
+    "canonicalName": "Харківський обласний центр профілактики і боротьби зі СНІДом",
     "parentId": "ua:kharkiv",
     "center": {
       "lat": 49.97099387692309,
@@ -36773,13 +36773,13 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Харківський обласний центр профілактики і боротьби зі СНIДом"
+        "Харківський обласний центр профілактики і боротьби зі СНІДом"
       ],
       "ru": [
         "Харьковский областной центр профилактики и борьбы со СПИДом"
       ],
       "uk": [
-        "Харківський обласний центр профілактики і боротьби зі СНIДом"
+        "Харківський обласний центр профілактики і боротьби зі СНІДом"
       ]
     }
   },
@@ -39398,7 +39398,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kharkiv:poi:da-vinci-сlinic-n13652090419",
     "type": "poi.clinic",
     "country": "UA",
-    "canonicalName": "Da-Vinci Сlinic",
+    "canonicalName": "Da-Vinci Clinic",
     "parentId": "ua:kharkiv",
     "center": {
       "lat": 50.0043676,
@@ -39421,7 +39421,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Da-Vinci Сlinic"
+        "Da-Vinci Clinic"
       ]
     }
   },
@@ -40388,7 +40388,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kharkiv:poi:tоpclinic-n13423779697",
     "type": "poi.clinic",
     "country": "UA",
-    "canonicalName": "TоpClinic",
+    "canonicalName": "TopClinic",
     "parentId": "ua:kharkiv",
     "center": {
       "lat": 50.0102982,
@@ -40411,7 +40411,7 @@ export const UA_KHARKIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "TоpClinic"
+        "TopClinic"
       ]
     }
   },

@@ -2147,7 +2147,7 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
     "id": "kg:bishkek:poi:бишкек-i-n4065102428",
     "type": "poi.railway_station",
     "country": "KG",
-    "canonicalName": "Бишкек I",
+    "canonicalName": "Бишкек І",
     "parentId": "kg:bishkek",
     "center": {
       "lat": 42.8663624,
@@ -2172,13 +2172,13 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
     "wikidataId": "Q47454893",
     "sourceNames": {
       "canonical": [
-        "Бишкек I"
+        "Бишкек І"
       ],
       "en": [
         "Bishkek I"
       ],
       "ru": [
-        "Бишкек I"
+        "Бишкек І"
       ],
       "zh": [
         "比什凯克Ⅰ"
@@ -10310,7 +10310,7 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
         "Seytek-Djal primary school"
       ],
       "ru": [
-        "Школа Сейтек STEM"
+        "Школа Сейтек ЅТЕМ"
       ]
     }
   },
@@ -18994,7 +18994,7 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
     "id": "kg:bishkek:poi:marshruta-380-manas-airport-n13522486401",
     "type": "poi.bus_station",
     "country": "KG",
-    "canonicalName": "Marshruta 380  Manas airport ",
+    "canonicalName": "Marshruta 380 Manas airport",
     "parentId": "kg:bishkek",
     "center": {
       "lat": 42.8829446,
@@ -19017,7 +19017,7 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Marshruta 380  Manas airport"
+        "Marshruta 380 Manas airport"
       ]
     }
   },
@@ -20207,7 +20207,7 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
     "id": "kg:bishkek:poi:sos-детская-деревня-w154991732",
     "type": "poi.kindergarten",
     "country": "KG",
-    "canonicalName": "SOS Детская Деревня",
+    "canonicalName": "ЅОЅ Детская Деревня",
     "parentId": "kg:bishkek",
     "center": {
       "lat": 42.83510331666667,
@@ -20230,7 +20230,7 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "SOS Детская Деревня"
+        "ЅОЅ Детская Деревня"
       ]
     }
   },
@@ -20238,7 +20238,7 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
     "id": "kg:bishkek:poi:sos-мектеби-w321689801",
     "type": "poi.college",
     "country": "KG",
-    "canonicalName": "SOS Мектеби",
+    "canonicalName": "ЅОЅ Мектеби",
     "parentId": "kg:bishkek",
     "center": {
       "lat": 42.8373172,
@@ -20261,7 +20261,7 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "SOS Мектеби"
+        "ЅОЅ Мектеби"
       ],
       "de": [
         "Hermann-Gmeiner-Schule"
@@ -20270,7 +20270,7 @@ export const KG_BISHKEK_OSM_POI_ENTITIES = Object.freeze([
         "SOS Hermann Gmeiner Educational Complex"
       ],
       "ru": [
-        "Учреждение \"SOS учебно-воспитательный комплекс Германа Гмайнера г.Бишкек\""
+        "Учреждение \"ЅОЅ учебно-воспитательный комплекс Германа Гмайнера г.Бишкек\""
       ]
     }
   },

@@ -3189,7 +3189,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kyiv:poi:блок-a-w23694654",
     "type": "poi.shopping_mall",
     "country": "UA",
-    "canonicalName": "Блок A",
+    "canonicalName": "Блок А",
     "parentId": "ua:kyiv",
     "center": {
       "lat": 50.45010976666667,
@@ -3212,13 +3212,13 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Блок A"
+        "Блок А"
       ],
       "ru": [
-        "Блок A"
+        "Блок А"
       ],
       "uk": [
-        "Блок A"
+        "Блок А"
       ],
       "ame": [
         "Більшовик"
@@ -3229,7 +3229,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kyiv:poi:блок-b-w554271869",
     "type": "poi.shopping_mall",
     "country": "UA",
-    "canonicalName": "Блок B",
+    "canonicalName": "Блок В",
     "parentId": "ua:kyiv",
     "center": {
       "lat": 50.450741057894746,
@@ -3252,13 +3252,13 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Блок B"
+        "Блок В"
       ],
       "ru": [
-        "Блок B"
+        "Блок В"
       ],
       "uk": [
-        "Блок B"
+        "Блок В"
       ]
     }
   },
@@ -11866,7 +11866,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Дитячий садок \"Пролісок\""
       ],
       "ial_name": [
-        "Школа-дитячий садок I ступеня \"Пролісок\""
+        "Школа-дитячий садок І ступеня \"Пролісок\""
       ]
     }
   },
@@ -12008,7 +12008,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Дитячий садок \"Софія\""
       ],
       "ial_name": [
-        "Школа-дитячий садок I ступеня \"Софія\""
+        "Школа-дитячий садок І ступеня \"Софія\""
       ]
     }
   },
@@ -12255,7 +12255,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Дитячий садок «Ясочка»"
       ],
       "ial_name": [
-        "Спеціалізована школа-дитячий садок I ступеня «Ясочка»"
+        "Спеціалізована школа-дитячий садок І ступеня «Ясочка»"
       ]
     }
   },
@@ -31295,7 +31295,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Інститут серця МОЗ України"
       ],
       "en": [
-        "Heart Institute Мinistry of Health of Ukraine"
+        "Heart Institute Ministry of Health of Ukraine"
       ],
       "ru": [
         "Институт сердца МОЗ Украины"
@@ -42885,7 +42885,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Ліцей №297"
       ],
       "ial_name": [
-        "Середня загальноосвітня школа №297 I-III ступенів"
+        "Середня загальноосвітня школа №297 І-ІІІ ступенів"
       ]
     }
   },
@@ -47376,7 +47376,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kyiv:poi:мiй-диво-сад-n5854295286",
     "type": "poi.kindergarten",
     "country": "UA",
-    "canonicalName": "Мiй Диво Сад",
+    "canonicalName": "Мій Диво Сад",
     "parentId": "ua:kyiv",
     "center": {
       "lat": 50.4167628,
@@ -47399,10 +47399,10 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Мiй Диво Сад"
+        "Мій Диво Сад"
       ],
       "uk": [
-        "Мiй Диво Сад"
+        "Мій Диво Сад"
       ]
     }
   },
@@ -63084,7 +63084,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kyiv:poi:термінал-b-w277390983",
     "type": "poi.airport_terminal",
     "country": "UA",
-    "canonicalName": "Термінал B",
+    "canonicalName": "Термінал В",
     "parentId": "ua:kyiv",
     "center": {
       "lat": 50.41133494117648,
@@ -63107,7 +63107,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Термінал B"
+        "Термінал В"
       ],
       "en": [
         "Terminal B"
@@ -63116,7 +63116,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Terminal B"
       ],
       "uk": [
-        "Термінал B"
+        "Термінал В"
       ]
     }
   },
@@ -65090,7 +65090,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kyiv:poi:тц-станdart-w55847060",
     "type": "poi.shopping_mall",
     "country": "UA",
-    "canonicalName": "ТЦ «Станdart»",
+    "canonicalName": "ТЦ «Станdаrт»",
     "parentId": "ua:kyiv",
     "center": {
       "lat": 50.4149078,
@@ -65113,10 +65113,10 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "ТЦ «Станdart»"
+        "ТЦ «Станdаrт»"
       ],
       "uk": [
-        "ТЦ «Станdart»"
+        "ТЦ «Станdаrт»"
       ]
     }
   },
@@ -69584,7 +69584,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа-дитсадок \"Золотий ключик\""
       ],
       "ial_name": [
-        "Школа-дитячий садок I ступеня \"Золотий ключик\""
+        "Школа-дитячий садок І ступеня \"Золотий ключик\""
       ]
     }
   },
@@ -69841,7 +69841,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа-дитячий садок «Поділля»"
       ],
       "ial_name": [
-        "Загальноосвітний навчальний заклад I ступеня школа-дитячий садок «Поділля»"
+        "Загальноосвітний навчальний заклад І ступеня школа-дитячий садок «Поділля»"
       ]
     }
   },
@@ -69949,7 +69949,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа-дитячий садок «Сяйво»"
       ],
       "ial_name": [
-        "Спеціалізована школа-дитячий садок I ступеня «Сяйво» с поглибленим вивченням іноземних мов"
+        "Спеціалізована школа-дитячий садок І ступеня «Сяйво» с поглибленим вивченням іноземних мов"
       ]
     }
   },
@@ -70177,7 +70177,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Elementary School 333"
       ],
       "ru": [
-        "Школа I степени №333"
+        "Школа І степени №333"
       ],
       "uk": [
         "Школа І ст. №333"
@@ -70913,7 +70913,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kyiv:poi:школа-i-ii-ступенів-no18-w1024237784",
     "type": "poi.school",
     "country": "UA",
-    "canonicalName": "Школа I-II ступенів №18",
+    "canonicalName": "Школа І-ІІ ступенів №18",
     "parentId": "ua:kyiv",
     "center": {
       "lat": 50.56767881111112,
@@ -70936,16 +70936,16 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Школа I-II ступенів №18"
+        "Школа І-ІІ ступенів №18"
       ],
       "en": [
         "School 18"
       ],
       "ru": [
-        "Школа I-II ступеней №18"
+        "Школа І-ІІ ступеней №18"
       ],
       "uk": [
-        "Школа I-II ступенів №18"
+        "Школа І-ІІ ступенів №18"
       ]
     }
   },
@@ -71096,7 +71096,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №1"
       ],
       "ial_name": [
-        "Школа I-III ступенів №1"
+        "Школа І-ІІІ ступенів №1"
       ]
     }
   },
@@ -71204,7 +71204,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №104"
       ],
       "ial_name": [
-        "Середня загальноосвітня школа I-III ступенів №104 імені О. Ольжича"
+        "Середня загальноосвітня школа І-ІІІ ступенів №104 імені О. Ольжича"
       ]
     }
   },
@@ -71818,7 +71818,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №174"
       ],
       "ial_name": [
-        "Середня загальноосвітня школа №174 I-III ступеня"
+        "Середня загальноосвітня школа №174 І-ІІІ ступеня"
       ]
     }
   },
@@ -72076,7 +72076,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №202"
       ],
       "ial_name": [
-        "Спеціалізована школа I-III ступенів №202 з поглибленим вивченням природничо-математичних наук"
+        "Спеціалізована школа І-ІІІ ступенів №202 з поглибленим вивченням природничо-математичних наук"
       ]
     }
   },
@@ -72255,7 +72255,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №217"
       ],
       "ial_name": [
-        "Школа I-III ступенів №217"
+        "Школа І-ІІІ ступенів №217"
       ]
     }
   },
@@ -72400,7 +72400,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №23"
       ],
       "ial_name": [
-        "Спеціалізована школа I-III ступенів №23 з поглибленим вивченням англійської мови"
+        "Спеціалізована школа І-ІІІ ступенів №23 з поглибленим вивченням англійської мови"
       ]
     }
   },
@@ -72690,7 +72690,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №25"
       ],
       "ial_name": [
-        "Середня загальноосвітня школа №25 I-III ступенів"
+        "Середня загальноосвітня школа №25 І-ІІІ ступенів"
       ]
     }
   },
@@ -73020,7 +73020,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №282"
       ],
       "ial_name": [
-        "Школа I-III ступенів №282"
+        "Школа І-ІІІ ступенів №282"
       ]
     }
   },
@@ -73727,7 +73727,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №52"
       ],
       "ial_name": [
-        "Спеціалізована школа №52 з поглибленим вівченням інформаційних технологій I-III ступенів"
+        "Спеціалізована школа №52 з поглибленим вівченням інформаційних технологій І-ІІІ ступенів"
       ]
     }
   },
@@ -73801,7 +73801,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
         "Школа №54"
       ],
       "ial_name": [
-        "Середня загальноосвітня школа №54 I-III ступенів"
+        "Середня загальноосвітня школа №54 І-ІІІ ступенів"
       ]
     }
   },
@@ -76052,7 +76052,7 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:kyiv:poi:cквер-димитра-пешева-w222835127",
     "type": "poi.park",
     "country": "UA",
-    "canonicalName": "Cквер Димитра Пешева",
+    "canonicalName": "Сквер Димитра Пешева",
     "parentId": "ua:kyiv",
     "center": {
       "lat": 50.434462325,
@@ -76075,13 +76075,13 @@ export const UA_KYIV_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Cквер Димитра Пешева"
+        "Сквер Димитра Пешева"
       ],
       "en": [
         "Dimitr Peshev square"
       ],
       "uk": [
-        "Cквер Димитра Пешева"
+        "Сквер Димитра Пешева"
       ]
     }
   },

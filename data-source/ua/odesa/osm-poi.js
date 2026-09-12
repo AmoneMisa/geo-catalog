@@ -2970,7 +2970,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
         "Дитячий садок-школа І-го ступеню \"Чорноморський центр освіти\""
       ],
       "ru": [
-        "Детский сад-школа I ступени \"Черноморский центр образования\""
+        "Детский сад-школа І ступени \"Черноморский центр образования\""
       ],
       "uk": [
         "Дитячий садок-школа І-го ступеню \"Чорноморський центр освіти\""
@@ -11543,7 +11543,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
         "Odesa-Zastava II"
       ],
       "ru": [
-        "Одесса-Застава II"
+        "Одесса-Застава ІІ"
       ],
       "uk": [
         "Одеса-Застава 2"
@@ -11554,7 +11554,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:odesa:poi:одеса-застава-i-n2461916760",
     "type": "poi.railway_station",
     "country": "UA",
-    "canonicalName": "Одеса-Застава I",
+    "canonicalName": "Одеса-Застава І",
     "parentId": "ua:odesa",
     "center": {
       "lat": 46.4775658,
@@ -11579,13 +11579,13 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
     "wikidataId": "Q16709731",
     "sourceNames": {
       "canonical": [
-        "Одеса-Застава I"
+        "Одеса-Застава І"
       ],
       "ru": [
-        "Одесса-Застава I"
+        "Одесса-Застава І"
       ],
       "uk": [
-        "Одеса-Застава I"
+        "Одеса-Застава І"
       ]
     }
   },
@@ -15229,7 +15229,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:odesa:poi:одеська-cш-no59-w388245384",
     "type": "poi.school",
     "country": "UA",
-    "canonicalName": "Одеська CШ №59",
+    "canonicalName": "Одеська СШ №59",
     "parentId": "ua:odesa",
     "center": {
       "lat": 46.46405988,
@@ -15252,19 +15252,19 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Одеська CШ №59"
+        "Одеська СШ №59"
       ],
       "ru": [
         "Специализированная школа № 59 Олимпийского резерва"
       ],
       "uk": [
-        "Одеська CШ №59"
+        "Одеська СШ №59"
       ],
       "ial_name": [
         "Одеська спеціалізована школа № 59 |-||| ступенів олімпійского резерву Одеської міської ради Одеської Області"
       ],
       "_name": [
-        "Одеська CШ №59"
+        "Одеська СШ №59"
       ]
     }
   },
@@ -17679,7 +17679,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
         "Одеський СНВК №241 \"Волошки\" компенсуючого типу"
       ],
       "ru": [
-        "Специальный CУВК №241 \"Васильки\" компенсирующего типа"
+        "Специальный СУВК №241 \"Васильки\" компенсирующего типа"
       ],
       "uk": [
         "Одеський СНВК №241 \"Волошки\" компенсуючого типу"
@@ -25315,7 +25315,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
         "Школа № 82"
       ],
       "ial_name": [
-        "Загальноосвітня школа № 82 I-III ступінів"
+        "Загальноосвітня школа № 82 І-ІІІ ступінів"
       ]
     }
   },
@@ -25349,7 +25349,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
         "Школа № 95 І-го ступіня"
       ],
       "ru": [
-        "Школа № 95 I-ой степени"
+        "Школа № 95 І-ой степени"
       ],
       "uk": [
         "Школа № 95 І-го ступіня"
@@ -25733,7 +25733,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
         "Школа №52"
       ],
       "ial_name": [
-        "Одеська загальноосвітня школа №52 I-III ступенів Одеської міської ради Одеської області"
+        "Одеська загальноосвітня школа №52 І-ІІІ ступенів Одеської міської ради Одеської області"
       ],
       "_name": [
         "Одеська ЗОШ №52"
@@ -25779,7 +25779,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
         "Школа №57"
       ],
       "ial_name": [
-        "Одеська загальноосвітня школа №57 I-III ступенів імені Героя Радянського Союзу О.М. Орлікова Одеської міської ради Одеської області"
+        "Одеська загальноосвітня школа №57 І-ІІІ ступенів імені Героя Радянського Союзу О.М. Орлікова Одеської міської ради Одеської області"
       ],
       "_name": [
         "Одеська ЗОШ №57"
@@ -26325,7 +26325,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
     "id": "ua:odesa:poi:iзумруд-n4382736405",
     "type": "poi.shopping_mall",
     "country": "UA",
-    "canonicalName": "Iзумруд",
+    "canonicalName": "Ізумруд",
     "parentId": "ua:odesa",
     "center": {
       "lat": 46.576647200000004,
@@ -26348,7 +26348,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Iзумруд"
+        "Ізумруд"
       ],
       "en": [
         "Izumrud"
@@ -26357,7 +26357,7 @@ export const UA_ODESA_OSM_POI_ENTITIES = Object.freeze([
         "Изумруд"
       ],
       "uk": [
-        "Iзумруд"
+        "Ізумруд"
       ]
     }
   },

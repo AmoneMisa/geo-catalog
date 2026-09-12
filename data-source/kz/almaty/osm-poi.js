@@ -2289,7 +2289,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:almaty:poi:алматы-энергетика-және-байланыс-университетi-w286610625",
     "type": "poi.university",
     "country": "KZ",
-    "canonicalName": "Алматы Энергетика және Байланыс Университетi",
+    "canonicalName": "Алматы Энергетика және Байланыс Университеті",
     "parentId": "kz:almaty",
     "center": {
       "lat": 43.23505530588235,
@@ -2314,13 +2314,13 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "wikidataId": "Q4062778",
     "sourceNames": {
       "canonical": [
-        "Алматы Энергетика және Байланыс Университетi"
+        "Алматы Энергетика және Байланыс Университеті"
       ],
       "en": [
         "Almaty University of Power Engineering and Telecommunications"
       ],
       "kk": [
-        "Алматы Энергетика және Байланыс Университетi"
+        "Алматы Энергетика және Байланыс Университеті"
       ],
       "ru": [
         "Алматинский Университет Энергетики и Связи"
@@ -6341,7 +6341,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
         "Жаңа Халықаралық Терминал (Т2)"
       ],
       "en": [
-        "New International Terminal (Т2)"
+        "New International Terminal (T2)"
       ],
       "kk": [
         "Жаңа Халықаралық Терминал (Т2)"
@@ -6742,7 +6742,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:almaty:poi:журналиcтер-сквері-w1320412258",
     "type": "poi.park",
     "country": "KZ",
-    "canonicalName": "Журналиcтер сквері",
+    "canonicalName": "Журналистер сквері",
     "parentId": "kz:almaty",
     "center": {
       "lat": 43.23451437142857,
@@ -6765,7 +6765,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Журналиcтер сквері"
+        "Журналистер сквері"
       ],
       "en": [
         "Journalists' Square"
@@ -7565,7 +7565,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:almaty:poi:кереmed-n4526554305",
     "type": "poi.clinic",
     "country": "KZ",
-    "canonicalName": "КереMED+",
+    "canonicalName": "KepeMED+",
     "parentId": "kz:almaty",
     "center": {
       "lat": 43.233824000000006,
@@ -7588,7 +7588,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "КереMED+"
+        "KepeMED+"
       ]
     }
   },
@@ -8005,49 +8005,6 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "sourceNames": {
       "canonical": [
         "Коррекционный ясли-сад №111"
-      ]
-    }
-  },
-  {
-    "id": "kz:almaty:poi:көк-төбе-саябағы-w1296886349",
-    "type": "poi.park",
-    "country": "KZ",
-    "canonicalName": "Көк-Төбе Саябағы",
-    "parentId": "kz:almaty",
-    "center": {
-      "lat": 43.232171182122876,
-      "lng": 76.97442433016754
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 150,
-    "osm": {
-      "type": "way",
-      "id": 1296886349
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "way",
-          "id": 1296886349
-        },
-        {
-          "type": "way",
-          "id": 1420967949
-        }
-      ],
-      "wikidata": "Q1795699"
-    },
-    "wikidataId": "Q1795699",
-    "sourceNames": {
-      "canonical": [
-        "Көк-Төбе Саябағы"
-      ],
-      "en": [
-        "Kok-Tobe Park"
-      ],
-      "ru": [
-        "Парк Кок-Тобе"
       ]
     }
   },
@@ -11884,7 +11841,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:almaty:poi:парк-ict-w542202370",
     "type": "poi.park",
     "country": "KZ",
-    "canonicalName": "Парк ICT",
+    "canonicalName": "Парк ІСТ",
     "parentId": "kz:almaty",
     "center": {
       "lat": 43.22956258,
@@ -11907,7 +11864,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Парк ICT"
+        "Парк ІСТ"
       ]
     }
   },
@@ -14846,7 +14803,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:almaty:poi:центр-неврологии-и-реабилитации-aspasia-блонская-ирина-николаевна-врач-невролог-n4471504956",
     "type": "poi.hospital",
     "country": "KZ",
-    "canonicalName": "Центр Неврологии и Реабилитации \"Aspasia\".Блонская Ирина Николаевна - врач невролог",
+    "canonicalName": "Центр Неврологии и Реабилитации \"Аѕраѕіа\".Блонская Ирина Николаевна - врач невролог",
     "parentId": "kz:almaty",
     "center": {
       "lat": 43.222274600000006,
@@ -14869,7 +14826,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Центр Неврологии и Реабилитации \"Aspasia\".Блонская Ирина Николаевна - врач невролог"
+        "Центр Неврологии и Реабилитации \"Аѕраѕіа\".Блонская Ирина Николаевна - врач невролог"
       ]
     }
   },
@@ -19494,7 +19451,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:almaty:poi:colibri-со-w1459001268",
     "type": "poi.shopping_mall",
     "country": "KZ",
-    "canonicalName": "Colibri СО",
+    "canonicalName": "Colibri CO",
     "parentId": "kz:almaty",
     "center": {
       "lat": 43.23995472500001,
@@ -19517,7 +19474,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Colibri СО"
+        "Colibri CO"
       ],
       "ru": [
         "ТЦ Colibri"
@@ -19837,7 +19794,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:almaty:poi:esentai-mall-со-w1458250211",
     "type": "poi.shopping_mall",
     "country": "KZ",
-    "canonicalName": "Esentai Mall СО",
+    "canonicalName": "Esentai Mall CO",
     "parentId": "kz:almaty",
     "center": {
       "lat": 43.21852232500001,
@@ -19860,7 +19817,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Esentai Mall СО"
+        "Esentai Mall CO"
       ],
       "ru": [
         "ТЦ Esentai Mall"
@@ -20931,7 +20888,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:almaty:poi:mart-сок-w53104052",
     "type": "poi.shopping_mall",
     "country": "KZ",
-    "canonicalName": "\"MART\" СОК",
+    "canonicalName": "\"MART\" COK",
     "parentId": "kz:almaty",
     "center": {
       "lat": 43.33572858000001,
@@ -20954,7 +20911,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "\"MART\" СОК"
+        "\"MART\" COK"
       ],
       "ru": [
         "ТРЦ \"MART\""
@@ -21095,7 +21052,7 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:almaty:poi:mega-park-сок-w247006982",
     "type": "poi.shopping_mall",
     "country": "KZ",
-    "canonicalName": "\"Mega Park\" СОК",
+    "canonicalName": "\"Mega Park\" COK",
     "parentId": "kz:almaty",
     "center": {
       "lat": 43.26396871509434,
@@ -21120,16 +21077,16 @@ export const KZ_ALMATY_OSM_POI_ENTITIES = Object.freeze([
     "wikidataId": "Q18649659",
     "sourceNames": {
       "canonical": [
-        "\"Mega Park\" СОК"
+        "\"Mega Park\" COK"
       ],
       "en": [
         "MEGA PARK"
       ],
       "kk": [
-        "\"Mega Park\" СОК"
+        "\"Mega Park\" COK"
       ],
       "ru": [
-        "ТРК Mega Park"
+        "TPK Mega Park"
       ],
       "tr": [
         "MEGA ALIŞ VERİŞ MERK SEYFULİNA"

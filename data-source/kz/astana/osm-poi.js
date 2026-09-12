@@ -1674,7 +1674,7 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:astana:poi:бакыт-мекенi-n13453232691",
     "type": "poi.kindergarten",
     "country": "KZ",
-    "canonicalName": "Бакыт Мекенi",
+    "canonicalName": "Бакыт Мекені",
     "parentId": "kz:astana",
     "center": {
       "lat": 51.167997,
@@ -1697,7 +1697,7 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Бакыт Мекенi"
+        "Бакыт Мекені"
       ]
     }
   },
@@ -4277,7 +4277,7 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:astana:poi:ішкі-терминал-t2-w166500593",
     "type": "poi.airport_terminal",
     "country": "KZ",
-    "canonicalName": "Ішкі терминал T2",
+    "canonicalName": "Ішкі терминал Т2",
     "parentId": "kz:astana",
     "center": {
       "lat": 51.02703168846156,
@@ -4300,16 +4300,16 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Ішкі терминал T2"
+        "Ішкі терминал Т2"
       ],
       "en": [
         "Domestic Terminal T2"
       ],
       "kk": [
-        "Ішкі терминал T2"
+        "Ішкі терминал Т2"
       ],
       "ru": [
-        "Внутренний терминал T2"
+        "Внутренний терминал Т2"
       ]
     }
   },
@@ -8277,7 +8277,7 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:astana:poi:северное-cияние-түк-w230358850",
     "type": "poi.parking_structure",
     "country": "KZ",
-    "canonicalName": "\"Северное Cияние\" ТҮК",
+    "canonicalName": "\"Северное Сияние\" ТҮК",
     "parentId": "kz:astana",
     "center": {
       "lat": 51.12825671428572,
@@ -8300,13 +8300,13 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "\"Северное Cияние\" ТҮК"
+        "\"Северное Сияние\" ТҮК"
       ],
       "kk": [
         "''Солтүстік Шұғыласы'' ТҮК"
       ],
       "ru": [
-        "ЖК \"Северное Cияние\""
+        "ЖК \"Северное Сияние\""
       ]
     }
   },
@@ -9217,7 +9217,7 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:astana:poi:торговый-дом-интерьер-city-n5913626963",
     "type": "poi.shopping_mall",
     "country": "KZ",
-    "canonicalName": "Торговый дом \"Интерьер City\"",
+    "canonicalName": "Торговый дом \"Интерьер Сіту\"",
     "parentId": "kz:astana",
     "center": {
       "lat": 51.143745,
@@ -9240,7 +9240,7 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Торговый дом \"Интерьер City\""
+        "Торговый дом \"Интерьер Сіту\""
       ]
     }
   },
@@ -9683,7 +9683,7 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
         "Ұлттық ғылым академиясының резиденциясы"
       ],
       "ru": [
-        "Рeзиденция НАН"
+        "Резиденция НАН"
       ]
     }
   },
@@ -17567,7 +17567,7 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
         "Qazbilim ұлттық лицейі"
       ],
       "ru": [
-        "Национальный лицей Qazbilimі"
+        "Национальный лицей Qazbilimi"
       ]
     }
   },
@@ -18049,7 +18049,7 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     "id": "kz:astana:poi:t1-халықаралық-терминалы-w166500591",
     "type": "poi.airport_terminal",
     "country": "KZ",
-    "canonicalName": "T1 халықаралық терминалы",
+    "canonicalName": "Т1 халықаралық терминалы",
     "parentId": "kz:astana",
     "center": {
       "lat": 51.027825048333334,
@@ -18072,16 +18072,16 @@ export const KZ_ASTANA_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "T1 халықаралық терминалы"
+        "Т1 халықаралық терминалы"
       ],
       "en": [
         "T1 International Terminal"
       ],
       "kk": [
-        "T1 халықаралық терминалы"
+        "Т1 халықаралық терминалы"
       ],
       "ru": [
-        "Международный терминал T1"
+        "Международный терминал Т1"
       ]
     }
   },

@@ -330,6 +330,7 @@ test('canonical names do not mix visually identical Latin and Cyrillic letters',
   "ua:kyiv:poi:uniклініка-n5307052349",
   "ua:kharkiv:poi:vip-термінал-b-w184358975",
   "ua:dnipro:poi:студія-техно-kids-n4948576386",
+  "kz:almaty:local-area:falcon-сity-түк-w1316012200",
   ]);
   const suspicious = GEO_ENTITIES.filter((entity) => !KNOWN_BILINGUAL_NAMES.has(entity.id)
     && entity.canonicalName.split(/\s+/u).some((word) => /[a-zA-Z]/u.test(word) && /[\u0400-\u04FF]/u.test(word)));

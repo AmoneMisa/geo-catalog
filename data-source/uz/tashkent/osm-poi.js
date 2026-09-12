@@ -20873,7 +20873,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     "id": "uz:tashkent:poi:детcкий-сад-no592-w1550636526",
     "type": "poi.kindergarten",
     "country": "UZ",
-    "canonicalName": "Детcкий сад №592",
+    "canonicalName": "Детский сад №592",
     "parentId": "uz:tashkent",
     "center": {
       "lat": 41.26595896666667,
@@ -20896,10 +20896,10 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Детcкий сад №592"
+        "Детский сад №592"
       ],
       "ru": [
-        "Детcкий сад №592"
+        "Детский сад №592"
       ]
     }
   },
@@ -28676,7 +28676,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     "id": "uz:tashkent:poi:сomron-w506359314",
     "type": "poi.kindergarten",
     "country": "UZ",
-    "canonicalName": "Сomron",
+    "canonicalName": "Comron",
     "parentId": "uz:tashkent",
     "center": {
       "lat": 41.2878066,
@@ -28699,7 +28699,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "Сomron"
+        "Comron"
       ],
       "ru": [
         "Комрон"
@@ -29104,7 +29104,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
         "Ташсельмаш"
       ],
       "en": [
-        "TashSelМash"
+        "TashSelMash"
       ],
       "ru": [
         "Ташсельмаш"
@@ -29141,7 +29141,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
         "Ташсельмаш"
       ],
       "en": [
-        "TashSelМash"
+        "TashSelMash"
       ],
       "ru": [
         "Ташсельмаш"
@@ -29308,7 +29308,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
         "Торговый центр \"Чиланзар\""
       ],
       "en": [
-        "Torgovy centr \"Сhilanzar\""
+        "Torgovy centr \"Chilanzar\""
       ],
       "ru": [
         "Торговый центр \"Чиланзар\""
@@ -29348,7 +29348,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
         "Торговый центр \"Чиланзар\""
       ],
       "en": [
-        "Torgovy centr \"Сhilanzar\""
+        "Torgovy centr \"Chilanzar\""
       ],
       "ru": [
         "Торговый центр \"Чиланзар\""
@@ -29359,7 +29359,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     "id": "uz:tashkent:poi:трк-next-w294966972",
     "type": "poi.shopping_mall",
     "country": "UZ",
-    "canonicalName": "ТРК «Next»",
+    "canonicalName": "TPK «Next»",
     "parentId": "uz:tashkent",
     "center": {
       "lat": 41.29757922307692,
@@ -29382,7 +29382,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "ТРК «Next»"
+        "TPK «Next»"
       ],
       "ame": [
         "Обувная фабрика №1"
@@ -29990,7 +29990,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     "id": "uz:tashkent:poi:учебный-центр-еzzo-n4988602621",
     "type": "poi.school",
     "country": "UZ",
-    "canonicalName": "учебный центр ЕZZO",
+    "canonicalName": "учебный центр EZZO",
     "parentId": "uz:tashkent",
     "center": {
       "lat": 41.3437051,
@@ -30008,12 +30008,16 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
         {
           "type": "node",
           "id": 4988602621
+        },
+        {
+          "type": "node",
+          "id": 4994993721
         }
       ]
     },
     "sourceNames": {
       "canonical": [
-        "учебный центр ЕZZO"
+        "учебный центр EZZO"
       ]
     }
   },
@@ -30215,43 +30219,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
       ],
       "en": [
         "CTN Language Centre"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:учебный-центр-ezzo-n4994993721",
-    "type": "poi.school",
-    "country": "UZ",
-    "canonicalName": "Учебный центр EZZO",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.3438789,
-      "lng": 69.21175980000001
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 4994993721
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 4994993721
-        }
-      ]
-    },
-    "sourceNames": {
-      "canonical": [
-        "Учебный центр EZZO"
-      ],
-      "en": [
-        "Учебный центр EZZO"
-      ],
-      "ru": [
-        "Учебный центр EZZO"
       ]
     }
   },
@@ -36280,54 +36247,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:alisher-navoiy-n1777740153",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Alisher Navoiy",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.318921800000005,
-      "lng": 69.2542973
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 1777740153
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 1777740153
-        }
-      ],
-      "wikidata": "Q4062480"
-    },
-    "wikidataId": "Q4062480",
-    "sourceNames": {
-      "canonical": [
-        "Alisher Navoiy"
-      ],
-      "en": [
-        "Alisher Navoiy"
-      ],
-      "eo": [
-        "Alisher Navoi"
-      ],
-      "fa": [
-        "علیشیر نوایی"
-      ],
-      "ru": [
-        "Алишер Навои"
-      ],
-      "uz": [
-        "Alisher Navoiy"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:alisher-navoiy-nomidagi-toshkent-davlat-o-zbek-tili-va-adabiyoti-universiteti-w1071184143",
     "type": "poi.university",
     "country": "UZ",
@@ -36425,106 +36344,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     "sourceNames": {
       "canonical": [
         "Alliance Medical Clinic"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:amir-temur-xiyoboni-n1777051509",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Amir Temur xiyoboni",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.312673800000006,
-      "lng": 69.2832691
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 1777051509
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 1777051509
-        }
-      ],
-      "wikidata": "Q4064347"
-    },
-    "wikidataId": "Q4064347",
-    "sourceNames": {
-      "canonical": [
-        "Amir Temur xiyoboni"
-      ],
-      "en": [
-        "Amir Timur Square"
-      ],
-      "fa": [
-        "میدان امیر تیمور"
-      ],
-      "ru": [
-        "Сквер Амира Тимура"
-      ],
-      "uz": [
-        "Amir Temur xiyoboni"
-      ],
-      "ame": [
-        "Сквер Октябрьской Революции",
-        "Центральный Сквер",
-        "Амира Тимура"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:amir-timur-xiyoboni-w802384567",
-    "type": "poi.park",
-    "country": "UZ",
-    "canonicalName": "Amir Timur xiyoboni",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.3112234168831,
-      "lng": 69.27988245454547
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 150,
-    "osm": {
-      "type": "way",
-      "id": 802384567
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "way",
-          "id": 802384567
-        }
-      ],
-      "wikidata": "Q4421686"
-    },
-    "wikidataId": "Q4421686",
-    "sourceNames": {
-      "ame": [
-        "Сквер Октябрьской Революции",
-        "Константиновский сквер",
-        "Кауфманский сквер"
-      ],
-      "canonical": [
-        "Amir Timur xiyoboni"
-      ],
-      "en": [
-        "Amir Timur Square"
-      ],
-      "fa": [
-        "میدان امیر تیمور"
-      ],
-      "ru": [
-        "Сквер"
-      ],
-      "uz": [
-        "Skver"
       ]
     }
   },
@@ -38681,51 +38500,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:chilonzor-n854338154",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Chilonzor",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.274359000000004,
-      "lng": 69.20497350000001
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 854338154
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 854338154
-        }
-      ],
-      "wikidata": "Q4515926"
-    },
-    "wikidataId": "Q4515926",
-    "sourceNames": {
-      "canonical": [
-        "Chilonzor"
-      ],
-      "en": [
-        "Chilanzar"
-      ],
-      "eo": [
-        "Chilanzar"
-      ],
-      "fa": [
-        "چیلانزار"
-      ],
-      "ru": [
-        "Чиланзар"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:chimgan-w804119553",
     "type": "poi.shopping_mall",
     "country": "UZ",
@@ -38824,51 +38598,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
       ],
       "uz": [
         "Chorsu metrosi"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:chorsu-n1577932485",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Chorsu",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.3258649,
-      "lng": 69.23681520000001
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 1577932485
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 1577932485
-        }
-      ],
-      "wikidata": "Q2452951"
-    },
-    "wikidataId": "Q2452951",
-    "sourceNames": {
-      "canonical": [
-        "Chorsu"
-      ],
-      "en": [
-        "Chorsu"
-      ],
-      "fa": [
-        "چارسو"
-      ],
-      "ru": [
-        "Чорсу"
-      ],
-      "uz": [
-        "Chorsu"
       ]
     }
   },
@@ -43252,54 +42981,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:kosmonavtlar-n1775892797",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Kosmonavtlar",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.3051618,
-      "lng": 69.2647207
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 1775892797
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 1775892797
-        }
-      ],
-      "wikidata": "Q4235056"
-    },
-    "wikidataId": "Q4235056",
-    "sourceNames": {
-      "ame": [
-        "проспект Космонавтов"
-      ],
-      "canonical": [
-        "Kosmonavtlar"
-      ],
-      "en": [
-        "Cosmonauts"
-      ],
-      "fa": [
-        "کوسموناوتلار"
-      ],
-      "ru": [
-        "Космонавтов"
-      ],
-      "uz": [
-        "Kosmonavtlar"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:lab-expert-n4914067256",
     "type": "poi.clinic",
     "country": "UZ",
@@ -45057,54 +44738,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
       ],
       "ru": [
         "Сквер Мирзо Улугбека"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:mirzo-ulugʻbek-n852873027",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Mirzo Ulugʻbek",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.282034200000005,
-      "lng": 69.2125834
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 852873027
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 852873027
-        }
-      ],
-      "wikidata": "Q4295611"
-    },
-    "wikidataId": "Q4295611",
-    "sourceNames": {
-      "canonical": [
-        "Mirzo Ulugʻbek"
-      ],
-      "en": [
-        "Mirzo Ulugbek (50 years USSR)"
-      ],
-      "fa": [
-        "میرزا اولوغبیک"
-      ],
-      "ru": [
-        "Мирзо Улугбек (50 лет СССР)"
-      ],
-      "uz": [
-        "Mirzo Ulugʻbek (SSSR 50 yilligi)"
-      ],
-      "ame": [
-        "50 лет СССР"
       ]
     }
   },
@@ -47893,59 +47526,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:novza-w1456526444",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Novza",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.29175332,
-      "lng": 69.2235185
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 150,
-    "osm": {
-      "type": "way",
-      "id": 1456526444
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "way",
-          "id": 1456526444
-        },
-        {
-          "type": "node",
-          "id": 563751850
-        }
-      ],
-      "wikidata": "Q4495260"
-    },
-    "wikidataId": "Q4495260",
-    "sourceNames": {
-      "canonical": [
-        "Novza"
-      ],
-      "en": [
-        "Novza (Hamza)"
-      ],
-      "fa": [
-        "نوزا (حمزه)"
-      ],
-      "ru": [
-        "Новза (Хамза)"
-      ],
-      "uz": [
-        "Novza (Hamza)"
-      ],
-      "ame": [
-        "Хамза",
-        "Новза"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:nshtein-n11397406244",
     "type": "poi.school",
     "country": "UZ",
@@ -48805,99 +48385,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:olmazor-n1777845992",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Olmazor",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.2566724,
-      "lng": 69.1961045
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 1777845992
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 1777845992
-        }
-      ],
-      "wikidata": "Q4333950"
-    },
-    "wikidataId": "Q4333950",
-    "sourceNames": {
-      "canonical": [
-        "Olmazor"
-      ],
-      "en": [
-        "Almazar (Sabir Rakhimov)"
-      ],
-      "fa": [
-        "آلمازار (صابر رحیموف)"
-      ],
-      "ru": [
-        "Алмазар (Сабир Рахимов)"
-      ],
-      "uz": [
-        "Olmazor (Sobir Rahimov)"
-      ],
-      "ame": [
-        "Сабир Рахимов"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:olmos-n9972711745",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Olmos",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.281705,
-      "lng": 69.3603338
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 9972711745
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 9972711745
-        }
-      ],
-      "wikidata": "Q65160455"
-    },
-    "wikidataId": "Q65160455",
-    "sourceNames": {
-      "ame": [
-        "4-bekat"
-      ],
-      "canonical": [
-        "Olmos"
-      ],
-      "en": [
-        "Almas"
-      ],
-      "fa": [
-        "الماس"
-      ],
-      "ru": [
-        "Алмас"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:oloy-bozori-w31961842",
     "type": "poi.market",
     "country": "UZ",
@@ -49127,51 +48614,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     "sourceNames": {
       "canonical": [
         "OXUS Universiteti"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:oybek-n1579080941",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Oybek",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.2980128,
-      "lng": 69.27405010000001
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 1579080941
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 1579080941
-        }
-      ],
-      "wikidata": "Q4058725"
-    },
-    "wikidataId": "Q4058725",
-    "sourceNames": {
-      "canonical": [
-        "Oybek"
-      ],
-      "en": [
-        "Aybek"
-      ],
-      "fa": [
-        "آیبک"
-      ],
-      "ru": [
-        "Айбек"
-      ],
-      "uz": [
-        "Oybek"
       ]
     }
   },
@@ -50017,48 +49459,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:qipchok-n11218653778",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Qipchok",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.2054229,
-      "lng": 69.2214112
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 11218653778
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 11218653778
-        }
-      ],
-      "wikidata": "Q124820156"
-    },
-    "wikidataId": "Q124820156",
-    "sourceNames": {
-      "canonical": [
-        "Qipchok"
-      ],
-      "en": [
-        "Kipchak"
-      ],
-      "fa": [
-        "قپچاق"
-      ],
-      "ru": [
-        "Кипчак"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:qo-ylik-dehqon-bozori-w1505219696",
     "type": "poi.transport_hub",
     "country": "UZ",
@@ -50132,48 +49532,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
       ],
       "uz": [
         "Qo‘yliq dahasi 1-mavze"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:qo-yliq-n10537927083",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Qo‘yliq",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.2374579,
-      "lng": 69.3270001
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 10537927083
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 10537927083
-        }
-      ],
-      "wikidata": "Q97344259"
-    },
-    "wikidataId": "Q97344259",
-    "sourceNames": {
-      "canonical": [
-        "Qo‘yliq"
-      ],
-      "en": [
-        "Kuylyuk"
-      ],
-      "fa": [
-        "قویلیق"
-      ],
-      "ru": [
-        "Куйлюк"
       ]
     }
   },
@@ -51079,48 +50437,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:rohat-n10537927081",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Rohat",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.2652907,
-      "lng": 69.3647517
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 10537927081
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 10537927081
-        }
-      ],
-      "wikidata": "Q97344269"
-    },
-    "wikidataId": "Q97344269",
-    "sourceNames": {
-      "canonical": [
-        "Rohat"
-      ],
-      "en": [
-        "Rakhat"
-      ],
-      "fa": [
-        "راخات"
-      ],
-      "ru": [
-        "Рахат"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:said-farm-service-n8123238858",
     "type": "poi.clinic",
     "country": "UZ",
@@ -51703,55 +51019,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
       ],
       "ru": [
         "Техникум №1 Сергелийского района"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:sergeli-w888864488",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Sergeli",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.220697414285716,
-      "lng": 69.20877947142857
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 150,
-    "osm": {
-      "type": "way",
-      "id": 888864488
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "way",
-          "id": 888864488
-        },
-        {
-          "type": "node",
-          "id": 2206373339
-        }
-      ],
-      "wikidata": "Q12831211"
-    },
-    "wikidataId": "Q12831211",
-    "sourceNames": {
-      "canonical": [
-        "Sergeli"
-      ],
-      "en": [
-        "Sergeli"
-      ],
-      "fa": [
-        "سرگلی"
-      ],
-      "ru": [
-        "Сергели"
-      ],
-      "uz": [
-        "Sergeli"
       ]
     }
   },
@@ -53735,51 +53002,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:tinchlik-n1770328496",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Tinchlik",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.332301400000006,
-      "lng": 69.2191155
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 1770328496
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 1770328496
-        }
-      ],
-      "wikidata": "Q4457872"
-    },
-    "wikidataId": "Q4457872",
-    "sourceNames": {
-      "canonical": [
-        "Tinchlik"
-      ],
-      "en": [
-        "Tinchlik"
-      ],
-      "fa": [
-        "تینچلیک"
-      ],
-      "ru": [
-        "Тинчлик"
-      ],
-      "uz": [
-        "Tinchlik"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:tma-qoshidagi-akademik-litsey-w490653327",
     "type": "poi.school",
     "country": "UZ",
@@ -54988,48 +54210,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:toshkent-n1582352956",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Toshkent",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.293288600000004,
-      "lng": 69.28772120000001
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 1582352956
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 1582352956
-        }
-      ],
-      "wikidata": "Q4120994"
-    },
-    "wikidataId": "Q4120994",
-    "sourceNames": {
-      "canonical": [
-        "Toshkent"
-      ],
-      "en": [
-        "Tashkent"
-      ],
-      "fa": [
-        "تاشکند"
-      ],
-      "ru": [
-        "Ташкент"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:toshkent-pedagogika-kolleji-n4507814090",
     "type": "poi.college",
     "country": "UZ",
@@ -55659,7 +54839,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     "id": "uz:tashkent:poi:tsb-учебный-центр-n6187425285",
     "type": "poi.school",
     "country": "UZ",
-    "canonicalName": "TSB учебный центр",
+    "canonicalName": "ТЅВ учебный центр",
     "parentId": "uz:tashkent",
     "center": {
       "lat": 41.260958,
@@ -55682,7 +54862,7 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     },
     "sourceNames": {
       "canonical": [
-        "TSB учебный центр"
+        "ТЅВ учебный центр"
       ],
       "en": [
         "TSB education center"
@@ -55866,48 +55046,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
       "ame": [
         "TURKUAZ",
         "ГУМ"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:tuzel-n10537927080",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Tuzel",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.292012500000006,
-      "lng": 69.3561844
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 10537927080
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 10537927080
-        }
-      ],
-      "wikidata": "Q97344275"
-    },
-    "wikidataId": "Q97344275",
-    "sourceNames": {
-      "canonical": [
-        "Tuzel"
-      ],
-      "en": [
-        "Tuzel"
-      ],
-      "fa": [
-        "توزل"
-      ],
-      "ru": [
-        "Тузель"
       ]
     }
   },
@@ -56575,52 +55713,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:xalqlar-doʻstligi-n568770460",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Xalqlar doʻstligi",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.3118987,
-      "lng": 69.2430959
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 568770460
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 568770460
-        }
-      ],
-      "wikidata": "Q4099275"
-    },
-    "wikidataId": "Q4099275",
-    "sourceNames": {
-      "canonical": [
-        "Xalqlar doʻstligi"
-      ],
-      "en": [
-        "Drujba Narodov"
-      ],
-      "fa": [
-        "دوستی مردمان"
-      ],
-      "ru": [
-        "Дружба Народов"
-      ],
-      "ame": [
-        "Bunyodkor",
-        "Дружба Народов"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:xitoy-tili-kurslari-n4917007824",
     "type": "poi.school",
     "country": "UZ",
@@ -57028,48 +56120,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     }
   },
   {
-    "id": "uz:tashkent:poi:yashnobod-n10537927079",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Yashnobod",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.2975859,
-      "lng": 69.34978310000001
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 10537927079
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 10537927079
-        }
-      ],
-      "wikidata": "Q97344240"
-    },
-    "wikidataId": "Q97344240",
-    "sourceNames": {
-      "canonical": [
-        "Yashnobod"
-      ],
-      "en": [
-        "Yashnabad"
-      ],
-      "fa": [
-        "یشن‌آباد"
-      ],
-      "ru": [
-        "Яшнабад"
-      ]
-    }
-  },
-  {
     "id": "uz:tashkent:poi:yorqin-kelajak-o-quv-markazi-n5813933754",
     "type": "poi.school",
     "country": "UZ",
@@ -57344,48 +56394,6 @@ export const UZ_TASHKENT_OSM_POI_ENTITIES = Object.freeze([
     "sourceNames": {
       "en": [
         "Yunusobod Medical Center"
-      ]
-    }
-  },
-  {
-    "id": "uz:tashkent:poi:yunusobod-n7053509943",
-    "type": "poi.railway_station",
-    "country": "UZ",
-    "canonicalName": "Yunusobod",
-    "parentId": "uz:tashkent",
-    "center": {
-      "lat": 41.3668411,
-      "lng": 69.29230030000001
-    },
-    "source": "osm",
-    "accuracy": "poi",
-    "accuracyM": 30,
-    "osm": {
-      "type": "node",
-      "id": 7053509943
-    },
-    "concordances": {
-      "osm": [
-        {
-          "type": "node",
-          "id": 7053509943
-        }
-      ],
-      "wikidata": "Q12832415"
-    },
-    "wikidataId": "Q12832415",
-    "sourceNames": {
-      "canonical": [
-        "Yunusobod"
-      ],
-      "en": [
-        "Yunusabad"
-      ],
-      "fa": [
-        "یونس‌آباد"
-      ],
-      "ru": [
-        "Юнусабад"
       ]
     }
   },
