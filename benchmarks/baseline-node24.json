@@ -1,0 +1,73 @@
+{
+  "node": "v24.19.0",
+  "commit": "d78844623bba8c4168fcc63098cda4b98f8658bb",
+  "importMs": 8364.912316,
+  "memoryBeforeImport": {
+    "rss": 39059456,
+    "heapTotal": 12054528,
+    "heapUsed": 7976376,
+    "external": 3901305,
+    "arrayBuffers": 146595
+  },
+  "memoryAfter": {
+    "rss": 705372160,
+    "heapTotal": 571801600,
+    "heapUsed": 446124392,
+    "external": 4026320,
+    "arrayBuffers": 212172
+  },
+  "maxRssKiB": 688840,
+  "metricScope": "Synthetic bridge regression cases; candidate counts are not exposed by the public API. No catalog-wide verification.",
+  "cases": [
+    {
+      "id": "street-exact",
+      "actual": "uz:tashkent:street:shifokorlar",
+      "expected": "uz:tashkent:street:shifokorlar",
+      "correct": true,
+      "firstCallMs": 0.13993000000118627,
+      "p50Ms": 0.0017230000012204982,
+      "p95Ms": 0.0044369999995979015,
+      "candidateCount": null
+    },
+    {
+      "id": "numbered-area",
+      "actual": "uz:tashkent:microdistrict:chilanzar-21",
+      "expected": "uz:tashkent:microdistrict:chilanzar-21",
+      "correct": true,
+      "firstCallMs": 0.008592999998654705,
+      "p50Ms": 0.0014819999996689148,
+      "p95Ms": 0.0018229999986942858,
+      "candidateCount": null
+    },
+    {
+      "id": "missing-street",
+      "actual": null,
+      "expected": null,
+      "correct": true,
+      "firstCallMs": 0.015222999998513842,
+      "p50Ms": 0.002773999998680665,
+      "p95Ms": 0.004257000000507105,
+      "candidateCount": null
+    },
+    {
+      "id": "wrong-city",
+      "actual": null,
+      "expected": null,
+      "correct": true,
+      "firstCallMs": 0.005328000001100008,
+      "p50Ms": 0.00258399999984249,
+      "p95Ms": 0.0030540000007022172,
+      "candidateCount": null
+    },
+    {
+      "id": "missing-city",
+      "actual": null,
+      "expected": null,
+      "correct": true,
+      "firstCallMs": 0.02642999999989115,
+      "p50Ms": 0.0023029999993013917,
+      "p95Ms": 0.0036450000006880146,
+      "candidateCount": null
+    }
+  ]
+}

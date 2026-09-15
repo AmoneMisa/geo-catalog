@@ -1,0 +1,7 @@
+[
+  {"id":"street-exact","input":{"country":"UZ","city":"Tashkent","type":"streets","name":"Shifokorlar Street"},"expected":"uz:tashkent:street:shifokorlar"},
+  {"id":"numbered-area","input":{"country":"UZ","city":"Tashkent","type":"microdistricts","name":"Chilanzar-21"},"expected":"uz:tashkent:microdistrict:chilanzar-21"},
+  {"id":"missing-street","input":{"country":"UZ","city":"Tashkent","type":"streets","name":"Definitely Missing Street"},"expected":null},
+  {"id":"wrong-city","input":{"country":"UZ","city":"Samarkand","type":"streets","name":"Shifokorlar Street"},"expected":null},
+  {"id":"missing-city","input":{"country":"UZ","type":"residential_complex","canonical":"Panorama"},"expected":null}
+]
