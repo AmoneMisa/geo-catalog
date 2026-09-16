@@ -37,6 +37,30 @@
     "./transport": {
       "types": "./transport.d.ts",
       "import": "./src/transport/catalog.js"
+    },
+    "./runtime-index": {
+      "types": "./runtime-index.d.ts",
+      "import": "./src/runtime-index.js"
+    },
+    "./geo-numeric": {
+      "types": "./runtime-index.d.ts",
+      "import": "./src/geo-numeric.js"
+    },
+    "./geo-graph": {
+      "types": "./runtime-index.d.ts",
+      "import": "./src/geo-graph.js"
+    },
+    "./transliteration": {
+      "types": "./runtime-index.d.ts",
+      "import": "./src/transliteration.js"
+    },
+    "./tiered-matching": {
+      "types": "./runtime-index.d.ts",
+      "import": "./src/tiered-matching.js"
+    },
+    "./geo-precision": {
+      "types": "./runtime-index.d.ts",
+      "import": "./src/geo-precision.js"
     }
   },
   "files": [
@@ -64,8 +88,9 @@
     "enrich:geofabrik:all": "node ./scripts/enrich-geofabrik-all-countries.js",
     "review:cached-map-data": "node ./scripts/prepare-map-data-reviews.js",
     "apply:cached-map-data": "node ./scripts/generate-map-data-module.js --approve",
-    "prepack": "npm test && npm run validate && npm run audit:lexicon",
-    "benchmark:parser": "node benchmarks/matching-baseline.js"
+    "prepack": "npm test && npm run validate && npm run audit:lexicon && npm run build:runtime-index",
+    "benchmark:parser": "node benchmarks/matching-baseline.js",
+    "build:runtime-index": "node ./scripts/build-runtime-index.js"
   },
   "devDependencies": {
     "@whiteslove/parsing-lexicon": "^0.9.9"

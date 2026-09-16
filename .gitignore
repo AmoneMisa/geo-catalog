@@ -12,3 +12,4 @@ coverage/
 .env.*
 !.env.example
 src/data/catalog.enc.json
+src/data/runtime-index.br
