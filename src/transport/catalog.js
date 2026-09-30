@@ -147,15 +147,38 @@ export function findTransportRouteVariants(filters = {}) {
   );
 }
 
-const routeContainsStop = (route, stopId) =>
-  route.stopIds.includes(stopId) || route.variants?.some((variant) => variant.stopIds.includes(stopId));
+// stop id -> routes serving it (in TRANSPORT_ROUTES order), built on first use.
+// getRoutesForStop used to scan every route and variant with
+// stopIds.includes() per call; nearestTransportStops calls it for every stop
+// in range, so one Tashkent lookup near a metro hub (~85 stops x 3.7k routes,
+// ~280k stop references) burned ~0.5s of synchronous CPU on the caller's
+// event loop -- several times that on a loaded host. The index is built once
+// (~0.1s) and each lookup is then a Map hit.
+let routesByStopId = null;
+
+function routesByStop() {
+  if (routesByStopId) return routesByStopId;
+  const index = new Map();
+  for (const route of TRANSPORT_ROUTES) {
+    const stopIds = new Set(route.stopIds);
+    for (const variant of route.variants ?? []) {
+      for (const id of variant.stopIds) stopIds.add(id);
+    }
+    for (const id of stopIds) {
+      const routes = index.get(id);
+      if (routes) routes.push(route);
+      else index.set(id, [route]);
+    }
+  }
+  routesByStopId = index;
+  return index;
+}
 
 export function getRoutesForStop(stopId, options = {}) {
   const id = String(stopId || '');
   const { requireFullSequence = false } = options;
-  return TRANSPORT_ROUTES.filter((route) =>
-    routeContainsStop(route, id) && (!requireFullSequence || route.coverage === 'full')
-  );
+  const routes = routesByStop().get(id) ?? [];
+  return requireFullSequence ? routes.filter((route) => route.coverage === 'full') : [...routes];
 }
 
 export function nearestTransportStops(point, options = {}) {

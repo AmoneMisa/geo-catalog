@@ -21,6 +21,7 @@ import {
   getTransportRouteVariant,
   getTransportStop,
   getTransportStopsGeoJSON,
+  nearestTransportStops,
   validateTransportCatalog,
 } from '../src/transport/catalog.js';
 
@@ -184,6 +185,41 @@ test('route membership lookup includes OSM variant stops', () => {
   const refs = getRoutesForStop(stopId, { requireFullSequence: true }).map((route) => route.ref);
   assert.ok(refs.includes('1'));
   assert.ok(refs.includes('17'));
+});
+
+test('indexed route membership matches a full scan of every route and variant', () => {
+  const scan = (stopId, full) => TRANSPORT_ROUTES
+    .filter((route) =>
+      (route.stopIds.includes(stopId) || route.variants?.some((variant) => variant.stopIds.includes(stopId)))
+      && (!full || route.coverage === 'full'))
+    .map((route) => route.id);
+  const sample = TRANSPORT_STOPS.filter((_, index) => index % 97 === 0);
+  assert.ok(sample.length > 100);
+  for (const stop of sample) {
+    for (const full of [false, true]) {
+      assert.deepEqual(getRoutesForStop(stop.id, { requireFullSequence: full }).map((route) => route.id), scan(stop.id, full), stop.id);
+    }
+  }
+  assert.deepEqual(getRoutesForStop('no-such-stop'), []);
+});
+
+test('route membership results are copies, so a caller cannot corrupt the shared index', () => {
+  const stopId = 'uz:tashkent:stop:bus:osm:node:13308770769';
+  const before = getRoutesForStop(stopId).length;
+  getRoutesForStop(stopId).length = 0;
+  assert.equal(getRoutesForStop(stopId).length, before);
+});
+
+test('nearest stops around a Tashkent metro hub stay cheap on repeated calls', () => {
+  // Each call used to rescan every route per stop in range (~0.3s here, far
+  // more on a loaded API host, blocking its event loop).
+  const point = { lat: 41.2757, lng: 69.2047 };
+  nearestTransportStops(point, { country: 'UZ', cityId: 'uz:tashkent', maxDistanceM: 1000 });
+  const started = performance.now();
+  for (let i = 0; i < 10; i += 1) {
+    nearestTransportStops(point, { country: 'UZ', cityId: 'uz:tashkent', maxDistanceM: 1000 });
+  }
+  assert.ok(performance.now() - started < 1500, `10 lookups took ${Math.round(performance.now() - started)}ms`);
 });
 
 test('known topology routes may also gain shape-only variants without losing full coverage', () => {
