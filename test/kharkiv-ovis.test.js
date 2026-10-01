@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { getGeoEntity, resolveLexiconGeoEntity } from '../src/index.js';
+import { roundCenter } from './fixtures/round-center.js';
 
 test('Kharkiv Ovis canonical resolves to the built residential owner', () => {
   const entity = resolveLexiconGeoEntity({
@@ -18,9 +19,9 @@ test('Kharkiv Ovis canonical resolves to the built residential owner', () => {
 
 test('Kharkiv Ovis anchor points to the commissioned Klochkivska 108 k1 building', () => {
   const entity = getGeoEntity('ua:kharkiv:residential:ovis');
-  assert.deepEqual(entity?.center, {
+  assert.deepEqual(entity?.center, roundCenter({
     lat: 50.00615692138672,
     lng: 36.21923065185547,
-  });
+  }));
   assert.equal(entity?.accuracyM, 220);
 });

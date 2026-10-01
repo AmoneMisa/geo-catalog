@@ -2,16 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { getGeoEntity, resolveLexiconGeoEntity } from '../src/index.js';
+import { roundCenter } from './fixtures/round-center.js';
 
 test('Kharkiv Levada residential canonical resolves separately from listing area and metro', () => {
   const residential = resolveLexiconGeoEntity({
     country: 'UA', city: 'Kharkiv', type: 'residential_complex', canonical: 'Levada',
   });
   assert.equal(residential?.id, 'ua:kharkiv:residential:levada');
-  assert.deepEqual(residential?.center, {
+  assert.deepEqual(residential?.center, roundCenter({
     lat: 49.97831195202007,
     lng: 36.24245827257936,
-  });
+  }));
   assert.equal(residential?.accuracyM, 850);
 
   assert.equal(resolveLexiconGeoEntity({

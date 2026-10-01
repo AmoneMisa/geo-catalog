@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { getGeoEntity, resolveLexiconGeoEntity } from '../src/index.js';
+import { roundCenter } from './fixtures/round-center.js';
 
 test('new Kharkiv residential canonicals resolve to verified anchors', () => {
   const expected = new Map([
@@ -18,21 +19,21 @@ test('new Kharkiv residential canonicals resolve to verified anchors', () => {
 });
 
 test('multi-building Kharkiv residential anchors preserve conservative accuracy', () => {
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:sokolnyky')?.center, {
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:sokolnyky')?.center, roundCenter({
     lat: 50.03251645,
     lng: 36.25477836271,
-  });
+  }));
   assert.equal(getGeoEntity('ua:kharkiv:residential:sokolnyky')?.accuracyM, 650);
 
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:rohatynskyi')?.center, {
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:rohatynskyi')?.center, roundCenter({
     lat: 49.998555593836,
     lng: 36.21748869009,
-  });
+  }));
   assert.equal(getGeoEntity('ua:kharkiv:residential:rohatynskyi')?.accuracyM, 700);
 
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:saltivskyi')?.center, {
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:saltivskyi')?.center, roundCenter({
     lat: 49.989758,
     lng: 36.361977,
-  });
+  }));
   assert.equal(getGeoEntity('ua:kharkiv:residential:saltivskyi')?.accuracyM, 500);
 });

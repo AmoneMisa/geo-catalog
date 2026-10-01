@@ -4,6 +4,7 @@ import {
   getGeoEntity,
   resolveLexiconGeoEntity,
 } from '../src/index.js';
+import { roundCenter } from './fixtures/round-center.js';
 
 test('verified Kharkiv microdistrict canonicals resolve to dedicated spatial owners', () => {
   const expected = new Map([
@@ -163,12 +164,12 @@ test('Kharkiv landmarks resolve through the generic POI bridge', () => {
 
 test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:455-microdistrict')?.osm, { type: 'node', id: 12380753513 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:455-microdistrict')?.center, { lat: 49.9833, lng: 36.26975 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:455-microdistrict')?.center, roundCenter({ lat: 49.9833, lng: 36.26975 }));
   assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:519-microdistrict')?.osm, { type: 'node', id: 12246829834 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:519-microdistrict')?.center, { lat: 50.01435, lng: 36.30725 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:519-microdistrict')?.center, roundCenter({ lat: 50.01435, lng: 36.30725 }));
   assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:520-microdistrict')?.osm, { type: 'node', id: 12215617088 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:524-mikroraion')?.osm, { type: 'node', id: 12196622369 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:524-mikroraion')?.center, { lat: 50.02668, lng: 36.34518 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:microdistrict:524-mikroraion')?.center, roundCenter({ lat: 50.02668, lng: 36.34518 }));
   assert.equal(getGeoEntity('ua:kharkiv:microdistrict:skhidnyi')?.source, 'geonames');
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:sarzhyn-yar')?.osm, { type: 'way', id: 33770366 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:derzhprom')?.osm, { type: 'node', id: 1985548330 });
@@ -176,26 +177,26 @@ test('Kharkiv enrichment keeps physical provenance inspectable', () => {
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.osm, { type: 'way', id: 89433884 });
   assert.equal(getGeoEntity('ua:kharkiv:poi:barabashovo-market')?.type, 'poi.market');
   assert.equal(getGeoEntity('ua:kharkiv:poi:horse-market')?.type, 'poi.market');
-  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:horse-market')?.center, { lat: 49.9860832659406, lng: 36.2629331468434 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:horse-market')?.center, roundCenter({ lat: 49.9860832659406, lng: 36.2629331468434 }));
   assert.equal(getGeoEntity('ua:kharkiv:poi:central-market')?.type, 'poi.market');
-  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:central-market')?.center, { lat: 49.9933, lng: 36.2197 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:central-market')?.center, roundCenter({ lat: 49.9933, lng: 36.2197 }));
   assert.equal(getGeoEntity('ua:kharkiv:poi:sumskyi-market')?.type, 'poi.market');
-  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:sumskyi-market')?.center, { lat: 50.011593, lng: 36.23866 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:poi:sumskyi-market')?.center, roundCenter({ lat: 50.011593, lng: 36.23866 }));
   assert.equal(getGeoEntity('ua:kharkiv:poi:kharkiv-zoo')?.wikidataId, 'Q4496313');
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:kharkiv-zoo')?.osm, { type: 'way', id: 33651304 });
   assert.deepEqual(getGeoEntity('ua:kharkiv:poi:khnure')?.osm, { type: 'way', id: 105835020 });
   assert.equal(getGeoEntity('ua:kharkiv:poi:machine-builders-park')?.source, 'manual');
   assert.equal(getGeoEntity('ua:kharkiv:poi:french-boulevard')?.type, 'poi.shopping_mall');
   assert.equal(getGeoEntity('ua:kharkiv:residential:kliuch')?.accuracy, 'building');
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:pavlovsky-kvartal')?.center, { lat: 50.008292, lng: 36.218015 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:dim-na-sumskii')?.center, { lat: 50.01274, lng: 36.242743 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:myronosytska')?.center, { lat: 50.010003, lng: 36.242821 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:felicita')?.center, { lat: 50.029835, lng: 36.2577 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:rezidentsiia')?.center, { lat: 50.02158371710696, lng: 36.22845802887636 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:hydropark')?.center, { lat: 50.021194, lng: 36.291282 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:pavlovsky-kvartal')?.center, roundCenter({ lat: 50.008292, lng: 36.218015 }));
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:dim-na-sumskii')?.center, roundCenter({ lat: 50.01274, lng: 36.242743 }));
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:myronosytska')?.center, roundCenter({ lat: 50.010003, lng: 36.242821 }));
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:felicita')?.center, roundCenter({ lat: 50.029835, lng: 36.2577 }));
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:rezidentsiia')?.center, roundCenter({ lat: 50.02158371710696, lng: 36.22845802887636 }));
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:hydropark')?.center, roundCenter({ lat: 50.021194, lng: 36.291282 }));
   assert.equal(getGeoEntity('ua:kharkiv:residential:hydropark')?.accuracyM, 700);
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:mlechnyi-shliakh')?.center, { lat: 50.006117, lng: 36.257562 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:makiivska')?.center, { lat: 49.953117, lng: 36.25414 });
-  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:river-town')?.center, { lat: 50.016955, lng: 36.205893 });
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:mlechnyi-shliakh')?.center, roundCenter({ lat: 50.006117, lng: 36.257562 }));
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:makiivska')?.center, roundCenter({ lat: 49.953117, lng: 36.25414 }));
+  assert.deepEqual(getGeoEntity('ua:kharkiv:residential:river-town')?.center, roundCenter({ lat: 50.016955, lng: 36.205893 }));
   assert.deepEqual(getGeoEntity('ua:kharkiv:street:heroiv-kharkova-avenue')?.osm, { type: 'relation', id: 1295889 });
 });

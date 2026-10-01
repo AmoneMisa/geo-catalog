@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { getGeoEntity } from '../src/catalog.js';
+import { roundCenter } from './fixtures/round-center.js';
 
 const osmExpected = Object.freeze([
   ['ro:timisoara:poi:victory-square', 'poi.square', 'Piața Victoriei', 45.75282, 21.22528, 'way', 444125777, 'Q1402782'],
@@ -38,7 +39,7 @@ test('Timisoara exposes verified Wikidata-backed historic squares', () => {
     assert.equal(entity.country, 'RO');
     assert.equal(entity.parentId, 'ro:timisoara');
     assert.equal(entity.canonicalName, canonicalName);
-    assert.deepEqual(entity.center, { lat, lng });
+    assert.deepEqual(entity.center, roundCenter({ lat, lng }));
     assert.equal(entity.source, 'wikidata');
     assert.equal(entity.wikidataId, wikidataId);
     assert.equal(entity.accuracy, 'poi');
