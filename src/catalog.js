@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { brotliDecompressSync } from 'node:zlib';
-import { validateGeoCatalog } from './validate.js';
+import { expandEntities } from './catalog-format.js';
 import { getDecryptionKey } from './config.js';
 import { decryptPayload } from './crypto.js';
 import { geoPoiCategory } from './poi-taxonomy.js';
@@ -13,7 +13,7 @@ function loadEntities() {
     const key = getDecryptionKey();
     const plaintext = decryptPayload(artifact, key);
     const json = artifact.compression === 'brotli' ? brotliDecompressSync(plaintext) : plaintext;
-    return JSON.parse(json.toString('utf8'));
+    return expandEntities(JSON.parse(json.toString('utf8')));
   } catch (err) {
     throw new Error(`Failed to load encrypted geo catalog: ${err.message}`);
   }
@@ -21,32 +21,39 @@ function loadEntities() {
 
 const entities = loadEntities();
 
-const validation = validateGeoCatalog(entities);
-if (!validation.valid) {
-  throw new Error(`Invalid geo catalog:\n${validation.errors.join('\n')}`);
+// The artifact is validated when it is built (scripts/build-encrypted-catalog.js)
+// and is authenticated by its encryption, so it is not re-validated on every
+// import: that cost ~0.45 s of load time for no new information.
+
+function deepFreeze(value) {
+  if (Array.isArray(value)) value.forEach(deepFreeze);
+  return Object.freeze(value);
 }
 
-function freezeBoundaryCoordinates(value) {
-  if (!Array.isArray(value)) return value;
-  return Object.freeze(value.map(freezeBoundaryCoordinates));
+// Freezes the freshly parsed entities in place. Copying every entity only to
+// freeze the copy doubled the work and the memory. Depth matches the previous
+// copy-and-freeze exactly: other keys inside `concordances` / `sourceNames`
+// were never frozen.
+function freezeEntity(entity) {
+  Object.freeze(entity.center);
+  if (entity.bbox) Object.freeze(entity.bbox);
+  if (entity.boundary) {
+    deepFreeze(entity.boundary.coordinates);
+    Object.freeze(entity.boundary);
+  }
+  if (entity.osm) Object.freeze(entity.osm);
+  if (entity.concordances) {
+    if (entity.concordances.osm) {
+      entity.concordances.osm.forEach(Object.freeze);
+      Object.freeze(entity.concordances.osm);
+    }
+    Object.freeze(entity.concordances);
+  }
+  if (entity.sourceNames) Object.freeze(entity.sourceNames);
+  return Object.freeze(entity);
 }
 
-function freezeBoundary(boundary) {
-  return Object.freeze({
-    ...boundary,
-    coordinates: freezeBoundaryCoordinates(boundary.coordinates),
-  });
-}
-
-export const GEO_ENTITIES = Object.freeze(entities.map((entity) => Object.freeze({
-  ...entity,
-  center: Object.freeze({ ...entity.center }),
-  ...(entity.bbox ? { bbox: Object.freeze({ ...entity.bbox }) } : {}),
-  ...(entity.boundary ? { boundary: freezeBoundary(entity.boundary) } : {}),
-  ...(entity.osm ? { osm: Object.freeze({ ...entity.osm }) } : {})
-  ,...(entity.concordances ? { concordances: Object.freeze({ ...entity.concordances, ...(entity.concordances.osm ? { osm: Object.freeze(entity.concordances.osm.map((item) => Object.freeze({ ...item }))) } : {}) }) } : {})
-  ,...(entity.sourceNames ? { sourceNames: Object.freeze({ ...entity.sourceNames }) } : {})
-})));
+export const GEO_ENTITIES = Object.freeze(entities.map(freezeEntity));
 
 const byId = new Map(GEO_ENTITIES.map((entity) => [entity.id, entity]));
 const byLookupKey = new Map(

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { getGeoEntity, resolveLexiconGeoEntity } from '../src/index.js';
+import { roundCenter } from './fixtures/round-center.js';
 
 const expected = new Map([
   ['Flagman', ['ua:kharkiv:residential:flagman', { lat: 50.00621997034277, lng: 36.217436598655496 }]],
@@ -22,7 +23,7 @@ test('Kharkiv address-verified residential canonicals resolve to dedicated owner
 test('Kharkiv address-verified residential anchors keep inspected coordinates', () => {
   for (const [, [id, center]] of expected) {
     const entity = getGeoEntity(id);
-    assert.deepEqual(entity?.center, center);
+    assert.deepEqual(entity?.center, roundCenter(center));
     assert.equal(entity?.source, 'manual');
     assert.ok(entity?.sourceUrl);
   }

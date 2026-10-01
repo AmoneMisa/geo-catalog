@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { getGeoEntity } from '../src/index.js';
+import { roundCenter } from './fixtures/round-center.js';
 
 const expected = new Map([
   ['ua:kharkiv:address:lva-landau-2b-1', ['ua:kharkiv:street:lva-landau-avenue', { lat: 49.93916124914873, lng: 36.29575531838618 }]],
@@ -17,7 +18,7 @@ test('Poltavskyi Shliakh 171 retains its verified OSM building coordinate', () =
   assert.equal(entity?.parentId, 'ua:kharkiv:street:poltavskyi-shliakh');
   assert.equal(entity?.source, 'osm');
   assert.equal(entity?.accuracyM, 55);
-  assert.deepEqual(entity?.center, { lat: 49.9796491, lng: 36.1751794 });
+  assert.deepEqual(entity?.center, roundCenter({ lat: 49.9796491, lng: 36.1751794 }));
 });
 
 test('Kharkiv verified addresses are building-level children of canonical streets', () => {
@@ -29,7 +30,7 @@ test('Kharkiv verified addresses are building-level children of canonical street
     assert.equal(entity?.accuracy, 'building');
     assert.ok(entity?.accuracyM <= 50);
     assert.ok(/^https:\/\//.test(entity?.sourceUrl ?? ''));
-    assert.deepEqual(entity?.center, center);
+    assert.deepEqual(entity?.center, roundCenter(center));
   }
 });
 

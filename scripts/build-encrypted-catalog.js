@@ -10,6 +10,8 @@ import { UA_ENTITIES } from '../data-source/ua/index.js';
 import { LEARNED_ADDRESS_ENTITIES } from '../data-source/learned-addresses.js';
 import { getDecryptionKey } from '../src/config.js';
 import { encryptPayload } from '../src/crypto.js';
+import { compactEntities } from '../src/catalog-format.js';
+import { validateGeoCatalog } from '../src/validate.js';
 
 const entities = [
   ...UZ_ENTITIES,
@@ -20,9 +22,16 @@ const entities = [
   ...LEARNED_ADDRESS_ENTITIES,
 ];
 
+// The loader no longer re-validates on every import, so an invalid catalog must
+// never reach the artifact.
+const validation = validateGeoCatalog(entities);
+if (!validation.valid) {
+  throw new Error(`Invalid geo catalog:\n${validation.errors.join('\n')}`);
+}
+
 const key = getDecryptionKey();
 const payload = {
-  ...encryptPayload(brotliCompressSync(Buffer.from(JSON.stringify(entities), 'utf8'), {
+  ...encryptPayload(brotliCompressSync(Buffer.from(JSON.stringify(compactEntities(entities)), 'utf8'), {
     params: { [constants.BROTLI_PARAM_QUALITY]: 6 },
   }), key),
   compression: 'brotli',

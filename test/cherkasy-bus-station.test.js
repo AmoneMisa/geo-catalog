@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { getGeoChildren } from '../src/index.js';
+import { roundCenter } from './fixtures/round-center.js';
 
 test('Cherkasy exposes verified main bus station', () => {
   const children = getGeoChildren('ua:cherkasy');
@@ -10,7 +11,7 @@ test('Cherkasy exposes verified main bus station', () => {
   assert.equal(station.type, 'poi.bus_station');
   assert.equal(station.canonicalName, 'Cherkasy Bus Station No. 1');
   assert.equal(station.parentId, 'ua:cherkasy');
-  assert.deepEqual(station.center, { lat: 49.40614, lng: 32.017105 });
+  assert.deepEqual(station.center, roundCenter({ lat: 49.40614, lng: 32.017105 }));
   assert.equal(station.address, 'вул. Смілянська, 166А');
   assert.equal(station.sourceUrl, 'https://www.blablacar.com.ua/bus/stations/avtovokzal-novyi-cherkasy');
 });
@@ -23,7 +24,7 @@ test('Cherkasy exposes verified bus station No. 2 beside the railway station', (
   assert.equal(station.type, 'poi.bus_station');
   assert.equal(station.canonicalName, 'Cherkasy Bus Station No. 2');
   assert.equal(station.parentId, 'ua:cherkasy');
-  assert.deepEqual(station.center, { lat: 49.4269086050262, lng: 32.0504368249179 });
+  assert.deepEqual(station.center, roundCenter({ lat: 49.4269086050262, lng: 32.0504368249179 }));
   assert.equal(station.address, 'вул. Володимира Ложешнікова, 7');
   assert.equal(station.sourceUrl, 'https://autofort.net/directions/cherkasi-lodz');
 });
@@ -36,7 +37,7 @@ test('Cherkasy exposes verified bus station No. 3', () => {
   assert.equal(station.type, 'poi.bus_station');
   assert.equal(station.canonicalName, 'Cherkasy Bus Station No. 3');
   assert.equal(station.parentId, 'ua:cherkasy');
-  assert.deepEqual(station.center, { lat: 49.438147, lng: 32.065858 });
+  assert.deepEqual(station.center, roundCenter({ lat: 49.438147, lng: 32.065858 }));
   assert.equal(station.address, 'вул. Гоголя, 293');
   assert.equal(station.sourceUrl, 'https://www.blablacar.com.ua/bus/stations/avtostantsiia-cherkasy-3');
 });
@@ -49,7 +50,7 @@ test('Cherkasy exposes verified Autoexpress bus station', () => {
   assert.equal(station.type, 'poi.bus_station');
   assert.equal(station.canonicalName, 'Cherkasy Autoexpress Bus Station');
   assert.equal(station.parentId, 'ua:cherkasy');
-  assert.deepEqual(station.center, { lat: 49.438522, lng: 32.071464 });
+  assert.deepEqual(station.center, roundCenter({ lat: 49.438522, lng: 32.071464 }));
   assert.equal(station.address, 'вул. Митницька, 7/2');
   assert.equal(station.sourceUrl, 'https://www.blablacar.com.ua/bus/stations/avtovokzal-avtoekspres-cherkasy');
 });

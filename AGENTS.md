@@ -291,3 +291,11 @@ If the answer reveals a conflict with this file, preserve the architecture and d
 When the repository architecture or package ownership boundary is intentionally changed, update `AGENTS.md` in the same PR so future AI agents and contributors follow the new canonical structure.
 
 Keep `data-source/README.md` consistent with this document. `AGENTS.md` defines contributor/agent rules; `data-source/README.md` defines concrete data-module conventions.
+
+## Catalog artifact format
+
+`src/catalog-format.js` owns the shape of the built, encrypted catalog artifact and is the only place the build script (`scripts/build-encrypted-catalog.js`) and the loader (`src/catalog.js`) agree on it. Do not special-case the artifact anywhere else.
+
+The artifact differs from the source entities in exactly two ways: `center` is rounded to 7 decimals (OpenStreetMap's own precision; full precision stays in `data-source/`), and a `sourceNames` / `concordances` that is an exact duplicate of `canonicalName` / `osm` is stored as the marker `1` and expanded back to the identical value at load. Anything that is not an exact duplicate is stored in full.
+
+The catalog is validated when it is built, not on every import; the build fails on an invalid catalog. `GEO_ENTITIES` is frozen in place at load, to the same depth as before.
