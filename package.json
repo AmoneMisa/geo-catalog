@@ -92,7 +92,7 @@
     "benchmark:parser": "node benchmarks/matching-baseline.js"
   },
   "devDependencies": {
-    "@whiteslove/parsing-lexicon": "^0.10.0"
+    "@whiteslove/parsing-lexicon": "^0.10.9"
   },
   "keywords": [
     "geography",
