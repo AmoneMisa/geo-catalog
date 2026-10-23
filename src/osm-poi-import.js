@@ -133,10 +133,24 @@ function pointFromGeometry(geometry) {
   return { lat: lat / positions.length, lng: lng / positions.length };
 }
 
+// `name:*` also carries tags that describe the name rather than name the
+// feature: `name:etymology` ("Поділ" on Подільський провулок), its
+// `:wikidata`/`:wikipedia` companions, `name:left`, `name:signed`, ... They must
+// never become lexical aliases, or a street starts resolving as whatever it was
+// named after.
+const NON_NAME_SUFFIXES = new Set(['etymology', 'left', 'right', 'signed', 'prefix', 'genitive', 'pronunciation', 'source', 'botanical']);
+
+export function isOsmNameTag(key, extraKeys = []) {
+  if (key === 'name' || extraKeys.includes(key)) return true;
+  if (!key.startsWith('name:')) return false;
+  const suffix = key.slice(5);
+  return Boolean(suffix) && !suffix.includes(':') && !NON_NAME_SUFFIXES.has(suffix);
+}
+
 function sourceNames(tags) {
   const names = {};
   for (const [key, value] of Object.entries(tags)) {
-    if (!value || !(key === 'name' || key.startsWith('name:') || ['alt_name', 'old_name', 'short_name', 'official_name', 'loc_name'].includes(key))) continue;
+    if (!value || !isOsmNameTag(key, ['alt_name', 'old_name', 'short_name', 'official_name', 'loc_name'])) continue;
     const language = key === 'name' ? 'canonical' : key.slice(5) || key;
     names[language] = [...new Set(String(value).split(';').map((item) => foldMixedScriptConfusables(item.replace(/\s+/gu, ' ').trim())).filter(Boolean))];
   }

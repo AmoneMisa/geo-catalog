@@ -5,6 +5,7 @@
  */
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { isOsmNameTag } from '../src/osm-poi-import.js';
 
 const STREET_HIGHWAYS = new Set(['motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'unclassified', 'residential', 'living_street', 'pedestrian']);
 const LOCAL_PLACES = new Set(['neighbourhood', 'suburb', 'quarter', 'locality']);
@@ -27,8 +28,8 @@ function classify(tags, osmType) {
 
 function sourceNames(tags, canonicalName) {
   const names = new Set([canonicalName]);
-  for (const [key, value] of Object.entries(tags)) if (key === 'name' || key.startsWith('name:') || ['alt_name', 'old_name', 'official_name', 'short_name'].includes(key)) {
-    for (const item of String(value).split(';')) if (item.trim()) names.add(item.trim());
+  for (const [key, value] of Object.entries(tags)) if (isOsmNameTag(key, ['alt_name', 'old_name', 'official_name', 'short_name'])) {
+    for (const item of String(value).split(';')) if (item.trim() && !/^Q\d+$/u.test(item.trim())) names.add(item.trim());
   }
   return [...names];
 }
